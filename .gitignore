@@ -1,0 +1,7 @@
+*.sqlite
+*.pyc
+static/*
+/opal/local_settings.py
+.coverage
+htmlcov
+libpeerconnection.log
