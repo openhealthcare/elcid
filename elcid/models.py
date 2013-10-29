@@ -3,11 +3,12 @@ ELCID implementation specific models!
 """
 from django.db import models
 
-from opal.models import Subrecord, option_models
+from opal.models import Subrecord, TaggedSubrecordMixin, option_models
 from opal.utils.fields import ForeignKeyOrFreeText
 
 __all__ = [
     'Location',
+    'Demographics',
     'Diagnosis',
     'PastMedicalHistory',
     'GeneralNote',
@@ -25,34 +26,16 @@ class Demographics(Subrecord):
     hospital_number = models.CharField(max_length=255, blank=True)
     date_of_birth = models.DateField(null=True, blank=True)
 
-
-class Location(Subrecord):
+class Location(TaggedSubrecordMixin, Subrecord):
     _is_singleton = True
-
-    @classmethod
-    def _get_fieldnames_to_serialize(cls):
-        fieldnames = super(Location, cls)._get_fieldnames_to_serialize()
-        fieldnames.append('tags')
-        return fieldnames
-
-    @classmethod
-    def get_field_type_for_tags(cls):
-        return 'list'
-
-    def get_tags(self):
-        return {tag_name: True for tag_name in self.patient.get_tag_names()}
-
-    # value is a dictionary mapping tag names to a boolean
-    def set_tags(self, value, user):
-        tags = [k for k, v in value.items() if v]
-        self.patient.set_tags(tags, user)
 
     category = models.CharField(max_length=255, blank=True)
     hospital = models.CharField(max_length=255, blank=True)
     ward = models.CharField(max_length=255, blank=True)
     bed = models.CharField(max_length=255, blank=True)
     date_of_admission = models.DateField(null=True, blank=True)
-    discharge_date = models.DateField(null=True, blank=True) # TODO rename to date_of_discharge?
+    # TODO rename to date_of_discharge?
+    discharge_date = models.DateField(null=True, blank=True)
 
 
 class Diagnosis(Subrecord):
