@@ -208,6 +208,7 @@ AXES_LOCK_OUT_AT_FAILURE = False
 OPAL_SCHEMA_MODULE = 'elcid.schema'
 OPAL_OPTIONS_MODULE = 'elcid.options'
 OPAL_TAGS_MODULE = 'elcid.tags'
+OPAL_BRAND_NAME = 'eLCID'
 
 try:
     from local_settings import *
