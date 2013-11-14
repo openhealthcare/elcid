@@ -3,7 +3,8 @@ ELCID implementation specific models!
 """
 from django.db import models
 
-from opal.models import Subrecord, TaggedSubrecordMixin, option_models
+from opal.models import (Subrecord, TaggedSubrecordMixin, option_models,
+                         EpisodeSubrecord, PatientSubrecord)
 from opal.utils.fields import ForeignKeyOrFreeText
 
 __all__ = [
@@ -19,14 +20,14 @@ __all__ = [
     'MicrobiologyTest'
     ]
 
-class Demographics(Subrecord):
+class Demographics(PatientSubrecord):
     _is_singleton = True
 
     name = models.CharField(max_length=255, blank=True)
     hospital_number = models.CharField(max_length=255, blank=True)
     date_of_birth = models.DateField(null=True, blank=True)
 
-class Location(TaggedSubrecordMixin, Subrecord):
+class Location(TaggedSubrecordMixin, EpisodeSubrecord):
     _is_singleton = True
 
     category = models.CharField(max_length=255, blank=True)
@@ -38,7 +39,7 @@ class Location(TaggedSubrecordMixin, Subrecord):
     discharge_date = models.DateField(null=True, blank=True)
 
 
-class Diagnosis(Subrecord):
+class Diagnosis(EpisodeSubrecord):
     _title = 'Diagnosis / Issues'
     condition = ForeignKeyOrFreeText(option_models['condition'])
     provisional = models.BooleanField()
@@ -46,26 +47,26 @@ class Diagnosis(Subrecord):
     date_of_diagnosis = models.DateField(blank=True, null=True)
 
 
-class PastMedicalHistory(Subrecord):
+class PastMedicalHistory(EpisodeSubrecord):
     _title = 'PMH'
     condition = ForeignKeyOrFreeText(option_models['condition'])
     year = models.CharField(max_length=4, blank=True)
 
 
-class GeneralNote(Subrecord):
+class GeneralNote(EpisodeSubrecord):
     _title = 'General Notes'
     date = models.DateField(null=True, blank=True)
     comment = models.TextField()
 
 
-class Travel(Subrecord):
+class Travel(EpisodeSubrecord):
     destination = ForeignKeyOrFreeText(option_models['destination'])
     dates = models.CharField(max_length=255, blank=True)
     reason_for_travel = ForeignKeyOrFreeText(option_models['travel_reason'])
     specific_exposures = models.CharField(max_length=255, blank=True)
 
 
-class Antimicrobial(Subrecord):
+class Antimicrobial(EpisodeSubrecord):
     _title = 'Antimicrobials'
     drug = ForeignKeyOrFreeText(option_models['antimicrobial'])
     dose = models.CharField(max_length=255, blank=True)
@@ -74,7 +75,7 @@ class Antimicrobial(Subrecord):
     end_date = models.DateField(null=True, blank=True)
 
 
-class MicrobiologyInput(Subrecord):
+class MicrobiologyInput(EpisodeSubrecord):
     _title = 'Clinical Advice'
     date = models.DateField(null=True, blank=True)
     initials = models.CharField(max_length=255, blank=True)
@@ -88,12 +89,12 @@ class MicrobiologyInput(Subrecord):
     referred_to_opat = models.BooleanField()
 
 
-class Todo(Subrecord):
+class Todo(EpisodeSubrecord):
     _title = 'To Do'
     details = models.TextField(blank=True)
 
 
-class MicrobiologyTest(Subrecord):
+class MicrobiologyTest(EpisodeSubrecord):
     test = models.CharField(max_length=255)
     date_ordered = models.DateField(null=True, blank=True)
     details = models.CharField(max_length=255, blank=True)
