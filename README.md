@@ -14,7 +14,7 @@ Open source
 GNU Affero GPLv3
 
 Communications
-======
+==============
 hello@openhealthcare.org.uk
 
 http://www.openhealthcare.org.uk
