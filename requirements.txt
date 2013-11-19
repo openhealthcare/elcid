@@ -8,4 +8,4 @@ wsgiref==0.1.2
 dj-static==0.0.5
 django-reversion
 django-axes==1.3.4
--e git://github.com/openhealthcare/opal.git@9501a0d11158c32c26cd058b824fd28a93905075#egg=opal
+-e git://github.com/openhealthcare/opal.git@#egg=opal
