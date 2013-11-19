@@ -1,0 +1,75 @@
+[
+{
+    "pk": 1,
+    "model": "opal.antimicrobial",
+    "fields": {
+        "name": "Some antimicrobial"
+    }
+    },
+    {
+    "pk": 1,
+    "model": "opal.antimicrobial_route",
+    "fields": {
+        "name": "Some route"
+    }
+},
+{
+    "pk": 1,
+    "model": "opal.condition",
+    "fields": {
+        "name": "Some condition"
+    }
+},
+{
+    "pk": 2,
+    "model": "opal.condition",
+    "fields": {
+        "name": "Some other condition"
+    }
+}
+
+
+,
+{
+    "pk": 1,
+    "model": "opal.destination",
+    "fields": {
+        "name": "Some destination"
+    }
+},
+{
+    "pk": 1,
+    "model": "opal.hospital",
+    "fields": {
+        "name": "Some hospital"
+    }
+},
+{
+    "pk": 1,
+    "model": "opal.microbiology_organism",
+    "fields": {
+        "name": "Some organism"
+    }
+},
+{
+    "pk": 1,
+    "model": "opal.travel_reason",
+    "fields": {
+        "name": "Some reason"
+    }
+},
+{
+    "pk": 1,
+    "model": "opal.synonym",
+    "fields": {
+        "name": "Condition synonym",
+        "content_type": [
+            "opal",
+            "condition"
+        ],
+        "object_id": 2
+    }
+}
+
+
+]
