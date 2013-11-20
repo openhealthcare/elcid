@@ -27,6 +27,7 @@ class Demographics(PatientSubrecord):
     hospital_number = models.CharField(max_length=255, blank=True)
     date_of_birth = models.DateField(null=True, blank=True)
 
+
 class Location(TaggedSubrecordMixin, EpisodeSubrecord):
     _is_singleton = True
 
@@ -34,9 +35,9 @@ class Location(TaggedSubrecordMixin, EpisodeSubrecord):
     hospital = models.CharField(max_length=255, blank=True)
     ward = models.CharField(max_length=255, blank=True)
     bed = models.CharField(max_length=255, blank=True)
-    date_of_admission = models.DateField(null=True, blank=True)
-    # TODO rename to date_of_discharge?
-    discharge_date = models.DateField(null=True, blank=True)
+    # date_of_admission = models.DateField(null=True, blank=True)
+    # # TODO rename to date_of_discharge?
+    # discharge_date = models.DateField(null=True, blank=True)
 
 
 class Diagnosis(EpisodeSubrecord):

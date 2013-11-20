@@ -9,7 +9,19 @@
         "model": "opal.episode",
         "fields": {
                 "patient": 1,
-                "active": true
+                "active": true,
+                "date_of_admission": "2013-07-25",
+                "discharge_date": null
+        }
+},
+{
+        "pk": 2,
+        "model": "opal.episode",
+        "fields": {
+                "patient": 1,
+                "active": false,
+                "date_of_admission": "2012-07-25",
+                "discharge_date": "2012-08-22"
         }
 },
 {
@@ -50,11 +62,22 @@
                 "category": "Inpatient",
                 "hospital": "UCH",
                 "ward": "T10",
-                "bed": "13",
-                "date_of_admission": "2013-07-25",
-                "discharge_date": null
+                "bed": "13"
         }
 },
+{
+        "pk": 2,
+        "model": "elcid.location",
+        "fields": {
+                "consistency_token": "12345678",
+                "episode": 2,
+                "category": "Inpatient",
+                "hospital": "UCH",
+                "ward": "T11",
+                "bed": "14"
+        }
+},
+
 {
         "pk": 1,
         "model": "elcid.diagnosis",
