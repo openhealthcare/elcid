@@ -13,6 +13,12 @@ Open source
 ===========
 GNU Affero GPLv3
 
+Installation
+============
+
+pip install -r requirements.txt
+python manage.py syncdb --migrate
+
 Communications
 ==============
 hello@openhealthcare.org.uk
