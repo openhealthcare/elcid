@@ -18,6 +18,7 @@ Installation
 
 pip install -r requirements.txt
 python manage.py syncdb --migrate
+python manage.py loaddata dumps/options.json
 # Some Reversion thing here?
 
 Communications
