@@ -177,7 +177,8 @@ class ViewsTest(TestCase):
 
     def setUp(self):
         self.user = User.objects.get(pk=1)
-        self.assertTrue(self.client.login(username=self.user.username, password='password'))
+        self.assertTrue(self.client.login(username=self.user.username,
+                                          password='password'))
         self.patient = Patient.objects.get(pk=1)
 
     def assertStatusCode(self, path, expected_status_code):
