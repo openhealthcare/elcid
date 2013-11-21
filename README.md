@@ -18,6 +18,7 @@ Installation
 
 pip install -r requirements.txt
 python manage.py syncdb --migrate
+# Some Reversion thing here?
 
 Communications
 ==============
