@@ -96,6 +96,8 @@ class Todo(EpisodeSubrecord):
 
 
 class MicrobiologyTest(EpisodeSubrecord):
+    _title = 'Pathology Test'
+
     test = models.CharField(max_length=255)
     date_ordered = models.DateField(null=True, blank=True)
     details = models.CharField(max_length=255, blank=True)
