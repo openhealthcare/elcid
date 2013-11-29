@@ -42,6 +42,8 @@ class Location(TaggedSubrecordMixin, EpisodeSubrecord):
 
 class Diagnosis(EpisodeSubrecord):
     _title = 'Diagnosis / Issues'
+    _sort = 'date_of_diagnosis'
+
     condition = ForeignKeyOrFreeText(option_models['condition'])
     provisional = models.BooleanField()
     details = models.CharField(max_length=255, blank=True)
@@ -50,12 +52,16 @@ class Diagnosis(EpisodeSubrecord):
 
 class PastMedicalHistory(EpisodeSubrecord):
     _title = 'PMH'
+    _sort = 'year'
+
     condition = ForeignKeyOrFreeText(option_models['condition'])
     year = models.CharField(max_length=4, blank=True)
 
 
 class GeneralNote(EpisodeSubrecord):
     _title = 'General Notes'
+    _sort = 'date'
+
     date = models.DateField(null=True, blank=True)
     comment = models.TextField()
 
@@ -69,6 +75,8 @@ class Travel(EpisodeSubrecord):
 
 class Antimicrobial(EpisodeSubrecord):
     _title = 'Antimicrobials'
+    _sort = 'start_date'
+
     drug = ForeignKeyOrFreeText(option_models['antimicrobial'])
     dose = models.CharField(max_length=255, blank=True)
     route = ForeignKeyOrFreeText(option_models['antimicrobial_route'])
@@ -97,6 +105,7 @@ class Todo(EpisodeSubrecord):
 
 class MicrobiologyTest(EpisodeSubrecord):
     _title = 'Pathology Test'
+    _sort = 'date_ordered'
 
     test = models.CharField(max_length=255)
     date_ordered = models.DateField(null=True, blank=True)

@@ -1,12 +1,20 @@
+"""
+Unittests for the UCLH eLCID OPAL implementation.
+"""
 import datetime
 import json
+
 from django.core.serializers.json import DjangoJSONEncoder
 from django.test import TestCase
 from django.contrib.auth.models import User
+import ffs
 
 from elcid import models
 from opal.models import Patient, Episode
 from opal import exceptions
+
+HERE = ffs.Path.here()
+TEST_DATA = HERE/'test_data'
 
 class DemographicsTest(TestCase):
     fixtures = ['patients_users', 'patients_records']
@@ -24,7 +32,7 @@ class DemographicsTest(TestCase):
             'name': 'John Smith',
             'date_of_birth': datetime.date(1972, 6, 20),
             'hospital_number': 'AA1111',
-        }
+            }
         self.assertEqual(expected_data, self.demographics.to_dict(self.user))
 
     def test_update_from_dict(self):
@@ -34,7 +42,7 @@ class DemographicsTest(TestCase):
             'name': 'Johann Schmidt',
             'date_of_birth': '1972-6-21',
             'hospital_number': 'AA1112',
-        }
+            }
         self.demographics.update_from_dict(data, self.user)
         demographics = self.patient.demographics_set.get()
 
@@ -53,11 +61,11 @@ class DemographicsTest(TestCase):
     def test_field_schema(self):
         schema = models.Demographics.build_field_schema()
         expected_schema = [
-                {'name': 'consistency_token', 'type': 'token'},
-                {'name': 'name', 'type': 'string'},
-                {'name': 'hospital_number', 'type': 'string'},
-                {'name': 'date_of_birth', 'type': 'date'},
-        ]
+            {'name': 'consistency_token', 'type': 'token'},
+            {'name': 'name', 'type': 'string'},
+            {'name': 'hospital_number', 'type': 'string'},
+            {'name': 'date_of_birth', 'type': 'date'},
+            ]
         self.assertEqual(expected_schema, schema)
 
 
@@ -79,7 +87,7 @@ class LocationTest(TestCase):
             'ward': 'T10',
             'bed': '13',
             'tags': {'microbiology': True, 'mine': True},
-        }
+            }
         self.assertEqual(expected_data, self.location.to_dict(self.user))
 
     def test_update_from_dict(self):
@@ -91,7 +99,7 @@ class LocationTest(TestCase):
             'ward': 'T10',
             'bed': '13',
             'tags': {'microbiology': False, 'mine': True},
-        }
+            }
         self.location.update_from_dict(data, self.user)
         location = self.episode.location_set.get()
 
@@ -100,13 +108,13 @@ class LocationTest(TestCase):
     def test_field_schema(self):
         schema = models.Location.build_field_schema()
         expected_schema = [
-                {'name': 'consistency_token', 'type': 'token'},
-                {'name': 'category', 'type': 'string'},
-                {'name': 'hospital', 'type': 'string'},
-                {'name': 'ward', 'type': 'string'},
-                {'name': 'bed', 'type': 'string'},
-                {'name': 'tags', 'type': 'list'},
-        ]
+            {'name': 'consistency_token', 'type': 'token'},
+            {'name': 'category', 'type': 'string'},
+            {'name': 'hospital', 'type': 'string'},
+            {'name': 'ward', 'type': 'string'},
+            {'name': 'bed', 'type': 'string'},
+            {'name': 'tags', 'type': 'list'},
+            ]
         self.assertEqual(expected_schema, schema)
 
 
@@ -127,7 +135,7 @@ class DiagnosisTest(TestCase):
             'provisional': False,
             'details': '',
             'date_of_diagnosis': datetime.date(2013, 7, 25),
-        }
+            }
         self.assertEqual(expected_data, self.diagnosis.to_dict(self.user))
 
     def test_update_from_dict_with_existing_condition(self):
@@ -135,7 +143,7 @@ class DiagnosisTest(TestCase):
             'consistency_token': '12345678',
             'id': self.diagnosis.id,
             'condition': 'Some other condition',
-        }
+            }
         self.diagnosis.update_from_dict(data, self.user)
         diagnosis = self.episode.diagnosis_set.all()[0]
         self.assertEqual('Some other condition', diagnosis.condition)
@@ -145,7 +153,7 @@ class DiagnosisTest(TestCase):
             'consistency_token': '12345678',
             'id': self.diagnosis.id,
             'condition': 'Condition synonym',
-        }
+            }
         self.diagnosis.update_from_dict(data, self.user)
         diagnosis = self.episode.diagnosis_set.all()[0]
         self.assertEqual('Some other condition', diagnosis.condition)
@@ -155,7 +163,7 @@ class DiagnosisTest(TestCase):
             'consistency_token': '12345678',
             'id': self.diagnosis.id,
             'condition': 'New condition',
-        }
+            }
         self.diagnosis.update_from_dict(data, self.user)
         diagnosis = self.episode.diagnosis_set.all()[0]
         self.assertEqual('New condition', diagnosis.condition)
@@ -163,12 +171,12 @@ class DiagnosisTest(TestCase):
     def test_field_schema(self):
         schema = models.Diagnosis.build_field_schema()
         expected_schema = [
-                {'name': 'consistency_token', 'type': 'token'},
-                {'name': 'provisional', 'type': 'boolean'},
-                {'name': 'details', 'type': 'string'},
-                {'name': 'date_of_diagnosis', 'type': 'date'},
-                {'name': 'condition', 'type': 'string'},
-        ]
+            {'name': 'consistency_token', 'type': 'token'},
+            {'name': 'provisional', 'type': 'boolean'},
+            {'name': 'details', 'type': 'string'},
+            {'name': 'date_of_diagnosis', 'type': 'date'},
+            {'name': 'condition', 'type': 'string'},
+            ]
         self.assertEqual(expected_schema, schema)
 
 
@@ -221,8 +229,8 @@ class ViewsTest(TestCase):
                 'hospital': 'UCH',
                 'ward': 'T13',
                 'bed': 10
+                }
             }
-        }
 
         response = self.post_json('/episode/', data)
         self.assertEqual(201, response.status_code)
@@ -235,8 +243,8 @@ class ViewsTest(TestCase):
                 'hospital': 'UCH',
                 'ward': 'T13',
                 'bed': 10
+                }
             }
-        }
         response = self.post_json('/episode/', data)
         self.assertEqual(400, response.status_code)
 
@@ -246,14 +254,14 @@ class ViewsTest(TestCase):
                 'hospital_number': 'BB2222',
                 'name': 'Johann Schmidt',
                 'date_of_birth': '1970-06-01'
-            },
+                },
             'location': {
                 'category': 'Inpatient',
                 'hospital': 'UCH',
                 'ward': 'T13',
                 'bed': 10
+                }
             }
-        }
         response = self.post_json('/episode/', data)
         self.assertEqual(201, response.status_code)
 
@@ -263,14 +271,14 @@ class ViewsTest(TestCase):
                 'hospital_number': '',
                 'name': 'Johann Schmidt',
                 'date_of_birth': '1970-06-01'
-            },
+                },
             'location': {
                 'category': 'Inpatient',
                 'hospital': 'UCH',
                 'ward': 'T13',
                 'bed': 10
+                }
             }
-        }
         response = self.post_json('/episode/', data)
         self.assertEqual(201, response.status_code)
 
@@ -282,7 +290,7 @@ class ViewsTest(TestCase):
             'name': 'Johann Schmidt',
             'date_of_birth': '1972-6-21',
             'hospital_number': 'AA1112',
-        }
+            }
         response = self.put_json('/demographics/%s' % demographics.id, data)
         self.assertEqual(200, response.status_code)
 
@@ -298,7 +306,7 @@ class ViewsTest(TestCase):
             'name': 'Johann Schmidt',
             'date_of_birth': '1972-6-21',
             'hospital_number': 'AA1112',
-        }
+            }
         response = self.put_json('/demographics/%s' % demographics.id, data)
         self.assertEqual(409, response.status_code)
 
@@ -317,7 +325,7 @@ class ViewsTest(TestCase):
             'name': 'Johann Schmidt',
             'date_of_birth': '1972-6-21',
             'hospital_number': 'AA1112',
-        }
+            }
         response = self.post_json('/demographics/', data)
         self.assertEqual(201, response.status_code)
 
@@ -342,8 +350,49 @@ class ViewsTest(TestCase):
     def test_location_modal_template_view(self):
         self.assertStatusCode('/templates/modals/location.html/', 200)
 
-    def test_list_schema_view(self):
-        self.assertStatusCode('/schema/list/', 200)
-
     def test_detail_schema_view(self):
         self.assertStatusCode('/schema/detail/', 200)
+
+
+class ListSchemaViewTest(TestCase):
+    fixtures = ['patients_users', 'patients_options', 'patients_records']
+
+    def setUp(self):
+        self.user = User.objects.get(pk=1)
+        self.assertTrue(self.client.login(username=self.user.username,
+                                          password='password'))
+        self.patient = Patient.objects.get(pk=1)
+        schema_file = TEST_DATA/'list.schema.json'
+        self.schema = schema_file.json_load()
+
+    def assertStatusCode(self, path, expected_status_code):
+        response = self.client.get(path)
+        self.assertEqual(expected_status_code, response.status_code)
+
+    def get_json(self, path):
+        return json.loads(self.client.get(path, content_type='application/json').content)
+
+    def test_list_schema_view(self):
+        self.assertEqual(self.schema, self.get_json('/schema/list/'))
+
+
+class DetailSchemaViewTest(TestCase):
+    fixtures = ['patients_users', 'patients_options', 'patients_records']
+
+    def setUp(self):
+        self.user = User.objects.get(pk=1)
+        self.assertTrue(self.client.login(username=self.user.username,
+                                          password='password'))
+        self.patient = Patient.objects.get(pk=1)
+        schema_file = TEST_DATA/'detail.schema.json'
+        self.schema = schema_file.json_load()
+
+    def assertStatusCode(self, path, expected_status_code):
+        response = self.client.get(path)
+        self.assertEqual(expected_status_code, response.status_code)
+
+    def get_json(self, path):
+        return json.loads(self.client.get(path, content_type='application/json').content)
+
+    def test_detail_schema_view(self):
+        self.assertEqual(self.schema, self.get_json('/schema/detail/'))
