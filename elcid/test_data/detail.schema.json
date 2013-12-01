@@ -2,422 +2,422 @@
     {
         "fields": [
             {
-                "name": "consistency_token", 
+                "name": "consistency_token",
                 "type": "token"
-            }, 
+            },
             {
-                "name": "name", 
+                "name": "name",
                 "type": "string"
-            }, 
+            },
             {
-                "name": "hospital_number", 
+                "name": "hospital_number",
                 "type": "string"
-            }, 
+            },
             {
-                "name": "date_of_birth", 
+                "name": "date_of_birth",
                 "type": "date"
             }
-        ], 
-        "name": "demographics", 
+        ],
+        "name": "demographics",
         "single": true
-    }, 
+    },
     {
         "fields": [
             {
-                "name": "consistency_token", 
+                "name": "consistency_token",
                 "type": "token"
-            }, 
+            },
             {
-                "name": "provisional", 
-                "type": "boolean"
-            }, 
-            {
-                "name": "details", 
+                "name": "category",
                 "type": "string"
-            }, 
+            },
             {
-                "name": "date_of_diagnosis", 
-                "type": "date"
-            }, 
-            {
-                "name": "condition", 
+                "name": "hospital",
                 "type": "string"
-            }
-        ], 
-        "name": "diagnosis", 
-        "single": false, 
-        "sort": "date_of_diagnosis"
-    }, 
-    {
-        "fields": [
+            },
             {
-                "name": "consistency_token", 
-                "type": "token"
-            }, 
-            {
-                "name": "year", 
+                "name": "ward",
                 "type": "string"
-            }, 
+            },
             {
-                "name": "condition", 
+                "name": "bed",
                 "type": "string"
-            }
-        ], 
-        "name": "past_medical_history", 
-        "single": false, 
-        "sort": "year"
-    }, 
-    {
-        "fields": [
+            },
             {
-                "name": "consistency_token", 
-                "type": "token"
-            }, 
-            {
-                "name": "date", 
-                "type": "date"
-            }, 
-            {
-                "name": "initials", 
-                "type": "string"
-            }, 
-            {
-                "name": "clinical_discussion", 
-                "type": "text"
-            }, 
-            {
-                "name": "agreed_plan", 
-                "type": "text"
-            }, 
-            {
-                "name": "discussed_with", 
-                "type": "string"
-            }, 
-            {
-                "name": "clinical_advice_given", 
-                "type": "boolean"
-            }, 
-            {
-                "name": "infection_control_advice_given", 
-                "type": "boolean"
-            }, 
-            {
-                "name": "change_in_antibiotic_prescription", 
-                "type": "boolean"
-            }, 
-            {
-                "name": "referred_to_opat", 
-                "type": "boolean"
-            }, 
-            {
-                "name": "reason_for_interaction", 
-                "type": "string"
-            }
-        ], 
-        "name": "microbiology_input", 
-        "single": false
-    }, 
-    {
-        "fields": [
-            {
-                "name": "consistency_token", 
-                "type": "token"
-            }, 
-            {
-                "name": "test", 
-                "type": "string"
-            }, 
-            {
-                "name": "date_ordered", 
-                "type": "date"
-            }, 
-            {
-                "name": "details", 
-                "type": "string"
-            }, 
-            {
-                "name": "microscopy", 
-                "type": "string"
-            }, 
-            {
-                "name": "organism", 
-                "type": "string"
-            }, 
-            {
-                "name": "sensitive_antibiotics", 
-                "type": "string"
-            }, 
-            {
-                "name": "resistant_antibiotics", 
-                "type": "string"
-            }, 
-            {
-                "name": "result", 
-                "type": "string"
-            }, 
-            {
-                "name": "igm", 
-                "type": "string"
-            }, 
-            {
-                "name": "igg", 
-                "type": "string"
-            }, 
-            {
-                "name": "vca_igm", 
-                "type": "string"
-            }, 
-            {
-                "name": "vca_igg", 
-                "type": "string"
-            }, 
-            {
-                "name": "ebna_igg", 
-                "type": "string"
-            }, 
-            {
-                "name": "hbsag", 
-                "type": "string"
-            }, 
-            {
-                "name": "anti_hbs", 
-                "type": "string"
-            }, 
-            {
-                "name": "anti_hbcore_igm", 
-                "type": "string"
-            }, 
-            {
-                "name": "anti_hbcore_igg", 
-                "type": "string"
-            }, 
-            {
-                "name": "rpr", 
-                "type": "string"
-            }, 
-            {
-                "name": "tppa", 
-                "type": "string"
-            }, 
-            {
-                "name": "viral_load", 
-                "type": "string"
-            }, 
-            {
-                "name": "parasitaemia", 
-                "type": "string"
-            }, 
-            {
-                "name": "hsv", 
-                "type": "string"
-            }, 
-            {
-                "name": "vzv", 
-                "type": "string"
-            }, 
-            {
-                "name": "syphilis", 
-                "type": "string"
-            }, 
-            {
-                "name": "c_difficile_antigen", 
-                "type": "string"
-            }, 
-            {
-                "name": "c_difficile_toxin", 
-                "type": "string"
-            }, 
-            {
-                "name": "species", 
-                "type": "string"
-            }, 
-            {
-                "name": "hsv_1", 
-                "type": "string"
-            }, 
-            {
-                "name": "hsv_2", 
-                "type": "string"
-            }, 
-            {
-                "name": "enterovirus", 
-                "type": "string"
-            }, 
-            {
-                "name": "cmv", 
-                "type": "string"
-            }, 
-            {
-                "name": "ebv", 
-                "type": "string"
-            }, 
-            {
-                "name": "influenza_a", 
-                "type": "string"
-            }, 
-            {
-                "name": "influenza_b", 
-                "type": "string"
-            }, 
-            {
-                "name": "parainfluenza", 
-                "type": "string"
-            }, 
-            {
-                "name": "metapneumovirus", 
-                "type": "string"
-            }, 
-            {
-                "name": "rsv", 
-                "type": "string"
-            }, 
-            {
-                "name": "adenovirus", 
-                "type": "string"
-            }, 
-            {
-                "name": "norovirus", 
-                "type": "string"
-            }, 
-            {
-                "name": "rotavirus", 
-                "type": "string"
-            }, 
-            {
-                "name": "giardia", 
-                "type": "string"
-            }, 
-            {
-                "name": "entamoeba_histolytica", 
-                "type": "string"
-            }, 
-            {
-                "name": "cryptosporidium", 
-                "type": "string"
-            }
-        ], 
-        "name": "microbiology_test", 
-        "single": false, 
-        "sort": "date_ordered"
-    }, 
-    {
-        "fields": [
-            {
-                "name": "consistency_token", 
-                "type": "token"
-            }, 
-            {
-                "name": "dose", 
-                "type": "string"
-            }, 
-            {
-                "name": "start_date", 
-                "type": "date"
-            }, 
-            {
-                "name": "end_date", 
-                "type": "date"
-            }, 
-            {
-                "name": "route", 
-                "type": "string"
-            }, 
-            {
-                "name": "drug", 
-                "type": "string"
-            }
-        ], 
-        "name": "antimicrobial", 
-        "single": false, 
-        "sort": "start_date"
-    }, 
-    {
-        "fields": [
-            {
-                "name": "consistency_token", 
-                "type": "token"
-            }, 
-            {
-                "name": "dates", 
-                "type": "string"
-            }, 
-            {
-                "name": "specific_exposures", 
-                "type": "string"
-            }, 
-            {
-                "name": "destination", 
-                "type": "string"
-            }, 
-            {
-                "name": "reason_for_travel", 
-                "type": "string"
-            }
-        ], 
-        "name": "travel", 
-        "single": false
-    }, 
-    {
-        "fields": [
-            {
-                "name": "consistency_token", 
-                "type": "token"
-            }, 
-            {
-                "name": "details", 
-                "type": "text"
-            }
-        ], 
-        "name": "todo", 
-        "single": false
-    }, 
-    {
-        "fields": [
-            {
-                "name": "consistency_token", 
-                "type": "token"
-            }, 
-            {
-                "name": "category", 
-                "type": "string"
-            }, 
-            {
-                "name": "hospital", 
-                "type": "string"
-            }, 
-            {
-                "name": "ward", 
-                "type": "string"
-            }, 
-            {
-                "name": "bed", 
-                "type": "string"
-            }, 
-            {
-                "name": "tags", 
+                "name": "tags",
                 "type": "list"
             }
-        ], 
-        "name": "location", 
+        ],
+        "name": "location",
         "single": true
-    }, 
+    },
     {
         "fields": [
             {
-                "name": "consistency_token", 
+                "name": "consistency_token",
                 "type": "token"
-            }, 
+            },
             {
-                "name": "date", 
+                "name": "provisional",
+                "type": "boolean"
+            },
+            {
+                "name": "details",
+                "type": "string"
+            },
+            {
+                "name": "date_of_diagnosis",
                 "type": "date"
-            }, 
+            },
             {
-                "name": "comment", 
+                "name": "condition",
+                "type": "string"
+            }
+        ],
+        "name": "diagnosis",
+        "single": false,
+        "sort": "date_of_diagnosis"
+    },
+    {
+        "fields": [
+            {
+                "name": "consistency_token",
+                "type": "token"
+            },
+            {
+                "name": "year",
+                "type": "string"
+            },
+            {
+                "name": "condition",
+                "type": "string"
+            }
+        ],
+        "name": "past_medical_history",
+        "single": false,
+        "sort": "year"
+    },
+    {
+        "fields": [
+            {
+                "name": "consistency_token",
+                "type": "token"
+            },
+            {
+                "name": "date",
+                "type": "date"
+            },
+            {
+                "name": "initials",
+                "type": "string"
+            },
+            {
+                "name": "clinical_discussion",
+                "type": "text"
+            },
+            {
+                "name": "agreed_plan",
+                "type": "text"
+            },
+            {
+                "name": "discussed_with",
+                "type": "string"
+            },
+            {
+                "name": "clinical_advice_given",
+                "type": "boolean"
+            },
+            {
+                "name": "infection_control_advice_given",
+                "type": "boolean"
+            },
+            {
+                "name": "change_in_antibiotic_prescription",
+                "type": "boolean"
+            },
+            {
+                "name": "referred_to_opat",
+                "type": "boolean"
+            },
+            {
+                "name": "reason_for_interaction",
+                "type": "string"
+            }
+        ],
+        "name": "microbiology_input",
+        "single": false
+    },
+    {
+        "fields": [
+            {
+                "name": "consistency_token",
+                "type": "token"
+            },
+            {
+                "name": "test",
+                "type": "string"
+            },
+            {
+                "name": "date_ordered",
+                "type": "date"
+            },
+            {
+                "name": "details",
+                "type": "string"
+            },
+            {
+                "name": "microscopy",
+                "type": "string"
+            },
+            {
+                "name": "organism",
+                "type": "string"
+            },
+            {
+                "name": "sensitive_antibiotics",
+                "type": "string"
+            },
+            {
+                "name": "resistant_antibiotics",
+                "type": "string"
+            },
+            {
+                "name": "result",
+                "type": "string"
+            },
+            {
+                "name": "igm",
+                "type": "string"
+            },
+            {
+                "name": "igg",
+                "type": "string"
+            },
+            {
+                "name": "vca_igm",
+                "type": "string"
+            },
+            {
+                "name": "vca_igg",
+                "type": "string"
+            },
+            {
+                "name": "ebna_igg",
+                "type": "string"
+            },
+            {
+                "name": "hbsag",
+                "type": "string"
+            },
+            {
+                "name": "anti_hbs",
+                "type": "string"
+            },
+            {
+                "name": "anti_hbcore_igm",
+                "type": "string"
+            },
+            {
+                "name": "anti_hbcore_igg",
+                "type": "string"
+            },
+            {
+                "name": "rpr",
+                "type": "string"
+            },
+            {
+                "name": "tppa",
+                "type": "string"
+            },
+            {
+                "name": "viral_load",
+                "type": "string"
+            },
+            {
+                "name": "parasitaemia",
+                "type": "string"
+            },
+            {
+                "name": "hsv",
+                "type": "string"
+            },
+            {
+                "name": "vzv",
+                "type": "string"
+            },
+            {
+                "name": "syphilis",
+                "type": "string"
+            },
+            {
+                "name": "c_difficile_antigen",
+                "type": "string"
+            },
+            {
+                "name": "c_difficile_toxin",
+                "type": "string"
+            },
+            {
+                "name": "species",
+                "type": "string"
+            },
+            {
+                "name": "hsv_1",
+                "type": "string"
+            },
+            {
+                "name": "hsv_2",
+                "type": "string"
+            },
+            {
+                "name": "enterovirus",
+                "type": "string"
+            },
+            {
+                "name": "cmv",
+                "type": "string"
+            },
+            {
+                "name": "ebv",
+                "type": "string"
+            },
+            {
+                "name": "influenza_a",
+                "type": "string"
+            },
+            {
+                "name": "influenza_b",
+                "type": "string"
+            },
+            {
+                "name": "parainfluenza",
+                "type": "string"
+            },
+            {
+                "name": "metapneumovirus",
+                "type": "string"
+            },
+            {
+                "name": "rsv",
+                "type": "string"
+            },
+            {
+                "name": "adenovirus",
+                "type": "string"
+            },
+            {
+                "name": "norovirus",
+                "type": "string"
+            },
+            {
+                "name": "rotavirus",
+                "type": "string"
+            },
+            {
+                "name": "giardia",
+                "type": "string"
+            },
+            {
+                "name": "entamoeba_histolytica",
+                "type": "string"
+            },
+            {
+                "name": "cryptosporidium",
+                "type": "string"
+            }
+        ],
+        "name": "microbiology_test",
+        "single": false,
+        "sort": "date_ordered"
+    },
+    {
+        "fields": [
+            {
+                "name": "consistency_token",
+                "type": "token"
+            },
+            {
+                "name": "dose",
+                "type": "string"
+            },
+            {
+                "name": "start_date",
+                "type": "date"
+            },
+            {
+                "name": "end_date",
+                "type": "date"
+            },
+            {
+                "name": "route",
+                "type": "string"
+            },
+            {
+                "name": "drug",
+                "type": "string"
+            }
+        ],
+        "name": "antimicrobial",
+        "single": false,
+        "sort": "start_date"
+    },
+    {
+        "fields": [
+            {
+                "name": "consistency_token",
+                "type": "token"
+            },
+            {
+                "name": "dates",
+                "type": "string"
+            },
+            {
+                "name": "specific_exposures",
+                "type": "string"
+            },
+            {
+                "name": "destination",
+                "type": "string"
+            },
+            {
+                "name": "reason_for_travel",
+                "type": "string"
+            }
+        ],
+        "name": "travel",
+        "single": false
+    },
+    {
+        "fields": [
+            {
+                "name": "consistency_token",
+                "type": "token"
+            },
+            {
+                "name": "details",
                 "type": "text"
             }
-        ], 
-        "name": "general_note", 
-        "single": false, 
+        ],
+        "name": "todo",
+        "single": false
+    },
+    {
+        "fields": [
+            {
+                "name": "consistency_token",
+                "type": "token"
+            },
+            {
+                "name": "date",
+                "type": "date"
+            },
+            {
+                "name": "comment",
+                "type": "text"
+            }
+        ],
+        "name": "general_note",
+        "single": false,
         "sort": "date"
     }
 ]
