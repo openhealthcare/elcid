@@ -15,6 +15,7 @@ list_columns = [
 
 detail_columns = [
     models.Demographics,
+    models.Location,
     models.Diagnosis,
     models.PastMedicalHistory,
     models.MicrobiologyInput,
@@ -22,6 +23,5 @@ detail_columns = [
     models.Antimicrobial,
     models.Travel,
     models.Todo,
-    models.Location,
     models.GeneralNote,
 ]
