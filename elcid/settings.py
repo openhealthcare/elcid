@@ -209,6 +209,7 @@ OPAL_SCHEMA_MODULE = 'elcid.schema'
 OPAL_OPTIONS_MODULE = 'elcid.options'
 OPAL_TAGS_MODULE = 'elcid.tags'
 OPAL_BRAND_NAME = 'eLCID'
+OPAL_EXTRA_APPLICATION = 'elcid/extra_application.html'
 
 try:
     from local_settings import *
