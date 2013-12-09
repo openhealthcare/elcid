@@ -19,8 +19,8 @@ Installation
 pip install -r requirements.txt
 python manage.py syncdb --migrate
 python manage.py loaddata dumps/options.json
+python manage.py createinitialrevisions
 
-? Some Reversion thing here?
 
 Communications
 ==============
