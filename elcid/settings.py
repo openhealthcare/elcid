@@ -214,8 +214,11 @@ OPAL_TAGS_MODULE = 'elcid.tags'
 OPAL_BRAND_NAME = 'eLCID'
 OPAL_EXTRA_APPLICATION = 'elcid/extra_application.html'
 
-from sendgridify import sendgridify
-EMAIL_HOST, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, EMAIL_PORT, EMAIL_USE_TLS = sendgridify()
+try:
+    from sendgridify import sendgridify, EnvironmentError
+    EMAIL_HOST, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, EMAIL_PORT, EMAIL_USE_TLS = sendgridify()
+except EnvironmentError:
+    pass
 
 try:
     from local_settings import *
