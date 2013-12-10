@@ -214,11 +214,16 @@ OPAL_TAGS_MODULE = 'elcid.tags'
 OPAL_BRAND_NAME = 'eLCID'
 OPAL_EXTRA_APPLICATION = 'elcid/extra_application.html'
 
-try:
-    from sendgridify import sendgridify, EnvironmentError
-    EMAIL_HOST, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, EMAIL_PORT, EMAIL_USE_TLS = sendgridify()
-except EnvironmentError:
-    pass
+EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND', 'django.core.mail.backends.smtp.EmailBackend')
+if not DEBUG:
+    EMAIL_HOST_USER = os.environ['SENDGRID_USERNAME']
+    EMAIL_HOST= 'smtp.sendgrid.net'
+    EMAIL_PORT = 587
+    EMAIL_USE_TLS = True
+    EMAIL_HOST_PASSWORD = os.environ['SENDGRID_PASSWORD']
+else:
+    EMAIL_PORT = 1025
+    EMAIL_HOST = 'localhost'
 
 try:
     from local_settings import *
