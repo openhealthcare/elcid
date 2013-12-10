@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Feedback</h1>
+  {% if form.errors %}
+    {{ form.errors }}
+  {% endif %}
+  <form method="POST" action="{% url 'feedback' %}">
+    {% csrf_token %}
+    <div class="row">
+      <input type="hidden" value="{{request.user}}"       name="name">
+      <input type="hidden" value="{{request.user.email}}" name="email">
+      <div class="span6">
+	<div class="control-group">
+	  <label class="control-label">Message</label>
+	  <div class="controls">
+            <textarea rows="20" name="message"></textarea>
+	  </div>
+	</div>
+      </div>
+    </div>
+    <button class="btn btn-danger" type="submit">Send</button>
+  </form>
+
+{% endblock %}

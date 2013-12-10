@@ -204,6 +204,9 @@ APPEND_SLASH = False
 
 AXES_LOCK_OUT_AT_FAILURE = False
 
+CONTACT_EMAIL = 'michael.marks@uclh.nhs.uk,david@openhealthcare.org.uk'
+DEFAULT_FROM_EMAIL = 'elcid.feedback@openhealthcare.org.uk'
+
 # New modular settings!
 OPAL_SCHEMA_MODULE = 'elcid.schema'
 OPAL_OPTIONS_MODULE = 'elcid.options'
