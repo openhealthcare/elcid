@@ -1,1 +1,1 @@
-web: cp elcid/local_settings_heroku.py elcid/local_settings.py && gunicorn elcid.wsgi
+web: gunicorn elcid.wsgi
