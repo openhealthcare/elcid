@@ -1,1 +1,1 @@
-web: gunicorn elcid.wsgi
+web: python manage.py collectstatic --noinput; gunicorn elcid.wsgi
