@@ -6,13 +6,16 @@ admin.autodiscover()
 
 from opal.urls import urlpatterns as opatterns
 
-from elcid import views
+urlpatterns = patterns('',
+    # Examples:
+    # url(r'^$', 'elcid.views.home', name='home'),
+    # url(r'^elcid/', include('elcid.foo.urls')),
 
-urlpatterns = patterns(
-    '',
-    url(r'^feedback/?$', views.FeedbackView.as_view(), name='feedback'),
-    url(r'^feedback/sent/??$', views.FeedbackSentView.as_view(), name='feedback-sent'),
+    # Uncomment the admin/doc line below to enable admin documentation:
+    # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
+    # Uncomment the next line to enable the admin:
+    # url(r'^admin/', include(admin.site.urls)),
 )
 
 urlpatterns += opatterns
