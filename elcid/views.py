@@ -1,7 +1,7 @@
 """
 eLCID specific views.
 """
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, View
 from letter.contrib.contact import EmailForm, EmailView
 
 u = unicode
@@ -27,6 +27,13 @@ class FeedbackView(EmailView):
     success_url   = '/feedback/sent'
 
 
-
 class FeedbackSentView(TemplateView):
     template_name = 'feedback_sent.html'
+
+
+class Error500View(View):
+    """
+    Demonstrative 500 error to preview templates.
+    """
+    def get(self, *args, **kwargs):
+        raise Exception("This is a deliberate error")

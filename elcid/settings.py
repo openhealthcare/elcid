@@ -216,11 +216,11 @@ DEFAULT_FROM_EMAIL = 'elcid.feedback@openhealthcare.org.uk'
 
 EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND', 'django.core.mail.backends.smtp.EmailBackend')
 if not DEBUG:
-    EMAIL_HOST_USER = os.environ['SENDGRID_USERNAME']
+    EMAIL_HOST_USER = os.environ.get('SENDGRID_USERNAME', '')
     EMAIL_HOST= 'smtp.sendgrid.net'
     EMAIL_PORT = 587
     EMAIL_USE_TLS = True
-    EMAIL_HOST_PASSWORD = os.environ['SENDGRID_PASSWORD']
+    EMAIL_HOST_PASSWORD = os.environ.get('SENDGRID_PASSWORD', '')
 else:
     EMAIL_PORT = 1025
     EMAIL_HOST = 'localhost'
