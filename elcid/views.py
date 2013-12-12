@@ -1,6 +1,7 @@
 """
 eLCID specific views.
 """
+from django import forms
 from django.views.generic import TemplateView, View
 from letter.contrib.contact import EmailForm, EmailView
 
@@ -10,6 +11,8 @@ class FeedbackForm(EmailForm):
     """
     Form for our feedback submissions.
     """
+    email = forms.EmailField(required=False)
+
     def body(self):
         return u"Feedback-form from: {0}\n\n{1}".format(
             u'{0} <{1}>'.format(
