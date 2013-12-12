@@ -212,7 +212,7 @@ OPAL_BRAND_NAME = 'eLCID'
 OPAL_EXTRA_APPLICATION = 'elcid/extra_application.html'
 
 CONTACT_EMAIL = ['michael.marks@uclh.nhs.uk', 'david@openhealthcare.org.uk']
-DEFAULT_FROM_EMAIL = 'elcid.feedback@openhealthcare.org.uk'
+DEFAULT_FROM_EMAIL = 'elcid@openhealthcare.org.uk'
 
 EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND', 'django.core.mail.backends.smtp.EmailBackend')
 if not DEBUG:

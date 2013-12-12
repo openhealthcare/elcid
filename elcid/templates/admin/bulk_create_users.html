@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h1>Admin: Bulk Create Users</h1>
+  <form method="POST" action="" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form }}
+    <button class="btn btn-danger" type="submit">Upload & Create</button>
+  </form>
+  <p>
+    The file uploaded should be a plain text file containing the email addresses
+    of the users you want to add.
+  </p>
+  <p>
+    Each email address should be on a new line.
+  </p>
+  <p>
+    The expected format of the emails is firstname.surname@example.com
+  </p>
+{% endblock %}

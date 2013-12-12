@@ -10,6 +10,7 @@ from elcid import views
 
 urlpatterns = patterns(
     '',
+    url('^admin/bulk-create-users$', views.BulkCreateUserView.as_view(), name='bulk-create-users'),
     url(r'^feedback/?$', views.FeedbackView.as_view(), name='feedback'),
     url(r'^feedback/sent/??$', views.FeedbackSentView.as_view(), name='feedback-sent'),
     url(r'^test/500$', views.Error500View.as_view(), name='test-500'),
