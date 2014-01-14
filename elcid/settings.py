@@ -226,8 +226,8 @@ else:
     EMAIL_PORT = 1025
     EMAIL_HOST = 'localhost'
 
-VERSION_NUMBER = '{0}.{1}'.format(commands.getoutput('git describe --tags'),
-                                  commands.getoutput('git log --oneline | wc -l'))
+
+VERSION_NUMBER = '0.1'
 
 try:
     from local_settings import *
