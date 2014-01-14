@@ -88,6 +88,8 @@ class Antimicrobial(EpisodeSubrecord):
 
 class MicrobiologyInput(EpisodeSubrecord):
     _title = 'Clinical Advice'
+    _sort = 'date'
+
     date = models.DateField(null=True, blank=True)
     initials = models.CharField(max_length=255, blank=True)
     reason_for_interaction = ForeignKeyOrFreeText(option_models['clinical_advice_reason_for_interaction'])
