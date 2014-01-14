@@ -21,7 +21,7 @@ controllers.controller('DischargeEpisodeCtrl', function($scope, $timeout,
     }
 
     $scope.editing = {
-	category: newCategory,
+	category: newCategory
 	//date: new Date()
     };
 

@@ -10,6 +10,7 @@ from opal.utils.fields import ForeignKeyOrFreeText
 __all__ = [
     'Location',
     'Demographics',
+    'Allergies',
     'Diagnosis',
     'PastMedicalHistory',
     'GeneralNote',
@@ -27,6 +28,10 @@ class Demographics(PatientSubrecord):
     hospital_number = models.CharField(max_length=255, blank=True)
     date_of_birth = models.DateField(null=True, blank=True)
 
+class Allergies(PatientSubrecord):
+    drug = ForeignKeyOrFreeText(option_models['antimicrobial'])
+    provisional = models.BooleanField()
+    details = models.CharField(max_length=255, blank=True)
 
 class Location(TaggedSubrecordMixin, EpisodeSubrecord):
     _is_singleton = True
