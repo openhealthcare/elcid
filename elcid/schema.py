@@ -16,6 +16,7 @@ list_columns = [
 detail_columns = [
     models.Demographics,
     models.Location,
+    models.Allergies,
     models.Diagnosis,
     models.PastMedicalHistory,
     models.MicrobiologyInput,
