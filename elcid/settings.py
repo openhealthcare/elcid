@@ -1,4 +1,5 @@
 # Django settings for elcid project.
+import commands
 import os
 
 
@@ -224,6 +225,9 @@ if not DEBUG:
 else:
     EMAIL_PORT = 1025
     EMAIL_HOST = 'localhost'
+
+VERSION_NUMBER = '{0}.{1}'.format(commands.getoutput('git describe --tags'),
+                                  commands.getoutput('git log --oneline | wc -l'))
 
 try:
     from local_settings import *
