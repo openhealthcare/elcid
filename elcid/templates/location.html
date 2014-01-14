@@ -1,11 +1,15 @@
-[[item.category]]
-<br />
+[[item.category]]<br />
 <span ng-hide="item.hospital=='UCH'">[[item.hospital]] </span>
-[[item.ward]] [[item.bed]]
-<br />
+[[item.ward]] [[item.bed]]<br />
 Admitted: [[row.date_of_admission | date:'d/M']]
 <span ng-show="row.discharge_date">
-Discharged [[row.discharge_date | date:'d/M']]
+  Discharged [[row.discharge_date | date:'d/M']]
+</span>
+<br />
+<span ng-repeat="tag in _.keys(item.tags)" class="screen-only">
+  <a href="#" class="btn btn-mini">
+    [[ tag ]]
+  </a>
 </span>
 <br />
 <a class="screen-only" href="#" ng-click="dischargeEpisode($parent.$index, $event)">
