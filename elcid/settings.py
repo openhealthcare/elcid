@@ -211,7 +211,7 @@ OPAL_OPTIONS_MODULE = 'elcid.options'
 OPAL_TAGS_MODULE = 'elcid.tags'
 OPAL_BRAND_NAME = 'eLCID'
 OPAL_EXTRA_APPLICATION = 'elcid/extra_application.html'
-OPAL_LOG_OUT_MINUTES = 1
+OPAL_LOG_OUT_MINUTES = 10
 OPAL_LOG_OUT_DURATION = OPAL_LOG_OUT_MINUTES*60*1000
 
 CONTACT_EMAIL = ['michael.marks@uclh.nhs.uk', 'david@openhealthcare.org.uk']
