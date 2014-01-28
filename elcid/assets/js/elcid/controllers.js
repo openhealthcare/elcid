@@ -22,7 +22,6 @@ controllers.controller('DischargeEpisodeCtrl', function($scope, $timeout,
 
     $scope.editing = {
 	category: newCategory
-	//date: new Date()
     };
 
     $scope.episode = episode.makeCopy();
