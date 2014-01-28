@@ -4,7 +4,7 @@
 // settings.py
 //
 controllers.controller('DischargeEpisodeCtrl', function($scope, $timeout,
-                                                        dialog, episode, currentTag) {
+                                                        dialog, episode, currentTag, currentSubTag) {
     $timeout(function() {
 	dialog.modalEl.find('input,textarea').first().focus();
     });
@@ -38,6 +38,9 @@ controllers.controller('DischargeEpisodeCtrl', function($scope, $timeout,
 
 	if ($scope.editing.category != 'Followup') {
 	    attrs.tags[currentTag] = false;
+            if(currentSubTag != 'all'){
+                attrs.tags[currentSubTag] = false;
+            }
 	}
 
 	location.save(attrs).then(function() {
