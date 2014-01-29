@@ -18,5 +18,6 @@ TAGS = [
             ]),
     Tag('hiv', 'Immune', None),
     Tag('tropical_diseases', 'Tropical', None),
+    Tag('virology', 'Virology', None),
     Tag('mine', 'Mine', None),
 ]
