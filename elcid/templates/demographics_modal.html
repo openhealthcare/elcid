@@ -27,7 +27,18 @@
 
 		</div>
 	</div>
-</form>
+	<div class="control-group">
+		<label class="control-label">Country of Birth</label>
+		<div class="controls">
+			<input type="text" ng-model="editing.country_of_birth" bs-typeahead="destination_list" data-provide="typeahead">
+		</div>
+	</div>
+	<div class="control-group">
+	  <label class="control-label">Ethnicity</label>
+		<div class="controls">
+			<input type="text" ng-model="editing.ethnicity">
+		</div>
+	</div></form>
 {% endblock %}
 {% block modal_save %}
   	  <button class="btn btn-primary" ng-disabled="demographicsForm.date_of_birth.$invalid" ng-click="save('save')">Save</button>

@@ -27,11 +27,15 @@ class Demographics(PatientSubrecord):
     name = models.CharField(max_length=255, blank=True)
     hospital_number = models.CharField(max_length=255, blank=True)
     date_of_birth = models.DateField(null=True, blank=True)
+    country_of_birth = ForeignKeyOrFreeText(option_models['destination'])
+    ethnicity = models.CharField(max_length=255, blank=True, null=True)
+
 
 class Allergies(PatientSubrecord):
     drug = ForeignKeyOrFreeText(option_models['antimicrobial'])
     provisional = models.BooleanField()
     details = models.CharField(max_length=255, blank=True)
+
 
 class Location(TaggedSubrecordMixin, EpisodeSubrecord):
     _is_singleton = True
