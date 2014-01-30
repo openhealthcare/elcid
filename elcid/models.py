@@ -112,7 +112,7 @@ class Todo(EpisodeSubrecord):
 
 
 class MicrobiologyTest(EpisodeSubrecord):
-    _title = 'Pathology Test'
+    _title = 'Investigations'
     _sort = 'date_ordered'
 
     test = models.CharField(max_length=255)
