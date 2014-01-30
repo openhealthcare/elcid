@@ -6,7 +6,9 @@
 <!-- testType == 'micro_test_single_test_pos_neg'" -->
 <!-- testType == 'micro_test_single_test_pos_neg_equiv'" -->
 <!-- testType == 'micro_test_leishmaniasis_pcr'" -->
-<span ng-show="item.result && item.result != 'pending'">([[item.result | microresult]])</span>
+<span ng-show="item.result && item.result != 'pending'" class="break-word">
+  ([[item.result | microresult]])
+</span>
 
 <ul>
 
