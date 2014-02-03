@@ -55,6 +55,13 @@ class Diagnosis(EpisodeSubrecord):
     details = models.CharField(max_length=255, blank=True)
     date_of_diagnosis = models.DateField(blank=True, null=True)
 
+    def __unicode__(self):
+        return u'Diagnosis for {0}: {1} - {2}'.format(
+            self.episode.patient.demographics_set.get().name,
+            self.condition,
+            self.date_of_diagnosis
+            )
+
 
 class PastMedicalHistory(EpisodeSubrecord):
     _title = 'PMH'
