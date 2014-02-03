@@ -16,6 +16,14 @@
             {
                 "name": "date_of_birth",
                 "type": "date"
+            },
+            {
+                "name": "ethnicity",
+                "type": "string"
+            },
+            {
+                "name": "country_of_birth",
+                "type": "string"
             }
         ],
         "name": "demographics",
@@ -51,6 +59,29 @@
         "name": "location",
         "single": true
     },
+    {
+        "fields": [
+            {
+                "name": "consistency_token",
+                "type": "token"
+            },
+            {
+                "name": "provisional",
+                "type": "boolean"
+            },
+            {
+                "name": "details",
+                "type": "string"
+            },
+            {
+                "name": "drug",
+                "type": "string"
+            }
+        ],
+        "name": "allergies",
+        "single": false
+    },
+
     {
         "fields": [
             {
@@ -145,7 +176,8 @@
             }
         ],
         "name": "microbiology_input",
-        "single": false
+        "single": false,
+        "sort": "date"
     },
     {
         "fields": [

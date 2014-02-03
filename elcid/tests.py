@@ -31,6 +31,8 @@ class DemographicsTest(TestCase):
             'id': self.demographics.id,
             'name': 'John Smith',
             'date_of_birth': datetime.date(1972, 6, 20),
+            'country_of_birth': '',
+            'ethnicity': None,
             'hospital_number': 'AA1111',
             }
         self.assertEqual(expected_data, self.demographics.to_dict(self.user))
@@ -65,6 +67,8 @@ class DemographicsTest(TestCase):
             {'name': 'name', 'type': 'string'},
             {'name': 'hospital_number', 'type': 'string'},
             {'name': 'date_of_birth', 'type': 'date'},
+            {'name': 'ethnicity', 'type': 'string'},
+            {'name': 'country_of_birth', 'type': 'string'},
             ]
         self.assertEqual(expected_schema, schema)
 
@@ -322,6 +326,7 @@ class ViewsTest(TestCase):
         # subrecord.
         data = {
             'patient_id': self.patient.id,
+            'episode_id': self.patient.episode_set.all()[0].id,
             'name': 'Johann Schmidt',
             'date_of_birth': '1972-6-21',
             'hospital_number': 'AA1112',
@@ -373,6 +378,7 @@ class ListSchemaViewTest(TestCase):
         return json.loads(self.client.get(path, content_type='application/json').content)
 
     def test_list_schema_view(self):
+        self.maxDiff=None
         self.assertEqual(self.schema, self.get_json('/schema/list/'))
 
 
@@ -395,4 +401,5 @@ class DetailSchemaViewTest(TestCase):
         return json.loads(self.client.get(path, content_type='application/json').content)
 
     def test_detail_schema_view(self):
+        self.maxDiff = None
         self.assertEqual(self.schema, self.get_json('/schema/detail/'))
