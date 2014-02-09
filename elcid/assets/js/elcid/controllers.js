@@ -4,17 +4,21 @@
 // settings.py
 //
 controllers.controller('DischargeEpisodeCtrl', function($scope, $timeout,
-                                                        dialog, episode, currentTag, currentSubTag) {
-    $timeout(function() {
-	dialog.modalEl.find('input,textarea').first().focus();
-    });
+                                                        $modalInstance, episode,
+                                                        currentTag, currentSubTag) {
+    // TODO: Reimplement this.
+    //
+    // $timeout(function() {
+    //     dialog.modalEl.find('input,textarea').first().focus();
+    // });
 
     $scope.currentCategory = episode.location[0].category;
     var newCategory;
 
     if ($scope.currentCategory == 'Inpatient') {
 	newCategory = 'Discharged';
-    } else if ($scope.currentCategory == 'Review' || $scope.currentCategory == 'Followup') {
+    } else if ($scope.currentCategory == 'Review' ||
+               $scope.currentCategory == 'Followup') {
 	newCategory = 'Unfollow';
     } else {
 	newCategory = $scope.currentCategory;
@@ -49,7 +53,7 @@ controllers.controller('DischargeEpisodeCtrl', function($scope, $timeout,
 
 	location.save(attrs).then(function() {
             episode.save($scope.episode).then(function(){
-		dialog.close('discharged');
+		$modalInstance.close('discharged');
             });
 	});
     };

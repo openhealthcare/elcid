@@ -30,7 +30,10 @@
 	<div class="control-group">
 		<label class="control-label">Country of Birth</label>
 		<div class="controls">
-			<input type="text" ng-model="editing.country_of_birth" bs-typeahead="destination_list" data-provide="typeahead">
+			<input type="text"
+                               ng-model="editing.country_of_birth"
+                               ng-options="d for d in destination_list"
+                               bs-typeahead >
 		</div>
 	</div>
 	<div class="control-group">

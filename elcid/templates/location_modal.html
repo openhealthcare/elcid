@@ -13,7 +13,10 @@
   <div class="control-group">
 	<label class="control-label">Hospital</label>
 	<div class="controls">
-	  <input type="text" ng-model="editing.hospital" bs-typeahead="hospital_list">
+	  <input type="text"
+                 ng-model="editing.hospital"
+                 ng-options="h for h in hospital_list"
+                 bs-typeahead>
 	</div>
   </div>
   <div class="control-group">
