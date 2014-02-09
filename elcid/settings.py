@@ -230,7 +230,7 @@ else:
     EMAIL_HOST = 'localhost'
 
 
-VERSION_NUMBER = '0.1.1'
+VERSION_NUMBER = '0.1.2'
 
 try:
     from local_settings import *
