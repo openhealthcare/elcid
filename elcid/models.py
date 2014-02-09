@@ -45,6 +45,16 @@ class Location(TaggedSubrecordMixin, EpisodeSubrecord):
     ward = models.CharField(max_length=255, blank=True)
     bed = models.CharField(max_length=255, blank=True)
 
+    def __unicode__(self):
+        demographics = self.episode.patient.demographics_set.get()
+        return u'Location for {0}({1}) {2} {3} {4} {5}'.format(
+            demographics.name,
+            demographics.hospital_number,
+            self.category,
+            self.hospital,
+            self.ward,
+            self.bed
+            )
 
 class Diagnosis(EpisodeSubrecord):
     _title = 'Diagnosis / Issues'
