@@ -41,14 +41,18 @@
         <div class="control-group">
             <label class="control-label">Sensitive antibiotics</label>
             <div class="controls">
-                <input type="text" ng-model="editing.sensitive_antibiotics">
+                <input type="text" ng-model="editing.sensitive_antibiotics"
+                       ng-options="d for d in antimicrobial_list"
+                       bs-typeahead>
             </div>
         </div>
 
         <div class="control-group">
             <label class="control-label">Resistant antibiotics</label>
             <div class="controls">
-                <input type="text" ng-model="editing.resistant_antibiotics">
+                <input type="text" ng-model="editing.resistant_antibiotics"
+                       ng-options="d for d in antimicrobial_list"
+                       bs-typeahead>
             </div>
         </div>
 
