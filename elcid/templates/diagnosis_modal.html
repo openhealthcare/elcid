@@ -4,7 +4,10 @@
 	<div class="control-group">
 		<label class="control-label">Condition</label>
 		<div class="controls">
-			<input type="text" ng-model="editing.condition" bs-typeahead="condition_list">
+			<input type="text"
+                               ng-model="editing.condition"
+                               ng-options="c for c in condition_list"
+                               bs-typeahead>
 		</div>
 	</div>
 	<div class="control-group">
