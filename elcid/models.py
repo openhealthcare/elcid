@@ -56,6 +56,7 @@ class Location(TaggedSubrecordMixin, EpisodeSubrecord):
             self.bed
             )
 
+
 class Diagnosis(EpisodeSubrecord):
     _title = 'Diagnosis / Issues'
     _sort = 'date_of_diagnosis'
