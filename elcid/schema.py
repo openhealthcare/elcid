@@ -26,3 +26,17 @@ detail_columns = [
     models.Todo,
     models.GeneralNote,
 ]
+
+extract_columns = [
+    models.Demographics,
+    models.Location,
+    models.Allergies,
+    models.Diagnosis,
+    models.PastMedicalHistory,
+    models.MicrobiologyInput,
+    models.MicrobiologyTest,
+    models.Antimicrobial,
+    models.Travel,
+    models.Todo,
+    models.GeneralNote,
+    ]
