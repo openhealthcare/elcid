@@ -59,6 +59,6 @@ controllers.controller('DischargeEpisodeCtrl', function($scope, $timeout,
     };
 
     $scope.cancel = function() {
-	dialog.close('cancel');
+	$modalInstance.close('cancel');
     };
 });

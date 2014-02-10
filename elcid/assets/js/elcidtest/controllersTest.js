@@ -200,13 +200,18 @@ describe('controllers', function() {
         });
 
         describe('setting up the controller', function (){
-
             it('Should set up the current category', function () {
                 expect($scope.currentCategory).toBe('Inepisode');
             });
-
         });
 
+        describe('closing the dialog', function(){
+            it('should close the modal instance', function(){
+                spyOn(dialog, 'close');
+                $scope.cancel();
+                expect(dialog.close).toHaveBeenCalledWith('cancel');
+            });
+        });
     });
 
 
