@@ -231,6 +231,11 @@ else:
 
 
 VERSION_NUMBER = '0.1.2'
+TEST_RUNNER = 'django_test_coverage.runner.CoverageTestSuiteRunner'
+COVERAGE_EXCLUDE_MODULES = ('elcid.migrations', 'elcid.tests',
+                            'elcid.local_settings',
+                            'opal.migrations', 'opal.tests',
+                            'opal.wsgi')
 
 try:
     from local_settings import *

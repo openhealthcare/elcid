@@ -378,7 +378,6 @@ class ListSchemaViewTest(TestCase):
         return json.loads(self.client.get(path, content_type='application/json').content)
 
     def test_list_schema_view(self):
-        self.maxDiff=None
         self.assertEqual(self.schema, self.get_json('/schema/list/'))
 
 
@@ -401,5 +400,26 @@ class DetailSchemaViewTest(TestCase):
         return json.loads(self.client.get(path, content_type='application/json').content)
 
     def test_detail_schema_view(self):
-        self.maxDiff = None
         self.assertEqual(self.schema, self.get_json('/schema/detail/'))
+
+
+class ExtractSchemaViewTest(TestCase):
+    fixtures = ['patients_users', 'patients_options', 'patients_records']
+
+    def setUp(self):
+        self.user = User.objects.get(pk=1)
+        self.assertTrue(self.client.login(username=self.user.username,
+                                          password='password'))
+        self.patient = Patient.objects.get(pk=1)
+        schema_file = TEST_DATA/'extract.schema.json'
+        self.schema = schema_file.json_load()
+
+    def assertStatusCode(self, path, expected_status_code):
+        response = self.client.get(path)
+        self.assertEqual(expected_status_code, response.status_code)
+
+    def get_json(self, path):
+        return json.loads(self.client.get(path, content_type='application/json').content)
+
+    def test_extract_schema_view(self):
+        self.assertEqual(self.schema, self.get_json('/schema/extract/'))
