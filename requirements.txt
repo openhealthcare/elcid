@@ -12,3 +12,4 @@ django-axes==1.3.4
 ffs
 letter==0.4.1
 supervisor
+django-test-coverage
