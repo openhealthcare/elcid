@@ -4,7 +4,8 @@
 // settings.py
 //
 controllers.controller('DischargeEpisodeCtrl', function($scope, $timeout,
-                                                        dialog, episode, currentTag, currentSubTag) {
+                                                        dialog, episode,
+                                                        currentTag, currentSubTag) {
     $timeout(function() {
 	dialog.modalEl.find('input,textarea').first().focus();
     });
@@ -25,7 +26,9 @@ controllers.controller('DischargeEpisodeCtrl', function($scope, $timeout,
     };
 
     $scope.episode = episode.makeCopy();
-    $scope.episode.discharge_date = moment().format('DD/MM/YYYY');
+    if(!$scope.episode.discharge_date){
+        $scope.episode.discharge_date = moment().format('DD/MM/YYYY');
+    }
 
     $scope.discharge = function() {
 	var location = episode.getItem('location', 0);
