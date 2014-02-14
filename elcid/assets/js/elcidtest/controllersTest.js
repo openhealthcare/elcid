@@ -181,8 +181,8 @@ describe('controllers', function() {
                 $rootScope  = $injector.get('$rootScope');
                 $scope      = $rootScope.$new();
                 $controller = $injector.get('$controller');
-                $timeout = $injector.get('$timeout');
-                $modal = $injector.get('$modal');
+                $timeout    = $injector.get('$timeout');
+                $modal      = $injector.get('$modal');
             });
 
             dialog = $modal.open({template: 'notatemplate'});
@@ -191,7 +191,7 @@ describe('controllers', function() {
             controller = $controller('DischargeEpisodeCtrl', {
                 $scope        : $scope,
                 $timeout      : $timeout,
-                $modal        : modal,
+                $modal        : $modal,
                 $modalInstance: dialog,
                 episode       : episode,
                 currentTag    : 'mine',
@@ -202,6 +202,33 @@ describe('controllers', function() {
         describe('setting up the controller', function (){
             it('Should set up the current category', function () {
                 expect($scope.currentCategory).toBe('Inepisode');
+            });
+
+            it('Should set the discharge date to today', function(){
+                expect($scope.episode.discharge_date)
+                    .toEqual(moment().format('DD/MM/YYYY'));
+            });
+        });
+
+        describe('confirming discharges', function(){
+            beforeEach(function(){
+                episode.location[0].category = 'Discharged';
+                episode.discharge_date = '2012-04-23';
+
+                controller = $controller('DischargeEpisodeCtrl', {
+                    $scope        : $scope,
+                    $timeout      : $timeout,
+                    $modal        : $modal,
+                    $modalInstance: dialog,
+                    episode       : episode,
+                    currentTag    : 'mine',
+                    currentSubTag : 'all'
+                });
+            });
+
+            it('Should leave the discharge date if confirming', function(){
+                expect($scope.currentCategory).toBe('Discharged');
+                expect($scope.episode.discharge_date).toBe('2012-04-23');
             });
         });
 

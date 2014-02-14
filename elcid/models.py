@@ -80,6 +80,7 @@ class PastMedicalHistory(EpisodeSubrecord):
 
     condition = ForeignKeyOrFreeText(option_models['condition'])
     year = models.CharField(max_length=4, blank=True)
+    details = models.CharField(max_length=255, blank=True)
 
 
 class GeneralNote(EpisodeSubrecord):
