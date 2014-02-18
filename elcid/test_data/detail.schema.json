@@ -120,9 +120,14 @@
                 "type": "string"
             },
             {
+                "name": "details",
+                "type": "string"
+            },
+            {
                 "name": "condition",
                 "type": "string"
             }
+
         ],
         "name": "past_medical_history",
         "single": false,
