@@ -12,7 +12,10 @@ from django.views.generic import TemplateView, FormView, View
 import letter
 from letter.contrib.contact import EmailForm, EmailView
 
+from opal.views import ReportView
+
 from elcid.forms import BulkCreateUsersForm
+from elcid import reports
 
 u = unicode
 POSTIE = letter.DjangoPostman()
@@ -122,3 +125,13 @@ class BulkCreateUserView(FormView):
             print u, u.tp
 
         return super(BulkCreateUserView, self).form_valid(form)
+
+
+class UsageReportView(ReportView):
+    """
+    Provide a usage statistics dashboard.
+    """
+    template_name = 'reports/usage.html'
+
+    def get_data(self):
+        return reports.usage()

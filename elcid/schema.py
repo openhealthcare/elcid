@@ -1,5 +1,6 @@
 
 from elcid import models
+from opal import models as omodels
 
 list_columns = [
     models.Demographics,
@@ -28,6 +29,7 @@ detail_columns = [
 ]
 
 extract_columns = [
+    omodels.Tagging,
     models.Demographics,
     models.Location,
     models.Allergies,
