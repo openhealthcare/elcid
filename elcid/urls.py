@@ -14,6 +14,7 @@ urlpatterns = patterns(
     url(r'^feedback/?$', views.FeedbackView.as_view(), name='feedback'),
     url(r'^feedback/sent/??$', views.FeedbackSentView.as_view(), name='feedback-sent'),
     url(r'^test/500$', views.Error500View.as_view(), name='test-500'),
+    url(r'^reports/usage$', views.UsageReportView.as_view(), name='usage-report'),
 )
 
 urlpatterns += opatterns
