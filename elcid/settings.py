@@ -206,6 +206,8 @@ AUTH_PROFILE_MODULE = 'opal.UserProfile'
 APPEND_SLASH = False
 
 AXES_LOCK_OUT_AT_FAILURE = False
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_COOKIE_AGE = 15 * 60
 
 # New modular settings!
 OPAL_SCHEMA_MODULE = 'elcid.schema'
@@ -242,3 +244,8 @@ try:
     from local_settings import *
 except:
     pass
+
+# #DEBUG_TOOLBAR_PATCH_SETTINGS = False
+# MIDDLEWARE_CLASSES = MIDDLEWARE_CLASSES + ('debug_toolbar.middleware.DebugToolbarMiddleware',)
+# INSTALLED_APPS = INSTALLED_APPS + ('debug_toolbar',)
+# #INTERNAL_IPS = ('127.0.0.1',)
