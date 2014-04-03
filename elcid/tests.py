@@ -32,6 +32,8 @@ class DemographicsTest(TestCase):
             'name': 'John Smith',
             'date_of_birth': datetime.date(1972, 6, 20),
             'country_of_birth': '',
+            'country_of_birth_fk_id': None,
+            'country_of_birth_ft': '',
             'ethnicity': None,
             'hospital_number': 'AA1111',
             }
@@ -136,6 +138,8 @@ class DiagnosisTest(TestCase):
             'episode_id': self.episode.id,
             'id': self.diagnosis.id,
             'condition': 'Some condition',
+            'condition_fk_id': 1,
+            'condition_ft': '',
             'provisional': False,
             'details': '',
             'date_of_diagnosis': datetime.date(2013, 7, 25),
@@ -312,6 +316,7 @@ class ViewsTest(TestCase):
             'hospital_number': 'AA1112',
             }
         response = self.put_json('/demographics/%s' % demographics.id, data)
+        print response
         self.assertEqual(409, response.status_code)
 
     def test_delete_demographics_subrecord(self):
