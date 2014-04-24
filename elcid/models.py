@@ -31,12 +31,6 @@ class Demographics(PatientSubrecord):
     ethnicity = models.CharField(max_length=255, blank=True, null=True)
 
 
-class Allergies(PatientSubrecord):
-    drug = ForeignKeyOrFreeText(option_models['antimicrobial'])
-    provisional = models.BooleanField()
-    details = models.CharField(max_length=255, blank=True)
-
-
 class Location(TaggedSubrecordMixin, EpisodeSubrecord):
     _is_singleton = True
 
@@ -44,6 +38,10 @@ class Location(TaggedSubrecordMixin, EpisodeSubrecord):
     hospital = models.CharField(max_length=255, blank=True)
     ward = models.CharField(max_length=255, blank=True)
     bed = models.CharField(max_length=255, blank=True)
+    opat_referral_route = models.CharField(max_length=255, blank=True, null=True)
+    opat_referral_team = models.CharField(max_length=255, blank=True, null=True)
+    opat_referral = models.DateField(blank=True, null=True)
+    opat_discharge = models.DateField(blank=True, null=True)
 
     def __unicode__(self):
         demographics = self.episode.patient.demographics_set.get()
@@ -83,19 +81,11 @@ class PastMedicalHistory(EpisodeSubrecord):
     details = models.CharField(max_length=255, blank=True)
 
 
-class GeneralNote(EpisodeSubrecord):
-    _title = 'General Notes'
-    _sort = 'date'
-
-    date = models.DateField(null=True, blank=True)
-    comment = models.TextField()
-
-
-class Travel(EpisodeSubrecord):
-    destination = ForeignKeyOrFreeText(option_models['destination'])
-    dates = models.CharField(max_length=255, blank=True)
-    reason_for_travel = ForeignKeyOrFreeText(option_models['travel_reason'])
-    specific_exposures = models.CharField(max_length=255, blank=True)
+class AntimicrobialPlan(EpisodeSubrecord):
+    iv_start = models.DateField(blank=True, null=True)
+    iv_end = models.DateField(blank=True, null=True)
+    oral_start = models.DateField(blank=True, null=True)
+    oral_end = models.DateField(blank=True, null=True)
 
 
 class Antimicrobial(EpisodeSubrecord):
@@ -107,27 +97,13 @@ class Antimicrobial(EpisodeSubrecord):
     route = ForeignKeyOrFreeText(option_models['antimicrobial_route'])
     start_date = models.DateField(null=True, blank=True)
     end_date = models.DateField(null=True, blank=True)
+    delivered_by = models.CharField(max_length=255, blank=True, null=True)
 
 
-class MicrobiologyInput(EpisodeSubrecord):
-    _title = 'Clinical Advice'
-    _sort = 'date'
-
-    date = models.DateField(null=True, blank=True)
-    initials = models.CharField(max_length=255, blank=True)
-    reason_for_interaction = ForeignKeyOrFreeText(option_models['clinical_advice_reason_for_interaction'])
-    clinical_discussion = models.TextField(blank=True)
-    agreed_plan = models.TextField(blank=True)
-    discussed_with = models.CharField(max_length=255, blank=True)
-    clinical_advice_given = models.BooleanField()
-    infection_control_advice_given = models.BooleanField()
-    change_in_antibiotic_prescription = models.BooleanField()
-    referred_to_opat = models.BooleanField()
-
-
-class Todo(EpisodeSubrecord):
-    _title = 'To Do'
-    details = models.TextField(blank=True)
+class Allergies(PatientSubrecord):
+    drug = ForeignKeyOrFreeText(option_models['antimicrobial'])
+    provisional = models.BooleanField()
+    details = models.CharField(max_length=255, blank=True)
 
 
 class MicrobiologyTest(EpisodeSubrecord):
@@ -177,3 +153,46 @@ class MicrobiologyTest(EpisodeSubrecord):
     giardia = models.CharField(max_length=20, blank=True)
     entamoeba_histolytica = models.CharField(max_length=20, blank=True)
     cryptosporidium = models.CharField(max_length=20, blank=True)
+
+
+class Line(EpisodeSubrecord):
+    line_type = models.CharField(max_length=255, blank=True, null=True)
+    site = models.CharField(max_length=255, blank=True, null=True)
+    insertion_date = models.DateField(blank=True, null=True)
+    inserted_by = models.CharField(max_length=255, blank=True, null=True)
+    removal_date = models.DateField(blank=True, null=True)
+    complications = models.CharField(max_length=255, blank=True, null=True)
+    removal_reason = models.CharField(max_length=255, blank=True, null=True)
+    special_instructions = models.TextField()
+
+
+
+class OPATReview(EpisodeSubrecord):
+    _sort = 'date'
+
+    date = models.DateField(null=True, blank=True)
+    initials = models.CharField(max_length=255, blank=True)
+    rv_type = models.CharField(max_length=255, blank=True, null=True)
+    discussion = models.TextField(blank=True, null=True)
+    opat_plan = models.TextField(blank=True)
+    next_review = models.DateField(blank=True, null=True)
+
+
+class OPATOutstandingIssues(EpisodeSubrecord):
+    _title = 'Outstanding Issues'
+    details = models.TextField(blank=True)
+
+
+# class GeneralNote(EpisodeSubrecord):
+#     _title = 'General Notes'
+#     _sort = 'date'
+
+#     date = models.DateField(null=True, blank=True)
+#     comment = models.TextField()
+
+
+# class Travel(EpisodeSubrecord):
+#     destination = ForeignKeyOrFreeText(option_models['destination'])
+#     dates = models.CharField(max_length=255, blank=True)
+#     reason_for_travel = ForeignKeyOrFreeText(option_models['travel_reason'])
+#     specific_exposures = models.CharField(max_length=255, blank=True)

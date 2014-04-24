@@ -1,0 +1,29 @@
+{% extends 'modal_base.html' %}
+{% block modal_body %}
+<form class="form-horizontal">
+	<div class="control-group">
+	  <label class="control-label">IV Start</label>
+		<div class="controls">
+			<input type="text" ng-model="editing.iv_start" bs-datepicker data-autoclose="true">
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label">IV End</label>
+		<div class="controls">
+			<input type="text" ng-model="editing.iv_end" bs-datepicker data-autoclose="true">
+		</div>
+	</div>
+	<div class="control-group">
+	  <label class="control-label">ORAL Start</label>
+		<div class="controls">
+			<input type="text" ng-model="editing.oral_start" bs-datepicker data-autoclose="true">
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label">ORAL End</label>
+		<div class="controls">
+			<input type="text" ng-model="editing.oral_end" bs-datepicker data-autoclose="true">
+		</div>
+	</div>
+</form>
+{% endblock %}

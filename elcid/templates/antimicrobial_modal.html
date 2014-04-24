@@ -13,13 +13,13 @@
 	<div class="control-group">
 		<label class="control-label">Start date</label>
 		<div class="controls">
-			<input type="text" ng-model="editing.start_date" bs-datepicker>
+			<input type="text" ng-model="editing.start_date" bs-datepicker data-autoclose="true">
 		</div>
 	</div>
 	<div class="control-group">
 		<label class="control-label">End date</label>
 		<div class="controls">
-			<input type="text" ng-model="editing.end_date" bs-datepicker>
+			<input type="text" ng-model="editing.end_date" bs-datepicker data-autoclose="true">
 		</div>
 	</div>
 	<div class="control-group">
@@ -35,6 +35,12 @@
                                ng-model="editing.route"
                                ng-options="r for r in antimicrobial_route_list"
                                bs-typeahead>
+		</div>
+	</div>
+	<div class="control-group">
+	  <label class="control-label">Delivered by</label>
+		<div class="controls">
+			<input type="text" ng-model="editing.delivered_by">
 		</div>
 	</div>
 </form>
