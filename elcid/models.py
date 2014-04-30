@@ -197,7 +197,6 @@ class Line(EpisodeSubrecord):
 
 
 
-
 class OPATReview(EpisodeSubrecord):
     _sort = 'date'
 
