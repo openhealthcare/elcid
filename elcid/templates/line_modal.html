@@ -1,56 +1,79 @@
 {% extends 'modal_base.html' %}
 {% block modal_body %}
-<form class="form-horizontal">
-	<div class="control-group">
-		<label class="control-label">Line Type</label>
-		<div class="controls">
-			<input type="text" ng-model="editing.line_type">
-		</div>
-	</div>
-	<div class="control-group">
-		<label class="control-label">Site</label>
-		<div class="controls">
-			<input type="text" ng-model="editing.site">
-		</div>
-	</div>
-	<div class="control-group">
-	  <label class="control-label">Insertion Date</label>
-		<div class="controls">
-			<input type="text" ng-model="editing.insertion_date" bs-datepicker>
-		</div>
-	</div>
-	<div class="control-group">
-		<label class="control-label">Inserted By</label>
-		<div class="controls">
-			<input type="text" ng-model="editing.inserted_by">
-		</div>
-	</div>
-	<div class="control-group">
-		<label class="control-label">Removal Date</label>
-		<div class="controls">
-			<input type="text" ng-model="editing.removal_date" bs-datepicker>
-		</div>
-	</div>
-	<div class="control-group">
-		<label class="control-label">Complications</label>
-		<div class="controls">
-			<input type="text" ng-model="editing.complications">
-		</div>
-	</div>
-	<div class="control-group">
-		<label class="control-label">Removal Reason</label>
-		<div class="controls">
-			<input type="text" ng-model="editing.removal_reason">
-		</div>
-	</div>
-	<div class="control-group">
-		<label class="control-label">Special Instructions</label>
-		<div class="controls">
-	          <textarea ng-model="editing.special_instructions" rows="10"></textarea>
-		</div>
-	</div>
+  <form class="form-horizontal">
+    <div class="control-group">
+      <label class="control-label">Line Type</label>
+      <div class="controls">
+	<input type="text" ng-model="editing.line_type"
+               ng-options="t for t in line_type_list"
+               bs-typeahead>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label">Site</label>
+      <div class="controls">
+	<input type="text" ng-model="editing.site"
+               ng-options="s for s in line_site_list"
+               bs-typeahead>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label">Insertion Date</label>
+      <div class="controls">
+	<input type="text" ng-model="editing.insertion_date" bs-datepicker>
+      </div>
+    </div>
+    <div class="control-group" ng-show="editing.line_type == 'Peripheral cannula'">
+      <label class="control-label">Insertion Time</label>
+      <div class="controls">
+	<input type="text" ng-model="editing.insertion_time">
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label">Inserted By</label>
+      <div class="controls">
+	<input type="text" ng-model="editing.inserted_by">
+      </div>
+    </div>
+    <div class="control-group" ng-show="editing.line_type != 'Peripheral cannula'">
+      <label class="control-label">External Length</label>
+      <div class="controls">
+	<input type="text" ng-model="editing.external_length">
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label">Removal Date</label>
+      <div class="controls">
+        <input type="text" ng-model="editing.removal_date" bs-datepicker>
+      </div>
+    </div>
+    <div class="control-group" ng-show="editing.line_type == 'Peripheral cannula'">
+      <label class="control-label">Removal Time</label>
+      <div class="controls">
+        <input type="text" ng-model="editing.removal_time" bs-datepicker>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <label class="control-label">Complications</label>
+      <div class="controls">
+        <input type="text" ng-model="editing.complications">
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label">Removal Reason</label>
+      <div class="controls">
+        <input type="text" ng-model="editing.removal_reason">
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label">Special Instructions</label>
+      <div class="controls">
+	<textarea ng-model="editing.special_instructions" rows="10"></textarea>
+      </div>
+    </div>
 
 
 
-</form>
+  </form>
 {% endblock %}

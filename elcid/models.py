@@ -32,32 +32,6 @@ class Demographics(PatientSubrecord):
     country_of_birth = ForeignKeyOrFreeText(option_models['destination'])
     ethnicity = models.CharField(max_length=255, blank=True, null=True)
 
-    @classmethod
-    def build_field_schema(cls):
-        s = super(PatientSubrecord, cls).build_field_schema()
-        s.append(dict(name='contact_details', type='dict'))
-        return s
-
-    def to_dict(self, user):
-        d = super(Demographics, self).to_dict(user)
-        contact = self.patient.contactdetails_set.get().to_dict(user)
-        carers = self.patient.carers_set.get().to_dict(user)
-        d['contact_details'] = contact
-        d['carers'] = carers
-        return d
-
-    def update_from_dict(self, data, user):
-        contact = data.pop('contact_details', None)
-        carers = data.pop('carers', None)
-
-        if contact:
-            self.patient.contactdetails_set.get().update_from_dict(contact, user)
-
-        if carers:
-            self.patient.carers_set.get().update_from_dict(carers, user)
-
-        super(Demographics, self).update_from_dict(data, user)
-
 
 class ContactDetails(PatientSubrecord):
     _is_singleton = True
@@ -207,14 +181,20 @@ class MicrobiologyTest(EpisodeSubrecord):
 
 
 class Line(EpisodeSubrecord):
-    line_type = models.CharField(max_length=255, blank=True, null=True)
-    site = models.CharField(max_length=255, blank=True, null=True)
+    _sort = 'insertion_date'
+
+    line_type = ForeignKeyOrFreeText(option_models['line_type'])
+    site = ForeignKeyOrFreeText(option_models['line_site'])
     insertion_date = models.DateField(blank=True, null=True)
+    insertion_time = models.IntegerField(blank=True, null=True)
     inserted_by = models.CharField(max_length=255, blank=True, null=True)
+    external_length = models.CharField(max_length=255, blank=True, null=True)
     removal_date = models.DateField(blank=True, null=True)
+    removal_time = models.IntegerField(blank=True, null=True)
     complications = models.CharField(max_length=255, blank=True, null=True)
-    removal_reason = models.CharField(max_length=255, blank=True, null=True)
+    removal_reason = ForeignKeyOrFreeText(option_models['line_removal_reason'])
     special_instructions = models.TextField()
+
 
 
 

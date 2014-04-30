@@ -19,6 +19,8 @@ list_columns = [
 
 detail_columns = [
     models.Demographics,
+    models.ContactDetails,
+    # models.Carers,
     models.Location,
     models.Diagnosis,
     models.PastMedicalHistory,

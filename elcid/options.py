@@ -8,6 +8,9 @@ model_names = [
     'hospital',
     'microbiology_organism',
     'travel_reason',
+    'line_type',
+    'line_site',
+    'line_removal_reason',
 
     # Types of microbiology test
     'micro_test_c_difficile',
