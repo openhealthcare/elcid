@@ -1,3 +1,16 @@
-<b>[[item.hospital_number]] [[item.name]] [[item.date_of_birth | date:'d/M/yyyy']]</b>
+<b>[[item.hospital_number]]
+<span ng-show="item.nhs_number">([[item.nhs_number]])</span>
+<br />
+[[item.name]] [[item.date_of_birth | date:'d/M/yyyy']]</b>
 <br />
 [[ item.country_of_birth ]] [[ item.ethnicity ]]
+<br />
+<span ng-show="item."></span>
+
+<span ng-show="item.contact_details.address_line1">[[item.contact_details.address_line1]] <br /></span>
+<span ng-show="item.contact_details.address_line2">[[item.contact_details.address_line2]] <br /></span>
+<span ng-show="item.contact_details.city">[[item.contact_details.city]] <br /></span>
+<span ng-show="item.contact_details.county">[[item.contact_details.county]] <br /></span>
+<span ng-show="item.contact_details.post_code">[[item.contact_details.post_code]] <br /></span>
+<span ng-show="item.contact_details.tel1">[[item.contact_details.tel1]] <br /></span>
+<span ng-show="item.contact_details.tel2">[[item.contact_details.tel2]] <br /></span>

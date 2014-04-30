@@ -8,6 +8,12 @@
 		</div>
 	</div>
 	<div class="control-group">
+		<label class="control-label">NHS number</label>
+		<div class="controls">
+			<input type="text" ng-model="editing.nhs_number">
+		</div>
+	</div>
+	<div class="control-group">
 		<label class="control-label">Name</label>
 		<div class="controls">
 			<input type="text" ng-model="editing.name">
@@ -41,7 +47,57 @@
 		<div class="controls">
 			<input type="text" ng-model="editing.ethnicity">
 		</div>
-	</div></form>
+	</div>
+        <h4> Patient's Contact Details</h4>
+        <div class="control-group">
+		<label class="control-label">Address line 1</label>
+		<div class="controls">
+			<input type="text" ng-model="editing.contact_details.address_line1">
+		</div>
+	</div>
+        <div class="control-group">
+		<label class="control-label">Address line 2</label>
+		<div class="controls">
+			<input type="text" ng-model="editing.contact_details.address_line2">
+		</div>
+	</div>
+        <div class="control-group">
+		<label class="control-label">City</label>
+		<div class="controls">
+			<input type="text" ng-model="editing.contact_details.city">
+		</div>
+	</div>
+        <div class="control-group">
+		<label class="control-label">County</label>
+		<div class="controls">
+			<input type="text" ng-model="editing.contact_details.county">
+		</div>
+	</div>
+        <div class="control-group">
+		<label class="control-label">Post Code</label>
+		<div class="controls">
+			<input type="text" ng-model="editing.contact_details.post_code">
+		</div>
+	</div>
+        <div class="control-group">
+		<label class="control-label">Telephone 1</label>
+		<div class="controls">
+			<input type="text" ng-model="editing.contact_details.tel1">
+		</div>
+	</div>
+        <div class="control-group">
+		<label class="control-label">Telephone 2</label>
+		<div class="controls">
+			<input type="text" ng-model="editing.contact_details.tel2">
+		</div>
+	</div>
+
+
+
+
+
+</form>
+
 {% endblock %}
 {% block modal_save %}
   	  <button class="btn btn-primary" ng-disabled="demographicsForm.date_of_birth.$invalid" ng-click="save('save')">Save</button>

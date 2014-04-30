@@ -4,7 +4,7 @@ ELCID implementation specific models!
 from django.db import models
 
 from opal.models import (Subrecord, TaggedSubrecordMixin, option_models,
-                         EpisodeSubrecord, PatientSubrecord)
+                         EpisodeSubrecord, PatientSubrecord, GP, CommunityNurse)
 from opal.utils.fields import ForeignKeyOrFreeText
 
 __all__ = [
@@ -21,14 +21,65 @@ __all__ = [
     'MicrobiologyTest'
     ]
 
+
 class Demographics(PatientSubrecord):
     _is_singleton = True
 
     name = models.CharField(max_length=255, blank=True)
     hospital_number = models.CharField(max_length=255, blank=True)
+    nhs_number = models.CharField(max_length=255, blank=True, null=True)
     date_of_birth = models.DateField(null=True, blank=True)
     country_of_birth = ForeignKeyOrFreeText(option_models['destination'])
     ethnicity = models.CharField(max_length=255, blank=True, null=True)
+
+    @classmethod
+    def build_field_schema(cls):
+        s = super(PatientSubrecord, cls).build_field_schema()
+        s.append(dict(name='contact_details', type='dict'))
+        return s
+
+    def to_dict(self, user):
+        d = super(Demographics, self).to_dict(user)
+        contact = self.patient.contactdetails_set.get().to_dict(user)
+        carers = self.patient.carers_set.get().to_dict(user)
+        d['contact_details'] = contact
+        d['carers'] = carers
+        return d
+
+    def update_from_dict(self, data, user):
+        contact = data.pop('contact_details', None)
+        carers = data.pop('carers', None)
+
+        if contact:
+            self.patient.contactdetails_set.get().update_from_dict(contact, user)
+
+        if carers:
+            self.patient.carers_set.get().update_from_dict(carers, user)
+
+        super(Demographics, self).update_from_dict(data, user)
+
+
+class ContactDetails(PatientSubrecord):
+    _is_singleton = True
+
+    address_line1 = models.CharField("Address line 1", max_length = 45,
+                                     blank=True, null=True)
+    address_line2 = models.CharField("Address line 2", max_length = 45,
+                                     blank=True, null=True)
+    city = models.CharField(max_length = 50, blank = True)
+    county = models.CharField("County", max_length = 40,
+                              blank=True, null=True)
+    post_code = models.CharField("Post Code", max_length = 10,
+                                 blank=True, null=True)
+    tel1 = models.CharField(blank=True, null=True, max_length=50)
+    tel2 = models.CharField(blank=True, null=True, max_length=50)
+
+
+class Carers(PatientSubrecord):
+    _is_singleton = True
+
+    gp = models.ForeignKey(GP, blank=True, null=True)
+    nurse = models.ForeignKey(CommunityNurse, blank=True, null=True)
 
 
 class Location(TaggedSubrecordMixin, EpisodeSubrecord):
@@ -181,18 +232,3 @@ class OPATReview(EpisodeSubrecord):
 class OPATOutstandingIssues(EpisodeSubrecord):
     _title = 'Outstanding Issues'
     details = models.TextField(blank=True)
-
-
-# class GeneralNote(EpisodeSubrecord):
-#     _title = 'General Notes'
-#     _sort = 'date'
-
-#     date = models.DateField(null=True, blank=True)
-#     comment = models.TextField()
-
-
-# class Travel(EpisodeSubrecord):
-#     destination = ForeignKeyOrFreeText(option_models['destination'])
-#     dates = models.CharField(max_length=255, blank=True)
-#     reason_for_travel = ForeignKeyOrFreeText(option_models['travel_reason'])
-#     specific_exposures = models.CharField(max_length=255, blank=True)
