@@ -1,6 +1,12 @@
 from opal.utils import Tag
 
 TAGS = [
+    Tag('opat', 'OPAT', [
+            Tag('opat_referrals', 'OPAT Referrals', None),
+            Tag('opat_current', 'OPAT Current', None),
+            Tag('opat_followup', 'OPAT Follow-up', None),
+            Tag('opat_review', 'OPAT Review', None)
+            ]),
     Tag('microbiology', 'Micro', [
             Tag('micro_ortho', 'Micro-Ortho', None),
             Tag('micro_icu', 'Micro-ICU', None),

@@ -4,12 +4,14 @@ ELCID implementation specific models!
 from django.db import models
 
 from opal.models import (Subrecord, TaggedSubrecordMixin, option_models,
-                         EpisodeSubrecord, PatientSubrecord)
+                         EpisodeSubrecord, PatientSubrecord, GP, CommunityNurse)
 from opal.utils.fields import ForeignKeyOrFreeText
 
 __all__ = [
-    'Location',
     'Demographics',
+    'ContactDetails',
+    'Carers',
+    'Location',
     'Allergies',
     'Diagnosis',
     'PastMedicalHistory',
@@ -18,23 +20,45 @@ __all__ = [
     'Antimicrobial',
     'MicrobiologyInput',
     'Todo',
-    'MicrobiologyTest'
+    'MicrobiologyTest',
+    'Line',
+    'OPATReview',
+    'OPATOutstandingIssues'
     ]
+
 
 class Demographics(PatientSubrecord):
     _is_singleton = True
 
     name = models.CharField(max_length=255, blank=True)
     hospital_number = models.CharField(max_length=255, blank=True)
+    nhs_number = models.CharField(max_length=255, blank=True, null=True)
     date_of_birth = models.DateField(null=True, blank=True)
     country_of_birth = ForeignKeyOrFreeText(option_models['destination'])
     ethnicity = models.CharField(max_length=255, blank=True, null=True)
 
 
-class Allergies(PatientSubrecord):
-    drug = ForeignKeyOrFreeText(option_models['antimicrobial'])
-    provisional = models.BooleanField()
-    details = models.CharField(max_length=255, blank=True)
+class ContactDetails(PatientSubrecord):
+    _is_singleton = True
+
+    address_line1 = models.CharField("Address line 1", max_length = 45,
+                                     blank=True, null=True)
+    address_line2 = models.CharField("Address line 2", max_length = 45,
+                                     blank=True, null=True)
+    city = models.CharField(max_length = 50, blank = True)
+    county = models.CharField("County", max_length = 40,
+                              blank=True, null=True)
+    post_code = models.CharField("Post Code", max_length = 10,
+                                 blank=True, null=True)
+    tel1 = models.CharField(blank=True, null=True, max_length=50)
+    tel2 = models.CharField(blank=True, null=True, max_length=50)
+
+
+class Carers(PatientSubrecord):
+    _is_singleton = True
+
+    gp = models.ForeignKey(GP, blank=True, null=True)
+    nurse = models.ForeignKey(CommunityNurse, blank=True, null=True)
 
 
 class Location(TaggedSubrecordMixin, EpisodeSubrecord):
@@ -44,6 +68,10 @@ class Location(TaggedSubrecordMixin, EpisodeSubrecord):
     hospital = models.CharField(max_length=255, blank=True)
     ward = models.CharField(max_length=255, blank=True)
     bed = models.CharField(max_length=255, blank=True)
+    opat_referral_route = models.CharField(max_length=255, blank=True, null=True)
+    opat_referral_team = models.CharField(max_length=255, blank=True, null=True)
+    opat_referral = models.DateField(blank=True, null=True)
+    opat_discharge = models.DateField(blank=True, null=True)
 
     def __unicode__(self):
         demographics = self.episode.patient.demographics_set.get()
@@ -107,6 +135,13 @@ class Antimicrobial(EpisodeSubrecord):
     route = ForeignKeyOrFreeText(option_models['antimicrobial_route'])
     start_date = models.DateField(null=True, blank=True)
     end_date = models.DateField(null=True, blank=True)
+    delivered_by = models.CharField(max_length=255, blank=True, null=True)
+
+
+class Allergies(PatientSubrecord):
+    drug = ForeignKeyOrFreeText(option_models['antimicrobial'])
+    provisional = models.BooleanField()
+    details = models.CharField(max_length=255, blank=True)
 
 
 class MicrobiologyInput(EpisodeSubrecord):
@@ -177,3 +212,38 @@ class MicrobiologyTest(EpisodeSubrecord):
     giardia = models.CharField(max_length=20, blank=True)
     entamoeba_histolytica = models.CharField(max_length=20, blank=True)
     cryptosporidium = models.CharField(max_length=20, blank=True)
+
+"""
+Begin OPAT specific fields.
+"""
+
+class Line(EpisodeSubrecord):
+    _sort = 'insertion_date'
+
+    line_type = ForeignKeyOrFreeText(option_models['line_type'])
+    site = ForeignKeyOrFreeText(option_models['line_site'])
+    insertion_date = models.DateField(blank=True, null=True)
+    insertion_time = models.IntegerField(blank=True, null=True)
+    inserted_by = models.CharField(max_length=255, blank=True, null=True)
+    external_length = models.CharField(max_length=255, blank=True, null=True)
+    removal_date = models.DateField(blank=True, null=True)
+    removal_time = models.IntegerField(blank=True, null=True)
+    complications = models.CharField(max_length=255, blank=True, null=True)
+    removal_reason = ForeignKeyOrFreeText(option_models['line_removal_reason'])
+    special_instructions = models.TextField()
+
+
+class OPATReview(EpisodeSubrecord):
+    _sort = 'date'
+
+    date = models.DateField(null=True, blank=True)
+    initials = models.CharField(max_length=255, blank=True)
+    rv_type = models.CharField(max_length=255, blank=True, null=True)
+    discussion = models.TextField(blank=True, null=True)
+    opat_plan = models.TextField(blank=True)
+    next_review = models.DateField(blank=True, null=True)
+
+
+class OPATOutstandingIssues(EpisodeSubrecord):
+    _title = 'Outstanding Issues'
+    details = models.TextField(blank=True)

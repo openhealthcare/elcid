@@ -1,0 +1,48 @@
+{% extends 'modal_base.html' %}
+{% block modal_body %}
+<form name="demographicsForm" class="form-horizontal">
+        <div class="control-group">
+		<label class="control-label">Address line 1</label>
+		<div class="controls">
+			<input type="text" ng-model="editing.address_line1">
+		</div>
+	</div>
+        <div class="control-group">
+		<label class="control-label">Address line 2</label>
+		<div class="controls">
+			<input type="text" ng-model="editing.address_line2">
+		</div>
+	</div>
+        <div class="control-group">
+		<label class="control-label">City</label>
+		<div class="controls">
+			<input type="text" ng-model="editing.city">
+		</div>
+	</div>
+        <div class="control-group">
+		<label class="control-label">County</label>
+		<div class="controls">
+			<input type="text" ng-model="editing.county">
+		</div>
+	</div>
+        <div class="control-group">
+		<label class="control-label">Post Code</label>
+		<div class="controls">
+			<input type="text" ng-model="editing.post_code">
+		</div>
+	</div>
+        <div class="control-group">
+		<label class="control-label">Telephone 1</label>
+		<div class="controls">
+			<input type="text" ng-model="editing.tel1">
+		</div>
+	</div>
+        <div class="control-group">
+		<label class="control-label">Telephone 2</label>
+		<div class="controls">
+			<input type="text" ng-model="editing.tel2">
+		</div>
+	</div>
+</form>
+
+{% endblock %}

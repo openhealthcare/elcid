@@ -8,6 +8,12 @@
 		</div>
 	</div>
 	<div class="control-group">
+		<label class="control-label">NHS number</label>
+		<div class="controls">
+			<input type="text" ng-model="editing.nhs_number">
+		</div>
+	</div>
+	<div class="control-group">
 		<label class="control-label">Name</label>
 		<div class="controls">
 			<input type="text" ng-model="editing.name">
@@ -41,7 +47,9 @@
 		<div class="controls">
 			<input type="text" ng-model="editing.ethnicity">
 		</div>
-	</div></form>
+	</div>
+</form>
+
 {% endblock %}
 {% block modal_save %}
   	  <button class="btn btn-primary" ng-disabled="demographicsForm.date_of_birth.$invalid" ng-click="save('save')">Save</button>

@@ -1,0 +1,15 @@
+[[item.line_type]] [[item.site]] ([[item.inserted_by]])<br />
+
+Inserted [[item.insertion_date| date:'d/M']]
+(
+day [[item.insertion_date | daysSince:1 ]]
+<span ng-show="item.line_type == 'Peripheral cannula'">
+  hour [[item.insertion_time | hoursSince ]]
+</span>
+) <br />
+<span ng-show="item.external_length">
+  External Length [[item.external_length]]
+</span>
+[[item.removal_date]] [[item.removal_reason]] [[item.vip_score]]<br />
+[[item.special_instructions ]]
+<span ng-show="item.complications">[[item.complications]]<br /></span>
