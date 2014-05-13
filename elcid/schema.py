@@ -14,6 +14,15 @@ list_columns = [
     models.Todo,
 ]
 
+list_columns_micro = [
+    models.Demographics,
+    models.Location,
+    models.Diagnosis,
+    models.Antimicrobial,
+    models.MicrobiologyTest,
+    models.GeneralNote
+]
+
 list_columns_opat = [
     models.Demographics,
     models.Location,
@@ -30,6 +39,9 @@ list_columns_opat_review = [
 
 list_schemas = {
     'default': list_columns,
+    'microbiology': {
+        'default': list_columns_micro,
+        },
     'opat': {
         'default': list_columns_opat,
 #        'opat_review': list_columns_opat_review
