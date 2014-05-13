@@ -7,18 +7,17 @@ list_columns = [
     models.Location,
     models.Diagnosis,
     models.PastMedicalHistory,
+    models.Travel,
     models.Antimicrobial,
     models.MicrobiologyTest,
-    # models.Travel,
-    # models.GeneralNote,
-    # models.Todo,
+    models.GeneralNote,
+    models.Todo,
 ]
 
 list_columns_opat = [
     models.Demographics,
     models.Location,
     models.Diagnosis,
-    models.AntimicrobialPlan,
     models.Antimicrobial,
     models.MicrobiologyTest,
     models.Line,
@@ -26,7 +25,6 @@ list_columns_opat = [
 ]
 
 list_columns_opat_review = [
-    models.AntimicrobialPlan,
     models.Antimicrobial,
 ]
 
@@ -45,17 +43,16 @@ detail_columns = [
     models.Location,
     models.Diagnosis,
     models.PastMedicalHistory,
-    models.AntimicrobialPlan,
     models.Antimicrobial,
     models.Allergies,
     models.MicrobiologyTest,
     models.Line,
+    models.MicrobiologyInput,
     models.OPATReview,
+    models.Travel,
+    models.Todo,
     models.OPATOutstandingIssues,
-    # models.MicrobiologyInput,
-    # models.Travel,
-    # models.Todo,
-    # models.GeneralNote,
+    models.GeneralNote,
 ]
 
 extract_columns = [
@@ -64,11 +61,11 @@ extract_columns = [
     models.Location,
     models.Diagnosis,
     models.Antimicrobial,
-    # models.Allergies,
-    # models.PastMedicalHistory,
-    # models.MicrobiologyInput,
-    # models.MicrobiologyTest,
-    # models.Travel,
-    # models.Todo,
-    # models.GeneralNote,
+    models.Allergies,
+    models.PastMedicalHistory,
+    models.MicrobiologyInput,
+    models.MicrobiologyTest,
+    models.Travel,
+    models.Todo,
+    models.GeneralNote,
     ]

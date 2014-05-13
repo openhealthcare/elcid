@@ -8,8 +8,10 @@ from opal.models import (Subrecord, TaggedSubrecordMixin, option_models,
 from opal.utils.fields import ForeignKeyOrFreeText
 
 __all__ = [
-    'Location',
     'Demographics',
+    'ContactDetails',
+    'Carers',
+    'Location',
     'Allergies',
     'Diagnosis',
     'PastMedicalHistory',
@@ -18,7 +20,10 @@ __all__ = [
     'Antimicrobial',
     'MicrobiologyInput',
     'Todo',
-    'MicrobiologyTest'
+    'MicrobiologyTest',
+    'Line',
+    'OPATReview',
+    'OPATOutstandingIssues'
     ]
 
 
@@ -106,11 +111,19 @@ class PastMedicalHistory(EpisodeSubrecord):
     details = models.CharField(max_length=255, blank=True)
 
 
-class AntimicrobialPlan(EpisodeSubrecord):
-    iv_start = models.DateField(blank=True, null=True)
-    iv_end = models.DateField(blank=True, null=True)
-    oral_start = models.DateField(blank=True, null=True)
-    oral_end = models.DateField(blank=True, null=True)
+class GeneralNote(EpisodeSubrecord):
+    _title = 'General Notes'
+    _sort = 'date'
+
+    date = models.DateField(null=True, blank=True)
+    comment = models.TextField()
+
+
+class Travel(EpisodeSubrecord):
+    destination = ForeignKeyOrFreeText(option_models['destination'])
+    dates = models.CharField(max_length=255, blank=True)
+    reason_for_travel = ForeignKeyOrFreeText(option_models['travel_reason'])
+    specific_exposures = models.CharField(max_length=255, blank=True)
 
 
 class Antimicrobial(EpisodeSubrecord):
@@ -129,6 +142,27 @@ class Allergies(PatientSubrecord):
     drug = ForeignKeyOrFreeText(option_models['antimicrobial'])
     provisional = models.BooleanField()
     details = models.CharField(max_length=255, blank=True)
+
+
+class MicrobiologyInput(EpisodeSubrecord):
+    _title = 'Clinical Advice'
+    _sort = 'date'
+
+    date = models.DateField(null=True, blank=True)
+    initials = models.CharField(max_length=255, blank=True)
+    reason_for_interaction = ForeignKeyOrFreeText(option_models['clinical_advice_reason_for_interaction'])
+    clinical_discussion = models.TextField(blank=True)
+    agreed_plan = models.TextField(blank=True)
+    discussed_with = models.CharField(max_length=255, blank=True)
+    clinical_advice_given = models.BooleanField()
+    infection_control_advice_given = models.BooleanField()
+    change_in_antibiotic_prescription = models.BooleanField()
+    referred_to_opat = models.BooleanField()
+
+
+class Todo(EpisodeSubrecord):
+    _title = 'To Do'
+    details = models.TextField(blank=True)
 
 
 class MicrobiologyTest(EpisodeSubrecord):
@@ -179,6 +213,9 @@ class MicrobiologyTest(EpisodeSubrecord):
     entamoeba_histolytica = models.CharField(max_length=20, blank=True)
     cryptosporidium = models.CharField(max_length=20, blank=True)
 
+"""
+Begin OPAT specific fields.
+"""
 
 class Line(EpisodeSubrecord):
     _sort = 'insertion_date'
@@ -194,7 +231,6 @@ class Line(EpisodeSubrecord):
     complications = models.CharField(max_length=255, blank=True, null=True)
     removal_reason = ForeignKeyOrFreeText(option_models['line_removal_reason'])
     special_instructions = models.TextField()
-
 
 
 class OPATReview(EpisodeSubrecord):
