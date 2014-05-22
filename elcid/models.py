@@ -136,6 +136,7 @@ class Antimicrobial(EpisodeSubrecord):
     start_date = models.DateField(null=True, blank=True)
     end_date = models.DateField(null=True, blank=True)
     delivered_by = models.CharField(max_length=255, blank=True, null=True)
+    adverse_event = ForeignKeyOrFreeText(option_models['antimicrobial_adverse_event'])
 
 
 class Allergies(PatientSubrecord):
