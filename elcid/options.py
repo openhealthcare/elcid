@@ -12,6 +12,7 @@ model_names = [
     'line_type',
     'line_site',
     'line_removal_reason',
+    'line_complication',
 
     # Types of microbiology test
     'micro_test_c_difficile',

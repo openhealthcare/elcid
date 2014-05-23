@@ -229,7 +229,7 @@ class Line(EpisodeSubrecord):
     external_length = models.CharField(max_length=255, blank=True, null=True)
     removal_date = models.DateField(blank=True, null=True)
     removal_time = models.IntegerField(blank=True, null=True)
-    complications = models.CharField(max_length=255, blank=True, null=True)
+    complications = ForeignKeyOrFreeText(option_models['line_complication'])
     removal_reason = ForeignKeyOrFreeText(option_models['line_removal_reason'])
     special_instructions = models.TextField()
 
