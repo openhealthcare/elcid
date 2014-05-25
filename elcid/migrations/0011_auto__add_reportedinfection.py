@@ -15,7 +15,7 @@ class Migration(SchemaMigration):
             ('episode', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['opal.Episode'], null=True)),
             ('suspected', self.gf('django.db.models.fields.NullBooleanField')(null=True, blank=True)),
             ('date_reported', self.gf('django.db.models.fields.DateField')(null=True, blank=True)),
-            ('infection_fk', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['opal.Reported_infections'], null=True, blank=True)),
+            ('infection_fk', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['opal.ReportedInfection'], null=True, blank=True)),
             ('infection_ft', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
         ))
         db.send_create_signal(u'elcid', ['ReportedInfection'])
