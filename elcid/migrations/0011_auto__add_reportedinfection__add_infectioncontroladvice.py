@@ -8,23 +8,38 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Deleting field 'InfectionControlAdvice.reason_for_interaction_fk'
-        db.delete_column(u'elcid_infectioncontroladvice', 'reason_for_interaction_fk_id')
+        # Adding model 'ReportedInfection'
+        db.create_table(u'elcid_reportedinfection', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('consistency_token', self.gf('django.db.models.fields.CharField')(max_length=8)),
+            ('episode', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['opal.Episode'], null=True)),
+            ('suspected', self.gf('django.db.models.fields.NullBooleanField')(null=True, blank=True)),
+            ('date_reported', self.gf('django.db.models.fields.DateField')(null=True, blank=True)),
+            ('infection_fk', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['opal.Reported_infections'], null=True, blank=True)),
+            ('infection_ft', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
+        ))
+        db.send_create_signal(u'elcid', ['ReportedInfection'])
 
-        # Deleting field 'InfectionControlAdvice.reason_for_interaction_ft'
-        db.delete_column(u'elcid_infectioncontroladvice', 'reason_for_interaction_ft')
+        # Adding model 'InfectionControlAdvice'
+        db.create_table(u'elcid_infectioncontroladvice', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('consistency_token', self.gf('django.db.models.fields.CharField')(max_length=8)),
+            ('episode', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['opal.Episode'], null=True)),
+            ('date', self.gf('django.db.models.fields.DateField')(null=True, blank=True)),
+            ('initials', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
+            ('clinical_discussion', self.gf('django.db.models.fields.TextField')(blank=True)),
+            ('agreed_plan', self.gf('django.db.models.fields.TextField')(blank=True)),
+            ('discussed_with', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
+        ))
+        db.send_create_signal(u'elcid', ['InfectionControlAdvice'])
 
 
     def backwards(self, orm):
-        # Adding field 'InfectionControlAdvice.reason_for_interaction_fk'
-        db.add_column(u'elcid_infectioncontroladvice', 'reason_for_interaction_fk',
-                      self.gf('django.db.models.fields.related.ForeignKey')(to=orm['opal.Clinical_advice_reason_for_interaction'], null=True, blank=True),
-                      keep_default=False)
+        # Deleting model 'ReportedInfection'
+        db.delete_table(u'elcid_reportedinfection')
 
-        # Adding field 'InfectionControlAdvice.reason_for_interaction_ft'
-        db.add_column(u'elcid_infectioncontroladvice', 'reason_for_interaction_ft',
-                      self.gf('django.db.models.fields.CharField')(default='', max_length=255, blank=True),
-                      keep_default=False)
+        # Deleting model 'InfectionControlAdvice'
+        db.delete_table(u'elcid_infectioncontroladvice')
 
 
     models = {
