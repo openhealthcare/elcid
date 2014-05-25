@@ -258,7 +258,7 @@ class ReportedInfection(EpisodeSubrecord):
     Some human notes explaining what this is!
     """
     suspected = models.NullBooleanField(blank=True, null=True)
-    infection = ForeignKeyOrFreeText(option_models['reported_infections'])
+    infection = ForeignKeyOrFreeText(option_models['condition'])
     date_reported = models.DateField(blank=True, null=True)
 
 
