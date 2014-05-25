@@ -13,11 +13,15 @@ list_columns = [
     models.GeneralNote,
     models.Todo,
 ]
+
 list_columns_infection_control = [
     models.Demographics,
     models.Location,
+    models.ReportedInfection,
     models.MicrobiologyTest,
+    models.InfectionControlAdvice,
 ]
+
 list_columns_micro = [
     models.Demographics,
     models.Location,
