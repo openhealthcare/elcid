@@ -14,7 +14,7 @@ model_names = [
     'line_removal_reason',
     'line_complication',
 
-#    'reported_infections',
+    'reported_infections',
 
     # Types of microbiology test
     'micro_test_c_difficile',
