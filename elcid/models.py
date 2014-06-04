@@ -61,7 +61,8 @@ class Carers(PatientSubrecord):
     nurse = models.ForeignKey(CommunityNurse, blank=True, null=True)
 
 
-class Location(TaggedSubrecordMixin, EpisodeSubrecord):
+#class Location(TaggedSubrecordMixin, EpisodeSubrecord):
+class Location(EpisodeSubrecord):
     _is_singleton = True
 
     category = models.CharField(max_length=255, blank=True)

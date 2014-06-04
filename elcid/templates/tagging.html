@@ -1,0 +1,7 @@
+[[item]]
+<span ng-repeat="tag in otherTags(item)" class="screen-only">
+  <button class="btn btn-xs" ng-click="jumpToTag(tag)"
+          ng-show="tag_display[tag] != undefined">
+    [[ tag_display[tag] ]]
+  </button>
+</span>
