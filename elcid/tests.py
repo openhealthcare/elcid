@@ -36,6 +36,7 @@ class DemographicsTest(TestCase):
             'country_of_birth_ft': '',
             'ethnicity': None,
             'hospital_number': 'AA1111',
+            'nhs_number': None
             }
         self.assertEqual(expected_data, self.demographics.to_dict(self.user))
 
@@ -68,6 +69,7 @@ class DemographicsTest(TestCase):
             {'name': 'consistency_token', 'type': 'token'},
             {'name': 'name', 'type': 'string'},
             {'name': 'hospital_number', 'type': 'string'},
+            {'name': 'nhs_number', 'type': 'string'},
             {'name': 'date_of_birth', 'type': 'date'},
             {'name': 'ethnicity', 'type': 'string'},
             {'name': 'country_of_birth', 'type': 'string'},
@@ -92,7 +94,10 @@ class LocationTest(TestCase):
             'hospital': 'UCH',
             'ward': 'T10',
             'bed': '13',
-            'tags': {'microbiology': True, 'mine': True},
+            'opat_discharge': None,
+            'opat_referral': None,
+            'opat_referral_route': None,
+            'opat_referral_team': None,
             }
         self.assertEqual(expected_data, self.location.to_dict(self.user))
 
@@ -101,15 +106,12 @@ class LocationTest(TestCase):
             'consistency_token': '12345678',
             'id': self.location.id,
             'category': 'Inpatient',
-            'hospital': 'UCH',
+            'hospital': 'HH',
             'ward': 'T10',
             'bed': '13',
-            'tags': {'microbiology': False, 'mine': True},
             }
         self.location.update_from_dict(data, self.user)
-        location = self.episode.location_set.get()
-
-        self.assertEqual({'mine': True}, location.get_tags(self.user))
+        self.assertEqual('HH', self.location.hospital)
 
     def test_field_schema(self):
         schema = models.Location.build_field_schema()
@@ -119,7 +121,10 @@ class LocationTest(TestCase):
             {'name': 'hospital', 'type': 'string'},
             {'name': 'ward', 'type': 'string'},
             {'name': 'bed', 'type': 'string'},
-            {'name': 'tags', 'type': 'list'},
+            {'name': 'opat_referral_route', 'type': 'string'},
+            {'name': 'opat_referral_team', 'type': 'string'},
+            {'name': 'opat_referral', 'type': 'date'},
+            {'name': 'opat_discharge', 'type': 'date'}
             ]
         self.assertEqual(expected_schema, schema)
 
@@ -316,7 +321,6 @@ class ViewsTest(TestCase):
             'hospital_number': 'AA1112',
             }
         response = self.put_json('/demographics/%s' % demographics.id, data)
-        print response
         self.assertEqual(409, response.status_code)
 
     def test_delete_demographics_subrecord(self):
@@ -405,6 +409,7 @@ class DetailSchemaViewTest(TestCase):
         return json.loads(self.client.get(path, content_type='application/json').content)
 
     def test_detail_schema_view(self):
+        self.maxDiff=None
         self.assertEqual(self.schema, self.get_json('/schema/detail/'))
 
 
