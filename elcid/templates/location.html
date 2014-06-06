@@ -6,12 +6,6 @@ Admitted: [[row.date_of_admission | date:'d/M']]
   Discharged [[row.discharge_date | date:'d/M']]
 </span>
 <br />
-<span ng-repeat="tag in otherTags(item)" class="screen-only">
-  <button class="btn btn-xs" ng-click="jumpToTag(tag)" ng-show="tag_display[tag] != undefined">
-    [[ tag_display[tag] ]]
-  </button>
-</span>
-<br />
 <a ng-show="currentTag != 'mine' && !profile.readonly" class="screen-only" href="#" ng-click="dischargeEpisode($parent.$index, $event)">
   Discharge / Remove
 </a>

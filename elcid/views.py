@@ -121,9 +121,6 @@ class BulkCreateUserView(FormView):
 
             Message.send()
 
-        for u in new_users:
-            print u, u.tp
-
         return super(BulkCreateUserView, self).form_valid(form)
 
 

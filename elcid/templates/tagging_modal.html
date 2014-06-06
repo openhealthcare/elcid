@@ -1,0 +1,38 @@
+{% extends 'modal_base.html' %}
+{% block modal_body %}
+    <div class="row">
+      <div class="span3">
+	<div class="control-group">
+	  <label>Teams</label>
+	  <div >
+	    {% for tag in tags %}
+	      <label class="checkbox">
+		<input type="checkbox" ng-model="editing.{{tag.name}}">
+		{{tag.title}}
+	      </label>
+	    {% endfor %}
+	  </div>
+	</div>
+
+      </div>
+      <div class="span3">
+        <div class="control-group">
+             <label>Sub Teams</label>
+             <div>
+               {% for tag in tags %}
+                 {% if tag.subtags %}
+                   {% for subtag in tag.subtags %}
+		     <label class="checkbox"
+                            ng-show="editing.{{tag.name}} == true">
+			    <input type="checkbox" ng-model="editing.{{subtag.name}}">
+			    {{subtag.title}}
+		     </label>
+                   {% endfor %}
+                 {% endif %}
+               {% endfor %}
+             </div>
+
+        </div>
+      </div>
+    </div>
+{% endblock %}

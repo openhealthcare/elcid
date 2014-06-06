@@ -5,6 +5,7 @@ from opal import models as omodels
 list_columns = [
     models.Demographics,
     models.Location,
+    omodels.Tagging,
     models.Diagnosis,
     models.PastMedicalHistory,
     models.Travel,
@@ -25,6 +26,7 @@ list_columns_infection_control = [
 list_columns_micro = [
     models.Demographics,
     models.Location,
+    omodels.Tagging,
     models.Diagnosis,
     models.Antimicrobial,
     models.MicrobiologyTest,
@@ -33,6 +35,7 @@ list_columns_micro = [
 
 list_columns_opat = [
     models.Demographics,
+    omodels.Tagging,
     models.Location,
     models.Diagnosis,
     models.Antimicrobial,
@@ -63,6 +66,7 @@ detail_columns = [
     models.ContactDetails,
     models.Carers,
     models.Location,
+    omodels.Tagging,
     models.Diagnosis,
     models.PastMedicalHistory,
     models.Antimicrobial,
