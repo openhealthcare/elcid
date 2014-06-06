@@ -1,11 +1,13 @@
+{% extends 'modal_base.html' %}
+{% block modal_body %}
     <div class="row">
       <div class="span3">
 	<div class="control-group">
-	  <label>Tags</label>
+	  <label>Teams</label>
 	  <div >
 	    {% for tag in tags %}
 	      <label class="checkbox">
-		<input type="checkbox" ng-model="editing.tags.{{tag.name}}">
+		<input type="checkbox" ng-model="editing.{{tag.name}}">
 		{{tag.title}}
 	      </label>
 	    {% endfor %}
@@ -14,16 +16,14 @@
 
       </div>
       <div class="span3">
-        <div class="control-group"
-             ng-show="showSubtags([{% for tag in tags %}{% if tag.subtags %}'{{tag.name}}'{% if not forloop.last%},{% endif %}{% endif %}{% endfor %} ''])"
-             >
-             <label>Sub Tags</label>
+        <div class="control-group">
+             <label>Sub Teams</label>
              <div>
                {% for tag in tags %}
                  {% if tag.subtags %}
                    {% for subtag in tag.subtags %}
 		     <label class="checkbox"
-                            ng-show="editing.tags.{{tag.name}} == true">
+                            ng-show="editing.{{tag.name}} == true">
 			    <input type="checkbox" ng-model="editing.tags.{{subtag.name}}">
 			    {{subtag.title}}
 		     </label>
@@ -35,3 +35,4 @@
         </div>
       </div>
     </div>
+{% endblock %}
