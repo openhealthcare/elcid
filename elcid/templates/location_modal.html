@@ -1,9 +1,9 @@
 {% extends 'modal_base.html' %}
 {% block modal_body %}
   <form class="form-horizontal">
-    <div class="control-group">
-      <label class="control-label">Category</label>
-      <div class="controls">
+    <div class="form-group">
+      <label class="control-label col-sm-3">Category</label>
+      <div class="col-sm-8">
         <select class="form-control" ng-model="editing.category">
           <option value="">---------</option>
           <option ng-repeat="category in episode_category_list">[[category]]</option>
@@ -11,9 +11,9 @@
       </div>
     </div>
 
-    <div class="control-group">
-      <label class="control-label">Hospital</label>
-      <div class="controls">
+    <div class="form-group">
+      <label class="control-label col-sm-3">Hospital</label>
+      <div class="col-sm-8">
         <select class="form-control" ng-model="editing.hospital">
           <option value="">---------</option>
           <option ng-repeat="hospital in hospital_list">[[hospital]]</option>
@@ -22,69 +22,32 @@
       </div>
     </div>
 
-    <div class="control-group" ng-show="hospital_list.indexOf(editing.hospital) == -1">
-      <label class="control-label">Hospital - other</label>
-      <div class="controls">
-	<input type="text" ng-model="editing.hospital">
+    <div class="form-group" ng-show="hospital_list.indexOf(editing.hospital) == -1">
+      <label class="control-label col-sm-3">Hospital - other</label>
+      <div class="col-sm-8">
+	<input class="form-control" type="text" ng-model="editing.hospital">
       </div>
     </div>
 
-    <div class="control-group">
-      <label class="control-label">Ward</label>
-      <div class="controls">
-	<input type="text" ng-model="editing.ward">
+    <div class="form-group">
+      <label class="control-label col-sm-3">Ward</label>
+      <div class="col-sm-8">
+	<input class="form-control" type="text" ng-model="editing.ward">
       </div>
     </div>
-    <div class="control-group">
-      <label class="control-label">Bed</label>
-      <div class="controls">
-	<input type="text" ng-model="editing.bed">
+    <div class="form-group">
+      <label class="control-label col-sm-3">Bed</label>
+      <div class="col-sm-8">
+	<input class="form-control" type="text" ng-model="editing.bed">
       </div>
     </div>
-    <div class="control-group">
-      <label class="control-label">Date of admission</label>
-      <div class="controls">
-	<input type="text" ng-model="episode.date_of_admission" bs-datepicker>
+    <div class="form-group">
+      <label class="control-label col-sm-3">Date of admission</label>
+      <div class="col-sm-8">
+	<input class="form-control" type="text" ng-model="episode.date_of_admission" bs-datepicker>
       </div>
     </div>
 
-    <div class="row">
-      <div class="span3">
-	<div class="control-group">
-	  <label>Tags</label>
-	  <div >
-	    {% for tag in tags %}
-	      <label class="checkbox">
-		<input type="checkbox" ng-model="editing.tags.{{tag.name}}">
-		{{tag.title}}
-	      </label>
-	    {% endfor %}
-	  </div>
-	</div>
-
-      </div>
-      <div class="span3">
-        <div class="control-group"
-             ng-show="showSubtags([{% for tag in tags %}{% if tag.subtags %}'{{tag.name}}'{% if not forloop.last%},{% endif %}{% endif %}{% endfor %} ''])"
-             >
-             <label>Sub Tags</label>
-             <div>
-               {% for tag in tags %}
-                 {% if tag.subtags %}
-                   {% for subtag in tag.subtags %}
-		     <label class="checkbox"
-                            ng-show="editing.tags.{{tag.name}} == true">
-			    <input type="checkbox" ng-model="editing.tags.{{subtag.name}}">
-			    {{subtag.title}}
-		     </label>
-                   {% endfor %}
-                 {% endif %}
-               {% endfor %}
-             </div>
-
-        </div>
-      </div>
-    </div>
 
   </form>
 {% endblock %}

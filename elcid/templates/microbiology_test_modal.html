@@ -1,43 +1,43 @@
 {% extends 'modal_base.html' %}
 {% block modal_body %}
 <form class="form-horizontal">
-    <div class="control-group">
-        <label class="control-label">Test</label>
-        <div class="controls">
-            <input type="text"
+    <div class="form-group">
+        <label class="control-label col-sm-3">Test</label>
+        <div class="col-sm-8">
+            <input class="form-control" type="text"
                    ng-model="editing.test"
                    ng-options="t for t in microbiology_test_list"
                    bs-typeahead>
         </div>
     </div>
 
-    <div class="control-group">
-	    <label class="control-label">Date ordered</label>
-	    <div class="controls">
-		    <input type="text" ng-model="editing.date_ordered" bs-datepicker>
+    <div class="form-group">
+	    <label class="control-label col-sm-3">Date ordered</label>
+	    <div class="col-sm-8">
+		    <input class="form-control" type="text" ng-model="editing.date_ordered" bs-datepicker>
 	    </div>
     </div>
 
-    <div class="control-group">
-	    <label class="control-label">Details</label>
-	    <div class="controls">
-		    <input type="text" ng-model="editing.details">
+    <div class="form-group">
+	    <label class="control-label col-sm-3">Details</label>
+	    <div class="col-sm-8">
+		    <input class="form-control" type="text" ng-model="editing.details">
 	    </div>
     </div>
 
     <span ng-show="testType == 'micro_test_mcs'">
 
-        <div class="control-group">
-            <label class="control-label">Microscopy</label>
-            <div class="controls">
-                <input type="text" ng-model="editing.microscopy">
+        <div class="form-group">
+            <label class="control-label col-sm-3">Microscopy</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" ng-model="editing.microscopy">
             </div>
         </div>
 
-        <div class="control-group">
-            <label class="control-label">Organism</label>
-            <div class="controls">
-                <input type="text"
+        <div class="form-group">
+            <label class="control-label col-sm-3">Organism</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="text"
                        ng-model="editing.organism"
                        ng-options="o for o in microbiology_organism_list"
                        bs-typeahead
@@ -46,19 +46,19 @@
         </div>
 
 
-        <div class="control-group">
-            <label class="control-label">Sensitive antibiotics</label>
-            <div class="controls">
-                <input type="text" ng-model="editing.sensitive_antibiotics"
+        <div class="form-group">
+            <label class="control-label col-sm-3">Sensitive antibiotics</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" ng-model="editing.sensitive_antibiotics"
                        ng-options="d for d in antimicrobial_list"
                        bs-typeahead>
             </div>
         </div>
 
-        <div class="control-group">
-            <label class="control-label">Resistant antibiotics</label>
-            <div class="controls">
-                <input type="text" ng-model="editing.resistant_antibiotics"
+        <div class="form-group">
+            <label class="control-label col-sm-3">Resistant antibiotics</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" ng-model="editing.resistant_antibiotics"
                        ng-options="d for d in antimicrobial_list"
                        bs-typeahead />
             </div>
@@ -68,54 +68,54 @@
 
     <span ng-show="testType == 'micro_test_serology'">
 
-        <div class="control-group">
-            <label class="control-label">IgM</label>
-            <div class="controls">
+        <div class="form-group">
+            <label class="control-label col-sm-3">IgM</label>
+            <div class="col-sm-8">
 
-                <label class="radio inline">
-                    <input type="radio" value="pending" ng-model="editing.igm">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="pending" ng-model="editing.igm">
                     pending
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="positive" ng-model="editing.igm">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="positive" ng-model="editing.igm">
                     positive
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="negative" ng-model="editing.igm">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="negative" ng-model="editing.igm">
                     negative
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="equivocal" ng-model="editing.igm">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="equivocal" ng-model="editing.igm">
                     equivocal
                 </label>
 
             </div>
         </div>
 
-        <div class="control-group">
-            <label class="control-label">IgG</label>
-            <div class="controls">
+        <div class="form-group">
+            <label class="control-label col-sm-3">IgG</label>
+            <div class="col-sm-8">
 
-                <label class="radio inline">
-                    <input type="radio" value="pending" ng-model="editing.igg">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="pending" ng-model="editing.igg">
                     pending
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="positive" ng-model="editing.igg">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="positive" ng-model="editing.igg">
                     positive
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="negative" ng-model="editing.igg">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="negative" ng-model="editing.igg">
                     negative
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="equivocal" ng-model="editing.igg">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="equivocal" ng-model="editing.igg">
                     equivocal
                 </label>
 
@@ -126,81 +126,81 @@
 
     <span ng-show="testType == 'micro_test_ebv_serology'">
 
-        <div class="control-group">
-            <label class="control-label">VCA IgM</label>
-            <div class="controls">
+        <div class="form-group">
+            <label class="control-label col-sm-3">VCA IgM</label>
+            <div class="col-sm-8">
 
-                <label class="radio inline">
-                    <input type="radio" value="pending" ng-model="editing.vca_igm">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="pending" ng-model="editing.vca_igm">
                     pending
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="positive" ng-model="editing.vca_igm">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="positive" ng-model="editing.vca_igm">
                     positive
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="negative" ng-model="editing.vca_igm">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="negative" ng-model="editing.vca_igm">
                     negative
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="equivocal" ng-model="editing.vca_igm">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="equivocal" ng-model="editing.vca_igm">
                     equivocal
                 </label>
 
             </div>
         </div>
 
-        <div class="control-group">
-            <label class="control-label">VCA IgG</label>
-            <div class="controls">
+        <div class="form-group">
+            <label class="control-label col-sm-3">VCA IgG</label>
+            <div class="col-sm-8">
 
-                <label class="radio inline">
-                    <input type="radio" value="pending" ng-model="editing.vca_igg">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="pending" ng-model="editing.vca_igg">
                     pending
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="positive" ng-model="editing.vca_igg">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="positive" ng-model="editing.vca_igg">
                     positive
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="negative" ng-model="editing.vca_igg">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="negative" ng-model="editing.vca_igg">
                     negative
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="equivocal" ng-model="editing.vca_igg">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="equivocal" ng-model="editing.vca_igg">
                     equivocal
                 </label>
 
             </div>
         </div>
 
-        <div class="control-group">
-            <label class="control-label">EBNA IgG</label>
-            <div class="controls">
+        <div class="form-group">
+            <label class="control-label col-sm-3">EBNA IgG</label>
+            <div class="col-sm-8">
 
-                <label class="radio inline">
-                    <input type="radio" value="pending" ng-model="editing.ebna_igg">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="pending" ng-model="editing.ebna_igg">
                     pending
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="positive" ng-model="editing.ebna_igg">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="positive" ng-model="editing.ebna_igg">
                     positive
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="negative" ng-model="editing.ebna_igg">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="negative" ng-model="editing.ebna_igg">
                     negative
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="equivocal" ng-model="editing.ebna_igg">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="equivocal" ng-model="editing.ebna_igg">
                     equivocal
                 </label>
 
@@ -211,27 +211,27 @@
 
     <span ng-show="testType == 'micro_test_hiv'">
 
-        <div class="control-group">
-            <label class="control-label">Result</label>
-            <div class="controls">
+        <div class="form-group">
+            <label class="control-label col-sm-3">Result</label>
+            <div class="col-sm-8">
 
-                <label class="radio inline">
-                    <input type="radio" value="pending" ng-model="editing.result">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="pending" ng-model="editing.result">
                     pending
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="antibody positive" ng-model="editing.result">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="antibody positive" ng-model="editing.result">
                     antibody positive
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="GP24 positive" ng-model="editing.result">
-                    GP24 positive
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="GP34 positive" ng-model="editing.result">
+                    GP34 positive
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="negative" ng-model="editing.result">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="negative" ng-model="editing.result">
                     negative
                 </label>
 
@@ -242,108 +242,108 @@
 
     <span ng-show="testType == 'micro_test_hepititis_b_serology'">
 
-        <div class="control-group">
-            <label class="control-label">HBsAg</label>
-            <div class="controls">
+        <div class="form-group">
+            <label class="control-label col-sm-3">HBsAg</label>
+            <div class="col-sm-8">
 
-                <label class="radio inline">
-                    <input type="radio" value="pending" ng-model="editing.hbsag">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="pending" ng-model="editing.hbsag">
                     pending
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="positive" ng-model="editing.hbsag">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="positive" ng-model="editing.hbsag">
                     positive
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="negative" ng-model="editing.hbsag">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="negative" ng-model="editing.hbsag">
                     negative
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="equivocal" ng-model="editing.hbsag">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="equivocal" ng-model="editing.hbsag">
                     equivocal
                 </label>
 
             </div>
         </div>
 
-        <div class="control-group">
-            <label class="control-label">anti-HbS</label>
-            <div class="controls">
+        <div class="form-group">
+            <label class="control-label col-sm-3">anti-HbS</label>
+            <div class="col-sm-8">
 
-                <label class="radio inline">
-                    <input type="radio" value="pending" ng-model="editing.anti_hbs">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="pending" ng-model="editing.anti_hbs">
                     pending
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="positive" ng-model="editing.anti_hbs">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="positive" ng-model="editing.anti_hbs">
                     positive
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="negative" ng-model="editing.anti_hbs">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="negative" ng-model="editing.anti_hbs">
                     negative
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="equivocal" ng-model="editing.anti_hbs">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="equivocal" ng-model="editing.anti_hbs">
                     equivocal
                 </label>
 
             </div>
         </div>
 
-        <div class="control-group">
-            <label class="control-label">anti-HbCore IgM</label>
-            <div class="controls">
+        <div class="form-group">
+            <label class="control-label col-sm-3">anti-HbCore IgM</label>
+            <div class="col-sm-8">
 
-                <label class="radio inline">
-                    <input type="radio" value="pending" ng-model="editing.anti_hbcore_igm">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="pending" ng-model="editing.anti_hbcore_igm">
                     pending
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="positive" ng-model="editing.anti_hbcore_igm">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="positive" ng-model="editing.anti_hbcore_igm">
                     positive
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="negative" ng-model="editing.anti_hbcore_igm">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="negative" ng-model="editing.anti_hbcore_igm">
                     negative
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="equivocal" ng-model="editing.anti_hbcore_igm">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="equivocal" ng-model="editing.anti_hbcore_igm">
                     equivocal
                 </label>
 
             </div>
         </div>
 
-        <div class="control-group">
-            <label class="control-label">anti-HbCore IgG</label>
-            <div class="controls">
+        <div class="form-group">
+            <label class="control-label col-sm-3">anti-HbCore IgG</label>
+            <div class="col-sm-8">
 
-                <label class="radio inline">
-                    <input type="radio" value="pending" ng-model="editing.anti_hbcore_igg">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="pending" ng-model="editing.anti_hbcore_igg">
                     pending
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="positive" ng-model="editing.anti_hbcore_igg">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="positive" ng-model="editing.anti_hbcore_igg">
                     positive
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="negative" ng-model="editing.anti_hbcore_igg">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="negative" ng-model="editing.anti_hbcore_igg">
                     negative
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="equivocal" ng-model="editing.anti_hbcore_igg">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="equivocal" ng-model="editing.anti_hbcore_igg">
                     equivocal
                 </label>
 
@@ -354,29 +354,29 @@
 
     <span ng-show="testType == 'micro_test_syphilis_serology'">
 
-        <div class="control-group">
-            <label class="control-label">RPR</label>
-            <div class="controls">
-                <input type="text" ng-model="editing.rpr">
+        <div class="form-group">
+            <label class="control-label col-sm-3">RPR</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" ng-model="editing.rpr">
             </div>
         </div>
 
-        <div class="control-group">
-            <label class="control-label">TPPA</label>
-            <div class="controls">
+        <div class="form-group">
+            <label class="control-label col-sm-3">TPPA</label>
+            <div class="col-sm-8">
 
-                <label class="radio inline">
-                    <input type="radio" value="pending" ng-model="editing.tppa">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="pending" ng-model="editing.tppa">
                     pending
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="positive" ng-model="editing.tppa">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="positive" ng-model="editing.tppa">
                     positive
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="negative" ng-model="editing.tppa">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="negative" ng-model="editing.tppa">
                     negative
                 </label>
 
@@ -387,22 +387,22 @@
 
     <span ng-show="testType == 'micro_test_single_test_pos_neg'">
 
-        <div class="control-group">
-            <label class="control-label">Result</label>
-            <div class="controls">
+        <div class="form-group">
+            <label class="control-label col-sm-3">Result</label>
+            <div class="col-sm-8">
 
-                <label class="radio inline">
-                    <input type="radio" value="pending" ng-model="editing.result">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="pending" ng-model="editing.result">
                     pending
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="positive" ng-model="editing.result">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="positive" ng-model="editing.result">
                     positive
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="negative" ng-model="editing.result">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="negative" ng-model="editing.result">
                     negative
                 </label>
 
@@ -413,27 +413,27 @@
 
     <span ng-show="testType == 'micro_test_single_test_pos_neg_equiv'">
 
-        <div class="control-group">
-            <label class="control-label">Result</label>
-            <div class="controls">
+        <div class="form-group">
+            <label class="control-label col-sm-3">Result</label>
+            <div class="col-sm-8">
 
-                <label class="radio inline">
-                    <input type="radio" value="pending" ng-model="editing.result">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="pending" ng-model="editing.result">
                     pending
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="positive" ng-model="editing.result">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="positive" ng-model="editing.result">
                     positive
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="negative" ng-model="editing.result">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="negative" ng-model="editing.result">
                     negative
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="equivocal" ng-model="editing.result">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="equivocal" ng-model="editing.result">
                     equivocal
                 </label>
 
@@ -444,27 +444,27 @@
 
     <span ng-show="testType == 'micro_test_single_igg_test'">
 
-        <div class="control-group">
-            <label class="control-label">IgG</label>
-            <div class="controls">
+        <div class="form-group">
+            <label class="control-label col-sm-3">IgG</label>
+            <div class="col-sm-8">
 
-                <label class="radio inline">
-                    <input type="radio" value="pending" ng-model="editing.igg">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="pending" ng-model="editing.igg">
                     pending
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="positive" ng-model="editing.igg">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="positive" ng-model="editing.igg">
                     positive
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="negative" ng-model="editing.igg">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="negative" ng-model="editing.igg">
                     negative
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="equivocal" ng-model="editing.igg">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="equivocal" ng-model="editing.igg">
                     equivocal
                 </label>
 
@@ -475,10 +475,10 @@
 
     <span ng-show="testType == 'micro_test_viral_load'">
 
-        <div class="control-group">
-            <label class="control-label">Viral load</label>
-            <div class="controls">
-                <input type="text" ng-model="editing.viral_load">
+        <div class="form-group">
+            <label class="control-label col-sm-3">Viral load</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" ng-model="editing.viral_load">
             </div>
         </div>
 
@@ -486,10 +486,10 @@
 
     <span ng-show="testType == 'micro_test_parasitaemia'">
 
-        <div class="control-group">
-            <label class="control-label">Parasitaemia</label>
-            <div class="controls">
-                <input type="text" ng-model="editing.parasitaemia">
+        <div class="form-group">
+            <label class="control-label col-sm-3">Parasitaemia</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" ng-model="editing.parasitaemia">
             </div>
         </div>
 
@@ -497,66 +497,66 @@
 
     <span ng-show="testType == 'micro_test_swab_pcr'">
 
-        <div class="control-group">
-            <label class="control-label">HSV</label>
-            <div class="controls">
+        <div class="form-group">
+            <label class="control-label col-sm-3">HSV</label>
+            <div class="col-sm-8">
 
-                <label class="radio inline">
-                    <input type="radio" value="pending" ng-model="editing.hsv">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="pending" ng-model="editing.hsv">
                     pending
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="positive" ng-model="editing.hsv">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="positive" ng-model="editing.hsv">
                     positive
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="negative" ng-model="editing.hsv">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="negative" ng-model="editing.hsv">
                     negative
                 </label>
 
             </div>
         </div>
 
-        <div class="control-group">
-            <label class="control-label">VZV</label>
-            <div class="controls">
+        <div class="form-group">
+            <label class="control-label col-sm-3">VZV</label>
+            <div class="col-sm-8">
 
-                <label class="radio inline">
-                    <input type="radio" value="pending" ng-model="editing.vzv">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="pending" ng-model="editing.vzv">
                     pending
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="positive" ng-model="editing.vzv">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="positive" ng-model="editing.vzv">
                     positive
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="negative" ng-model="editing.vzv">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="negative" ng-model="editing.vzv">
                     negative
                 </label>
 
             </div>
         </div>
 
-        <div class="control-group">
-            <label class="control-label">Syphilis</label>
-            <div class="controls">
+        <div class="form-group">
+            <label class="control-label col-sm-3">Syphilis</label>
+            <div class="col-sm-8">
 
-                <label class="radio inline">
-                    <input type="radio" value="pending" ng-model="editing.syphilis">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="pending" ng-model="editing.syphilis">
                     pending
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="positive" ng-model="editing.syphilis">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="positive" ng-model="editing.syphilis">
                     positive
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="negative" ng-model="editing.syphilis">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="negative" ng-model="editing.syphilis">
                     negative
                 </label>
 
@@ -567,44 +567,44 @@
 
     <span ng-show="testType == 'micro_test_c_difficile'">
 
-        <div class="control-group">
-            <label class="control-label">C. difficile antigen</label>
-            <div class="controls">
+        <div class="form-group">
+            <label class="control-label col-sm-3">C. difficile antigen</label>
+            <div class="col-sm-8">
 
-                <label class="radio inline">
-                    <input type="radio" value="pending" ng-model="editing.c_difficile_antigen">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="pending" ng-model="editing.c_difficile_antigen">
                     pending
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="positive" ng-model="editing.c_difficile_antigen">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="positive" ng-model="editing.c_difficile_antigen">
                     positive
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="negative" ng-model="editing.c_difficile_antigen">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="negative" ng-model="editing.c_difficile_antigen">
                     negative
                 </label>
 
             </div>
         </div>
 
-        <div class="control-group">
-            <label class="control-label">C. difficile toxin</label>
-            <div class="controls">
+        <div class="form-group">
+            <label class="control-label col-sm-3">C. difficile toxin</label>
+            <div class="col-sm-8">
 
-                <label class="radio inline">
-                    <input type="radio" value="pending" ng-model="editing.c_difficile_toxin">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="pending" ng-model="editing.c_difficile_toxin">
                     pending
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="positive" ng-model="editing.c_difficile_toxin">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="positive" ng-model="editing.c_difficile_toxin">
                     positive
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="negative" ng-model="editing.c_difficile_toxin">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="negative" ng-model="editing.c_difficile_toxin">
                     negative
                 </label>
 
@@ -615,29 +615,29 @@
 
     <span ng-show="testType == 'micro_test_leishmaniasis_pcr'">
 
-        <div class="control-group">
-            <label class="control-label">Species</label>
-            <div class="controls">
-                <input type="text" ng-model="editing.species">
+        <div class="form-group">
+            <label class="control-label col-sm-3">Species</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" ng-model="editing.species">
             </div>
         </div>
 
-        <div class="control-group">
-            <label class="control-label">Result</label>
-            <div class="controls">
+        <div class="form-group">
+            <label class="control-label col-sm-3">Result</label>
+            <div class="col-sm-8">
 
-                <label class="radio inline">
-                    <input type="radio" value="pending" ng-model="editing.result">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="pending" ng-model="editing.result">
                     pending
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="positive" ng-model="editing.result">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="positive" ng-model="editing.result">
                     positive
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="negative" ng-model="editing.result">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="negative" ng-model="editing.result">
                     negative
                 </label>
 
@@ -648,132 +648,132 @@
 
     <span ng-show="testType == 'micro_test_csf_pcr'">
 
-        <div class="control-group">
-            <label class="control-label">HSV-1</label>
-            <div class="controls">
+        <div class="form-group">
+            <label class="control-label col-sm-3">HSV-1</label>
+            <div class="col-sm-8">
 
-                <label class="radio inline">
-                    <input type="radio" value="pending" ng-model="editing.hsv_1">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="pending" ng-model="editing.hsv_1">
                     pending
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="positive" ng-model="editing.hsv_1">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="positive" ng-model="editing.hsv_1">
                     positive
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="negative" ng-model="editing.hsv_1">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="negative" ng-model="editing.hsv_1">
                     negative
                 </label>
 
             </div>
         </div>
 
-        <div class="control-group">
-            <label class="control-label">HSV-2</label>
-            <div class="controls">
+        <div class="form-group">
+            <label class="control-label col-sm-3">HSV-3</label>
+            <div class="col-sm-8">
 
-                <label class="radio inline">
-                    <input type="radio" value="pending" ng-model="editing.hsv_2">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="pending" ng-model="editing.hsv_3">
                     pending
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="positive" ng-model="editing.hsv_2">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="positive" ng-model="editing.hsv_3">
                     positive
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="negative" ng-model="editing.hsv_2">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="negative" ng-model="editing.hsv_3">
                     negative
                 </label>
 
             </div>
         </div>
 
-        <div class="control-group">
-            <label class="control-label">Enterovirus</label>
-            <div class="controls">
+        <div class="form-group">
+            <label class="control-label col-sm-3">Enterovirus</label>
+            <div class="col-sm-8">
 
-                <label class="radio inline">
-                    <input type="radio" value="pending" ng-model="editing.enterovirus">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="pending" ng-model="editing.enterovirus">
                     pending
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="positive" ng-model="editing.enterovirus">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="positive" ng-model="editing.enterovirus">
                     positive
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="negative" ng-model="editing.enterovirus">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="negative" ng-model="editing.enterovirus">
                     negative
                 </label>
 
             </div>
         </div>
 
-        <div class="control-group">
-            <label class="control-label">CMV</label>
-            <div class="controls">
+        <div class="form-group">
+            <label class="control-label col-sm-3">CMV</label>
+            <div class="col-sm-8">
 
-                <label class="radio inline">
-                    <input type="radio" value="pending" ng-model="editing.cmv">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="pending" ng-model="editing.cmv">
                     pending
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="positive" ng-model="editing.cmv">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="positive" ng-model="editing.cmv">
                     positive
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="negative" ng-model="editing.cmv">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="negative" ng-model="editing.cmv">
                     negative
                 </label>
 
             </div>
         </div>
 
-        <div class="control-group">
-            <label class="control-label">EBV</label>
-            <div class="controls">
+        <div class="form-group">
+            <label class="control-label col-sm-3">EBV</label>
+            <div class="col-sm-8">
 
-                <label class="radio inline">
-                    <input type="radio" value="pending" ng-model="editing.ebv">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="pending" ng-model="editing.ebv">
                     pending
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="positive" ng-model="editing.ebv">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="positive" ng-model="editing.ebv">
                     positive
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="negative" ng-model="editing.ebv">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="negative" ng-model="editing.ebv">
                     negative
                 </label>
 
             </div>
         </div>
 
-        <div class="control-group">
-            <label class="control-label">VZV</label>
-            <div class="controls">
+        <div class="form-group">
+            <label class="control-label col-sm-3">VZV</label>
+            <div class="col-sm-8">
 
-                <label class="radio inline">
-                    <input type="radio" value="pending" ng-model="editing.vzv">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="pending" ng-model="editing.vzv">
                     pending
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="positive" ng-model="editing.vzv">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="positive" ng-model="editing.vzv">
                     positive
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="negative" ng-model="editing.vzv">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="negative" ng-model="editing.vzv">
                     negative
                 </label>
 
@@ -784,132 +784,132 @@
 
     <span ng-show="testType == 'micro_test_respiratory_virus_pcr'">
 
-        <div class="control-group">
-            <label class="control-label">Influenza-A</label>
-            <div class="controls">
+        <div class="form-group">
+            <label class="control-label col-sm-3">Influenza-A</label>
+            <div class="col-sm-8">
 
-                <label class="radio inline">
-                    <input type="radio" value="pending" ng-model="editing.influenza_a">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="pending" ng-model="editing.influenza_a">
                     pending
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="positive" ng-model="editing.influenza_a">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="positive" ng-model="editing.influenza_a">
                     positive
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="negative" ng-model="editing.influenza_a">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="negative" ng-model="editing.influenza_a">
                     negative
                 </label>
 
             </div>
         </div>
 
-        <div class="control-group">
-            <label class="control-label">Influenza-B</label>
-            <div class="controls">
+        <div class="form-group">
+            <label class="control-label col-sm-3">Influenza-B</label>
+            <div class="col-sm-8">
 
-                <label class="radio inline">
-                    <input type="radio" value="pending" ng-model="editing.influenza_b">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="pending" ng-model="editing.influenza_b">
                     pending
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="positive" ng-model="editing.influenza_b">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="positive" ng-model="editing.influenza_b">
                     positive
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="negative" ng-model="editing.influenza_b">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="negative" ng-model="editing.influenza_b">
                     negative
                 </label>
 
             </div>
         </div>
 
-        <div class="control-group">
-            <label class="control-label">Parainfluenza</label>
-            <div class="controls">
+        <div class="form-group">
+            <label class="control-label col-sm-3">Parainfluenza</label>
+            <div class="col-sm-8">
 
-                <label class="radio inline">
-                    <input type="radio" value="pending" ng-model="editing.parainfluenza">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="pending" ng-model="editing.parainfluenza">
                     pending
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="positive" ng-model="editing.parainfluenza">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="positive" ng-model="editing.parainfluenza">
                     positive
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="negative" ng-model="editing.parainfluenza">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="negative" ng-model="editing.parainfluenza">
                     negative
                 </label>
 
             </div>
         </div>
 
-        <div class="control-group">
-            <label class="control-label">Metapneumovirus</label>
-            <div class="controls">
+        <div class="form-group">
+            <label class="control-label col-sm-3">Metapneumovirus</label>
+            <div class="col-sm-8">
 
-                <label class="radio inline">
-                    <input type="radio" value="pending" ng-model="editing.metapneumovirus">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="pending" ng-model="editing.metapneumovirus">
                     pending
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="positive" ng-model="editing.metapneumovirus">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="positive" ng-model="editing.metapneumovirus">
                     positive
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="negative" ng-model="editing.metapneumovirus">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="negative" ng-model="editing.metapneumovirus">
                     negative
                 </label>
 
             </div>
         </div>
 
-        <div class="control-group">
-            <label class="control-label">RSV</label>
-            <div class="controls">
+        <div class="form-group">
+            <label class="control-label col-sm-3">RSV</label>
+            <div class="col-sm-8">
 
-                <label class="radio inline">
-                    <input type="radio" value="pending" ng-model="editing.rsv">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="pending" ng-model="editing.rsv">
                     pending
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="positive" ng-model="editing.rsv">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="positive" ng-model="editing.rsv">
                     positive
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="negative" ng-model="editing.rsv">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="negative" ng-model="editing.rsv">
                     negative
                 </label>
 
             </div>
         </div>
 
-        <div class="control-group">
-            <label class="control-label">Adenovirus</label>
-            <div class="controls">
+        <div class="form-group">
+            <label class="control-label col-sm-3">Adenovirus</label>
+            <div class="col-sm-8">
 
-                <label class="radio inline">
-                    <input type="radio" value="pending" ng-model="editing.adenovirus">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="pending" ng-model="editing.adenovirus">
                     pending
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="positive" ng-model="editing.adenovirus">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="positive" ng-model="editing.adenovirus">
                     positive
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="negative" ng-model="editing.adenovirus">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="negative" ng-model="editing.adenovirus">
                     negative
                 </label>
 
@@ -920,66 +920,66 @@
 
     <span ng-show="testType == 'micro_test_stool_pcr'">
 
-        <div class="control-group">
-            <label class="control-label">Norovirus</label>
-            <div class="controls">
+        <div class="form-group">
+            <label class="control-label col-sm-3">Norovirus</label>
+            <div class="col-sm-8">
 
-                <label class="radio inline">
-                    <input type="radio" value="pending" ng-model="editing.norovirus">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="pending" ng-model="editing.norovirus">
                     pending
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="positive" ng-model="editing.norovirus">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="positive" ng-model="editing.norovirus">
                     positive
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="negative" ng-model="editing.norovirus">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="negative" ng-model="editing.norovirus">
                     negative
                 </label>
 
             </div>
         </div>
 
-        <div class="control-group">
-            <label class="control-label">Rotavirus</label>
-            <div class="controls">
+        <div class="form-group">
+            <label class="control-label col-sm-3">Rotavirus</label>
+            <div class="col-sm-8">
 
-                <label class="radio inline">
-                    <input type="radio" value="pending" ng-model="editing.rotavirus">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="pending" ng-model="editing.rotavirus">
                     pending
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="positive" ng-model="editing.rotavirus">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="positive" ng-model="editing.rotavirus">
                     positive
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="negative" ng-model="editing.rotavirus">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="negative" ng-model="editing.rotavirus">
                     negative
                 </label>
 
             </div>
         </div>
 
-        <div class="control-group">
-            <label class="control-label">Adenovirus</label>
-            <div class="controls">
+        <div class="form-group">
+            <label class="control-label col-sm-3">Adenovirus</label>
+            <div class="col-sm-8">
 
-                <label class="radio inline">
-                    <input type="radio" value="pending" ng-model="editing.adenovirus">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="pending" ng-model="editing.adenovirus">
                     pending
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="positive" ng-model="editing.adenovirus">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="positive" ng-model="editing.adenovirus">
                     positive
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="negative" ng-model="editing.adenovirus">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="negative" ng-model="editing.adenovirus">
                     negative
                 </label>
 
@@ -990,66 +990,66 @@
 
     <span ng-show="testType == 'micro_test_stool_parasitology_pcr'">
 
-        <div class="control-group">
-            <label class="control-label">Giardia</label>
-            <div class="controls">
+        <div class="form-group">
+            <label class="control-label col-sm-3">Giardia</label>
+            <div class="col-sm-8">
 
-                <label class="radio inline">
-                    <input type="radio" value="pending" ng-model="editing.giardia">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="pending" ng-model="editing.giardia">
                     pending
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="positive" ng-model="editing.giardia">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="positive" ng-model="editing.giardia">
                     positive
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="negative" ng-model="editing.giardia">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="negative" ng-model="editing.giardia">
                     negative
                 </label>
 
             </div>
         </div>
 
-        <div class="control-group">
-            <label class="control-label">Entamoeba Histolytica</label>
-            <div class="controls">
+        <div class="form-group">
+            <label class="control-label col-sm-3">Entamoeba Histolytica</label>
+            <div class="col-sm-8">
 
-                <label class="radio inline">
-                    <input type="radio" value="pending" ng-model="editing.entamoeba_histolytica">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="pending" ng-model="editing.entamoeba_histolytica">
                     pending
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="positive" ng-model="editing.entamoeba_histolytica">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="positive" ng-model="editing.entamoeba_histolytica">
                     positive
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="negative" ng-model="editing.entamoeba_histolytica">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="negative" ng-model="editing.entamoeba_histolytica">
                     negative
                 </label>
 
             </div>
         </div>
 
-        <div class="control-group">
-            <label class="control-label">Cryptosporidium</label>
-            <div class="controls">
+        <div class="form-group">
+            <label class="control-label col-sm-3">Cryptosporidium</label>
+            <div class="col-sm-8">
 
-                <label class="radio inline">
-                    <input type="radio" value="pending" ng-model="editing.cryptosporidium">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="pending" ng-model="editing.cryptosporidium">
                     pending
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="positive" ng-model="editing.cryptosporidium">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="positive" ng-model="editing.cryptosporidium">
                     positive
                 </label>
 
-                <label class="radio inline">
-                    <input type="radio" value="negative" ng-model="editing.cryptosporidium">
+                <label class="radio-inline">
+                    <input class="form-control" type="radio" value="negative" ng-model="editing.cryptosporidium">
                     negative
                 </label>
 
@@ -1060,10 +1060,10 @@
 
     <span ng-show="testType == 'micro_test_other'">
 
-        <div class="control-group">
-            <label class="control-label">Result</label>
-            <div class="controls">
-                <input type="text" ng-model="editing.result">
+        <div class="form-group">
+            <label class="control-label col-sm-3">Result</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" ng-model="editing.result">
             </div>
         </div>
 

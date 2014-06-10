@@ -1,52 +1,52 @@
 {% extends 'modal_base.html' %}
 {% block modal_body %}
   <form class="form-horizontal">
-    <div class="control-group">
-      <label class="control-label">Drug</label>
-      <div class="controls">
-	<input type="text"
+    <div class="form-group">
+      <label class="control-label col-sm-3">Drug</label>
+      <div class="col-sm-8">
+	<input class="form-control" type="text"
                ng-model="editing.drug"
                ng-options="d for d in antimicrobial_list"
                bs-typeahead>
       </div>
     </div>
-    <div class="control-group">
-      <label class="control-label">Start date</label>
-      <div class="controls">
-	<input type="text" ng-model="editing.start_date" bs-datepicker data-autoclose="true">
+    <div class="form-group">
+      <label class="control-label col-sm-3">Start date</label>
+      <div class="col-sm-8">
+	<input class="form-control" type="text" ng-model="editing.start_date" bs-datepicker data-autoclose="true">
       </div>
     </div>
-    <div class="control-group">
-      <label class="control-label">End date</label>
-      <div class="controls">
-	<input type="text" ng-model="editing.end_date" bs-datepicker data-autoclose="true">
+    <div class="form-group">
+      <label class="control-label col-sm-3">End date</label>
+      <div class="col-sm-8">
+	<input class="form-control" type="text" ng-model="editing.end_date" bs-datepicker data-autoclose="true">
       </div>
     </div>
-    <div class="control-group">
-      <label class="control-label">Dose</label>
-      <div class="controls">
-	<input type="text" ng-model="editing.dose">
+    <div class="form-group">
+      <label class="control-label col-sm-3">Dose</label>
+      <div class="col-sm-8">
+	<input class="form-control" type="text" ng-model="editing.dose">
       </div>
     </div>
-    <div class="control-group">
-      <label class="control-label">Route</label>
-      <div class="controls">
-	<input type="text"
+    <div class="form-group">
+      <label class="control-label col-sm-3">Route</label>
+      <div class="col-sm-8">
+	<input class="form-control" type="text"
                ng-model="editing.route"
                ng-options="r for r in antimicrobial_route_list"
                bs-typeahead>
       </div>
     </div>
-    <div class="control-group">
-      <label class="control-label">Delivered by</label>
-      <div class="controls">
-	<input type="text" ng-model="editing.delivered_by">
+    <div class="form-group">
+      <label class="control-label col-sm-3">Delivered by</label>
+      <div class="col-sm-8">
+	<input class="form-control" type="text" ng-model="editing.delivered_by">
       </div>
     </div>
-    <div class="control-group" ng-show="currentTag=='opat'">
-      <label class="control-label">Adverse events</label>
-      <div class="controls">
-	<input type="text"
+    <div class="form-group" ng-show="currentTag=='opat'">
+      <label class="control-label col-sm-3">Adverse events</label>
+      <div class="col-sm-8">
+	<input class="form-control" type="text"
                ng-model="editing.adverse_event"
                ng-options="r for r in antimicrobial_adverse_event_list"
                bs-typeahead>
