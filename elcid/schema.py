@@ -1,6 +1,7 @@
 
 from elcid import models
 from opal import models as omodels
+from infectioncontrol import models as icmodels
 
 list_columns = [
     models.Demographics,
@@ -18,9 +19,9 @@ list_columns = [
 list_columns_infection_control = [
     models.Demographics,
     models.Location,
-    models.ReportedInfection,
+    icmodels.ReportedInfection,
     models.MicrobiologyTest,
-    models.InfectionControlAdvice,
+    icmodels.InfectionControlAdvice,
 ]
 
 list_columns_micro = [

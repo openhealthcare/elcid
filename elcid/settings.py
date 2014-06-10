@@ -158,6 +158,7 @@ INSTALLED_APPS = (
     'opal',
     'elcid',
     'django.contrib.admin',
+    'infectioncontrol',
 )
 
 # A sample logging configuration. The only tangible logging
