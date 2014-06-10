@@ -34,8 +34,8 @@ controllers.controller('DischargeEpisodeCtrl', function($scope, $timeout,
     }
 
     $scope.discharge = function() {
-	var location = episode.getItem('location', 0);
-	var attrs = location.makeCopy();
+	var tagging = episode.getItem('tagging', 0);
+	var attrs = tagging.makeCopy();
 
 	if ($scope.editing.category != 'Unfollow') {
 	    attrs.category = $scope.editing.category;
@@ -47,16 +47,14 @@ controllers.controller('DischargeEpisodeCtrl', function($scope, $timeout,
         }
 
 	if ($scope.editing.category != 'Followup') {
-	    attrs.tags[currentTag] = false;
+	    attrs[currentTag] = false;
             if(currentSubTag != 'all'){
-                attrs.tags[currentSubTag] = false;
+                attrs[currentSubTag] = false;
             }
 	}
 
-	location.save(attrs).then(function() {
-            episode.save($scope.episode).then(function(){
-		$modalInstance.close('discharged');
-            });
+	tagging.save(attrs).then(function() {
+	    $modalInstance.close('discharged');
 	});
     };
 
