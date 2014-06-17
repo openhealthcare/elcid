@@ -31,6 +31,11 @@ __all__ = [
 
 class Demographics(PatientSubrecord):
     _is_singleton = True
+    _fieldnames = [
+        'hospital_number', 'nhs_number',
+        'name', 'date_of_birth',
+        'country_of_birth', 'ethnicity'
+        ]
 
     name = models.CharField(max_length=255, blank=True)
     hospital_number = models.CharField(max_length=255, blank=True)
@@ -91,6 +96,10 @@ class Location(EpisodeSubrecord):
 class Diagnosis(EpisodeSubrecord):
     _title = 'Diagnosis / Issues'
     _sort = 'date_of_diagnosis'
+    _fieldnames = [
+        'condition', 'provisional',
+        'details', 'date_of_diagnosis'
+        ]
 
     condition = ForeignKeyOrFreeText(option_models['condition'])
     provisional = models.BooleanField()
@@ -108,6 +117,9 @@ class Diagnosis(EpisodeSubrecord):
 class PastMedicalHistory(EpisodeSubrecord):
     _title = 'PMH'
     _sort = 'year'
+    _fieldnames = [
+        'condition', 'year', 'details'
+        ]
 
     condition = ForeignKeyOrFreeText(option_models['condition'])
     year = models.CharField(max_length=4, blank=True)
@@ -123,6 +135,11 @@ class GeneralNote(EpisodeSubrecord):
 
 
 class Travel(EpisodeSubrecord):
+    _fieldnames = [
+        'destination', 'dates', 'reason_for_travel',
+        'specific_exposures'
+        ]
+
     destination = ForeignKeyOrFreeText(option_models['destination'])
     dates = models.CharField(max_length=255, blank=True)
     reason_for_travel = ForeignKeyOrFreeText(option_models['travel_reason'])
@@ -132,6 +149,10 @@ class Travel(EpisodeSubrecord):
 class Antimicrobial(EpisodeSubrecord):
     _title = 'Antimicrobials'
     _sort = 'start_date'
+    _fieldnames = [
+        'drug', 'start_date', 'end_date', 'dose',
+        'route', 'delivered_by', 'adverse_event'
+        ]
 
     drug = ForeignKeyOrFreeText(option_models['antimicrobial'])
     dose = models.CharField(max_length=255, blank=True)
@@ -143,6 +164,10 @@ class Antimicrobial(EpisodeSubrecord):
 
 
 class Allergies(PatientSubrecord):
+    _fieldnames = [
+        'drug', 'provisional', 'details'
+        ]
+
     drug = ForeignKeyOrFreeText(option_models['antimicrobial'])
     provisional = models.BooleanField()
     details = models.CharField(max_length=255, blank=True)
@@ -151,6 +176,13 @@ class Allergies(PatientSubrecord):
 class MicrobiologyInput(EpisodeSubrecord):
     _title = 'Clinical Advice'
     _sort = 'date'
+    _fieldnames = [
+        'date', 'initials', 'reason_for_interaction',
+        'clinical_discussion', 'agreed_plan',
+        'discussed_with',
+        'clinical_advice_given', 'infection_control_advice_given',
+        'change_in_antibiotic_prescription', 'referred_to_opat'
+        ]
 
     date = models.DateField(null=True, blank=True)
     initials = models.CharField(max_length=255, blank=True)
@@ -172,6 +204,52 @@ class Todo(EpisodeSubrecord):
 class MicrobiologyTest(EpisodeSubrecord):
     _title = 'Investigations'
     _sort = 'date_ordered'
+    _fieldnames = [
+        'test',
+        'date_ordered',
+        'details',
+        'microscopy',
+        'organism',
+        'sensitive_antibiotics',
+        'resistant_antibiotics',
+        'result',
+        'igm',
+        'igg',
+        'vca_igm',
+        'vca_igg',
+        'ebna_igg',
+        'hbsag',
+        'anti_hbs',
+        'anti_hbcore_igm',
+        'anti_hbcore_igg',
+        'rpr',
+        'tppa',
+        'viral_load',
+        'parasitaemia',
+        'hsv',
+        'vzv',
+        'syphilis',
+        'c_difficile_antigen',
+        'c_difficile_toxin',
+        'species',
+        'hsv_1',
+        'hsv_2',
+        'enterovirus',
+        'cmv',
+        'ebv',
+        'influenza_a',
+        'influenza_b',
+        'parainfluenza',
+        'metapneumovirus',
+        'rsv',
+        'adenovirus',
+        'norovirus',
+        'rotavirus',
+        'giardia',
+        'entamoeba_histolytica',
+        'cryptosporidium',
+
+        ]
 
     test = models.CharField(max_length=255)
     date_ordered = models.DateField(null=True, blank=True)
