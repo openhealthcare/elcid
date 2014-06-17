@@ -1,55 +1,56 @@
 {% extends 'modal_base.html' %}
 {% block modal_body %}
   <form class="form-horizontal">
-    <div class="control-group">
-      <label class="control-label">Date</label>
-      <div class="controls">
-	<input type="text" ng-model="editing.date" bs-datepicker>
+    <div class="form-group">
+      <label class="control-label col-sm-3">Date</label>
+      <div class="col-sm-8">
+	<input class="form-control" type="text" ng-model="editing.date" bs-datepicker>
       </div>
     </div>
-    <div class="control-group">
-      <label class="control-label">Advice given by</label>
-      <div class="controls">
-	<input type="text" ng-model="editing.initials">
+    <div class="form-group">
+      <label class="control-label col-sm-3">Advice given by</label>
+      <div class="col-sm-8">
+	<input class="form-control" type="text" ng-model="editing.initials">
       </div>
     </div>
-    <div class="control-group">
-      <label class="control-label">Reason for clinical interaction</label>
-      <div class="controls">
+    <div class="form-group">
+      <label class="control-label col-sm-3">Reason for clinical interaction</label>
+      <div class="col-sm-8">
         <select class="form-control" ng-model="editing.reason_for_interaction">
           <option ng-repeat="reason in clinical_advice_reason_for_interaction_list">[[reason]]</option>
         </select>
       </div>
     </div>
-    <div class="control-group">
-      <label class="control-label">Clinical discussion</label>
-      <div class="controls">
-	<textarea ng-model="editing.clinical_discussion" rows="5"></textarea>
+    <div class="form-group">
+      <label class="control-label col-sm-3">Clinical discussion</label>
+      <div class="col-sm-8">
+	<textarea class="form-control" ng-model="editing.clinical_discussion" rows="5"></textarea>
       </div>
     </div>
-    <div class="control-group">
-      <label class="control-label">Agreed plan</label>
-      <div class="controls">
-	<textarea ng-model="editing.agreed_plan" rows="5"></textarea>
+    <div class="form-group">
+      <label class="control-label col-sm-3">Agreed plan</label>
+      <div class="col-sm-8">
+	<textarea class="form-control" ng-model="editing.agreed_plan" rows="5"></textarea>
       </div>
     </div>
-    <div class="control-group">
-      <label class="control-label">Discussed with</label>
-      <div class="controls">
-	<input type="text" ng-model="editing.discussed_with">
+    <div class="form-group">
+      <label class="control-label col-sm-3">Discussed with</label>
+      <div class="col-sm-8">
+	<input class="form-control" type="text" ng-model="editing.discussed_with">
       </div>
     </div>
+
     <table>
       <tr>
 	<td>
 	  <label class="checkbox inline">
-	    <input type="checkbox" ng-model="editing.clinical_advice_given">
+	    <input class="form-control" type="checkbox" ng-model="editing.clinical_advice_given">
 	    Clinical advice given?
 	  </label>
 	</td>
 	<td>
 	  <label class="checkbox inline">
-	    <input type="checkbox" ng-model="editing.change_in_antibiotic_prescription">
+	    <input class="form-control" type="checkbox" ng-model="editing.change_in_antibiotic_prescription">
 	    Change in antibiotic prescription?
 	  </label>
 	</td>
@@ -58,13 +59,13 @@
       <tr>
 	<td>
 	  <label class="checkbox inline">
-	    <input type="checkbox" ng-model="editing.infection_control_advice_given">
+	    <input class="form-control" type="checkbox" ng-model="editing.infection_control_advice_given">
 	    Infection control advice given?
 	  </label>
 	</td>
 	<td>
 	  <label class="checkbox inline">
-	    <input type="checkbox" ng-model="editing.referred_to_opat">
+	    <input class="form-control" type="checkbox" ng-model="editing.referred_to_opat">
 	    Referred to OPAT?
 	  </label>
 	</td>
