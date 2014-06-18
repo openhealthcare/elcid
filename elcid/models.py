@@ -32,6 +32,7 @@ __all__ = [
 class Demographics(PatientSubrecord):
     _is_singleton = True
     _fieldnames = [
+        'patient_id',
         'hospital_number', 'nhs_number',
         'name', 'date_of_birth',
         'country_of_birth', 'ethnicity'
@@ -97,6 +98,7 @@ class Diagnosis(EpisodeSubrecord):
     _title = 'Diagnosis / Issues'
     _sort = 'date_of_diagnosis'
     _fieldnames = [
+        'episode_id',
         'condition', 'provisional',
         'details', 'date_of_diagnosis'
         ]
@@ -118,6 +120,7 @@ class PastMedicalHistory(EpisodeSubrecord):
     _title = 'PMH'
     _sort = 'year'
     _fieldnames = [
+        'episode_id',
         'condition', 'year', 'details'
         ]
 
@@ -136,6 +139,7 @@ class GeneralNote(EpisodeSubrecord):
 
 class Travel(EpisodeSubrecord):
     _fieldnames = [
+        'episode_id',
         'destination', 'dates', 'reason_for_travel',
         'specific_exposures'
         ]
@@ -150,6 +154,7 @@ class Antimicrobial(EpisodeSubrecord):
     _title = 'Antimicrobials'
     _sort = 'start_date'
     _fieldnames = [
+        'episode_id',
         'drug', 'start_date', 'end_date', 'dose',
         'route', 'delivered_by', 'adverse_event'
         ]
@@ -165,6 +170,7 @@ class Antimicrobial(EpisodeSubrecord):
 
 class Allergies(PatientSubrecord):
     _fieldnames = [
+        'patient_id',
         'drug', 'provisional', 'details'
         ]
 
@@ -177,6 +183,7 @@ class MicrobiologyInput(EpisodeSubrecord):
     _title = 'Clinical Advice'
     _sort = 'date'
     _fieldnames = [
+        'episode_id',
         'date', 'initials', 'reason_for_interaction',
         'clinical_discussion', 'agreed_plan',
         'discussed_with',
@@ -205,6 +212,7 @@ class MicrobiologyTest(EpisodeSubrecord):
     _title = 'Investigations'
     _sort = 'date_ordered'
     _fieldnames = [
+        'episode_id',
         'test',
         'date_ordered',
         'details',
