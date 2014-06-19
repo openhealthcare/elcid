@@ -8,204 +8,23 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding model 'Demographics'
-        db.create_table(u'elcid_demographics', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('consistency_token', self.gf('django.db.models.fields.CharField')(max_length=8)),
-            ('patient', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['opal.Patient'])),
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
-            ('hospital_number', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
-            ('date_of_birth', self.gf('django.db.models.fields.DateField')(null=True, blank=True)),
-        ))
-        db.send_create_signal(u'elcid', ['Demographics'])
+        # Adding field 'Antimicrobial.frequency_fk'
+        db.add_column(u'elcid_antimicrobial', 'frequency_fk',
+                      self.gf('django.db.models.fields.related.ForeignKey')(to=orm['opal.Antimicrobial_frequency'], null=True, blank=True),
+                      keep_default=False)
 
-        # Adding model 'Location'
-        db.create_table(u'elcid_location', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('consistency_token', self.gf('django.db.models.fields.CharField')(max_length=8)),
-            ('episode', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['opal.Episode'], null=True)),
-            ('category', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
-            ('hospital', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
-            ('ward', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
-            ('bed', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
-            ('date_of_admission', self.gf('django.db.models.fields.DateField')(null=True, blank=True)),
-            ('discharge_date', self.gf('django.db.models.fields.DateField')(null=True, blank=True)),
-        ))
-        db.send_create_signal(u'elcid', ['Location'])
-
-        # Adding model 'Diagnosis'
-        db.create_table(u'elcid_diagnosis', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('consistency_token', self.gf('django.db.models.fields.CharField')(max_length=8)),
-            ('episode', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['opal.Episode'], null=True)),
-            ('provisional', self.gf('django.db.models.fields.BooleanField')(default=False)),
-            ('details', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
-            ('date_of_diagnosis', self.gf('django.db.models.fields.DateField')(null=True, blank=True)),
-            ('condition_fk', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['opal.Condition'], null=True, blank=True)),
-            ('condition_ft', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
-        ))
-        db.send_create_signal(u'elcid', ['Diagnosis'])
-
-        # Adding model 'PastMedicalHistory'
-        db.create_table(u'elcid_pastmedicalhistory', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('consistency_token', self.gf('django.db.models.fields.CharField')(max_length=8)),
-            ('episode', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['opal.Episode'], null=True)),
-            ('year', self.gf('django.db.models.fields.CharField')(max_length=4, blank=True)),
-            ('condition_fk', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['opal.Condition'], null=True, blank=True)),
-            ('condition_ft', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
-        ))
-        db.send_create_signal(u'elcid', ['PastMedicalHistory'])
-
-        # Adding model 'GeneralNote'
-        db.create_table(u'elcid_generalnote', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('consistency_token', self.gf('django.db.models.fields.CharField')(max_length=8)),
-            ('episode', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['opal.Episode'], null=True)),
-            ('date', self.gf('django.db.models.fields.DateField')(null=True, blank=True)),
-            ('comment', self.gf('django.db.models.fields.TextField')()),
-        ))
-        db.send_create_signal(u'elcid', ['GeneralNote'])
-
-        # Adding model 'Travel'
-        db.create_table(u'elcid_travel', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('consistency_token', self.gf('django.db.models.fields.CharField')(max_length=8)),
-            ('episode', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['opal.Episode'], null=True)),
-            ('dates', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
-            ('specific_exposures', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
-            ('destination_fk', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['opal.Destination'], null=True, blank=True)),
-            ('destination_ft', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
-            ('reason_for_travel_fk', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['opal.Travel_reason'], null=True, blank=True)),
-            ('reason_for_travel_ft', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
-        ))
-        db.send_create_signal(u'elcid', ['Travel'])
-
-        # Adding model 'Antimicrobial'
-        db.create_table(u'elcid_antimicrobial', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('consistency_token', self.gf('django.db.models.fields.CharField')(max_length=8)),
-            ('episode', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['opal.Episode'], null=True)),
-            ('dose', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
-            ('start_date', self.gf('django.db.models.fields.DateField')(null=True, blank=True)),
-            ('end_date', self.gf('django.db.models.fields.DateField')(null=True, blank=True)),
-            ('route_fk', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['opal.Antimicrobial_route'], null=True, blank=True)),
-            ('route_ft', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
-            ('drug_fk', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['opal.Antimicrobial'], null=True, blank=True)),
-            ('drug_ft', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
-        ))
-        db.send_create_signal(u'elcid', ['Antimicrobial'])
-
-        # Adding model 'MicrobiologyInput'
-        db.create_table(u'elcid_microbiologyinput', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('consistency_token', self.gf('django.db.models.fields.CharField')(max_length=8)),
-            ('episode', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['opal.Episode'], null=True)),
-            ('date', self.gf('django.db.models.fields.DateField')(null=True, blank=True)),
-            ('initials', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
-            ('clinical_discussion', self.gf('django.db.models.fields.TextField')(blank=True)),
-            ('agreed_plan', self.gf('django.db.models.fields.TextField')(blank=True)),
-            ('discussed_with', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
-            ('clinical_advice_given', self.gf('django.db.models.fields.BooleanField')(default=False)),
-            ('infection_control_advice_given', self.gf('django.db.models.fields.BooleanField')(default=False)),
-            ('change_in_antibiotic_prescription', self.gf('django.db.models.fields.BooleanField')(default=False)),
-            ('referred_to_opat', self.gf('django.db.models.fields.BooleanField')(default=False)),
-            ('reason_for_interaction_fk', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['opal.Clinical_advice_reason_for_interaction'], null=True, blank=True)),
-            ('reason_for_interaction_ft', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
-        ))
-        db.send_create_signal(u'elcid', ['MicrobiologyInput'])
-
-        # Adding model 'Todo'
-        db.create_table(u'elcid_todo', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('consistency_token', self.gf('django.db.models.fields.CharField')(max_length=8)),
-            ('episode', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['opal.Episode'], null=True)),
-            ('details', self.gf('django.db.models.fields.TextField')(blank=True)),
-        ))
-        db.send_create_signal(u'elcid', ['Todo'])
-
-        # Adding model 'MicrobiologyTest'
-        db.create_table(u'elcid_microbiologytest', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('consistency_token', self.gf('django.db.models.fields.CharField')(max_length=8)),
-            ('episode', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['opal.Episode'], null=True)),
-            ('test', self.gf('django.db.models.fields.CharField')(max_length=255)),
-            ('date_ordered', self.gf('django.db.models.fields.DateField')(null=True, blank=True)),
-            ('details', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
-            ('microscopy', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
-            ('organism', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
-            ('sensitive_antibiotics', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
-            ('resistant_antibiotics', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
-            ('result', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('igm', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('igg', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('vca_igm', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('vca_igg', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('ebna_igg', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('hbsag', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('anti_hbs', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('anti_hbcore_igm', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('anti_hbcore_igg', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('rpr', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('tppa', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('viral_load', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('parasitaemia', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('hsv', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('vzv', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('syphilis', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('c_difficile_antigen', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('c_difficile_toxin', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('species', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('hsv_1', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('hsv_2', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('enterovirus', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('cmv', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('ebv', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('influenza_a', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('influenza_b', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('parainfluenza', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('metapneumovirus', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('rsv', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('adenovirus', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('norovirus', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('rotavirus', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('giardia', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('entamoeba_histolytica', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('cryptosporidium', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-        ))
-        db.send_create_signal(u'elcid', ['MicrobiologyTest'])
+        # Adding field 'Antimicrobial.frequency_ft'
+        db.add_column(u'elcid_antimicrobial', 'frequency_ft',
+                      self.gf('django.db.models.fields.CharField')(default='', max_length=255, blank=True, null=True),
+                      keep_default=False)
 
 
     def backwards(self, orm):
-        # Deleting model 'Demographics'
-        db.delete_table(u'elcid_demographics')
+        # Deleting field 'Antimicrobial.frequency_fk'
+        db.delete_column(u'elcid_antimicrobial', 'frequency_fk_id')
 
-        # Deleting model 'Location'
-        db.delete_table(u'elcid_location')
-
-        # Deleting model 'Diagnosis'
-        db.delete_table(u'elcid_diagnosis')
-
-        # Deleting model 'PastMedicalHistory'
-        db.delete_table(u'elcid_pastmedicalhistory')
-
-        # Deleting model 'GeneralNote'
-        db.delete_table(u'elcid_generalnote')
-
-        # Deleting model 'Travel'
-        db.delete_table(u'elcid_travel')
-
-        # Deleting model 'Antimicrobial'
-        db.delete_table(u'elcid_antimicrobial')
-
-        # Deleting model 'MicrobiologyInput'
-        db.delete_table(u'elcid_microbiologyinput')
-
-        # Deleting model 'Todo'
-        db.delete_table(u'elcid_todo')
-
-        # Deleting model 'MicrobiologyTest'
-        db.delete_table(u'elcid_microbiologytest')
+        # Deleting field 'Antimicrobial.frequency_ft'
+        db.delete_column(u'elcid_antimicrobial', 'frequency_ft')
 
 
     models = {
@@ -216,26 +35,67 @@ class Migration(SchemaMigration):
             'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
         },
+        u'elcid.allergies': {
+            'Meta': {'object_name': 'Allergies'},
+            'consistency_token': ('django.db.models.fields.CharField', [], {'max_length': '8'}),
+            'details': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
+            'drug_fk': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['opal.Antimicrobial']", 'null': 'True', 'blank': 'True'}),
+            'drug_ft': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'patient': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['opal.Patient']"}),
+            'provisional': ('django.db.models.fields.BooleanField', [], {'default': 'False'})
+        },
         u'elcid.antimicrobial': {
             'Meta': {'object_name': 'Antimicrobial'},
+            'adverse_event_fk': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['opal.Antimicrobial_adverse_event']", 'null': 'True', 'blank': 'True'}),
+            'adverse_event_ft': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
+            'comments': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'consistency_token': ('django.db.models.fields.CharField', [], {'max_length': '8'}),
+            'delivered_by': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
             'dose': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
             'drug_fk': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['opal.Antimicrobial']", 'null': 'True', 'blank': 'True'}),
             'drug_ft': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
             'end_date': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
             'episode': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['opal.Episode']", 'null': 'True'}),
+            'frequency_fk': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['opal.Antimicrobial_frequency']", 'null': 'True', 'blank': 'True'}),
+            'frequency_ft': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'route_fk': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['opal.Antimicrobial_route']", 'null': 'True', 'blank': 'True'}),
             'route_ft': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
             'start_date': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'})
         },
+        u'elcid.carers': {
+            'Meta': {'object_name': 'Carers'},
+            'consistency_token': ('django.db.models.fields.CharField', [], {'max_length': '8'}),
+            'gp': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['opal.GP']", 'null': 'True', 'blank': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'nurse': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['opal.CommunityNurse']", 'null': 'True', 'blank': 'True'}),
+            'patient': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['opal.Patient']"})
+        },
+        u'elcid.contactdetails': {
+            'Meta': {'object_name': 'ContactDetails'},
+            'address_line1': ('django.db.models.fields.CharField', [], {'max_length': '45', 'null': 'True', 'blank': 'True'}),
+            'address_line2': ('django.db.models.fields.CharField', [], {'max_length': '45', 'null': 'True', 'blank': 'True'}),
+            'city': ('django.db.models.fields.CharField', [], {'max_length': '50', 'blank': 'True'}),
+            'consistency_token': ('django.db.models.fields.CharField', [], {'max_length': '8'}),
+            'county': ('django.db.models.fields.CharField', [], {'max_length': '40', 'null': 'True', 'blank': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'patient': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['opal.Patient']"}),
+            'post_code': ('django.db.models.fields.CharField', [], {'max_length': '10', 'null': 'True', 'blank': 'True'}),
+            'tel1': ('django.db.models.fields.CharField', [], {'max_length': '50', 'null': 'True', 'blank': 'True'}),
+            'tel2': ('django.db.models.fields.CharField', [], {'max_length': '50', 'null': 'True', 'blank': 'True'})
+        },
         u'elcid.demographics': {
             'Meta': {'object_name': 'Demographics'},
             'consistency_token': ('django.db.models.fields.CharField', [], {'max_length': '8'}),
+            'country_of_birth_fk': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['opal.Destination']", 'null': 'True', 'blank': 'True'}),
+            'country_of_birth_ft': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
             'date_of_birth': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
+            'ethnicity': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
             'hospital_number': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
+            'nhs_number': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
             'patient': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['opal.Patient']"})
         },
         u'elcid.diagnosis': {
@@ -257,16 +117,39 @@ class Migration(SchemaMigration):
             'episode': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['opal.Episode']", 'null': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
         },
+        u'elcid.line': {
+            'Meta': {'object_name': 'Line'},
+            'complications_fk': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['opal.Line_complication']", 'null': 'True', 'blank': 'True'}),
+            'complications_ft': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
+            'consistency_token': ('django.db.models.fields.CharField', [], {'max_length': '8'}),
+            'episode': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['opal.Episode']", 'null': 'True'}),
+            'external_length': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'inserted_by': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
+            'insertion_date': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
+            'insertion_time': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
+            'line_type_fk': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['opal.Line_type']", 'null': 'True', 'blank': 'True'}),
+            'line_type_ft': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
+            'removal_date': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
+            'removal_reason_fk': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['opal.Line_removal_reason']", 'null': 'True', 'blank': 'True'}),
+            'removal_reason_ft': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
+            'removal_time': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
+            'site_fk': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['opal.Line_site']", 'null': 'True', 'blank': 'True'}),
+            'site_ft': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
+            'special_instructions': ('django.db.models.fields.TextField', [], {})
+        },
         u'elcid.location': {
             'Meta': {'object_name': 'Location'},
             'bed': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
             'category': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
             'consistency_token': ('django.db.models.fields.CharField', [], {'max_length': '8'}),
-            'date_of_admission': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
-            'discharge_date': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
             'episode': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['opal.Episode']", 'null': 'True'}),
             'hospital': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'opat_discharge': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
+            'opat_referral': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
+            'opat_referral_route': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
+            'opat_referral_team': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
             'ward': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'})
         },
         u'elcid.microbiologyinput': {
@@ -321,7 +204,7 @@ class Migration(SchemaMigration):
             'parainfluenza': ('django.db.models.fields.CharField', [], {'max_length': '20', 'blank': 'True'}),
             'parasitaemia': ('django.db.models.fields.CharField', [], {'max_length': '20', 'blank': 'True'}),
             'resistant_antibiotics': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
-            'result': ('django.db.models.fields.CharField', [], {'max_length': '20', 'blank': 'True'}),
+            'result': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
             'rotavirus': ('django.db.models.fields.CharField', [], {'max_length': '20', 'blank': 'True'}),
             'rpr': ('django.db.models.fields.CharField', [], {'max_length': '20', 'blank': 'True'}),
             'rsv': ('django.db.models.fields.CharField', [], {'max_length': '20', 'blank': 'True'}),
@@ -335,11 +218,31 @@ class Migration(SchemaMigration):
             'viral_load': ('django.db.models.fields.CharField', [], {'max_length': '20', 'blank': 'True'}),
             'vzv': ('django.db.models.fields.CharField', [], {'max_length': '20', 'blank': 'True'})
         },
+        u'elcid.opatoutstandingissues': {
+            'Meta': {'object_name': 'OPATOutstandingIssues'},
+            'consistency_token': ('django.db.models.fields.CharField', [], {'max_length': '8'}),
+            'details': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
+            'episode': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['opal.Episode']", 'null': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
+        },
+        u'elcid.opatreview': {
+            'Meta': {'object_name': 'OPATReview'},
+            'consistency_token': ('django.db.models.fields.CharField', [], {'max_length': '8'}),
+            'date': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
+            'discussion': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'episode': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['opal.Episode']", 'null': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'initials': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
+            'next_review': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
+            'opat_plan': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
+            'rv_type': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'})
+        },
         u'elcid.pastmedicalhistory': {
             'Meta': {'object_name': 'PastMedicalHistory'},
             'condition_fk': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['opal.Condition']", 'null': 'True', 'blank': 'True'}),
             'condition_ft': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
             'consistency_token': ('django.db.models.fields.CharField', [], {'max_length': '8'}),
+            'details': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
             'episode': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['opal.Episode']", 'null': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'year': ('django.db.models.fields.CharField', [], {'max_length': '4', 'blank': 'True'})
@@ -368,6 +271,16 @@ class Migration(SchemaMigration):
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '255'})
         },
+        u'opal.antimicrobial_adverse_event': {
+            'Meta': {'ordering': "['name']", 'object_name': 'Antimicrobial_adverse_event'},
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '255'})
+        },
+        u'opal.antimicrobial_frequency': {
+            'Meta': {'ordering': "['name']", 'object_name': 'Antimicrobial_frequency'},
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '255'})
+        },
         u'opal.antimicrobial_route': {
             'Meta': {'ordering': "['name']", 'object_name': 'Antimicrobial_route'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
@@ -377,6 +290,18 @@ class Migration(SchemaMigration):
             'Meta': {'ordering': "['name']", 'object_name': 'Clinical_advice_reason_for_interaction'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '255'})
+        },
+        u'opal.communitynurse': {
+            'Meta': {'object_name': 'CommunityNurse'},
+            'address_line1': ('django.db.models.fields.CharField', [], {'max_length': '45', 'null': 'True', 'blank': 'True'}),
+            'address_line2': ('django.db.models.fields.CharField', [], {'max_length': '45', 'null': 'True', 'blank': 'True'}),
+            'city': ('django.db.models.fields.CharField', [], {'max_length': '50', 'blank': 'True'}),
+            'county': ('django.db.models.fields.CharField', [], {'max_length': '40', 'null': 'True', 'blank': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
+            'post_code': ('django.db.models.fields.CharField', [], {'max_length': '10', 'null': 'True', 'blank': 'True'}),
+            'tel1': ('django.db.models.fields.CharField', [], {'max_length': '50', 'null': 'True', 'blank': 'True'}),
+            'tel2': ('django.db.models.fields.CharField', [], {'max_length': '50', 'null': 'True', 'blank': 'True'})
         },
         u'opal.condition': {
             'Meta': {'ordering': "['name']", 'object_name': 'Condition'},
@@ -391,8 +316,43 @@ class Migration(SchemaMigration):
         u'opal.episode': {
             'Meta': {'object_name': 'Episode'},
             'active': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'consistency_token': ('django.db.models.fields.CharField', [], {'max_length': '8'}),
+            'date_of_admission': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
+            'discharge_date': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'patient': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['opal.Patient']"})
+        },
+        u'opal.gp': {
+            'Meta': {'object_name': 'GP'},
+            'address_line1': ('django.db.models.fields.CharField', [], {'max_length': '45', 'null': 'True', 'blank': 'True'}),
+            'address_line2': ('django.db.models.fields.CharField', [], {'max_length': '45', 'null': 'True', 'blank': 'True'}),
+            'city': ('django.db.models.fields.CharField', [], {'max_length': '50', 'blank': 'True'}),
+            'county': ('django.db.models.fields.CharField', [], {'max_length': '40', 'null': 'True', 'blank': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
+            'post_code': ('django.db.models.fields.CharField', [], {'max_length': '10', 'null': 'True', 'blank': 'True'}),
+            'tel1': ('django.db.models.fields.CharField', [], {'max_length': '50', 'null': 'True', 'blank': 'True'}),
+            'tel2': ('django.db.models.fields.CharField', [], {'max_length': '50', 'null': 'True', 'blank': 'True'})
+        },
+        u'opal.line_complication': {
+            'Meta': {'ordering': "['name']", 'object_name': 'Line_complication'},
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '255'})
+        },
+        u'opal.line_removal_reason': {
+            'Meta': {'ordering': "['name']", 'object_name': 'Line_removal_reason'},
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '255'})
+        },
+        u'opal.line_site': {
+            'Meta': {'ordering': "['name']", 'object_name': 'Line_site'},
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '255'})
+        },
+        u'opal.line_type': {
+            'Meta': {'ordering': "['name']", 'object_name': 'Line_type'},
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '255'})
         },
         u'opal.patient': {
             'Meta': {'object_name': 'Patient'},

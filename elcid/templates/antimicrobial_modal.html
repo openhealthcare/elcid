@@ -38,6 +38,16 @@
       </div>
     </div>
     <div class="form-group">
+      <label class="control-label col-sm-3">Frequency</label>
+      <div class="col-sm-8">
+	<input class="form-control" type="text"
+               ng-model="editing.frequency"
+               ng-options="r for r in antimicrobial_frequency_list"
+               bs-typeahead>
+      </div>
+    </div>
+
+    <div class="form-group">
       <label class="control-label col-sm-3">Delivered by</label>
       <div class="col-sm-8">
 	<input class="form-control" type="text" ng-model="editing.delivered_by">

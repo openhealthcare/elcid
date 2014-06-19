@@ -3,6 +3,8 @@ model_names = [
     'antimicrobial',
     'antimicrobial_route',
     'antimicrobial_adverse_event',
+    'antimicrobial_frequency',
+
     'clinical_advice_reason_for_interaction',
     'condition',
     'destination',
