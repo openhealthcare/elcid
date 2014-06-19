@@ -156,7 +156,7 @@ class Antimicrobial(EpisodeSubrecord):
     _fieldnames = [
         'episode_id',
         'drug', 'start_date', 'end_date', 'dose',
-        'route', 'delivered_by', 'adverse_event'
+        'route', 'delivered_by', 'adverse_event', 'comments'
         ]
 
     drug = ForeignKeyOrFreeText(option_models['antimicrobial'])
@@ -166,6 +166,7 @@ class Antimicrobial(EpisodeSubrecord):
     end_date = models.DateField(null=True, blank=True)
     delivered_by = models.CharField(max_length=255, blank=True, null=True)
     adverse_event = ForeignKeyOrFreeText(option_models['antimicrobial_adverse_event'])
+    comments = models.TextField(blank=True, null=True)
 
 
 class Allergies(PatientSubrecord):
