@@ -1,83 +1,81 @@
 {% extends 'modal_base.html' %}
 {% block modal_body %}
   <form class="form-horizontal">
-    <div class="control-group">
-      <label class="control-label">Line Type</label>
-      <div class="controls">
-	<input type="text" ng-model="editing.line_type"
+    <div class="form-group">
+      <label class="control-label col-sm-3">Line Type</label>
+      <div class="col-sm-8">
+	<input class="form-control" type="text" ng-model="editing.line_type"
                ng-options="t for t in line_type_list"
                bs-typeahead>
       </div>
     </div>
-    <div class="control-group">
-      <label class="control-label">Site</label>
-      <div class="controls">
-	<input type="text" ng-model="editing.site"
+    <div class="form-group">
+      <label class="control-label col-sm-3">Site</label>
+      <div class="col-sm-8">
+	<input class="form-control" type="text" ng-model="editing.site"
                ng-options="s for s in line_site_list"
                bs-typeahead>
       </div>
     </div>
-    <div class="control-group">
-      <label class="control-label">Insertion Date</label>
-      <div class="controls">
-	<input type="text" ng-model="editing.insertion_date" bs-datepicker>
+    <div class="form-group">
+      <label class="control-label col-sm-3">Insertion Date</label>
+      <div class="col-sm-8">
+	<input class="form-control" type="text" ng-model="editing.insertion_date" bs-datepicker>
       </div>
     </div>
-    <div class="control-group" ng-show="editing.line_type == 'Peripheral cannula'">
-      <label class="control-label">Insertion Time</label>
-      <div class="controls">
-	<input type="text" ng-model="editing.insertion_time">
+    <div class="form-group" ng-show="editing.line_type == 'Peripheral cannula'">
+      <label class="control-label col-sm-3">Insertion Time</label>
+      <div class="col-sm-8">
+	<input class="form-control" type="text" ng-model="editing.insertion_time">
       </div>
     </div>
-    <div class="control-group">
-      <label class="control-label">Inserted By</label>
-      <div class="controls">
-	<input type="text" ng-model="editing.inserted_by">
+    <div class="form-group">
+      <label class="control-label col-sm-3">Inserted By</label>
+      <div class="col-sm-8">
+	<input class="form-control" type="text" ng-model="editing.inserted_by">
       </div>
     </div>
-    <div class="control-group" ng-show="editing.line_type != 'Peripheral cannula'">
-      <label class="control-label">External Length (cm)</label>
-      <div class="controls">
-	<input type="text" ng-model="editing.external_length">
+    <div class="form-group" ng-show="editing.line_type != 'Peripheral cannula'">
+      <label class="control-label col-sm-3">External Length (cm)</label>
+      <div class="col-sm-8">
+	<input class="form-control" type="text" ng-model="editing.external_length">
       </div>
     </div>
-    <div class="control-group">
-      <label class="control-label">Removal Date</label>
-      <div class="controls">
-        <input type="text" ng-model="editing.removal_date" bs-datepicker>
+    <div class="form-group">
+      <label class="control-label col-sm-3">Removal Date</label>
+      <div class="col-sm-8">
+        <input class="form-control" type="text" ng-model="editing.removal_date" bs-datepicker>
       </div>
     </div>
-    <div class="control-group" ng-show="editing.line_type == 'Peripheral cannula'">
-      <label class="control-label">Removal Time</label>
-      <div class="controls">
-        <input type="text" ng-model="editing.removal_time" bs-datepicker>
+    <div class="form-group" ng-show="editing.line_type == 'Peripheral cannula'">
+      <label class="control-label col-sm-3">Removal Time</label>
+      <div class="col-sm-8">
+        <input class="form-control" type="text" ng-model="editing.removal_time" bs-datepicker>
       </div>
     </div>
 
-    <div class="control-group">
-      <label class="control-label">Complications</label>
-      <div class="controls">
-        <input type="text" ng-model="editing.complications"
+    <div class="form-group">
+      <label class="control-label col-sm-3">Complications</label>
+      <div class="col-sm-8">
+        <input class="form-control" type="text" ng-model="editing.complications"
                ng-options="t for t in line_complication_list"
                bs-typeahead>
       </div>
     </div>
-    <div class="control-group">
-      <label class="control-label">Removal Reason</label>
-      <div class="controls">
-        <input type="text" ng-model="editing.removal_reason"
+    <div class="form-group">
+      <label class="control-label col-sm-3">Removal Reason</label>
+      <div class="col-sm-8">
+        <input class="form-control" type="text" ng-model="editing.removal_reason"
                ng-options="t for t in line_removal_reason_list"
                bs-typeahead>
       </div>
     </div>
-    <div class="control-group">
-      <label class="control-label">Special Instructions</label>
-      <div class="controls">
-	<textarea ng-model="editing.special_instructions" rows="10"></textarea>
+    <div class="form-group">
+      <label class="control-label col-sm-3">Special Instructions</label>
+      <div class="col-sm-8">
+	<textarea class="form-control" ng-model="editing.special_instructions" rows="10"></textarea>
       </div>
     </div>
-
-
 
   </form>
 {% endblock %}
