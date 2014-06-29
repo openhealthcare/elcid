@@ -13,3 +13,4 @@ letter==0.4.1
 supervisor
 -e git://github.com/srosro/django-test-coverage#egg=django-test-coverage
 -e git://github.com/openhealthcare/opal.git@opat#egg=opal
+django-debug-toolbar
