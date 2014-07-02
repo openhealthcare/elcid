@@ -31,6 +31,7 @@ list_columns_micro = [
     models.Diagnosis,
     models.Antimicrobial,
     models.MicrobiologyTest,
+    models.MicrobiologyInput,
     models.GeneralNote
 ]
 
