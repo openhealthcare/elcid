@@ -12,5 +12,6 @@ ffs==0.0.7.6
 letter==0.4.1
 supervisor
 -e git://github.com/srosro/django-test-coverage#egg=django-test-coverage
--e git://github.com/openhealthcare/opal.git@opat#egg=opal
 django-debug-toolbar
+-e git://github.com/openhealthcare/opal.git@extract#egg=opal
+
