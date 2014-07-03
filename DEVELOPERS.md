@@ -2,7 +2,17 @@
 
 Welcome to elCID's dev docs. 
 
-## Getting set up 1 - the easy way.
+elCID is an implementation of the OPAL framework for Digital Clinical Services. 
+
+The developer docs for OPAL - particularly the Your Implementation sections are your friend.
+
+In this document we'll run through setting up a development environment, walk you through the codebase, brief you on the location of the project's governance and development toolchain.
+
+## Getting yourself set up
+
+If you've never worked on elCID before, this is how you get going:
+
+### Getting set up 1 - the easy way.
 
 elCID is fully supported by the [Open Health Care Developer Toolkit](https://github.com/openhealthcare/developer). 
 Which is a fancy way to spell "Vagrant vm". 
@@ -21,7 +31,7 @@ Try sshing into the box and starting the dev server:
     $ workon elcid
     $ python manage.py runserver 0.0.0.0:8000
 
-## Getting set up 2 - the hard way.
+### Getting set up 2 - the hard way.
 
 For some "reason" you don't want to just run the automated "Make me a development environment" stuff? 
 
@@ -31,7 +41,7 @@ Below are the rough steps you'd need to go from scratch to get elCID running.
 
 Patches always welcome, but this method is unsupported && not recommended ;) 
 
-### (Installation - fresh machine)
+#### (Installation - fresh machine)
 
     sudo apt-get install emacs curl tree nginx git virtualenvwrapper libpq-dev python-dev
     . /home/ohc/.bashrc
@@ -60,3 +70,61 @@ Patches always welcome, but this method is unsupported && not recommended ;)
     python manage.py loaddata dumps/options.json
     python manage.py createinitialrevisions
 
+
+## Governance
+
+The elCID project is curated by Open Health Care and the Hospital For Tropical Diseases at University College Hospital London. There is a public record of issues on github, and strategic decisions about the direction of the project are documented there. 
+
+## Development toolchain
+
+The elCID project runs on Linux -> Postgres -> Python -> AngularJS -> Bootstrap. 
+
+We use Github for source code && PR management and Waffle.io for sprint planning.
+
+Continuous integration happens via Travis CI
+
+Test deployments run on Heroku.
+
+## Code Walkthrough
+
+### .
+
+Various documentation files (README, DEVELOPERS, CONTRIBUTING, LICENSE)
+
+Configuration files: 
+
+* .travis.yml -> Travis CI
+* Procfile -> Heroku deployments
+* requirements.txt -> Python dependencies
+
+Scripts: 
+
+* manage.py -> Django management tool
+* Rakefile -> Dev tasks (run tests etc) 
+
+### assets
+
+This is a dummy directory that exists to make Heroku happy when we run collectstatic. Nothing to see here, move along.
+
+### config
+
+Contains configuration files for running javascript tests.
+
+### dumps
+
+Fixtures for things like lookup lists.
+
+### elcid
+
+This is the source code!
+
+Much of this is What You Would Expect from a Django project. We'll just explain the things that are specific to OPAL/elCID here.
+
+#### elcid/schema.py
+
+This file contains the various schemas (sets of columns) for list views in elCID. 
+
+
+### etc
+
+Contains our production config files.
