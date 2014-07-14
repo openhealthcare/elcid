@@ -339,3 +339,14 @@ class OPATReview(EpisodeSubrecord):
 class OPATOutstandingIssues(EpisodeSubrecord):
     _title = 'Outstanding Issues'
     details = models.TextField(blank=True)
+
+
+class Appointment(EpisodeSubrecord):
+    _title = 'Upcoming Appointments'
+    _sort = 'date'
+
+    appointment_type = models.CharField(max_length=200, blank=True, null=True)
+    appointment_with = models.CharField(max_length=200, blank=True, null=True)
+    date = models.DateField(blank=True, null=True)
+    
+    

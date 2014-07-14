@@ -43,7 +43,7 @@ list_columns_opat = [
     models.Antimicrobial,
     models.MicrobiologyTest,
     models.Line,
-    models.OPATOutstandingIssues
+    models.OPATOutstandingIssues,
 ]
 
 list_columns_opat_review = [
@@ -78,10 +78,11 @@ detail_columns = [
     models.MicrobiologyInput,
     models.OPATReview,
     models.Travel,
+    models.Appointment,
     models.Todo,
     models.OPATOutstandingIssues,
     models.GeneralNote,
-]
+ ]
 
 extract_columns = [
     omodels.Tagging,
