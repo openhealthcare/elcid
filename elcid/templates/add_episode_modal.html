@@ -1,0 +1,109 @@
+<div class="modal-header">
+  <button type="button" class="close" ng-click="cancel()">×</button>
+  <h3>New Episode</h3>
+</div>
+<div class="modal-body">
+  <form class="form-horizontal" name="newEpisodeForm">
+    <div class="form-group">
+      <label class="control-label col-sm-3">Hospital number</label>
+      <div class="col-sm-8"><label>[[editing.demographics.hospital_number]]</label></div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-3">Name</label>
+      <div class="col-sm-8">
+	<input type="text" class="form-control" ng-model="editing.demographics.name">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-3">Date of birth</label>
+      <div class="col-sm-8">
+	<input type="text" class="form-control"
+               name="date_of_birth"
+	       ng-model="editing.demographics.date_of_birth"
+	       ng-pattern="/^(0?[1-9]|[12][0-9]|3[01])\/(0?[1-9]|1[012])\/(\d{4})$/"
+	       placeholder="dd/mm/yyyy" />
+        <span class="help-block" ng-show="newEpisodeForm.date_of_birth.$invalid">
+          Date of Birth must be dd/mm/yyyy
+        </span>
+
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-3">Category</label>
+      <div class="col-sm-8">
+        <select class="form-control" ng-model="editing.location.category">
+          <option value="">---------</option>
+          <option ng-repeat="category in episode_category_list">[[category]]</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group" ng-hide="editing.location.category == 'OPAT'">
+      <label class="control-label col-sm-3">Hospital</label>
+      <div class="col-sm-8">
+        <select class="form-control" ng-model="editing.hospital">
+          <option value="">---------</option>
+          <option ng-repeat="hospital in hospital_list">[[hospital]]</option>
+          <option>Other</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group" ng-hide="editing.location.category == 'OPAT'">
+      <label class="control-label col-sm-3">Ward</label>
+      <div class="col-sm-8">
+	<input type="text" class="form-control" ng-model="editing.location.ward">
+      </div>
+    </div>
+    <div class="form-group" ng-hide="editing.location.category == 'OPAT'">
+      <label class="control-label col-sm-3">Bed</label>
+      <div class="col-sm-8">
+	<input type="text" class="form-control" ng-model="editing.location.bed">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-3">Date of admission</label>
+      <div class="col-sm-8">
+	<input type="text" class="form-control" ng-model="editing.date_of_admission" bs-datepicker>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="control-label col-sm-3">Teams</label>
+      <div class="col-sm-8">
+	{% for tag in tags %}
+	<label class="checkbox">
+	  <input type="checkbox" ng-model="editing.tagging[0].{{tag.name}}">
+	  {{tag.title}}
+	</label>
+	{% endfor %}
+      </div>
+    </div>
+
+    <div class="form-group"
+	 ng-show="showSubtags([{% for tag in tags %}{% if tag.subtags %}'{{tag.name}}'{% if not forloop.last%},{% endif %}{% endif %}{% endfor %} ''])"
+	 >
+      <label class="control-label col-sm-3">Sub Teams</label>
+      <div class="col-sm-8">
+	{% for tag in tags %}
+	  {% if tag.subtags %}
+     	    {% for subtag in tag.subtags %}
+              {% if tag.name == 'opat' %}
+                <!-- TODO: Make this less special-case-ish -->
+                <!-- Can't manually set OPAT subtags! -->
+              {% else %}
+                <label class="checkbox"
+	               ng-show="editing.tagging[0].{{tag.name}} == true" >
+	          <input type="checkbox" ng-model="editing.tagging[0].{{subtag.name}}">
+	          {{subtag.title}} {{ tag.title }}
+                </label>
+              {% endif %}
+            {% endfor %}
+	  {% endif %}
+	{% endfor %}
+      </div>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-primary" ng-click="save()" ng-disabled="newEpisodeForm.date_of_birth.$invalid">Save record</button>
+  <button class="btn" ng-click="cancel()">Cancel</button>
+</div>
