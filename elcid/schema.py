@@ -75,6 +75,7 @@ detail_columns = [
     models.Allergies,
     models.MicrobiologyTest,
     models.Line,
+    models.OPATLineAssessment,
     models.MicrobiologyInput,
     models.OPATReview,
     models.Travel,

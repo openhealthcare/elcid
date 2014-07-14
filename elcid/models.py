@@ -24,8 +24,10 @@ __all__ = [
     'Todo',
     'MicrobiologyTest',
     'Line',
+    'Appointment',
     'OPATReview',
-    'OPATOutstandingIssues'
+    'OPATOutstandingIssues',
+    'OPATLineAssessment',
     ]
 
 
@@ -350,3 +352,10 @@ class Appointment(EpisodeSubrecord):
     date = models.DateField(blank=True, null=True)
     
     
+class OPATLineAssessment(EpisodeSubrecord):
+    assessment_date = models.DateField(blank=True, null=True)
+    vip_score = models.IntegerField(blank=True, null=True)
+    dressing_type = models.CharField(max_length=200, blank=True, null=True)
+    dressing_change_date = models.DateField(blank=True, null=True)
+    dressing_change_reason = models.CharField(max_length=200, blank=True, null=True)
+    bionector_change_date = models.DateField(blank=True, null=True)
