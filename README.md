@@ -1,55 +1,57 @@
-eLCID
-=====
+# eLCID
 
 eLCID is an Electronic Clinical Infection Database.
 
 This is the implementation of the [OPAL](https://github.com/openhealthcare/opal) project in use at HTD UCLH.
 
+It is a ward management tool with a particular focus on ID and related disciplines.
+
 [![Build
 Status](https://travis-ci.org/openhealthcare/elcid.png)](https://travis-ci.org/openhealthcare/elcid)
 
-Open source
-===========
+## What problem does elCID solve?
+
+elCID aims to make it easier to manage clinical interactions on hospital wards, focussed on Infectious Diseases.
+
+## Adapting elCID for Your Ward
+
+elCID is an implementation of the [OPAL](https://github.com/openhealthcare/opal) project. 
+
+While you might find it helpful as a reference version, and many of the models will be useful, we would suggest that you build your own implementation on top of OPAL rather than forking elCID directly. 
+Do get in touch (details below) if you would like any help or advice with this - we're always keen to hear from people implementing or considering the project!
+
+## Open governance
+
+Roadmap: https://github.com/openhealthcare/opal/wiki/Roadmap
+
+Discussion List: https://groups.google.com/forum/?ohc-dev#!forum/ohc-opal
+
+Access: availability of the latest source code, developer
+support mechanisms, public roadmap, and transparency of
+decision-making
+
+Development: the ability of developers to influence the content
+and direction of the project
+
+Derivatives: the ability for developers to create and distribute
+derivatives of the source code in the form of spin-off projects,
+handsets or applications.
+
+Community: a community structure that does not discriminate
+between developers
+
+(from http://www.visionmobile.com/blog/2011/07/the-open-governance-index-measuring-openness-from-android-to-webkit/)
+
+##Open source
+
 GNU Affero GPLv3
 
-Installation
-============
+## Developing
 
-pip install -r requirements.txt
-python manage.py syncdb --migrate
-python manage.py loaddata dumps/options.json
-python manage.py createinitialrevisions
+Developer documentation is available in DEVELOPERS.md
 
-(Installation - fresh machine)
-------------------------------
+## Communications
 
-# Expects Postgresql, openssh-server, postfix to be preinstalled
-sudo apt-get install emacs curl tree nginx git virtualenvwrapper libpq-dev python-dev
-. /home/ohc/.bashrc
-cd /usr/local
-sudo mkdir ohc
-sudo chown ohc:ohc ohc/
-cd ohc
-mkdir -p log/supervisord
-mkdir -p var/run
-mkvirtualenv elcid
-git clone https://github.com/openhealthcare/elcid
-
-sudo su postgres -c "createuser ohc"
-sudo su postgres -c c"reatedb elcid"
-# Edit local settings to change database
-
-sudo cp elcid/etc/upstart.conf /etc/init/elcid.conf
-sudo rm /etc/nginx/sites-enabled/default
-sudo ln -s $PWD/etc/nginx.conf /etc/nginx/sites-enabled/elcid
-sudo /etc/init.d/nginx restart
-
-python manage.py collectstatic
-
-# As Above
-
-Communications
-==============
 hello@openhealthcare.org.uk
 
 http://www.openhealthcare.org.uk
