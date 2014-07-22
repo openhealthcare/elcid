@@ -3,7 +3,13 @@
   <form class="form-horizontal">
     <div class="form-group">
       <label class="control-label col-sm-3">Category</label>
-      <div class="col-sm-8">
+      <div class="col-sm-8" ng-show="editing.category == 'Discharged'">
+        <p>
+          [[ editing.category ]] &nbsp; 
+          <button class="btn" ng-click="undischarge()">Undischarge</button>
+        </p>
+      </div>
+      <div class="col-sm-8" ng-hide="editing.category == 'Discharged'">        
         <select class="form-control" ng-model="editing.category">
           <option value="">---------</option>
           <option ng-repeat="category in episode_category_list">[[category]]</option>
