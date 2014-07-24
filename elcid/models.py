@@ -186,6 +186,7 @@ class Allergies(PatientSubrecord):
 class MicrobiologyInput(EpisodeSubrecord):
     _title = 'Clinical Advice'
     _sort = 'date'
+    _read_only = 'true'
     _fieldnames = [
         'episode_id',
         'date', 'initials', 'reason_for_interaction',
