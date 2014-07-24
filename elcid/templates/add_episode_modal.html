@@ -79,7 +79,7 @@
     </div>
 
     <div class="form-group"
-	 ng-show="showSubtags([{% for tag in tags %}{% if tag.subtags %}'{{tag.name}}'{% if not forloop.last%},{% endif %}{% endif %}{% endfor %} ''])"
+	 ng-show="showSubtags([{% for tag in tags %}{% if tag.subtags %}'{{tag.name}}'{% if not forloop.last%},{% endif %}{% endif %}{% endfor %}])"
 	 >
       <label class="control-label col-sm-3">Sub Teams</label>
       <div class="col-sm-8">
