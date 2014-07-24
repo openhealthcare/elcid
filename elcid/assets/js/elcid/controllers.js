@@ -59,6 +59,8 @@ controllers.controller('DischargeEpisodeCtrl', function($scope, $timeout,
         if($scope.editing.category == 'Unfollow') {
             // No longer under active review does not set a discharge date
             episodeAttrs.discharge_date = null;
+        }else{
+            episodeAttrs.discharge_date = $scope.editing.discharge_date;
         }
 
 	if ($scope.editing.category != 'Followup') {
