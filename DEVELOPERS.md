@@ -124,6 +124,10 @@ Much of this is What You Would Expect from a Django project. We'll just explain 
 
 This file contains the various schemas (sets of columns) for list views in elCID. 
 
+#### elcid/options.py
+
+This contains our OPAL lookuplist models.
+TODO: Move these out of here or make them implementationd dependent.
 
 ### etc
 
