@@ -22,12 +22,10 @@ list_columns_id_liaison = [
     omodels.Tagging,
     models.Diagnosis,
     models.PastMedicalHistory,
-    models.Travel,
     models.Antimicrobial,
     models.MicrobiologyTest,
     models.MicrobiologyInput,
     models.GeneralNote,
-    models.Todo,
 ]
 
 list_columns_infection_control = [
