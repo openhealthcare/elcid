@@ -11,7 +11,7 @@ end
 
 task :jstest do
   p "Running Javascript Unit tests for #{PROJ}"
-  sh "karma start config/karma.conf.travis.js --single-run" do | ok, res |
+  sh "./node_modules/karma/bin/karma start config/karma.conf.travis.js --single-run" do | ok, res |
     if not ok # Don't stacktrace please Rake. Ta.
       exit 1
     end
