@@ -20,7 +20,7 @@ end
 
 task :devjstest do
   p "Running Javascript Unit tests for #{PROJ}"
-  sh "DISPLAY=:10; karma start config/karma.conf.developer.js --browsers Firefox --single-run" do | ok, res |
+  sh "export DISPLAY=:10; karma start config/karma.conf.developer.js --browsers Firefox --single-run" do | ok, res |
     if not ok # Don't stacktrace please Rake. Ta.
       exit 1
     end
