@@ -1,7 +1,7 @@
 module.exports =  function(config){
     config.set({
         frameworks: ['jasmine'],
-        browsers: ['Chrome'],
+        browsers: ['Firefox'],
         basePath:  '/home/travis/virtualenv/python2.7/src/opal/opal/static/js',
 
         files: [
