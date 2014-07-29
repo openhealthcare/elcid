@@ -129,6 +129,12 @@ This file contains the various schemas (sets of columns) for list views in elCID
 This contains our OPAL lookuplist models.
 TODO: Move these out of here or make them implementationd dependent.
 
+#### elcid/models.py
+
+This contains our datamodels for elCID.
+
+These are roughly speaking, a 1-1 mapping to columns somewhere in elCID.
+
 ### etc
 
 Contains our production config files.
