@@ -10,7 +10,7 @@ from django.contrib.auth.models import User
 import ffs
 
 from elcid import models
-from opal.models import Patient, Episode
+from opal.models import Patient, Episode, Team
 from opal import exceptions
 
 HERE = ffs.Path.here()
@@ -66,13 +66,13 @@ class DemographicsTest(TestCase):
     def test_field_schema(self):
         schema = models.Demographics.build_field_schema()
         expected_schema = [
-            {'name': 'consistency_token', 'type': 'token'},
-            {'name': 'name', 'type': 'string'},
-            {'name': 'hospital_number', 'type': 'string'},
-            {'name': 'nhs_number', 'type': 'string'},
-            {'name': 'date_of_birth', 'type': 'date'},
-            {'name': 'ethnicity', 'type': 'string'},
-            {'name': 'country_of_birth', 'type': 'string'},
+            {'name': 'consistency_token', 'type': 'token', 'lookup_list': None},
+            {'name': 'name', 'type': 'string', 'lookup_list': None},
+            {'name': 'hospital_number', 'type': 'string', 'lookup_list': None},
+            {'name': 'nhs_number', 'type': 'string', 'lookup_list': None},
+            {'name': 'date_of_birth', 'type': 'date', 'lookup_list': None},
+            {'name': 'ethnicity', 'type': 'string', 'lookup_list': None},
+            {'name': 'country_of_birth', 'type': 'string', 'lookup_list': 'destination'},
             ]
         self.assertEqual(expected_schema, schema)
 
@@ -98,6 +98,7 @@ class LocationTest(TestCase):
             'opat_referral': None,
             'opat_referral_route': None,
             'opat_referral_team': None,
+            'opat_referral_team_address': None,            
             }
         self.assertEqual(expected_data, self.location.to_dict(self.user))
 
@@ -116,15 +117,16 @@ class LocationTest(TestCase):
     def test_field_schema(self):
         schema = models.Location.build_field_schema()
         expected_schema = [
-            {'name': 'consistency_token', 'type': 'token'},
-            {'name': 'category', 'type': 'string'},
-            {'name': 'hospital', 'type': 'string'},
-            {'name': 'ward', 'type': 'string'},
-            {'name': 'bed', 'type': 'string'},
-            {'name': 'opat_referral_route', 'type': 'string'},
-            {'name': 'opat_referral_team', 'type': 'string'},
-            {'name': 'opat_referral', 'type': 'date'},
-            {'name': 'opat_discharge', 'type': 'date'}
+            {'name': 'consistency_token', 'type': 'token', 'lookup_list': None},
+            {'name': 'category', 'type': 'string', 'lookup_list': None},
+            {'name': 'hospital', 'type': 'string', 'lookup_list': None},
+            {'name': 'ward', 'type': 'string', 'lookup_list': None},
+            {'name': 'bed', 'type': 'string', 'lookup_list': None},
+            {'name': 'opat_referral_route', 'type': 'string', 'lookup_list': None},
+            {'name': 'opat_referral_team', 'type': 'string', 'lookup_list': None},
+            {'name': 'opat_referral_team_address', 'type': 'text', 'lookup_list': None},
+            {'name': 'opat_referral', 'type': 'date', 'lookup_list': None},
+            {'name': 'opat_discharge', 'type': 'date', 'lookup_list': None}
             ]
         self.assertEqual(expected_schema, schema)
 
@@ -184,11 +186,11 @@ class DiagnosisTest(TestCase):
     def test_field_schema(self):
         schema = models.Diagnosis.build_field_schema()
         expected_schema = [
-            {'name': 'consistency_token', 'type': 'token'},
-            {'name': 'provisional', 'type': 'boolean'},
-            {'name': 'details', 'type': 'string'},
-            {'name': 'date_of_diagnosis', 'type': 'date'},
-            {'name': 'condition', 'type': 'string'},
+            {'name': 'consistency_token', 'type': 'token', 'lookup_list': None},
+            {'name': 'provisional', 'type': 'boolean', 'lookup_list': None},
+            {'name': 'details', 'type': 'string', 'lookup_list': None},
+            {'name': 'date_of_diagnosis', 'type': 'date', 'lookup_list': None},
+            {'name': 'condition', 'type': 'string', 'lookup_list': 'condition'},
             ]
         self.assertEqual(expected_schema, schema)
 
@@ -242,7 +244,8 @@ class ViewsTest(TestCase):
                 'hospital': 'UCH',
                 'ward': 'T13',
                 'bed': 10
-                }
+                },
+            'tagging': [{}]
             }
 
         response = self.post_json('/episode/', data)
@@ -273,7 +276,8 @@ class ViewsTest(TestCase):
                 'hospital': 'UCH',
                 'ward': 'T13',
                 'bed': 10
-                }
+                },
+            'tagging': [{}]
             }
         response = self.post_json('/episode/', data)
         self.assertEqual(201, response.status_code)
@@ -290,7 +294,8 @@ class ViewsTest(TestCase):
                 'hospital': 'UCH',
                 'ward': 'T13',
                 'bed': 10
-                }
+                },
+            'tagging': [{}]
             }
         response = self.post_json('/episode/', data)
         self.assertEqual(201, response.status_code)
