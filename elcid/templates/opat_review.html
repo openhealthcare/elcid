@@ -1,7 +1,7 @@
 <ul>
 	<li>
           <b>
-		[[item.date | date:'d/M']]
+		[[item.date | shortDate]]
 		([[item.initials]]<span ng-show="item.discussed_with"> with [[item.discussed_with]]</span>)
 		[[item.rv_type]]
           </b>
@@ -14,6 +14,6 @@
 		<div markdown="opat_plan"></div>
 	</li>
         <li ng-show="item.next_review">
-          [[next_review|date:'d/M']]
+          [[next_review|shortDate]]
         </li>
 </ul>
