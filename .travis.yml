@@ -3,9 +3,10 @@ python:
   - "2.7"
 install:
   - pip install -r requirements.txt --use-mirrors
-  - npm install karma karma-coverage
+  - npm install karma karma-coverage karma-jasmine karma-firefox-launcher
   - gem install rake
 before_script:
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
-script: rake test
+script:
+  - rake test
