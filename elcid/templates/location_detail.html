@@ -1,8 +1,8 @@
 [[item.category]]
 <span ng-hide="item.hospital=='UCH'">[[item.hospital]] </span>[[item.ward]] [[item.bed]]
-Admitted: [[episode.date_of_admission | date:'d/M']]
+Admitted: [[episode.date_of_admission | shortDate]]
 <span ng-show="episode.discharge_date">Discharged:</span>
-[[episode.discharge_date | date:'d/M']]
+[[episode.discharge_date | shortDate]]
 <br />
 <a class="screen-only" href="#" ng-click="dischargeEpisode($event)"
    ng-hide="profile.readonly">Discharge / Remove</a>
