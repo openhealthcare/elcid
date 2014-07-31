@@ -10,7 +10,7 @@
         </p>
       </div>
       <div class="col-sm-8" ng-hide="editing.category == 'Discharged'">        
-        <select class="form-control" ng-model="editing.category">
+        <select class="form-control" ng-model="editing.category" autofocus>
           <option value="">---------</option>
           <option ng-repeat="category in episode_category_list">[[category]]</option>
         </select>
