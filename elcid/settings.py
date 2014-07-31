@@ -159,6 +159,7 @@ INSTALLED_APPS = (
     'elcid',
     'django.contrib.admin',
 #    'infectioncontrol',
+    'research'
 )
 
 # A sample logging configuration. The only tangible logging
