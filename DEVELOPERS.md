@@ -135,6 +135,12 @@ This contains our datamodels for elCID.
 
 These are roughly speaking, a 1-1 mapping to columns somewhere in elCID.
 
+#### elcid/assets/js/elcid
+
+This is where our elcid-specific controllers live.
+This is basically just for discharge flow at the moment. 
+
 ### etc
 
 Contains our production config files.
+
