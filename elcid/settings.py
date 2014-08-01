@@ -243,6 +243,10 @@ COVERAGE_EXCLUDE_MODULES = ('elcid.migrations', 'elcid.tests',
                             'opal.migrations', 'opal.tests',
                             'opal.wsgi')
 
+# Research settings
+LIST_SCHEMA_RESEARCH_NURSE = 'elcid.schema.list_columns_research_nurse'
+LIST_SCHEMA_SCIENTIST = 'elcid.schema.list_columns_scientist'
+
 try:
     from local_settings import *
 except:

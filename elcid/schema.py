@@ -75,7 +75,7 @@ list_schemas = {
         'default': list_columns_infection_control
     },
     'infectious_diseases': {
-        'default': list_columns,
+        # 'default': list_columns,
         'id_liaison': list_columns_id_liaison
     }
 }
@@ -116,3 +116,18 @@ extract_columns = [
     models.Todo,
     models.GeneralNote,
     ]
+
+# Research study schemas
+
+list_columns_research_nurse = [
+    models.Demographics,
+    models.Location,
+    models.Diagnosis,
+    models.Antimicrobial,
+    models.Travel,
+    
+]
+
+list_columns_scientist = [
+    models.Demographics
+]
