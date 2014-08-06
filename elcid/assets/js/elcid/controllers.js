@@ -31,7 +31,9 @@ controllers.controller('DischargeEpisodeCtrl', function($scope, $timeout,
 
     $scope.episode = episode.makeCopy();
     if(!$scope.episode.discharge_date){
-        $scope.episode.discharge_date = moment().format('DD/MM/YYYY');
+        $scope.editing.discharge_date = moment().format('DD/MM/YYYY');
+    }else{
+        $scope.editing.discharge_date = $scope.episode.discharge_date;
     }
 
     // 
