@@ -119,12 +119,15 @@ extract_columns = [
 
 # Research study schemas
 
+from research import models as researchmodels
+
 list_columns_research_nurse = [
     models.Demographics,
     models.Location,
     models.Diagnosis,
     models.Antimicrobial,
     models.Travel,
+    researchmodels.LabSpecimin
     
 ]
 
