@@ -7,7 +7,7 @@
 	  <div >
 	    {% for tag in tags %}
 	      <label class="checkbox">
-		<input type="checkbox" ng-model="editing['{{tag.name}}']">
+		<input type="checkbox" ng-model="editing.{{tag.name}}">
 		{{tag.title}}
 	      </label>
 	    {% endfor %}
@@ -23,8 +23,8 @@
                  {% if tag.subtags %}
                    {% for subtag in tag.subtags %}
 		     <label class="checkbox"
-                            ng-show="editing['{{tag.name}}'] == true">
-			    <input type="checkbox" ng-model="editing['{{subtag.name}}']">
+                            ng-show="editing.{{tag.name}} == true">
+			    <input type="checkbox" ng-model="editing.{{subtag.name}}">
 			    {{subtag.title}}
 		     </label>
                    {% endfor %}
