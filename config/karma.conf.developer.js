@@ -2,7 +2,7 @@ module.exports =  function(config){
     config.set({
         frameworks: ['jasmine'],
         browsers: ['Firefox'],
-        basePath:  '/home/travis/virtualenv/python2.7/src/opal/opal/static/js',
+        basePath:  '/usr/lib/ohc/opal/opal/static/js',
 
         files: [
             //JASMINE,
@@ -47,7 +47,7 @@ module.exports =  function(config){
 
         reporters: ['progress', 'coverage'],
 
-        autoWatch: true,
+        // autoWatch: true,
 
         coverageReporter: {
             type : 'html',

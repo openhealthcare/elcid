@@ -16,6 +16,18 @@ list_columns = [
     models.Todo,
 ]
 
+list_columns_id_liaison = [
+    models.Demographics,
+    models.Location,
+    omodels.Tagging,
+    models.Diagnosis,
+    models.PastMedicalHistory,
+    models.Antimicrobial,
+    models.MicrobiologyTest,
+    models.MicrobiologyInput,
+    models.GeneralNote,
+]
+
 list_columns_infection_control = [
     models.Demographics,
     models.Location,
@@ -59,8 +71,13 @@ list_schemas = {
         'default': list_columns_opat,
 #        'opat_review': list_columns_opat_review
         },
-        'infectioncontrol': {
-            'default': list_columns_infection_control}
+    'infectioncontrol': {
+        'default': list_columns_infection_control
+    },
+    'infectious_diseases': {
+        'default': list_columns,
+        'id_liaison': list_columns_id_liaison
+    }
 }
 
 detail_columns = [

@@ -25,36 +25,60 @@ controllers.controller('DischargeEpisodeCtrl', function($scope, $timeout,
     }
 
     $scope.editing = {
-	category: newCategory
+	category: newCategory,
+        discharge_date: null
     };
 
     $scope.episode = episode.makeCopy();
     if(!$scope.episode.discharge_date){
-        $scope.episode.discharge_date = moment().format('DD/MM/YYYY');
+        $scope.editing.discharge_date = moment().format('DD/MM/YYYY');
+    }else{
+        $scope.editing.discharge_date = $scope.episode.discharge_date;
     }
 
+    // 
+    // Discharging an episode requires updating three server-side entities:
+    //
+    // * Location
+    // * Tagging
+    // * Episode
+    // 
+    // Make these requests then kill our modal.
+    // 
     $scope.discharge = function() {
+
 	var tagging = episode.getItem('tagging', 0);
-	var attrs = tagging.makeCopy();
+        var location = episode.getItem('location', 0);
+        
+	var taggingAttrs = tagging.makeCopy();
+        var locationAttrs = location.makeCopy();
+        var episodeAttrs = episode.makeCopy();
 
 	if ($scope.editing.category != 'Unfollow') {
-	    attrs.category = $scope.editing.category;
+	    locationAttrs.category = $scope.editing.category;
 	}
 
         if($scope.editing.category == 'Unfollow') {
             // No longer under active review does not set a discharge date
-            $scope.episode.discharge_date = null;
+            episodeAttrs.discharge_date = null;
+        }else{
+            episodeAttrs.discharge_date = $scope.editing.discharge_date;
         }
 
 	if ($scope.editing.category != 'Followup') {
-	    attrs[currentTag] = false;
+	    taggingAttrs[currentTag] = false;
             if(currentSubTag != 'all'){
-                attrs[currentSubTag] = false;
+                taggingAttrs[currentSubTag] = false;
             }
 	}
 
-	tagging.save(attrs).then(function() {
-	    $modalInstance.close('discharged');
+	tagging.save(taggingAttrs).then(function(){
+                location.save(locationAttrs).then(function(){
+                        episode.save(episodeAttrs).then(function(){
+                                $modalInstance.close('discharged');            
+                            })
+                    })
+
 	});
     };
 

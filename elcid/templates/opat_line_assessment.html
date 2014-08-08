@@ -1,7 +1,7 @@
-[[ item.assessment_date | date:'d/M' ]] VIP: [[ item.vip_score ]]
+[[ item.assessment_date | shortDate ]] VIP: [[ item.vip_score ]]
 <br />
-Dressing change: [[ item.dressing_change_date | date:'d/M' ]] [[ item.dressing_change_reason]]
+Dressing change: [[ item.dressing_change_date | shortDate ]] [[ item.dressing_change_reason]]
 <span ng-show="item.bionector_change_date">
 <br />
-Bionector change: [[ item.bionector_change_date | date:'d/M' ]]
+Bionector change: [[ item.bionector_change_date | shortDate ]]
 </span>

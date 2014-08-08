@@ -124,7 +124,23 @@ Much of this is What You Would Expect from a Django project. We'll just explain 
 
 This file contains the various schemas (sets of columns) for list views in elCID. 
 
+#### elcid/options.py
+
+This contains our OPAL lookuplist models.
+TODO: Move these out of here or make them implementationd dependent.
+
+#### elcid/models.py
+
+This contains our datamodels for elCID.
+
+These are roughly speaking, a 1-1 mapping to columns somewhere in elCID.
+
+#### elcid/assets/js/elcid
+
+This is where our elcid-specific controllers live.
+This is basically just for discharge flow at the moment. 
 
 ### etc
 
 Contains our production config files.
+

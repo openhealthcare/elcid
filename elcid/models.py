@@ -50,6 +50,7 @@ class Demographics(PatientSubrecord):
 
 class ContactDetails(PatientSubrecord):
     _is_singleton = True
+    _episode_category = 'OPAT'
 
     address_line1 = models.CharField("Address line 1", max_length = 45,
                                      blank=True, null=True)
@@ -66,6 +67,7 @@ class ContactDetails(PatientSubrecord):
 
 class Carers(PatientSubrecord):
     _is_singleton = True
+    _episode_category = 'OPAT'
 
     gp = models.ForeignKey(GP, blank=True, null=True)
     nurse = models.ForeignKey(CommunityNurse, blank=True, null=True)
@@ -186,6 +188,7 @@ class Allergies(PatientSubrecord):
 class MicrobiologyInput(EpisodeSubrecord):
     _title = 'Clinical Advice'
     _sort = 'date'
+    _read_only = 'true'
     _fieldnames = [
         'episode_id',
         'date', 'initials', 'reason_for_interaction',
@@ -313,7 +316,8 @@ Begin OPAT specific fields.
 
 class Line(EpisodeSubrecord):
     _sort = 'insertion_date'
-
+    _episode_category = 'OPAT'
+    
     line_type = ForeignKeyOrFreeText(option_models['line_type'])
     site = ForeignKeyOrFreeText(option_models['line_site'])
     insertion_date = models.DateField(blank=True, null=True)
@@ -329,6 +333,7 @@ class Line(EpisodeSubrecord):
 
 class OPATReview(EpisodeSubrecord):
     _sort = 'date'
+    _episode_category = 'OPAT'
 
     date = models.DateField(null=True, blank=True)
     initials = models.CharField(max_length=255, blank=True)
@@ -340,12 +345,14 @@ class OPATReview(EpisodeSubrecord):
 
 class OPATOutstandingIssues(EpisodeSubrecord):
     _title = 'Outstanding Issues'
+    _episode_category = 'OPAT'
     details = models.TextField(blank=True)
 
 
 class Appointment(EpisodeSubrecord):
     _title = 'Upcoming Appointments'
     _sort = 'date'
+    _episode_category = 'OPAT'
 
     appointment_type = models.CharField(max_length=200, blank=True, null=True)
     appointment_with = models.CharField(max_length=200, blank=True, null=True)
@@ -353,6 +360,8 @@ class Appointment(EpisodeSubrecord):
     
     
 class OPATLineAssessment(EpisodeSubrecord):
+    _episode_category = 'OPAT'
+    
     assessment_date = models.DateField(blank=True, null=True)
     vip_score = models.IntegerField(blank=True, null=True)
     dressing_type = models.CharField(max_length=200, blank=True, null=True)
