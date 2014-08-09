@@ -8,6 +8,9 @@ flows = {
             'controller': 'HospitalNumberCtrl',
             'template'  : '/templates/modals/hospital_number.html/'
             },
-        'exit': 'DischargeEpisodeCtrl'
+        'exit': {
+            'controller': 'ElcidDischargeEpisodeCtrl',
+            'template'  : '/templates/modals/discharge_episode.html/'
+        }
     }
 }
