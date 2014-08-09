@@ -12,5 +12,13 @@ flows = {
             'controller': 'ElcidDischargeEpisodeCtrl',
             'template'  : '/templates/modals/discharge_episode.html/'
         }
+        # 'opat': {
+        #     'default': {
+        #         'exit': {
+        #             'controller': 'OPATDischargeCtrl',
+        #             'template'  : '/templates/modals/discharge_opat_episode.html/'
+        #         }
+        #     }
+        # }
     }
 }
