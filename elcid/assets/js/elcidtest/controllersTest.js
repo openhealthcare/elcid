@@ -172,7 +172,7 @@
 //     });
 
 
-//     describe('DischargeEpisodeCtrl', function (){
+//     describe('ElcidDischargeEpisodeCtrl', function (){
 //         var $scope, $http, $cookieStore, $timeout, $dialog;
 //         var dialog, episode, options, demographics;
 
@@ -188,7 +188,7 @@
 //             dialog = $modal.open({template: 'notatemplate'});
 //             episode = new Episode(episodeData, schema);
 
-//             controller = $controller('DischargeEpisodeCtrl', {
+//             controller = $controller('ElcidDischargeEpisodeCtrl', {
 //                 $scope        : $scope,
 //                 $timeout      : $timeout,
 //                 $modal        : $modal,

@@ -213,6 +213,7 @@ SESSION_COOKIE_AGE = 15 * 60
 # New modular settings!
 OPAL_SCHEMA_MODULE = 'elcid.schema'
 OPAL_OPTIONS_MODULE = 'elcid.options'
+OPAL_FLOW_MODULE = 'elcid.flow'
 OPAL_TAGS_MODULE = 'elcid.tags'
 OPAL_BRAND_NAME = 'elCID - Extract'
 OPAL_EXTRA_APPLICATION = 'elcid/extra_application.html'

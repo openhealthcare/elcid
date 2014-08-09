@@ -314,20 +314,27 @@ class MicrobiologyTest(EpisodeSubrecord):
 Begin OPAT specific fields.
 """
 
+class OPATRejection(EpisodeSubrecord):
+    _episode_category = 'OPAT'
+    
+    decided_by = models.CharField(max_length=255, blank=True, null=True)
+    reason     = models.CharField(max_length=255, blank=True, null=True)
+    date       = models.DateField(blank=True, null=True)
+
 class Line(EpisodeSubrecord):
     _sort = 'insertion_date'
     _episode_category = 'OPAT'
     
-    line_type = ForeignKeyOrFreeText(option_models['line_type'])
-    site = ForeignKeyOrFreeText(option_models['line_site'])
-    insertion_date = models.DateField(blank=True, null=True)
-    insertion_time = models.IntegerField(blank=True, null=True)
-    inserted_by = models.CharField(max_length=255, blank=True, null=True)
-    external_length = models.CharField(max_length=255, blank=True, null=True)
-    removal_date = models.DateField(blank=True, null=True)
-    removal_time = models.IntegerField(blank=True, null=True)
-    complications = ForeignKeyOrFreeText(option_models['line_complication'])
-    removal_reason = ForeignKeyOrFreeText(option_models['line_removal_reason'])
+    line_type            = ForeignKeyOrFreeText(option_models['line_type'])
+    site                 = ForeignKeyOrFreeText(option_models['line_site'])
+    insertion_date       = models.DateField(blank=True, null=True)
+    insertion_time       = models.IntegerField(blank=True, null=True)
+    inserted_by          = models.CharField(max_length=255, blank=True, null=True)
+    external_length      = models.CharField(max_length=255, blank=True, null=True)
+    removal_date         = models.DateField(blank=True, null=True)
+    removal_time         = models.IntegerField(blank=True, null=True)
+    complications        = ForeignKeyOrFreeText(option_models['line_complication'])
+    removal_reason       = ForeignKeyOrFreeText(option_models['line_removal_reason'])
     special_instructions = models.TextField()
 
 
@@ -335,11 +342,11 @@ class OPATReview(EpisodeSubrecord):
     _sort = 'date'
     _episode_category = 'OPAT'
 
-    date = models.DateField(null=True, blank=True)
-    initials = models.CharField(max_length=255, blank=True)
-    rv_type = models.CharField(max_length=255, blank=True, null=True)
-    discussion = models.TextField(blank=True, null=True)
-    opat_plan = models.TextField(blank=True)
+    date        = models.DateField(null=True, blank=True)
+    initials    = models.CharField(max_length=255, blank=True)
+    rv_type     = models.CharField(max_length=255, blank=True, null=True)
+    discussion  = models.TextField(blank=True, null=True)
+    opat_plan   = models.TextField(blank=True)
     next_review = models.DateField(blank=True, null=True)
 
 
@@ -356,7 +363,7 @@ class Appointment(EpisodeSubrecord):
 
     appointment_type = models.CharField(max_length=200, blank=True, null=True)
     appointment_with = models.CharField(max_length=200, blank=True, null=True)
-    date = models.DateField(blank=True, null=True)
+    date             = models.DateField(blank=True, null=True)
     
     
 class OPATLineAssessment(EpisodeSubrecord):
