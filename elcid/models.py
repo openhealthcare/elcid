@@ -238,6 +238,7 @@ class OPATRejection(EpisodeSubrecord):
     reason     = models.CharField(max_length=255, blank=True, null=True)
     date       = models.DateField(blank=True, null=True)
 
+
 class Line(EpisodeSubrecord):
     _sort = 'insertion_date'
     _episode_category = 'OPAT'
@@ -258,6 +259,7 @@ class Line(EpisodeSubrecord):
 class OPATReview(EpisodeSubrecord):
     _sort = 'date'
     _episode_category = 'OPAT'
+    _read_only = 'true'
 
     date        = models.DateField(null=True, blank=True)
     initials    = models.CharField(max_length=255, blank=True)
