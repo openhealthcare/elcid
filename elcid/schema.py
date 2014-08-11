@@ -132,5 +132,6 @@ list_columns_research_nurse = [
 ]
 
 list_columns_scientist = [
-    models.Demographics
+    models.Demographics,
+    researchmodels.LabSpecimin
 ]
