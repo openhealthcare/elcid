@@ -10,7 +10,7 @@ from opal.models import (Subrecord,
 from opal.utils.fields import ForeignKeyOrFreeText
 
 __all__ = [
-    'Demographics',
+    'Demographcs',
     'ContactDetails',
     'Carers',
     'Location',
@@ -33,15 +33,6 @@ __all__ = [
 
 class Demographics(PatientSubrecord):
     _is_singleton = True
-<<<<<<< HEAD
-=======
-    _fieldnames = [
-        'patient_id',
-        'hospital_number', 'nhs_number',
-        'name', 'date_of_birth',
-        'country_of_birth', 'ethnicity'
-        ]
->>>>>>> research
 
     name             = models.CharField(max_length=255, blank=True)
     hospital_number  = models.CharField(max_length=255, blank=True)
@@ -49,10 +40,7 @@ class Demographics(PatientSubrecord):
     date_of_birth    = models.DateField(null=True, blank=True)
     country_of_birth = ForeignKeyOrFreeText(option_models['destination'])
     ethnicity        = models.CharField(max_length=255, blank=True, null=True)
-<<<<<<< HEAD
-=======
     gender           = models.CharField(max_length=255, blank=True, null=True)
->>>>>>> research
 
 
 class ContactDetails(PatientSubrecord):
