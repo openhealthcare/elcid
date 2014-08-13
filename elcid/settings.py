@@ -216,7 +216,7 @@ OPAL_OPTIONS_MODULE = 'elcid.options'
 OPAL_TAGS_MODULE = 'elcid.tags'
 OPAL_BRAND_NAME = 'elCID - Extract'
 OPAL_EXTRA_APPLICATION = 'elcid/extra_application.html'
-OPAL_LOG_OUT_MINUTES = 15
+OPAL_LOG_OUT_MINUTES = 150
 OPAL_LOG_OUT_DURATION = OPAL_LOG_OUT_MINUTES*60*1000
 OPAL_EXTRA_HEADER = 'elcid/print_header.html'
 
