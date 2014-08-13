@@ -49,7 +49,6 @@ list_columns_micro = [
 
 list_columns_opat = [
     models.Demographics,
-    omodels.Tagging,
     models.Location,
     models.Diagnosis,
     models.Antimicrobial,
