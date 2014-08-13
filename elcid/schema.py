@@ -82,13 +82,13 @@ list_schemas = {
 from obs import models as obsmodels
 
 detail_columns = [
-    obsmodels.Observation,
     models.Demographics,
     models.ContactDetails,
     models.Carers,
     models.Location,
     omodels.Tagging,
     models.Diagnosis,
+    obsmodels.Observation,
     models.PastMedicalHistory,
     models.Antimicrobial,
     models.Allergies,
