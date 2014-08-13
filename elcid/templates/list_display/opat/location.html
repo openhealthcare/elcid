@@ -1,0 +1,15 @@
+[[item.category]]<br />
+<span ng-hide="item.hospital=='UCH'">[[item.hospital]] </span>
+[[item.ward]] [[item.bed]]<br />
+Admitted: [[row.date_of_admission | shortDate]]
+<span ng-show="row.discharge_date">
+  Discharged [[row.discharge_date | shortDate]]
+</span>
+<br />
+<a ng-show="currentSubTag == 'opat_referrals'" 
+   class="screen-only btn btn-primary" href="#"
+   ng-click="dischargeEpisode($parent.$index, $event)">
+  Accept / refuse
+  <i class="glyphicon glyphicon-ok"></i>
+</a>
+
