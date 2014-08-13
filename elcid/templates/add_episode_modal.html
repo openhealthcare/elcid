@@ -66,39 +66,30 @@
       </div>
     </div>
 
-    <div class="form-group">
-      <label class="control-label col-sm-3">Teams</label>
-      <div class="col-sm-8">
-	{% for tag in tags %}
-	<label class="checkbox">
-	  <input type="checkbox" ng-model="editing.tagging[0].{{tag.name}}">
-	  {{tag.title}}
-	</label>
-	{% endfor %}
+    <div class="control-group">
+      <label>Teams</label>
+      <div >
+	{% for team in teams %}{% if not team.parent %}{% if team.direct_add %}
+          {% if team.has_subtags %}
+            <h4>{{team.title}}:</h4>
+              {% for subteam in team.team_set.all %}
+	        <label class="checkbox">
+	          <input type="checkbox" ng-model="editing.tagging[0].{{subteam.name}}">
+	          {{subteam.title}}
+	        </label>            
+              {% endfor %}
+          {% else %}
+            <h4>{{team.title}}:</h4>
+	    <label class="checkbox">
+	      <input type="checkbox" ng-model="editing.tagging[0].{{team.name}}">
+	      {{team.title}}
+	    </label>
+          {% endif %}
+        {% endif %}{% endif %}{% endfor %}
       </div>
     </div>
 
-    <div class="form-group" ng-show="showSubtags([{{with_subtags|safe}}])">
-      <label class="control-label col-sm-3">Sub Teams</label>
-      <div class="col-sm-8">
-	{% for tag in tags %}
-	  {% if tag.subtags %}
-     	    {% for subtag in tag.subtags %}
-              {% if tag.name == 'opat' %}
-                <!-- TODO: Make this less special-case-ish -->
-                <!-- Can't manually set OPAT subtags! -->
-              {% else %}
-                <label class="checkbox"
-	               ng-show="editing.tagging[0].{{tag.name}} == true" >
-	          <input type="checkbox" ng-model="editing.tagging[0].{{subtag.name}}">
-	          {{subtag.title}} {{ tag.title }}
-                </label>
-              {% endif %}
-            {% endfor %}
-	  {% endif %}
-	{% endfor %}
-      </div>
-    </div>
+
   </form>
 </div>
 <div class="modal-footer">
