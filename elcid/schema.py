@@ -80,7 +80,10 @@ list_schemas = {
     }
 }
 
+from obs import models as obsmodels
+
 detail_columns = [
+    obsmodels.Observation,
     models.Demographics,
     models.ContactDetails,
     models.Carers,
