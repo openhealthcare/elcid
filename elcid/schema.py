@@ -128,6 +128,8 @@ list_columns_research_nurse = [
     models.Location,
     models.Diagnosis,
     models.Antimicrobial,
+    models.MicrobiologyTest,
+    # researchmodels.LabTest,
     models.Travel,
     researchmodels.LabSpecimin
     
