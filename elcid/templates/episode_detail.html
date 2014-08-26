@@ -1,0 +1,306 @@
+<div class="container content-offset">
+  <div class="panel panel-warning">
+    <!-- Default panel contents -->
+    <div class="panel-heading">
+      <h2>
+        [[episode.demographics[0].name]] 
+        <small>
+          [[episode.demographics[0].gender ]]
+          [[episode.demographics[0].hospital_number ]]
+          [[episode.demographics[0].date_of_birth | shortDate]]
+        </small>
+        <button
+           class="pull-right btn btn-info push-left-12"
+           ng-click="dischargeEpisode($event)"
+           >
+          <i class="fa fa-home"></i>
+          Discharge
+        </button>
+        <button
+           class="pull-right btn btn-warning"
+           ng-click="editSingletonColumn('demographics')"
+           >
+          <i class="glyphicon glyphicon-pencil"></i>
+        </button>
+      </h2>
+    </div>
+    <div class="panel-body">
+      
+      <div class="row well">        
+        <div class="col-md-6">
+          <div class="row">
+            <!-- Location -->
+            <h4 class="">
+              [[episode.location[0].category]]
+              [[episode.date_of_admission | shortDate]] - 
+              [[episode.discharge_date || 'Current' | shortDate]]
+              <button
+                 class="pull-right btn btn-default"
+                 ng-click="editSingletonColumn('location')"
+                 >
+                <i class="glyphicon glyphicon-pencil"></i>
+              </button>            
+            </h4>
+            <p>
+              <span ng-hide="episode.location[0].hospital=='UCH'">
+                [[episode.location[0].hospital]]
+              </span>
+              [[episode.location[0].ward]] [[episode.location[0].bed]]
+            </p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="row">
+            <!-- teams -->
+            <h4 class="">
+              Teams
+              <button
+                 class="pull-right btn btn-default"
+                 ng-click="editSingletonColumn('tagging')"
+                 >
+                <i class="glyphicon glyphicon-pencil"></i>
+              </button>
+            </h4>
+            <span ng-repeat="tag in episode.getTags()" class="screen-only">
+              <button class="btn btn-xs" ng-click="jumpToTag(tag)" 
+                      ng-show="tag_display[tag] != undefined">
+                [[ tag_display[tag] ]]
+              </button>
+            </span>
+          </div>
+          
+        </div>
+      </div> <!-- Top row - 2 cols -->
+      
+      <div class="row">
+        <div class="col-md-6 well"> <!-- Diagnosis -->
+          <h4>
+            Diagnosis
+            <button
+               class="pull-right btn btn-default"
+               ng-click="editItem(column_names.indexOf('diagnosis'), episode.diagnosis.length)"
+               >
+              <i class="glyphicon glyphicon-plus"></i>
+            </button>            
+          </h4>
+
+          <ul>
+            <li ng-repeat="item in episode.diagnosis">
+              <button class="btn btn-default btn-xs"
+                      ng-click="editItem(column_names.indexOf('diagnosis'), $index)">
+                <i class="glyphicon glyphicon-pencil"></i>
+              </button>
+              {% include cols.diagnosis.detail_template_path %}
+            </li>
+          </ul>
+        </div>
+        <div class="col-md-6 well"> <!-- Antimicrobials -->
+          <h4>
+            Antimicrobials
+            <button
+               class="pull-right btn btn-default"
+               ng-click="editItem(column_names.indexOf('antimicrobial'), episode.antimicrobial.length)"
+               >
+              <i class="glyphicon glyphicon-plus"></i>
+            </button>            
+          </h4>          
+          <ul>
+            <li ng-repeat="item in episode.antimicrobial">
+              <button class="btn btn-default btn-xs"
+                      ng-click="editItem(column_names.indexOf('antimicrobial'), $index)">
+                <i class="glyphicon glyphicon-pencil"></i>
+              </button>
+              {% include cols.antimicrobial.detail_template_path %}
+            </li>
+          </ul>
+        </div>
+      </div>
+
+
+      <div class="row">
+        <div class="col-md-6 well"> <!-- Investigations -->
+          <h4>
+            Investigations
+            <button
+               class="pull-right btn btn-default"
+               ng-click="editItem(column_names.indexOf('microbiology_test'), episode.microbiology_test.length)"
+               >
+              <i class="glyphicon glyphicon-plus"></i>
+            </button>            
+          </h4>
+          <br />
+          <table class="table table-condensed">
+            <thead>
+              <tr>
+                <td></td>
+                <td>Date</td>
+                <td>Result</td>
+              </tr>
+            </thead>
+            <tr ng-repeat="item in episode.microbiology_test">
+              <td>
+                <button class="btn btn-default btn-xs"
+                        ng-click="editItem(column_names.indexOf('microbiology_test'), $index)">
+                  <i class="glyphicon glyphicon-pencil"></i>
+                </button>
+              </td>
+              <td>
+                <b>[[item.date_ordered | shortDate]]</b>
+              </td>
+              <td>
+                {% include cols.microbiology_test.detail_template_path %}
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="col-md-6 well"> <!-- Antimicrobials -->
+          <h4>
+            Clinical Advice
+            <button
+               class="pull-right btn btn-default"
+               ng-click="editItem(column_names.indexOf('microbiology_input'), episode.microbiology_input.length)"
+               >
+              <i class="glyphicon glyphicon-plus"></i>
+            </button>            
+          </h4>
+
+          <ul>
+            <li ng-repeat="item in episode.microbiology_input">
+              {% include cols.microbiology_input.detail_template_path %}              
+            </li>
+          </ul>
+
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4 well"> <!-- PMH -->
+          <h4>
+            PMH
+            <button
+               class="pull-right btn btn-default"
+               ng-click="editItem(column_names.indexOf('past_medical_history'), episode.past_medical_history.length)"
+               >
+              <i class="glyphicon glyphicon-plus"></i>
+            </button>            
+          </h4>
+
+          <ul>
+            <li ng-repeat="item in episode.past_medical_history">
+              {% include cols.past_medical_history.detail_template_path %}              
+            </li>
+          </ul>
+        </div>
+        <div class="col-md-4 well"> <!-- Allergies -->
+          <h4>
+            Allergies
+            <button
+               class="pull-right btn btn-default"
+               ng-click="editItem(column_names.indexOf('allergies'), episode.allergies.length)"
+               >
+              <i class="glyphicon glyphicon-plus"></i>
+            </button>            
+          </h4>
+
+          <ul>
+            <li ng-repeat="item in episode.allergies">
+              {% include cols.allergies.detail_template_path %}              
+            </li>
+          </ul>
+        </div>
+        <div class="col-md-4 well"> <!-- Travel -->
+          <h4>
+            Travel
+            <button
+               class="pull-right btn btn-default"
+               ng-click="editItem(column_names.indexOf('travel'), episode.travel.length)"
+               >
+              <i class="glyphicon glyphicon-plus"></i>
+            </button>            
+          </h4>
+
+          <ul>
+            <li ng-repeat="item in episode.travel">
+              {% include cols.travel.detail_template_path %}              
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 well"> <!-- Todo -->
+          <h4>
+            Todo
+            <button
+               class="pull-right btn btn-default"
+               ng-click="editItem(column_names.indexOf('todo'), episode.todo.length)"
+               >
+              <i class="glyphicon glyphicon-plus"></i>
+            </button>            
+          </h4>
+
+          <ul>
+            <li ng-repeat="item in episode.todo">
+              {% include cols.todo.detail_template_path %}
+            </li>
+          </ul>
+        </div>
+        <div class="col-md-6 well"> <!-- General_Notes -->
+          <h4>
+            General Notes
+            <button
+               class="pull-right btn btn-default"
+               ng-click="editItem(column_names.indexOf('general_note'), episode.general_note.length)"
+               >
+              <i class="glyphicon glyphicon-plus"></i>
+            </button>            
+          </h4>          
+          <ul>
+            <li ng-repeat="item in episode.general_note">
+              {% include cols.general_note.detail_template_path %}
+            </li>
+          </ul>
+        </div>
+      </div>           
+    </div>
+    
+    <!-- <table class="table table-bordered"> -->
+    <!--   {% for column in columns %} -->
+    <!--   <tr {% if column.episode_category %}  -->
+    <!--       ng-show="episode.location[0].category == '{{column.episode_category}}'" -->
+    <!--       {% endif %}> -->
+    <!--     <td> -->
+    <!--       <h5>{{ column.title }}</h5> -->
+    <!--       {% if column.batch_template %} -->
+    <!--       {% with cix=forloop.counter0 %}{% with column_name=column.name %} -->
+    <!--       {% include column.detail_template_path %} -->
+    <!--       {% endwith %}{% endwith %} -->
+    <!--       {% else %} -->
+    <!--       <ul ng-mouseenter="mouseEnter({{ forloop.counter0 }})" ng-mouseleave="mouseLeave()"> -->
+    <!--         <li ng-repeat="item in episode.{{column.name}}" -->
+    <!--     	ng-click="selectItem({{ forloop.counter0 }}, $index)" -->
+    <!--     	ng-dblclick="editItem({{ forloop.counter0 }}, $index)" -->
+    <!--     	ng-class="{selected: cix == {{ forloop.counter0 }} && iix == $index}"> -->
+    <!--           {% include column.detail_template_path %} -->
+    <!--         </li> -->
+
+
+    <!--         {% if not column.single %} -->
+    <!--         <li ng-click="selectItem({{ forloop.counter0 }}, episode.{{column.name}}.length)" -->
+    <!--     	ng-dblclick="editItem({{ forloop.counter0 }}, episode.{{column.name}}.length)" -->
+    <!--     	ng-class="{selected: cix == {{ forloop.counter0 }} && iix == episode.{{column.name}}.length}"> -->
+    <!--           <span ng-show="!profile.readonly && ((cix == {{ forloop.counter0 }}) || (mouseCix == {{ forloop.counter0 }}))"> -->
+    <!--     	Add -->
+    <!--           </span> -->
+    <!--           &nbsp; -->
+    <!--         </li> -->
+    <!--         {% endif %} -->
+    <!--       </ul> -->
+    <!--       {% endif %} -->
+    <!--     </td> -->
+    <!--   </tr> -->
+    <!--   {% endfor %} -->
+    <!-- </table> -->
+  </div>
+
+</div>
