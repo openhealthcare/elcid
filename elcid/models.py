@@ -263,6 +263,7 @@ class OPATReview(EpisodeSubrecord):
     _read_only = 'true'
 
     date        = models.DateField(null=True, blank=True)
+    time        = models.IntegerField(blank=True, null=True)
     initials    = models.CharField(max_length=255, blank=True)
     rv_type     = models.CharField(max_length=255, blank=True, null=True)
     discussion  = models.TextField(blank=True, null=True)
