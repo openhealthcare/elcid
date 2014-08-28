@@ -129,7 +129,7 @@ list_columns_research_nurse = [
     models.Diagnosis,
     models.Antimicrobial,
     models.MicrobiologyTest,
-    # researchmodels.LabTest,
+    researchmodels.LabTest,
     models.Travel,
     researchmodels.LabSpecimin
     
@@ -137,5 +137,6 @@ list_columns_research_nurse = [
 
 list_columns_scientist = [
     models.Demographics,
-    researchmodels.LabSpecimin
+    researchmodels.LabSpecimin,
+    researchmodels.LabTest
 ]
