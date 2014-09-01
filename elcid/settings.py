@@ -159,6 +159,7 @@ INSTALLED_APPS = (
     'elcid',
     'django.contrib.admin',
 #    'infectioncontrol',
+    'research'
 )
 
 # A sample logging configuration. The only tangible logging
@@ -215,7 +216,7 @@ OPAL_SCHEMA_MODULE = 'elcid.schema'
 OPAL_OPTIONS_MODULE = 'elcid.options'
 OPAL_FLOW_MODULE = 'elcid.flow'
 OPAL_TAGS_MODULE = 'elcid.tags'
-OPAL_BRAND_NAME = 'elCID - Extract'
+OPAL_BRAND_NAME = 'elCID - RID-RTI'
 OPAL_EXTRA_APPLICATION = 'elcid/extra_application.html'
 OPAL_LOG_OUT_MINUTES = 15
 OPAL_LOG_OUT_DURATION = OPAL_LOG_OUT_MINUTES*60*1000
@@ -242,6 +243,10 @@ COVERAGE_EXCLUDE_MODULES = ('elcid.migrations', 'elcid.tests',
                             'elcid.local_settings',
                             'opal.migrations', 'opal.tests',
                             'opal.wsgi')
+
+# Research settings
+LIST_SCHEMA_RESEARCH_NURSE = 'elcid.schema.list_columns_research_nurse'
+LIST_SCHEMA_SCIENTIST = 'elcid.schema.list_columns_scientist'
 
 try:
     from local_settings import *

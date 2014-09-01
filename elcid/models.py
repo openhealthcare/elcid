@@ -40,12 +40,13 @@ class Demographics(PatientSubrecord):
         'country_of_birth', 'ethnicity'
         ]
 
-    name = models.CharField(max_length=255, blank=True)
-    hospital_number = models.CharField(max_length=255, blank=True)
-    nhs_number = models.CharField(max_length=255, blank=True, null=True)
-    date_of_birth = models.DateField(null=True, blank=True)
+    name             = models.CharField(max_length=255, blank=True)
+    hospital_number  = models.CharField(max_length=255, blank=True)
+    nhs_number       = models.CharField(max_length=255, blank=True, null=True)
+    date_of_birth    = models.DateField(null=True, blank=True)
     country_of_birth = ForeignKeyOrFreeText(option_models['destination'])
-    ethnicity = models.CharField(max_length=255, blank=True, null=True)
+    ethnicity        = models.CharField(max_length=255, blank=True, null=True)
+    gender           = models.CharField(max_length=255, blank=True, null=True)
 
 
 class ContactDetails(PatientSubrecord):
