@@ -15,6 +15,7 @@ __all__ = [
     'Carers',
     'Location',
     'Allergies',
+    'PresentingComplaint',
     'Diagnosis',
     'PastMedicalHistory',
     'GeneralNote',
@@ -98,6 +99,19 @@ class Location(EpisodeSubrecord):
             self.ward,
             self.bed
             )
+
+
+class PresentingComplaint(EpisodeSubrecord):
+    _title = 'Presenting Complaint'
+    _fieldnames = [
+        'episode_id',
+        'symptom', 'duration',
+        'details'
+        ]
+
+    symptom = ForeignKeyOrFreeText(option_models['symptom'])
+    duration = ForeignKeyOrFreeText(option_models['duration'])
+    details = models.CharField(max_length=255, blank=True)
 
 
 class Diagnosis(EpisodeSubrecord):
@@ -317,7 +331,7 @@ Begin OPAT specific fields.
 
 class OPATRejection(EpisodeSubrecord):
     _episode_category = 'OPAT'
-    
+
     decided_by = models.CharField(max_length=255, blank=True, null=True)
     reason     = models.CharField(max_length=255, blank=True, null=True)
     date       = models.DateField(blank=True, null=True)
@@ -325,7 +339,7 @@ class OPATRejection(EpisodeSubrecord):
 class Line(EpisodeSubrecord):
     _sort = 'insertion_date'
     _episode_category = 'OPAT'
-    
+
     line_type            = ForeignKeyOrFreeText(option_models['line_type'])
     site                 = ForeignKeyOrFreeText(option_models['line_site'])
     insertion_date       = models.DateField(blank=True, null=True)
@@ -365,11 +379,11 @@ class Appointment(EpisodeSubrecord):
     appointment_type = models.CharField(max_length=200, blank=True, null=True)
     appointment_with = models.CharField(max_length=200, blank=True, null=True)
     date             = models.DateField(blank=True, null=True)
-    
-    
+
+
 class OPATLineAssessment(EpisodeSubrecord):
     _episode_category = 'OPAT'
-    
+
     assessment_date = models.DateField(blank=True, null=True)
     vip_score = models.IntegerField(blank=True, null=True)
     dressing_type = models.CharField(max_length=200, blank=True, null=True)

@@ -87,6 +87,7 @@ detail_columns = [
     models.Location,
     omodels.Tagging,
     models.Diagnosis,
+    models.PresentingComplaint,
     models.PastMedicalHistory,
     models.Antimicrobial,
     models.Allergies,

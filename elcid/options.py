@@ -16,6 +16,9 @@ model_names = [
     'line_removal_reason',
     'line_complication',
 
+    'symptom',
+    'duration',
+
 #    'reported_infections',
 
     # Types of microbiology test
