@@ -157,6 +157,7 @@ INSTALLED_APPS = (
     'south',
     'opal',
     'elcid',
+    'obs',
     'django.contrib.admin',
 #    'infectioncontrol',
     'research'

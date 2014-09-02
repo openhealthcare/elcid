@@ -33,6 +33,7 @@ controllers.controller(
         }
 
         $scope.editing = {
+            date_of_admission: moment(episode.date_of_admission).format('MM/DD/YY'),
 	    category: newCategory,
             discharge_date: null
         };

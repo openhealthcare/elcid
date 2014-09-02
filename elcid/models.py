@@ -10,7 +10,7 @@ from opal.models import (Subrecord,
 from opal.utils.fields import ForeignKeyOrFreeText
 
 __all__ = [
-    'Demographics',
+    'Demographcs',
     'ContactDetails',
     'Carers',
     'Location',
@@ -34,12 +34,6 @@ __all__ = [
 
 class Demographics(PatientSubrecord):
     _is_singleton = True
-    _fieldnames = [
-        'patient_id',
-        'hospital_number', 'nhs_number',
-        'name', 'date_of_birth',
-        'country_of_birth', 'ethnicity'
-        ]
 
     name             = models.CharField(max_length=255, blank=True)
     hospital_number  = models.CharField(max_length=255, blank=True)
@@ -58,20 +52,20 @@ class ContactDetails(PatientSubrecord):
                                      blank=True, null=True)
     address_line2 = models.CharField("Address line 2", max_length = 45,
                                      blank=True, null=True)
-    city = models.CharField(max_length = 50, blank = True)
-    county = models.CharField("County", max_length = 40,
-                              blank=True, null=True)
-    post_code = models.CharField("Post Code", max_length = 10,
-                                 blank=True, null=True)
-    tel1 = models.CharField(blank=True, null=True, max_length=50)
-    tel2 = models.CharField(blank=True, null=True, max_length=50)
+    city          = models.CharField(max_length = 50, blank = True)
+    county        = models.CharField("County", max_length = 40,
+                                     blank=True, null=True)
+    post_code     = models.CharField("Post Code", max_length = 10,
+                                     blank=True, null=True)
+    tel1          = models.CharField(blank=True, null=True, max_length=50)
+    tel2          = models.CharField(blank=True, null=True, max_length=50)
 
 
 class Carers(PatientSubrecord):
     _is_singleton = True
     _episode_category = 'OPAT'
 
-    gp = models.ForeignKey(GP, blank=True, null=True)
+    gp    = models.ForeignKey(GP, blank=True, null=True)
     nurse = models.ForeignKey(CommunityNurse, blank=True, null=True)
 
 
@@ -79,15 +73,16 @@ class Carers(PatientSubrecord):
 class Location(EpisodeSubrecord):
     _is_singleton = True
 
-    category = models.CharField(max_length=255, blank=True)
-    hospital = models.CharField(max_length=255, blank=True)
-    ward = models.CharField(max_length=255, blank=True)
-    bed = models.CharField(max_length=255, blank=True)
-    opat_referral_route = models.CharField(max_length=255, blank=True, null=True)
-    opat_referral_team = models.CharField(max_length=255, blank=True, null=True)
+    category                   = models.CharField(max_length=255, blank=True)
+    hospital                   = models.CharField(max_length=255, blank=True)
+    ward                       = models.CharField(max_length=255, blank=True)
+    bed                        = models.CharField(max_length=255, blank=True)
+    opat_referral_route        = models.CharField(max_length=255, blank=True, null=True)
+    opat_referral_team         = models.CharField(max_length=255, blank=True, null=True)
+    opat_referral_consultant   = models.CharField(max_length=255, blank=True, null=True)
     opat_referral_team_address = models.TextField(blank=True, null=True)
-    opat_referral = models.DateField(blank=True, null=True)
-    opat_discharge = models.DateField(blank=True, null=True)
+    opat_referral              = models.DateField(blank=True, null=True)
+    opat_discharge             = models.DateField(blank=True, null=True)
 
     def __unicode__(self):
         demographics = self.episode.patient.demographics_set.get()
@@ -117,11 +112,6 @@ class PresentingComplaint(EpisodeSubrecord):
 class Diagnosis(EpisodeSubrecord):
     _title = 'Diagnosis / Issues'
     _sort = 'date_of_diagnosis'
-    _fieldnames = [
-        'episode_id',
-        'condition', 'provisional',
-        'details', 'date_of_diagnosis'
-        ]
 
     condition = ForeignKeyOrFreeText(option_models['condition'])
     provisional = models.BooleanField()
@@ -139,10 +129,6 @@ class Diagnosis(EpisodeSubrecord):
 class PastMedicalHistory(EpisodeSubrecord):
     _title = 'PMH'
     _sort = 'year'
-    _fieldnames = [
-        'episode_id',
-        'condition', 'year', 'details'
-        ]
 
     condition = ForeignKeyOrFreeText(option_models['condition'])
     year = models.CharField(max_length=4, blank=True)
@@ -158,12 +144,6 @@ class GeneralNote(EpisodeSubrecord):
 
 
 class Travel(EpisodeSubrecord):
-    _fieldnames = [
-        'episode_id',
-        'destination', 'dates', 'reason_for_travel',
-        'specific_exposures'
-        ]
-
     destination = ForeignKeyOrFreeText(option_models['destination'])
     dates = models.CharField(max_length=255, blank=True)
     reason_for_travel = ForeignKeyOrFreeText(option_models['travel_reason'])
@@ -173,56 +153,40 @@ class Travel(EpisodeSubrecord):
 class Antimicrobial(EpisodeSubrecord):
     _title = 'Antimicrobials'
     _sort = 'start_date'
-    _fieldnames = [
-        'episode_id',
-        'drug', 'start_date', 'end_date', 'dose',
-        'route', 'frequency', 'delivered_by', 'adverse_event', 'comments'
-        ]
 
-    drug = ForeignKeyOrFreeText(option_models['antimicrobial'])
-    dose = models.CharField(max_length=255, blank=True)
-    route = ForeignKeyOrFreeText(option_models['antimicrobial_route'])
-    start_date = models.DateField(null=True, blank=True)
-    end_date = models.DateField(null=True, blank=True)
-    delivered_by = models.CharField(max_length=255, blank=True, null=True)
+    drug          = ForeignKeyOrFreeText(option_models['antimicrobial'])
+    dose          = models.CharField(max_length=255, blank=True)
+    route         = ForeignKeyOrFreeText(option_models['antimicrobial_route'])
+    start_date    = models.DateField(null=True, blank=True)
+    end_date      = models.DateField(null=True, blank=True)
+    delivered_by  = models.CharField(max_length=255, blank=True, null=True)
     adverse_event = ForeignKeyOrFreeText(option_models['antimicrobial_adverse_event'])
-    comments = models.TextField(blank=True, null=True)
-    frequency = ForeignKeyOrFreeText(option_models['antimicrobial_frequency'])
+    comments      = models.TextField(blank=True, null=True)
+    frequency     = ForeignKeyOrFreeText(option_models['antimicrobial_frequency'])
 
 class Allergies(PatientSubrecord):
-    _fieldnames = [
-        'patient_id',
-        'drug', 'provisional', 'details'
-        ]
 
-    drug = ForeignKeyOrFreeText(option_models['antimicrobial'])
+    drug        = ForeignKeyOrFreeText(option_models['antimicrobial'])
     provisional = models.BooleanField()
-    details = models.CharField(max_length=255, blank=True)
+    details     = models.CharField(max_length=255, blank=True)
 
 
 class MicrobiologyInput(EpisodeSubrecord):
     _title = 'Clinical Advice'
     _sort = 'date'
     _read_only = 'true'
-    _fieldnames = [
-        'episode_id',
-        'date', 'initials', 'reason_for_interaction',
-        'clinical_discussion', 'agreed_plan',
-        'discussed_with',
-        'clinical_advice_given', 'infection_control_advice_given',
-        'change_in_antibiotic_prescription', 'referred_to_opat'
-        ]
 
-    date = models.DateField(null=True, blank=True)
-    initials = models.CharField(max_length=255, blank=True)
-    reason_for_interaction = ForeignKeyOrFreeText(option_models['clinical_advice_reason_for_interaction'])
-    clinical_discussion = models.TextField(blank=True)
-    agreed_plan = models.TextField(blank=True)
-    discussed_with = models.CharField(max_length=255, blank=True)
-    clinical_advice_given = models.BooleanField()
-    infection_control_advice_given = models.BooleanField()
+    date                              = models.DateField(null=True, blank=True)
+    initials                          = models.CharField(max_length=255, blank=True)
+    reason_for_interaction            = ForeignKeyOrFreeText(
+        option_models['clinical_advice_reason_for_interaction'])
+    clinical_discussion               = models.TextField(blank=True)
+    agreed_plan                       = models.TextField(blank=True)
+    discussed_with                    = models.CharField(max_length=255, blank=True)
+    clinical_advice_given             = models.BooleanField()
+    infection_control_advice_given    = models.BooleanField()
     change_in_antibiotic_prescription = models.BooleanField()
-    referred_to_opat = models.BooleanField()
+    referred_to_opat                  = models.BooleanField()
 
 
 class Todo(EpisodeSubrecord):
@@ -233,53 +197,6 @@ class Todo(EpisodeSubrecord):
 class MicrobiologyTest(EpisodeSubrecord):
     _title = 'Investigations'
     _sort = 'date_ordered'
-    _fieldnames = [
-        'episode_id',
-        'test',
-        'date_ordered',
-        'details',
-        'microscopy',
-        'organism',
-        'sensitive_antibiotics',
-        'resistant_antibiotics',
-        'result',
-        'igm',
-        'igg',
-        'vca_igm',
-        'vca_igg',
-        'ebna_igg',
-        'hbsag',
-        'anti_hbs',
-        'anti_hbcore_igm',
-        'anti_hbcore_igg',
-        'rpr',
-        'tppa',
-        'viral_load',
-        'parasitaemia',
-        'hsv',
-        'vzv',
-        'syphilis',
-        'c_difficile_antigen',
-        'c_difficile_toxin',
-        'species',
-        'hsv_1',
-        'hsv_2',
-        'enterovirus',
-        'cmv',
-        'ebv',
-        'influenza_a',
-        'influenza_b',
-        'parainfluenza',
-        'metapneumovirus',
-        'rsv',
-        'adenovirus',
-        'norovirus',
-        'rotavirus',
-        'giardia',
-        'entamoeba_histolytica',
-        'cryptosporidium',
-
-        ]
 
     test = models.CharField(max_length=255)
     date_ordered = models.DateField(null=True, blank=True)
@@ -336,6 +253,7 @@ class OPATRejection(EpisodeSubrecord):
     reason     = models.CharField(max_length=255, blank=True, null=True)
     date       = models.DateField(blank=True, null=True)
 
+
 class Line(EpisodeSubrecord):
     _sort = 'insertion_date'
     _episode_category = 'OPAT'
@@ -356,8 +274,10 @@ class Line(EpisodeSubrecord):
 class OPATReview(EpisodeSubrecord):
     _sort = 'date'
     _episode_category = 'OPAT'
+    _read_only = 'true'
 
     date        = models.DateField(null=True, blank=True)
+    time        = models.IntegerField(blank=True, null=True)
     initials    = models.CharField(max_length=255, blank=True)
     rv_type     = models.CharField(max_length=255, blank=True, null=True)
     discussion  = models.TextField(blank=True, null=True)

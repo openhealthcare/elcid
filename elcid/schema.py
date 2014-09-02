@@ -49,7 +49,6 @@ list_columns_micro = [
 
 list_columns_opat = [
     models.Demographics,
-    omodels.Tagging,
     models.Location,
     models.Diagnosis,
     models.Antimicrobial,
@@ -80,6 +79,8 @@ list_schemas = {
     }
 }
 
+from obs import models as obsmodels
+
 detail_columns = [
     models.Demographics,
     models.ContactDetails,
@@ -88,6 +89,7 @@ detail_columns = [
     omodels.Tagging,
     models.Diagnosis,
     models.PresentingComplaint,
+    obsmodels.Observation,
     models.PastMedicalHistory,
     models.Antimicrobial,
     models.Allergies,
@@ -129,9 +131,10 @@ list_columns_research_nurse = [
     models.Antimicrobial,
     models.Travel,
     researchmodels.LabSpecimin
-    
+
 ]
 
 list_columns_scientist = [
-    models.Demographics
+    models.Demographics,
+    researchmodels.LabSpecimin
 ]
