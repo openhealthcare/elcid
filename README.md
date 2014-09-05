@@ -1,6 +1,6 @@
-# eLCID
+# elCID
 
-eLCID is an Electronic Clinical Infection Database.
+elCID is an electronic Clinical Infection Database.
 
 This is the implementation of the [OPAL](https://github.com/openhealthcare/opal) project in use at HTD UCLH.
 
