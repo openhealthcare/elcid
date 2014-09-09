@@ -160,6 +160,7 @@ INSTALLED_APPS = (
     'obs',
     'django.contrib.admin',
 #    'infectioncontrol',
+    'walkin',
     'research'
 )
 
@@ -217,7 +218,7 @@ OPAL_SCHEMA_MODULE = 'elcid.schema'
 OPAL_OPTIONS_MODULE = 'elcid.options'
 OPAL_FLOW_MODULE = 'elcid.flow'
 OPAL_TAGS_MODULE = 'elcid.tags'
-OPAL_BRAND_NAME = 'elCID - Diagnosis'
+OPAL_BRAND_NAME = 'elCID - Walk-in'
 OPAL_EXTRA_APPLICATION = 'elcid/extra_application.html'
 OPAL_LOG_OUT_MINUTES = 15
 OPAL_LOG_OUT_DURATION = OPAL_LOG_OUT_MINUTES*60*1000

@@ -61,6 +61,21 @@ list_columns_opat_review = [
     models.Antimicrobial,
 ]
 
+from walkin import models as wimodels
+
+list_columns_walkin = [
+    models.Demographics,
+    models.Location,
+    models.Travel,
+    wimodels.Symptom,
+    wimodels.ClinicalFinding,
+    wimodels.WalkinTest,
+    models.MicrobiologyTest,
+    models.Diagnosis,
+    models.Antimicrobial,
+    wimodels.Management,
+]
+
 list_schemas = {
     'default': list_columns,
     'microbiology': {
@@ -76,6 +91,9 @@ list_schemas = {
     'infectious_diseases': {
         # 'default': list_columns,
         'id_liaison': list_columns_id_liaison
+    },
+    'walkin': {
+        'default': list_columns_walkin
     }
 }
 
