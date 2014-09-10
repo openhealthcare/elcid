@@ -254,7 +254,7 @@ class OPATMeta(EpisodeSubrecord):
     _is_singleton     = True
 
     review_date           = models.DateField(blank=True, null=True)
-    reason_for_stopping   = models.CharField(max_length=20, blank=True, null=True)
+    reason_for_stopping   = models.CharField(max_length=200, blank=True, null=True)
     unplanned_stop_reason = ForeignKeyOrFreeText(OPATUnplannedStopLookupList)
     stopping_iv_details   = models.CharField(max_length=200, blank=True, null=True)
     treatment_outcome     = models.CharField(max_length=200, blank=True, null=True)
