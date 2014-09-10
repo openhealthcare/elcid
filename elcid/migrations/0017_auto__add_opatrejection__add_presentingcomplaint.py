@@ -19,10 +19,26 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal(u'elcid', ['OPATRejection'])
 
+        # Adding model 'PresentingComplaint'
+        db.create_table(u'elcid_presentingcomplaint', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('consistency_token', self.gf('django.db.models.fields.CharField')(max_length=8)),
+            ('episode', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['opal.Episode'], null=True)),
+            ('details', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
+            ('duration_fk', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['opal.Duration'], null=True, blank=True)),
+            ('duration_ft', self.gf('django.db.models.fields.CharField')(default='', max_length=255, null=True, blank=True)),
+            ('symptom_fk', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['opal.Symptom'], null=True, blank=True)),
+            ('symptom_ft', self.gf('django.db.models.fields.CharField')(default='', max_length=255, null=True, blank=True)),
+        ))
+        db.send_create_signal(u'elcid', ['PresentingComplaint'])
+
 
     def backwards(self, orm):
         # Deleting model 'OPATRejection'
         db.delete_table(u'elcid_opatrejection')
+
+        # Deleting model 'PresentingComplaint'
+        db.delete_table(u'elcid_presentingcomplaint')
 
 
     models = {
@@ -99,6 +115,7 @@ class Migration(SchemaMigration):
             'country_of_birth_ft': ('django.db.models.fields.CharField', [], {'default': "''", 'max_length': '255', 'null': 'True', 'blank': 'True'}),
             'date_of_birth': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
             'ethnicity': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
+            'gender': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
             'hospital_number': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
@@ -276,6 +293,17 @@ class Migration(SchemaMigration):
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'year': ('django.db.models.fields.CharField', [], {'max_length': '4', 'blank': 'True'})
         },
+        u'elcid.presentingcomplaint': {
+            'Meta': {'object_name': 'PresentingComplaint'},
+            'consistency_token': ('django.db.models.fields.CharField', [], {'max_length': '8'}),
+            'details': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
+            'duration_fk': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['opal.Duration']", 'null': 'True', 'blank': 'True'}),
+            'duration_ft': ('django.db.models.fields.CharField', [], {'default': "''", 'max_length': '255', 'null': 'True', 'blank': 'True'}),
+            'episode': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['opal.Episode']", 'null': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'symptom_fk': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['opal.Symptom']", 'null': 'True', 'blank': 'True'}),
+            'symptom_ft': ('django.db.models.fields.CharField', [], {'default': "''", 'max_length': '255', 'null': 'True', 'blank': 'True'})
+        },
         u'elcid.todo': {
             'Meta': {'object_name': 'Todo'},
             'consistency_token': ('django.db.models.fields.CharField', [], {'max_length': '8'}),
@@ -342,6 +370,11 @@ class Migration(SchemaMigration):
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '255'})
         },
+        u'opal.duration': {
+            'Meta': {'ordering': "['name']", 'object_name': 'Duration'},
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '255'})
+        },
         u'opal.episode': {
             'Meta': {'object_name': 'Episode'},
             'active': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
@@ -386,6 +419,11 @@ class Migration(SchemaMigration):
         u'opal.patient': {
             'Meta': {'object_name': 'Patient'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
+        },
+        u'opal.symptom': {
+            'Meta': {'ordering': "['name']", 'object_name': 'Symptom'},
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '255'})
         },
         u'opal.synonym': {
             'Meta': {'unique_together': "(('name', 'content_type'),)", 'object_name': 'Synonym'},

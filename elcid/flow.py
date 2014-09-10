@@ -24,5 +24,29 @@ flows = {
                 'template'  : '/templates/modals/discharge_opat_episode.html/'
             }
         }
+    },
+    'infectious_diseases': {
+        'id_inpatients': {
+            'enter': {
+                'controller': 'DiagnosisHospitalNumberCtrl',
+                'template'  : '/templates/modals/hospital_number.html/'
+            }
+        }
+    },
+    'hiv': {
+        'immune_inpatients': {
+            'enter': {
+                'controller': 'DiagnosisHospitalNumberCtrl',
+                'template'  : '/templates/modals/hospital_number.html/'
+            }
+        }
+    },
+    'tropical_diseases': {
+        'default': {
+            'enter': {
+                'controller': 'DiagnosisHospitalNumberCtrl',
+                'template'  : '/templates/modals/hospital_number.html/'
+            }
+        }
     }
 }

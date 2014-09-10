@@ -90,6 +90,7 @@ detail_columns = [
     omodels.Tagging,
     models.Diagnosis,
     obsmodels.Observation,
+    models.PresentingComplaint,
     models.PastMedicalHistory,
     models.Antimicrobial,
     models.Allergies,

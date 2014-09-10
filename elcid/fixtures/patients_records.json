@@ -120,6 +120,16 @@
     },
     {
         "pk": 1,
+        "model": "elcid.presentingcomplaint",
+        "fields": {
+            "consistency_token": "12345678",
+            "episode": 1,
+            "symptom": "",
+            "duration": 1
+        }
+    },
+    {
+        "pk": 1,
         "model": "elcid.generalnote",
         "fields": {
             "consistency_token": "12345678",
