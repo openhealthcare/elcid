@@ -9,15 +9,15 @@ class Migration(SchemaMigration):
 
     def forwards(self, orm):
         # Adding model 'OPATRejection'
-        db.create_table(u'elcid_opatrejection', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('consistency_token', self.gf('django.db.models.fields.CharField')(max_length=8)),
-            ('episode', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['opal.Episode'], null=True)),
-            ('decided_by', self.gf('django.db.models.fields.CharField')(max_length=255, null=True, blank=True)),
-            ('reason', self.gf('django.db.models.fields.CharField')(max_length=255, null=True, blank=True)),
-            ('date', self.gf('django.db.models.fields.DateField')(null=True, blank=True)),
-        ))
-        db.send_create_signal(u'elcid', ['OPATRejection'])
+        # db.create_table(u'elcid_opatrejection', (
+        #     (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+        #     ('consistency_token', self.gf('django.db.models.fields.CharField')(max_length=8)),
+        #     ('episode', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['opal.Episode'], null=True)),
+        #     ('decided_by', self.gf('django.db.models.fields.CharField')(max_length=255, null=True, blank=True)),
+        #     ('reason', self.gf('django.db.models.fields.CharField')(max_length=255, null=True, blank=True)),
+        #     ('date', self.gf('django.db.models.fields.DateField')(null=True, blank=True)),
+        # ))
+        # db.send_create_signal(u'elcid', ['OPATRejection'])
 
         # Adding model 'PresentingComplaint'
         db.create_table(u'elcid_presentingcomplaint', (
