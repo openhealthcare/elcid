@@ -69,7 +69,6 @@ list_columns_walkin = [
     models.Travel,
     wimodels.Symptom,
     wimodels.ClinicalFinding,
-    wimodels.WalkinTest,
     models.MicrobiologyTest,
     models.Diagnosis,
     models.Antimicrobial,
