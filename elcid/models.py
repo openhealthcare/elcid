@@ -117,15 +117,15 @@ class PastMedicalHistory(EpisodeSubrecord):
     _sort = 'year'
 
     condition = ForeignKeyOrFreeText(option_models['condition'])
-    year = models.CharField(max_length=4, blank=True)
-    details = models.CharField(max_length=255, blank=True)
+    year      = models.CharField(max_length=4, blank=True)
+    details   = models.CharField(max_length=255, blank=True)
 
 
 class GeneralNote(EpisodeSubrecord):
     _title = 'General Notes'
-    _sort = 'date'
+    _sort  = 'date'
 
-    date = models.DateField(null=True, blank=True)
+    date    = models.DateField(null=True, blank=True)
     comment = models.TextField()
 
 
@@ -290,9 +290,9 @@ class Appointment(EpisodeSubrecord):
 class OPATLineAssessment(EpisodeSubrecord):
     _episode_category = 'OPAT'
     
-    assessment_date = models.DateField(blank=True, null=True)
-    vip_score = models.IntegerField(blank=True, null=True)
-    dressing_type = models.CharField(max_length=200, blank=True, null=True)
-    dressing_change_date = models.DateField(blank=True, null=True)
+    assessment_date        = models.DateField(blank=True, null=True)
+    vip_score              = models.IntegerField(blank=True, null=True)
+    dressing_type          = models.CharField(max_length=200, blank=True, null=True)
+    dressing_change_date   = models.DateField(blank=True, null=True)
     dressing_change_reason = models.CharField(max_length=200, blank=True, null=True)
-    bionector_change_date = models.DateField(blank=True, null=True)
+    bionector_change_date  = models.DateField(blank=True, null=True)
