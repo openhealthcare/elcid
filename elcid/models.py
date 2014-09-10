@@ -8,6 +8,7 @@ from opal.models import (Subrecord,
                          option_models,
                          EpisodeSubrecord, PatientSubrecord, GP, CommunityNurse)
 from opal.utils.fields import ForeignKeyOrFreeText
+from opal.utils.models import lookup_list
 
 __all__ = [
     'Demographcs',
@@ -245,6 +246,25 @@ class MicrobiologyTest(EpisodeSubrecord):
 """
 Begin OPAT specific fields.
 """
+
+OPATUnplannedStopLookupList = type(*lookup_list('unplanned_stop', module=__name__))
+
+class OPATMeta(EpisodeSubrecord):
+    _episode_category = 'OPAT'
+    _is_singleton     = True
+
+    review_date           = models.DateField(blank=True, null=True)
+    reason_for_stopping   = models.CharField(max_length=20, blank=True, null=True)
+    unplanned_stop_reason = ForeignKeyOrFreeText(OPATUnplannedStopLookupList)
+    stopping_iv_details   = models.CharField(max_length=200, blank=True, null=True)
+    treatment_outcome     = models.CharField(max_length=200, blank=True, null=True)
+    deceased              = models.BooleanField(default=False)
+    death_category        = models.CharField(max_length=200, blank=True, null=True)
+    cause_of_death        = models.CharField(max_length=200, blank=True, null=True)
+    readmitted            = models.BooleanField(default=False)
+    readmission_cause     = models.CharField(max_length=200, blank=True, null=True)
+    notes                 = models.TextField(blank=True, null=True)
+
 
 class OPATRejection(EpisodeSubrecord):
     _episode_category = 'OPAT'
