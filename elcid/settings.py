@@ -210,7 +210,7 @@ APPEND_SLASH = False
 
 AXES_LOCK_OUT_AT_FAILURE = False
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-SESSION_COOKIE_AGE = 15 * 60
+#SESSION_COOKIE_AGE = 15 * 60
 
 # New modular settings!
 OPAL_SCHEMA_MODULE = 'elcid.schema'
@@ -238,7 +238,7 @@ else:
     EMAIL_HOST = 'localhost'
 
 
-VERSION_NUMBER = '0.2.0'
+VERSION_NUMBER = '0.2.1'
 TEST_RUNNER = 'django_test_coverage.runner.CoverageTestSuiteRunner'
 COVERAGE_EXCLUDE_MODULES = ('elcid.migrations', 'elcid.tests',
                             'elcid.local_settings',

@@ -8,6 +8,7 @@ from opal.models import (Subrecord,
                          option_models,
                          EpisodeSubrecord, PatientSubrecord, GP, CommunityNurse)
 from opal.utils.fields import ForeignKeyOrFreeText
+from opal.utils.models import lookup_list
 
 __all__ = [
     'Demographcs',
@@ -15,6 +16,7 @@ __all__ = [
     'Carers',
     'Location',
     'Allergies',
+    'PresentingComplaint',
     'Diagnosis',
     'PastMedicalHistory',
     'GeneralNote',
@@ -95,6 +97,19 @@ class Location(EpisodeSubrecord):
             )
 
 
+class PresentingComplaint(EpisodeSubrecord):
+    _title = 'Presenting Complaint'
+    _fieldnames = [
+        'episode_id',
+        'symptom', 'duration',
+        'details'
+        ]
+
+    symptom = ForeignKeyOrFreeText(option_models['symptom'])
+    duration = ForeignKeyOrFreeText(option_models['duration'])
+    details = models.CharField(max_length=255, blank=True)
+
+
 class Diagnosis(EpisodeSubrecord):
     _title = 'Diagnosis / Issues'
     _sort = 'date_of_diagnosis'
@@ -117,15 +132,15 @@ class PastMedicalHistory(EpisodeSubrecord):
     _sort = 'year'
 
     condition = ForeignKeyOrFreeText(option_models['condition'])
-    year = models.CharField(max_length=4, blank=True)
-    details = models.CharField(max_length=255, blank=True)
+    year      = models.CharField(max_length=4, blank=True)
+    details   = models.CharField(max_length=255, blank=True)
 
 
 class GeneralNote(EpisodeSubrecord):
     _title = 'General Notes'
-    _sort = 'date'
+    _sort  = 'date'
 
-    date = models.DateField(null=True, blank=True)
+    date    = models.DateField(null=True, blank=True)
     comment = models.TextField()
 
 
@@ -232,9 +247,28 @@ class MicrobiologyTest(EpisodeSubrecord):
 Begin OPAT specific fields.
 """
 
+OPATUnplannedStopLookupList = type(*lookup_list('unplanned_stop', module=__name__))
+
+class OPATMeta(EpisodeSubrecord):
+    _episode_category = 'OPAT'
+    _is_singleton     = True
+
+    review_date           = models.DateField(blank=True, null=True)
+    reason_for_stopping   = models.CharField(max_length=200, blank=True, null=True)
+    unplanned_stop_reason = ForeignKeyOrFreeText(OPATUnplannedStopLookupList)
+    stopping_iv_details   = models.CharField(max_length=200, blank=True, null=True)
+    treatment_outcome     = models.CharField(max_length=200, blank=True, null=True)
+    deceased              = models.BooleanField(default=False)
+    death_category        = models.CharField(max_length=200, blank=True, null=True)
+    cause_of_death        = models.CharField(max_length=200, blank=True, null=True)
+    readmitted            = models.BooleanField(default=False)
+    readmission_cause     = models.CharField(max_length=200, blank=True, null=True)
+    notes                 = models.TextField(blank=True, null=True)
+
+
 class OPATRejection(EpisodeSubrecord):
     _episode_category = 'OPAT'
-    
+
     decided_by = models.CharField(max_length=255, blank=True, null=True)
     reason     = models.CharField(max_length=255, blank=True, null=True)
     date       = models.DateField(blank=True, null=True)
@@ -243,7 +277,7 @@ class OPATRejection(EpisodeSubrecord):
 class Line(EpisodeSubrecord):
     _sort = 'insertion_date'
     _episode_category = 'OPAT'
-    
+
     line_type            = ForeignKeyOrFreeText(option_models['line_type'])
     site                 = ForeignKeyOrFreeText(option_models['line_site'])
     insertion_date       = models.DateField(blank=True, null=True)
@@ -263,6 +297,7 @@ class OPATReview(EpisodeSubrecord):
     _read_only = 'true'
 
     date        = models.DateField(null=True, blank=True)
+    time        = models.IntegerField(blank=True, null=True)
     initials    = models.CharField(max_length=255, blank=True)
     rv_type     = models.CharField(max_length=255, blank=True, null=True)
     discussion  = models.TextField(blank=True, null=True)
@@ -284,14 +319,29 @@ class Appointment(EpisodeSubrecord):
     appointment_type = models.CharField(max_length=200, blank=True, null=True)
     appointment_with = models.CharField(max_length=200, blank=True, null=True)
     date             = models.DateField(blank=True, null=True)
-    
-    
+
+
 class OPATLineAssessment(EpisodeSubrecord):
     _episode_category = 'OPAT'
     
-    assessment_date = models.DateField(blank=True, null=True)
-    vip_score = models.IntegerField(blank=True, null=True)
-    dressing_type = models.CharField(max_length=200, blank=True, null=True)
-    dressing_change_date = models.DateField(blank=True, null=True)
+    assessment_date        = models.DateField(blank=True, null=True)
+    vip_score              = models.IntegerField(blank=True, null=True)
+    dressing_type          = models.CharField(max_length=200, blank=True, null=True)
+    dressing_change_date   = models.DateField(blank=True, null=True)
     dressing_change_reason = models.CharField(max_length=200, blank=True, null=True)
-    bionector_change_date = models.DateField(blank=True, null=True)
+    bionector_change_date  = models.DateField(blank=True, null=True)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

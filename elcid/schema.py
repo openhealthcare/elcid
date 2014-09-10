@@ -53,6 +53,7 @@ list_columns_opat = [
     models.Diagnosis,
     models.Antimicrobial,
     models.MicrobiologyTest,
+    models.OPATReview,
     models.Line,
     models.OPATOutstandingIssues,
 ]
@@ -89,6 +90,7 @@ detail_columns = [
     omodels.Tagging,
     models.Diagnosis,
     obsmodels.Observation,
+    models.PresentingComplaint,
     models.PastMedicalHistory,
     models.Antimicrobial,
     models.Allergies,
