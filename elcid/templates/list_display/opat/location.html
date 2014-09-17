@@ -6,10 +6,12 @@ Admitted: [[row.date_of_admission | shortDate]]
   Discharged [[row.discharge_date | shortDate]]
 </span>
 <br />
-<a ng-show="currentSubTag == 'opat_referrals'" 
+<a
    class="screen-only btn btn-primary" href="#"
    ng-click="dischargeEpisode($parent.$index, $event)">
-  Accept / refuse
+  <span ng-show="currentSubTag == 'opat_referrals'" >Accept / refuse</span>
+  <span ng-show="currentSubTag == 'opat_current'" >Completed IV</span>
+  <span ng-show="currentSubTag == 'opat_followup'" >Completed Rx</span> 
   <i class="glyphicon glyphicon-ok"></i>
 </a>
 

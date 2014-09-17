@@ -8,37 +8,35 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding model 'OPATRejection'
-        # db.create_table(u'elcid_opatrejection', (
-        #     (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-        #     ('consistency_token', self.gf('django.db.models.fields.CharField')(max_length=8)),
-        #     ('episode', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['opal.Episode'], null=True)),
-        #     ('decided_by', self.gf('django.db.models.fields.CharField')(max_length=255, null=True, blank=True)),
-        #     ('reason', self.gf('django.db.models.fields.CharField')(max_length=255, null=True, blank=True)),
-        #     ('date', self.gf('django.db.models.fields.DateField')(null=True, blank=True)),
-        # ))
-        # db.send_create_signal(u'elcid', ['OPATRejection'])
-
-        # Adding model 'PresentingComplaint'
-        db.create_table(u'elcid_presentingcomplaint', (
+        # Adding model 'OPATMeta'
+        db.create_table(u'elcid_opatmeta', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('consistency_token', self.gf('django.db.models.fields.CharField')(max_length=8)),
             ('episode', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['opal.Episode'], null=True)),
-            ('details', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
-            ('duration_fk', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['opal.Duration'], null=True, blank=True)),
-            ('duration_ft', self.gf('django.db.models.fields.CharField')(default='', max_length=255, null=True, blank=True)),
-            ('symptom_fk', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['opal.Symptom'], null=True, blank=True)),
-            ('symptom_ft', self.gf('django.db.models.fields.CharField')(default='', max_length=255, null=True, blank=True)),
+            ('review_date', self.gf('django.db.models.fields.DateField')(null=True, blank=True)),
         ))
-        db.send_create_signal(u'elcid', ['PresentingComplaint'])
+        db.send_create_signal(u'elcid', ['OPATMeta'])
+
+        # # Adding model 'PresentingComplaint'
+        # db.create_table(u'elcid_presentingcomplaint', (
+        #     (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+        #     ('consistency_token', self.gf('django.db.models.fields.CharField')(max_length=8)),
+        #     ('episode', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['opal.Episode'], null=True)),
+        #     ('details', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
+        #     ('duration_fk', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['opal.Duration'], null=True, blank=True)),
+        #     ('duration_ft', self.gf('django.db.models.fields.CharField')(default='', max_length=255, null=True, blank=True)),
+        #     ('symptom_fk', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['opal.Symptom'], null=True, blank=True)),
+        #     ('symptom_ft', self.gf('django.db.models.fields.CharField')(default='', max_length=255, null=True, blank=True)),
+        # ))
+        # db.send_create_signal(u'elcid', ['PresentingComplaint'])
 
 
     def backwards(self, orm):
-        # Deleting model 'OPATRejection'
-        db.delete_table(u'elcid_opatrejection')
+        # Deleting model 'OPATMeta'
+        db.delete_table(u'elcid_opatmeta')
 
         # Deleting model 'PresentingComplaint'
-        db.delete_table(u'elcid_presentingcomplaint')
+        # db.delete_table(u'elcid_presentingcomplaint')
 
 
     models = {
@@ -172,6 +170,7 @@ class Migration(SchemaMigration):
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'opat_discharge': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
             'opat_referral': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
+            'opat_referral_consultant': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
             'opat_referral_route': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
             'opat_referral_team': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
             'opat_referral_team_address': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
@@ -255,6 +254,13 @@ class Migration(SchemaMigration):
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'vip_score': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'})
         },
+        u'elcid.opatmeta': {
+            'Meta': {'object_name': 'OPATMeta'},
+            'consistency_token': ('django.db.models.fields.CharField', [], {'max_length': '8'}),
+            'episode': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['opal.Episode']", 'null': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'review_date': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'})
+        },
         u'elcid.opatoutstandingissues': {
             'Meta': {'object_name': 'OPATOutstandingIssues'},
             'consistency_token': ('django.db.models.fields.CharField', [], {'max_length': '8'}),
@@ -281,7 +287,8 @@ class Migration(SchemaMigration):
             'initials': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
             'next_review': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
             'opat_plan': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
-            'rv_type': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'})
+            'rv_type': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
+            'time': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'})
         },
         u'elcid.pastmedicalhistory': {
             'Meta': {'object_name': 'PastMedicalHistory'},

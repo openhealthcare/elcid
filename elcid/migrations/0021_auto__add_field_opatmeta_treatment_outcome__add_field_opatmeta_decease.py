@@ -8,37 +8,63 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding model 'OPATRejection'
-        # db.create_table(u'elcid_opatrejection', (
-        #     (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-        #     ('consistency_token', self.gf('django.db.models.fields.CharField')(max_length=8)),
-        #     ('episode', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['opal.Episode'], null=True)),
-        #     ('decided_by', self.gf('django.db.models.fields.CharField')(max_length=255, null=True, blank=True)),
-        #     ('reason', self.gf('django.db.models.fields.CharField')(max_length=255, null=True, blank=True)),
-        #     ('date', self.gf('django.db.models.fields.DateField')(null=True, blank=True)),
-        # ))
-        # db.send_create_signal(u'elcid', ['OPATRejection'])
+        # Adding field 'OPATMeta.treatment_outcome'
+        db.add_column(u'elcid_opatmeta', 'treatment_outcome',
+                      self.gf('django.db.models.fields.CharField')(max_length=200, null=True, blank=True),
+                      keep_default=False)
 
-        # Adding model 'PresentingComplaint'
-        db.create_table(u'elcid_presentingcomplaint', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('consistency_token', self.gf('django.db.models.fields.CharField')(max_length=8)),
-            ('episode', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['opal.Episode'], null=True)),
-            ('details', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
-            ('duration_fk', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['opal.Duration'], null=True, blank=True)),
-            ('duration_ft', self.gf('django.db.models.fields.CharField')(default='', max_length=255, null=True, blank=True)),
-            ('symptom_fk', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['opal.Symptom'], null=True, blank=True)),
-            ('symptom_ft', self.gf('django.db.models.fields.CharField')(default='', max_length=255, null=True, blank=True)),
-        ))
-        db.send_create_signal(u'elcid', ['PresentingComplaint'])
+        # Adding field 'OPATMeta.deceased'
+        db.add_column(u'elcid_opatmeta', 'deceased',
+                      self.gf('django.db.models.fields.BooleanField')(default=False),
+                      keep_default=False)
+
+        # Adding field 'OPATMeta.death_category'
+        db.add_column(u'elcid_opatmeta', 'death_category',
+                      self.gf('django.db.models.fields.CharField')(max_length=200, null=True, blank=True),
+                      keep_default=False)
+
+        # Adding field 'OPATMeta.cause_of_death'
+        db.add_column(u'elcid_opatmeta', 'cause_of_death',
+                      self.gf('django.db.models.fields.CharField')(max_length=200, null=True, blank=True),
+                      keep_default=False)
+
+        # Adding field 'OPATMeta.readmitted'
+        db.add_column(u'elcid_opatmeta', 'readmitted',
+                      self.gf('django.db.models.fields.BooleanField')(default=False),
+                      keep_default=False)
+
+        # Adding field 'OPATMeta.readmission_cause'
+        db.add_column(u'elcid_opatmeta', 'readmission_cause',
+                      self.gf('django.db.models.fields.CharField')(max_length=200, null=True, blank=True),
+                      keep_default=False)
+
+        # Adding field 'OPATMeta.notes'
+        db.add_column(u'elcid_opatmeta', 'notes',
+                      self.gf('django.db.models.fields.TextField')(null=True, blank=True),
+                      keep_default=False)
 
 
     def backwards(self, orm):
-        # Deleting model 'OPATRejection'
-        db.delete_table(u'elcid_opatrejection')
+        # Deleting field 'OPATMeta.treatment_outcome'
+        db.delete_column(u'elcid_opatmeta', 'treatment_outcome')
 
-        # Deleting model 'PresentingComplaint'
-        db.delete_table(u'elcid_presentingcomplaint')
+        # Deleting field 'OPATMeta.deceased'
+        db.delete_column(u'elcid_opatmeta', 'deceased')
+
+        # Deleting field 'OPATMeta.death_category'
+        db.delete_column(u'elcid_opatmeta', 'death_category')
+
+        # Deleting field 'OPATMeta.cause_of_death'
+        db.delete_column(u'elcid_opatmeta', 'cause_of_death')
+
+        # Deleting field 'OPATMeta.readmitted'
+        db.delete_column(u'elcid_opatmeta', 'readmitted')
+
+        # Deleting field 'OPATMeta.readmission_cause'
+        db.delete_column(u'elcid_opatmeta', 'readmission_cause')
+
+        # Deleting field 'OPATMeta.notes'
+        db.delete_column(u'elcid_opatmeta', 'notes')
 
 
     models = {
@@ -172,6 +198,7 @@ class Migration(SchemaMigration):
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'opat_discharge': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
             'opat_referral': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
+            'opat_referral_consultant': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
             'opat_referral_route': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
             'opat_referral_team': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
             'opat_referral_team_address': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
@@ -255,6 +282,24 @@ class Migration(SchemaMigration):
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'vip_score': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'})
         },
+        u'elcid.opatmeta': {
+            'Meta': {'object_name': 'OPATMeta'},
+            'cause_of_death': ('django.db.models.fields.CharField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
+            'consistency_token': ('django.db.models.fields.CharField', [], {'max_length': '8'}),
+            'death_category': ('django.db.models.fields.CharField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
+            'deceased': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'episode': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['opal.Episode']", 'null': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'notes': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'readmission_cause': ('django.db.models.fields.CharField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
+            'readmitted': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'reason_for_stopping': ('django.db.models.fields.CharField', [], {'max_length': '20', 'null': 'True', 'blank': 'True'}),
+            'review_date': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
+            'stopping_iv_details': ('django.db.models.fields.CharField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
+            'treatment_outcome': ('django.db.models.fields.CharField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
+            'unplanned_stop_reason_fk': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['elcid.Unplanned_stop']", 'null': 'True', 'blank': 'True'}),
+            'unplanned_stop_reason_ft': ('django.db.models.fields.CharField', [], {'default': "''", 'max_length': '255', 'null': 'True', 'blank': 'True'})
+        },
         u'elcid.opatoutstandingissues': {
             'Meta': {'object_name': 'OPATOutstandingIssues'},
             'consistency_token': ('django.db.models.fields.CharField', [], {'max_length': '8'}),
@@ -281,7 +326,8 @@ class Migration(SchemaMigration):
             'initials': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
             'next_review': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
             'opat_plan': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
-            'rv_type': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'})
+            'rv_type': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
+            'time': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'})
         },
         u'elcid.pastmedicalhistory': {
             'Meta': {'object_name': 'PastMedicalHistory'},
@@ -322,6 +368,11 @@ class Migration(SchemaMigration):
             'reason_for_travel_fk': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['opal.Travel_reason']", 'null': 'True', 'blank': 'True'}),
             'reason_for_travel_ft': ('django.db.models.fields.CharField', [], {'default': "''", 'max_length': '255', 'null': 'True', 'blank': 'True'}),
             'specific_exposures': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'})
+        },
+        u'elcid.unplanned_stop': {
+            'Meta': {'ordering': "['name']", 'object_name': 'Unplanned_stop'},
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '255'})
         },
         u'opal.antimicrobial': {
             'Meta': {'ordering': "['name']", 'object_name': 'Antimicrobial'},

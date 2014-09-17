@@ -53,6 +53,7 @@ list_columns_opat = [
     models.Diagnosis,
     models.Antimicrobial,
     models.MicrobiologyTest,
+    models.OPATReview,
     models.Line,
     models.OPATOutstandingIssues,
 ]
