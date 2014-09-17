@@ -62,6 +62,7 @@ list_columns_opat_review = [
     models.Antimicrobial,
 ]
 
+from obs import models as obsmodels
 from walkin import models as wimodels
 
 list_columns_walkin = [
@@ -72,6 +73,7 @@ list_columns_walkin = [
     wimodels.ClinicalFinding,
     models.MicrobiologyTest,
     models.Diagnosis,
+    obsmodels.Observation,
     models.Antimicrobial,
     wimodels.Management,
 ]
@@ -96,8 +98,6 @@ list_schemas = {
         'default': list_columns_walkin
     }
 }
-
-from obs import models as obsmodels
 
 detail_columns = [
     models.Demographics,
