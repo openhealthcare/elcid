@@ -14,11 +14,6 @@ controllers.controller(
 
         var currentTag = tags.tag;
         var currentSubTag = tags.subtag;
-        // TODO: Reimplement this.
-        //
-        // $timeout(function() {
-        //     dialog.modalEl.find('input,textarea').first().focus();
-        // });
 
         $scope.currentCategory = episode.location[0].category;
         var newCategory;
@@ -32,8 +27,13 @@ controllers.controller(
 	    newCategory = $scope.currentCategory;
         }
 
+        var admission;
+        if(episode.date_of_admission){
+            admission = moment(episode.date_of_admission).format('MM/DD/YY')
+        }
+
         $scope.editing = {
-            date_of_admission: moment(episode.date_of_admission).format('MM/DD/YY'),
+            date_of_admission: admission,
 	    category: newCategory,
             discharge_date: null
         };
