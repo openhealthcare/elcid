@@ -8,3 +8,4 @@ elcid/local_settings.py
 htmlcov
 libpeerconnection.log
 elcid/static
+opal.sqlite.*
