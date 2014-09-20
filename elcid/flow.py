@@ -48,5 +48,17 @@ flows = {
                 'template'  : '/templates/modals/hospital_number.html/'
             }
         }
+    },
+    'walkin': {
+        'default': {
+            'enter': {
+                'controller': 'WalkinHospitalNumberCtrl',
+                'template'  : '/templates/modals/hospital_number.html/'
+            },
+            'exit': {
+                'controller': 'WalkinDischargeCtrl',
+                'template'  : '/templates/modals/discharge_walkin_episode.html/'
+            }
+        }
     }
 }

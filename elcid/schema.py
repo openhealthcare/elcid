@@ -62,6 +62,22 @@ list_columns_opat_review = [
     models.Antimicrobial,
 ]
 
+from obs import models as obsmodels
+from walkin import models as wimodels
+
+list_columns_walkin = [
+    models.Demographics,
+    models.Location,
+    models.Travel,
+    wimodels.Symptom,
+    wimodels.ClinicalFinding,
+    models.MicrobiologyTest,
+    models.Diagnosis,
+    obsmodels.Observation,
+    models.Antimicrobial,
+    wimodels.Management,
+]
+
 list_schemas = {
     'default': list_columns,
     'microbiology': {
@@ -77,10 +93,11 @@ list_schemas = {
     'infectious_diseases': {
         # 'default': list_columns,
         'id_liaison': list_columns_id_liaison
+    },
+    'walkin': {
+        'default': list_columns_walkin
     }
 }
-
-from obs import models as obsmodels
 
 detail_columns = [
     models.Demographics,
@@ -89,8 +106,8 @@ detail_columns = [
     models.Location,
     omodels.Tagging,
     models.Diagnosis,
-    obsmodels.Observation,
     models.PresentingComplaint,
+    obsmodels.Observation,
     models.PastMedicalHistory,
     models.Antimicrobial,
     models.Allergies,
@@ -134,7 +151,7 @@ list_columns_research_nurse = [
     researchmodels.LabTest,
     models.Travel,
     researchmodels.LabSpecimin
-    
+
 ]
 
 list_columns_scientist = [
