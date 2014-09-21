@@ -1,19 +1,24 @@
 <div ng-hide="row.location[0].category=='Research'">
-[[item.hospital_number]]<br />
-[[item.name]]<br />
-[[item.date_of_birth | shortDate]]<br />
-[[ item.country_of_birth ]] [[ item.ethnicity ]]<br />
-<a class="btn btn-default screen-only" href="#/episode/[[row.id]]">Patient Details</a>
+  [[item.hospital_number]]<br />
+  [[item.name]]<br />
+  [[item.date_of_birth | shortDate]]<br />
+  [[ item.country_of_birth ]] [[ item.ethnicity ]]<br />
+  <a class="btn btn-default screen-only" href="#/episode/[[row.id]]">Patient Details</a>
 </div>
 
 <!-- Research study overrides. -->
 <div ng-show="row.location[0].category=='Research'">
-<b>Study ID:</b> 
-RiDRTI/[[ row.location[0].hospital ]]/[[row.id]]
-<span ng-hide="currentSubTag.indexOf('scientist') != -1">
-<br />
-[[item.name]]<br />
-[[item.date_of_birth | shortDate]]<br />
-[[ item.country_of_birth ]] [[ item.ethnicity ]]<br />
-</span>
+  <b>Study ID:</b> 
+  RiDRTI/[[ row.location[0].hospital ]]/[[row.id]]
+  <span ng-hide="currentSubTag.indexOf('scientist') != -1">
+    <br />
+    <span ng-hide="profile.has_role('researcher')">
+      [[item.name]]<br />
+      [[item.date_of_birth | shortDate]]<br />
+      [[ item.country_of_birth ]] [[ item.ethnicity ]]<br />
+    </span>
+    <span ng-show="profile.has_role('researcher')">
+      Age: [[item.date_of_birth | age]]<br />
+    </span>
+  </span>
 </div>
