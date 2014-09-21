@@ -332,16 +332,139 @@ class OPATLineAssessment(EpisodeSubrecord):
     bionector_change_date  = models.DateField(blank=True, null=True)
 
 
+"""
+Fields for UCLH - specific Research studies.
+"""
+
+""" RiD RTI (http://www.rid-rti.eu/ ) """
+SpeciminLookupList = type(*lookup_list('specimin', module=__name__))
+SpeciminAppearanceLookupList = type(*lookup_list('specimin_appearance', module=__name__))
+OrganismDetailsLookupList = type(*lookup_list('organism_details', module=__name__))
+AntimicrobialSusceptabilityLookupList = type(*lookup_list('antimicrobial_susceptability', module=__name__))
+    
+class LabSpecimin(EpisodeSubrecord):
+    _sort = 'date_collected'
+
+    specimin_type     = ForeignKeyOrFreeText(SpeciminLookupList)
+    date_collected    = models.DateField(blank=True, null=True)
+    volume            = models.CharField(max_length=200, blank=True, null=True)
+    appearance        = ForeignKeyOrFreeText(SpeciminAppearanceLookupList)
+    epithelial_cell   = models.CharField(max_length=200, blank=True, null=True)
+    white_blood_cells = models.CharField(max_length=200, blank=True, null=True)
+    date_tested       = models.DateField(blank=True, null=True)
+    external_id       = models.CharField(max_length=200, blank=True, null=True)
+    biobanking        = models.BooleanField(default=False)
+    date_biobanked    = models.DateField(blank=True, null=True)
+    volume_biobanked  = models.CharField(max_length=200, blank=True, null=True)
 
 
+# This is based on the investigations record type from elCID
+class LabTest(EpisodeSubrecord):
+    _sort = 'date_ordered'
+
+    """
+    Begin elCID.models.investigations fields
+    """
+
+    test                  = models.CharField(max_length=255)
+    date_ordered          = models.DateField(null=True, blank=True)
+    details               = models.CharField(max_length=255, blank=True)
+    microscopy            = models.CharField(max_length=255, blank=True)
+    organism              = models.CharField(max_length=255, blank=True)
+    sensitive_antibiotics = models.CharField(max_length=255, blank=True)
+    resistant_antibiotics = models.CharField(max_length=255, blank=True)
+    result                = models.CharField(max_length=255, blank=True)
+    igm                   = models.CharField(max_length=20, blank=True)
+    igg                   = models.CharField(max_length=20, blank=True)
+    vca_igm               = models.CharField(max_length=20, blank=True)
+    vca_igg               = models.CharField(max_length=20, blank=True)
+    ebna_igg              = models.CharField(max_length=20, blank=True)
+    hbsag                 = models.CharField(max_length=20, blank=True)
+    anti_hbs              = models.CharField(max_length=20, blank=True)
+    anti_hbcore_igm       = models.CharField(max_length=20, blank=True)
+    anti_hbcore_igg       = models.CharField(max_length=20, blank=True)
+    rpr                   = models.CharField(max_length=20, blank=True)
+    tppa                  = models.CharField(max_length=20, blank=True)
+    viral_load            = models.CharField(max_length=20, blank=True)
+    parasitaemia          = models.CharField(max_length=20, blank=True)
+    hsv                   = models.CharField(max_length=20, blank=True)
+    vzv                   = models.CharField(max_length=20, blank=True)
+    syphilis              = models.CharField(max_length=20, blank=True)
+    c_difficile_antigen   = models.CharField(max_length=20, blank=True)
+    c_difficile_toxin     = models.CharField(max_length=20, blank=True)
+    species               = models.CharField(max_length=20, blank=True)
+    hsv_1                 = models.CharField(max_length=20, blank=True)
+    hsv_2                 = models.CharField(max_length=20, blank=True)
+    enterovirus           = models.CharField(max_length=20, blank=True)
+    cmv                   = models.CharField(max_length=20, blank=True)
+    ebv                   = models.CharField(max_length=20, blank=True)
+    influenza_a           = models.CharField(max_length=20, blank=True)
+    influenza_b           = models.CharField(max_length=20, blank=True)
+    parainfluenza         = models.CharField(max_length=20, blank=True)
+    metapneumovirus       = models.CharField(max_length=20, blank=True)
+    rsv                   = models.CharField(max_length=20, blank=True)
+    adenovirus            = models.CharField(max_length=20, blank=True)
+    norovirus             = models.CharField(max_length=20, blank=True)
+    rotavirus             = models.CharField(max_length=20, blank=True)
+    giardia               = models.CharField(max_length=20, blank=True)
+    entamoeba_histolytica = models.CharField(max_length=20, blank=True)
+    cryptosporidium       = models.CharField(max_length=20, blank=True)
+    """
+    End elCID.models.investigations fields
+    """
+    significant_organism        = models.BooleanField(default=False)
+    organism_details            = ForeignKeyOrFreeText(OrganismDetailsLookupList)
+    antimicrobial_suceptability = ForeignKeyOrFreeText(AntimicrobialSusceptabilityLookupList)
+    retrieved                   = models.BooleanField(default=False)
+    date_retrieved              = models.DateField(null=True, blank=True)
+    biobanked                   = models.BooleanField(default=False)
+    freezer_box_number          = models.CharField(max_length=200, blank=True, null=True)
+    esbl                        = models.BooleanField(default=False)
+    carbapenemase               = models.BooleanField(default=False)
 
 
-
-
-
-
-
-
-
-
-
+class RidRTITest(EpisodeSubrecord):
+    """
+    Results of the actual RiD RTI test ! 
+    """
+    test            = models.CharField(max_length=200, blank=True, null=True)
+    process_control = models.BooleanField(default=False)
+    notes           = models.TextField(blank=True, null=True)
+    # HAP/VAP results
+    pseudomonas_aeruginosa = models.BooleanField(default=False)
+    # (Acinetobacter baumannii Stenotrophomonas maltophilia )
+    absm = models.BooleanField(default=False)
+    klebsiella_spp = models.BooleanField(default=False)
+    # (Enterobacter spp Staphylococcus aureus)
+    essa = models.BooleanField(default=False)
+    staphylococcus_mrsa = models.BooleanField(default=False)
+    ctx_m = models.BooleanField(default=False)
+    shv_esbl = models.BooleanField(default=False)
+    tem_esbl = models.BooleanField(default=False)
+    vim = models.BooleanField(default=False)
+    imp = models.BooleanField(default=False)
+    ndm = models.BooleanField(default=False)
+    kpc = models.BooleanField(default=False)
+    oxa_48 = models.BooleanField(default=False)
+    meca = models.BooleanField(default=False)
+    # CAP results
+    mycoplasma_pneumoniae = models.BooleanField(default=False)
+    chlamydophila_pneumoniae = models.BooleanField(default=False)
+    legionella_pneumophila = models.BooleanField(default=False)
+    # (Mycobacterium tuberculosis complex) = models.BooleanField(default=False)
+    mtc = models.BooleanField(default=False)
+    haemophilus_influenzae = models.BooleanField(default=False)
+    streptococcus_pneumoniae = models.BooleanField(default=False)
+    rsva = models.BooleanField(default=False)
+    rsvb = models.BooleanField(default=False)
+    influenza_a = models.BooleanField(default=False)
+    influenza_b_coronavirus_oc43 = models.BooleanField(default=False)
+    coronavirus_nl63_229e = models.BooleanField(default=False)
+    # ORTI results
+    nocardia_spp = models.BooleanField(default=False)
+    rhodococcus_equi = models.BooleanField(default=False)
+    # (Aspergillus spp Cryptococcus neoformans)
+    ascn = models.BooleanField(default=False)
+    pneumocystis_jiroveci = models.BooleanField(default=False)
+    coronavirus_oc43 = models.BooleanField(default=False)
+    coronavirus_nl63 = models.BooleanField(default=False)

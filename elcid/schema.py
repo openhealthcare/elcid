@@ -148,14 +148,15 @@ list_columns_research_nurse = [
     models.Diagnosis,
     models.Antimicrobial,
     models.MicrobiologyTest,
-    researchmodels.LabTest,
+    models.LabTest,
     models.Travel,
-    researchmodels.LabSpecimin
-
+    models.LabSpecimin
 ]
 
 list_columns_scientist = [
     models.Demographics,
-    researchmodels.LabSpecimin,
-    researchmodels.LabTest
+    models.LabSpecimin,
+    models.LabTest,
+    models.RidRTITest
 ]
+
