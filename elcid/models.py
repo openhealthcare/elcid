@@ -341,7 +341,9 @@ SpeciminLookupList = type(*lookup_list('specimin', module=__name__))
 SpeciminAppearanceLookupList = type(*lookup_list('specimin_appearance', module=__name__))
 OrganismDetailsLookupList = type(*lookup_list('organism_details', module=__name__))
 AntimicrobialSusceptabilityLookupList = type(*lookup_list('antimicrobial_susceptability', module=__name__))
-    
+CheckpointsAssayLookupList = type(*lookup_list('checkpoints_assay', module=__name__))
+
+
 class LabSpecimin(EpisodeSubrecord):
     _sort = 'date_collected'
 
@@ -468,3 +470,7 @@ class RidRTITest(EpisodeSubrecord):
     pneumocystis_jiroveci = models.BooleanField(default=False)
     coronavirus_oc43 = models.BooleanField(default=False)
     coronavirus_nl63 = models.BooleanField(default=False)
+
+class CheckpointsAssay(EpisodeSubrecord):
+    checkpoint = models.CharField(max_length="200", blank=True, null=True)
+    value      = models.BooleanField(default=False)

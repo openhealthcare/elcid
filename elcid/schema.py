@@ -157,6 +157,7 @@ list_columns_scientist = [
     models.Demographics,
     models.LabSpecimin,
     models.LabTest,
+    models.CheckpointsAssay,
     models.RidRTITest
 ]
 
