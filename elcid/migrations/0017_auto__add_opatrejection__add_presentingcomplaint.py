@@ -35,7 +35,7 @@ class Migration(SchemaMigration):
 
     def backwards(self, orm):
         # Deleting model 'OPATRejection'
-#        db.delete_table(u'elcid_opatrejection')
+        db.delete_table(u'elcid_opatrejection')
 
         # Deleting model 'PresentingComplaint'
         db.delete_table(u'elcid_presentingcomplaint')
