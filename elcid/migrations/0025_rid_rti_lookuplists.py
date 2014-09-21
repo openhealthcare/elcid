@@ -48,12 +48,14 @@ class Migration(DataMigration):
 
         organismdetails = [
             'Haemophilus influenzae',
-            "Haemophilus parainfluenzae Streptococcu's pneumoniae",
+            "Haemophilus parainfluenzae", 
+            "Streptococcu's pneumoniae",
             'Streptococcus (Group A)',
             'Streptococcus (Group C, G )',
             'Steptococcus spp',
             'Streptococcus parasanguinis',
-            'Streptococcus sanguinis Streptococcus cristatus',
+            'Streptococcus sanguinis',
+            'Streptococcus cristatus',
             'Streptococcus salivarius',
             'Streptococcus constellatus group',
             'Pseudomonas aeruginosa',
