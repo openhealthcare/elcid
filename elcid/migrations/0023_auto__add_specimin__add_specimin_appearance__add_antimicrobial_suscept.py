@@ -8,6 +8,7 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
+        db.execute('ALTER TABLE auth_permission ALTER COLUMN name TYPE VARCHAR(100);')
         # Adding model 'Specimin'
         db.create_table(u'elcid_specimin', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
@@ -128,6 +129,7 @@ class Migration(SchemaMigration):
         db.delete_table(u'elcid_specimin_appearance')
 
         # Deleting model 'Antimicrobial_susceptability'
+        # TODO NOW - this is too long! 
         db.delete_table(u'elcid_antimicrobial_susceptability')
 
         # Deleting model 'LabTest'
