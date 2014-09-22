@@ -11,136 +11,136 @@ class Migration(DataMigration):
         # Note: Don't use "from appname.models import ModelName". 
         # Use orm.ModelName to refer to models in this application,
         # and orm['appname.ModelName'] for models in other applications.
-        specimins = [
-            ('Broncho-alveolar lavage', ('BAL',)),
-            ('Induced sputum', None),
-            ('Sputum', None),
-            ('Tracheal aspirate', ('TA',)), 
-            ('Endotracheal secretions', ('ET secretions', 'ETT')),
-            ('Non-directed bronchoalveolar lavage', ('NBL')),
-            ('Bronchial aspirates', None)
-        ]
+        # specimins = [
+        #     ('Broncho-alveolar lavage', ('BAL',)),
+        #     ('Induced sputum', None),
+        #     ('Sputum', None),
+        #     ('Tracheal aspirate', ('TA',)), 
+        #     ('Endotracheal secretions', ('ET secretions', 'ETT')),
+        #     ('Non-directed bronchoalveolar lavage', ('NBL')),
+        #     ('Bronchial aspirates', None)
+        # ]
 
-        content_type, _ = orm['contenttypes.ContentType'].objects.get_or_create(app_label='elcid', 
-                                                                             model='specimin')
-        for specimin, synonyms in specimins:
-            specimin = orm.Specimin(name=specimin)
-            specimin.save()
-            if not synonyms:
-                continue
-            for synonym in synonyms:
-                s = orm['opal.Synonym']
-                s = s(name=synonym, content_type=content_type, object_id=specimin.id)
-                s.save()
+        # content_type, _ = orm['contenttypes.ContentType'].objects.get_or_create(app_label='elcid', 
+        #                                                                      model='specimin')
+        # for specimin, synonyms in specimins:
+        #     specimin = orm.Specimin(name=specimin)
+        #     specimin.save()
+        #     if not synonyms:
+        #         continue
+        #     for synonym in synonyms:
+        #         s = orm['opal.Synonym']
+        #         s = s(name=synonym, content_type=content_type, object_id=specimin.id)
+        #         s.save()
 
 
-        appearances = [
-            'Salivary',
-            'Mucosalivary',
-            'Mucoid',
-            'Mucopurulent',
-            'Purulent'
-        ]
+        # appearances = [
+        #     'Salivary',
+        #     'Mucosalivary',
+        #     'Mucoid',
+        #     'Mucopurulent',
+        #     'Purulent'
+        # ]
          
-        for appearance in appearances:
-            ap = orm.Specimin_appearance(name=appearance)
-            ap.save()
+        # for appearance in appearances:
+        #     ap = orm.Specimin_appearance(name=appearance)
+        #     ap.save()
 
-        organismdetails = [
-            'Haemophilus influenzae',
-            "Haemophilus parainfluenzae", 
-            "Streptococcu's pneumoniae",
-            'Streptococcus (Group A)',
-            'Streptococcus (Group C, G )',
-            'Steptococcus spp',
-            'Streptococcus parasanguinis',
-            'Streptococcus sanguinis',
-            'Streptococcus cristatus',
-            'Streptococcus salivarius',
-            'Streptococcus constellatus group',
-            'Pseudomonas aeruginosa',
-            'Enterobacter spp', 
-            'Escherichia coli', 
-            'Moraxella catarrhalis', 
-            'Staphylococcus epidermidis', 
-            'Staphylococcus aureus', 
-            'Staphylococcus MRSA', 
-            'Klebsiella pneumoniae', 
-            'Klebsiella oxytoca',
-            'Stenotrophomonas maltophilia', 
-            'Acinetobacter baumannii', 
-            'Rothia mucilaginosa', 
-            'Enterococcus faecalis', 
-            'Staphylococcus haemolyticus', 
-            'Serratia marcescens',
-            'Neisseria spp', 
-            'Neisseria meningitidis', 
-            'Candida spp', 
-            'Candida albicans', 
-            'Candida parapsilosis', 
-            'Aspergillus spp Mycobacterium tuberculosis', 
-            'Mycoplasma pneumoniae', 
-            'Chlamydophila pneumoniae', 
-            'Legionella pneumophila', 
-            'RSVA', 
-            'RSVB', 
-            'Influenza A', 
-            'Influenza B', 
-            'Coronavirus', 
-            'parainfluenza virus',
-            'Burkholderia cepacia', 
-            'Proteus mirabilis', 
-            'Salmonella spp', 
-            'Morganella morganii', 
-            'Enterobacter cloacae', 
-            'Enterobacter aerogenes', 
-            'Cryptococcus spp', 
-            'Salmonella spp'
-            'Coliform', 
-            'Gentamicin resistant coliform',
-        ]
-        for od in organismdetails:
-            ap = orm.Organism_details(name=od)
-            ap.save()
+        # organismdetails = [
+        #     'Haemophilus influenzae',
+        #     "Haemophilus parainfluenzae", 
+        #     "Streptococcu's pneumoniae",
+        #     'Streptococcus (Group A)',
+        #     'Streptococcus (Group C, G )',
+        #     'Steptococcus spp',
+        #     'Streptococcus parasanguinis',
+        #     'Streptococcus sanguinis',
+        #     'Streptococcus cristatus',
+        #     'Streptococcus salivarius',
+        #     'Streptococcus constellatus group',
+        #     'Pseudomonas aeruginosa',
+        #     'Enterobacter spp', 
+        #     'Escherichia coli', 
+        #     'Moraxella catarrhalis', 
+        #     'Staphylococcus epidermidis', 
+        #     'Staphylococcus aureus', 
+        #     'Staphylococcus MRSA', 
+        #     'Klebsiella pneumoniae', 
+        #     'Klebsiella oxytoca',
+        #     'Stenotrophomonas maltophilia', 
+        #     'Acinetobacter baumannii', 
+        #     'Rothia mucilaginosa', 
+        #     'Enterococcus faecalis', 
+        #     'Staphylococcus haemolyticus', 
+        #     'Serratia marcescens',
+        #     'Neisseria spp', 
+        #     'Neisseria meningitidis', 
+        #     'Candida spp', 
+        #     'Candida albicans', 
+        #     'Candida parapsilosis', 
+        #     'Aspergillus spp Mycobacterium tuberculosis', 
+        #     'Mycoplasma pneumoniae', 
+        #     'Chlamydophila pneumoniae', 
+        #     'Legionella pneumophila', 
+        #     'RSVA', 
+        #     'RSVB', 
+        #     'Influenza A', 
+        #     'Influenza B', 
+        #     'Coronavirus', 
+        #     'parainfluenza virus',
+        #     'Burkholderia cepacia', 
+        #     'Proteus mirabilis', 
+        #     'Salmonella spp', 
+        #     'Morganella morganii', 
+        #     'Enterobacter cloacae', 
+        #     'Enterobacter aerogenes', 
+        #     'Cryptococcus spp', 
+        #     'Salmonella spp'
+        #     'Coliform', 
+        #     'Gentamicin resistant coliform',
+        # ]
+        # for od in organismdetails:
+        #     ap = orm.Organism_details(name=od)
+        #     ap.save()
 
-        antimicrobials = [
-            'Chloramphenicol',
-            'Ciprofloxacin',
-            'Clindamycin',
-            'Erythromycin',
-            'Flucloxacillin',
-            'Fusidic acid',
-            'Gentamicin',
-            'Linezolid',
-            'Penicillin',
-            'Penicillin G',
-            'Rifampicin',
-            'Teicoplanin',
-            'Tetracycline',
-            'tigecycline',
-            'Trimethropim',
-            'Vancomycin',
-            'Metronidazole',
-            'colistin',
-            'Oxacillin',
-            'Amoxycillin',
-            'Cefuroxime',
-            'Amikacin',
-            'Aztreonam',
-            'Ceftazidime',
-            'Imipenem',
-            'Meropenem',
-            'Piperacillin',
-            'Tobramycin',
-            'Piperacillin/tazobactam',
-            'ticarcillin/clavulanic acid',
-            'Fosfomycin',
-            'Temocillin'
-            ]
+        # antimicrobials = [
+        #     'Chloramphenicol',
+        #     'Ciprofloxacin',
+        #     'Clindamycin',
+        #     'Erythromycin',
+        #     'Flucloxacillin',
+        #     'Fusidic acid',
+        #     'Gentamicin',
+        #     'Linezolid',
+        #     'Penicillin',
+        #     'Penicillin G',
+        #     'Rifampicin',
+        #     'Teicoplanin',
+        #     'Tetracycline',
+        #     'tigecycline',
+        #     'Trimethropim',
+        #     'Vancomycin',
+        #     'Metronidazole',
+        #     'colistin',
+        #     'Oxacillin',
+        #     'Amoxycillin',
+        #     'Cefuroxime',
+        #     'Amikacin',
+        #     'Aztreonam',
+        #     'Ceftazidime',
+        #     'Imipenem',
+        #     'Meropenem',
+        #     'Piperacillin',
+        #     'Tobramycin',
+        #     'Piperacillin/tazobactam',
+        #     'ticarcillin/clavulanic acid',
+        #     'Fosfomycin',
+        #     'Temocillin'
+        #     ]
 
-        for ant in antimicrobials:
-            asus = orm.Antimicrobial_susceptability(name=ant)
-            asus.save()
+        # for ant in antimicrobials:
+        #     asus = orm.Antimicrobial_susceptability(name=ant)
+        #     asus.save()
     
     
 
