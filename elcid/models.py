@@ -149,6 +149,7 @@ class Travel(EpisodeSubrecord):
     dates = models.CharField(max_length=255, blank=True)
     reason_for_travel = ForeignKeyOrFreeText(option_models['travel_reason'])
     specific_exposures = models.CharField(max_length=255, blank=True)
+    rural_exposure = models.BooleanField()
 
 
 class Antimicrobial(EpisodeSubrecord):
