@@ -161,7 +161,8 @@ INSTALLED_APPS = (
     'django.contrib.admin',
 #    'infectioncontrol',
     'walkin',
-    'research'
+    'research',
+    'wardround',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -218,7 +219,7 @@ OPAL_SCHEMA_MODULE = 'elcid.schema'
 OPAL_OPTIONS_MODULE = 'elcid.options'
 OPAL_FLOW_MODULE = 'elcid.flow'
 OPAL_TAGS_MODULE = 'elcid.tags'
-OPAL_BRAND_NAME = 'elCID - Research'
+OPAL_BRAND_NAME = 'elCID - Wardround'
 OPAL_EXTRA_APPLICATION = 'elcid/extra_application.html'
 OPAL_LOG_OUT_MINUTES = 15
 OPAL_LOG_OUT_DURATION = OPAL_LOG_OUT_MINUTES*60*1000
