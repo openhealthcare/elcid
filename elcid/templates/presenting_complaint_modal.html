@@ -19,7 +19,11 @@
       <div class="col-sm-8">
         <select class="form-control" ng-model="editing.duration">
           <option value="">---------</option>
-          <option ng-repeat="duration in duration_list">[[duration]]</option>
+          <option value="3 days or less">3 days or less</option>
+          <option value="4-10 days">4-10 days</option>
+          <option value="11-21 days">11-21 days</option>
+          <option value="22 days to 3 months">22 days to 3 months</option>
+          <option value="over 3 months">over 3 months</option>
         </select>
       </div>
     </div>

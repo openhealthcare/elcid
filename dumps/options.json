@@ -4131,34 +4131,6 @@
     },
     {
         "fields": {
-            "name": "< 2 days"
-        },
-        "model": "opal.duration",
-        "pk": 1
-    },
-    {
-        "fields": {
-            "name": "2 days – 2 weeks"
-        },
-        "model": "opal.duration",
-        "pk": 2
-    },
-    {
-        "fields": {
-            "name": "2 weeks – 3 months"
-        },
-        "model": "opal.duration",
-        "pk": 3
-    },
-    {
-        "fields": {
-            "name": "> 3 months"
-        },
-        "model": "opal.duration",
-        "pk": 4
-    },
-    {
-        "fields": {
             "name": "Abkhazia"
         },
         "model": "opal.destination",

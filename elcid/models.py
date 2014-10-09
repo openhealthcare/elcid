@@ -106,7 +106,7 @@ class PresentingComplaint(EpisodeSubrecord):
         ]
 
     symptom = ForeignKeyOrFreeText(option_models['symptom'])
-    duration = ForeignKeyOrFreeText(option_models['duration'])
+    duration = models.CharField(max_length=255, blank=True)
     details = models.CharField(max_length=255, blank=True)
 
 
