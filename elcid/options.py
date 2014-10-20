@@ -10,6 +10,7 @@ model_names = [
     'destination',
     'hospital',
     'microbiology_organism',
+    'microbiology_reason_not_done',
     'travel_reason',
     'line_type',
     'line_site',

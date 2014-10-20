@@ -6483,6 +6483,27 @@
     },
     {
         "fields": {
+            "name": "Reason 1"
+        },
+        "model": "opal.microbiology_reason_not_done",
+        "pk": 1
+    },
+    {
+        "fields": {
+            "name": "Reason 2"
+        },
+        "model": "opal.microbiology_reason_not_done",
+        "pk": 2
+    },
+    {
+        "fields": {
+            "name": "Reason 3"
+        },
+        "model": "opal.microbiology_reason_not_done",
+        "pk": 3
+    },
+    {
+        "fields": {
             "name": "VFR"
         },
         "model": "opal.travel_reason",

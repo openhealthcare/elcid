@@ -208,6 +208,7 @@ class MicrobiologyTest(EpisodeSubrecord):
     sensitive_antibiotics = models.CharField(max_length=255, blank=True)
     resistant_antibiotics = models.CharField(max_length=255, blank=True)
     result                = models.CharField(max_length=255, blank=True)
+    reason_not_done       = ForeignKeyOrFreeText(option_models['microbiology_reason_not_done'])
     igm                   = models.CharField(max_length=20, blank=True)
     igg                   = models.CharField(max_length=20, blank=True)
     vca_igm               = models.CharField(max_length=20, blank=True)

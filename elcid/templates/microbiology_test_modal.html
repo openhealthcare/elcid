@@ -236,6 +236,11 @@
                     negative
                 </label>
 
+                <label class="radio-inline">
+                    <input class="" type="radio" value="not-done" ng-model="editing.result">
+                    not done
+                </label>
+
             </div>
         </div>
 
@@ -1057,6 +1062,19 @@
             </div>
         </div>
 
+    </span>
+
+    <span ng-show="editing.result == 'not-done'">
+        <div class="form-group">
+            <label class="control-label col-sm-3">Reason not done</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="text"
+                           ng-model="editing.reason_not_done"
+                           ng-options="r for r in microbiology_reason_not_done_list"
+                           bs-typeahead
+                           >
+            </div>
+        </div>
     </span>
 
     <span ng-show="testType == 'micro_test_other'">
