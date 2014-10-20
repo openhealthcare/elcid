@@ -345,6 +345,7 @@ CheckpointsAssayLookupList = type(*lookup_list('checkpoints_assay', module=__nam
 
 
 class LabSpecimin(EpisodeSubrecord):
+    _title = 'Lab Specimen'
     _sort = 'date_collected'
 
     specimin_type     = ForeignKeyOrFreeText(SpeciminLookupList)
