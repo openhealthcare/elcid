@@ -431,7 +431,6 @@ class RidRTITest(EpisodeSubrecord):
     Results of the actual RiD RTI test ! 
     """
     test            = models.CharField(max_length=200, blank=True, null=True)
-    process_control = models.BooleanField(default=False)
     notes           = models.TextField(blank=True, null=True)
     # HAP/VAP results
     pseudomonas_aeruginosa = models.BooleanField(default=False)
