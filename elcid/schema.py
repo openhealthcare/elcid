@@ -142,7 +142,7 @@ extract_columns = [
 
 from research import models as researchmodels
 
-list_columns_research_nurse = [
+list_columns_research_practitioner = [
     models.Demographics,
     models.Location,
     models.Diagnosis,

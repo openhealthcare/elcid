@@ -345,6 +345,7 @@ CheckpointsAssayLookupList = type(*lookup_list('checkpoints_assay', module=__nam
 
 
 class LabSpecimin(EpisodeSubrecord):
+    _title = 'Lab Specimen'
     _sort = 'date_collected'
 
     specimin_type     = ForeignKeyOrFreeText(SpeciminLookupList)
@@ -430,7 +431,6 @@ class RidRTITest(EpisodeSubrecord):
     Results of the actual RiD RTI test ! 
     """
     test            = models.CharField(max_length=200, blank=True, null=True)
-    process_control = models.BooleanField(default=False)
     notes           = models.TextField(blank=True, null=True)
     # HAP/VAP results
     pseudomonas_aeruginosa = models.BooleanField(default=False)
