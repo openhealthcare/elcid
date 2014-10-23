@@ -248,7 +248,7 @@ COVERAGE_EXCLUDE_MODULES = ('elcid.migrations', 'elcid.tests',
                             'opal.wsgi')
 
 # Research settings
-LIST_SCHEMA_RESEARCH_NURSE = 'elcid.schema.list_columns_research_nurse'
+LIST_SCHEMA_RESEARCH_PRACTITIONER = 'elcid.schema.list_columns_research_practitioner'
 LIST_SCHEMA_SCIENTIST = 'elcid.schema.list_columns_scientist'
 
 INTEGRATING = True
