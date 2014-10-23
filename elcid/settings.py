@@ -251,8 +251,9 @@ COVERAGE_EXCLUDE_MODULES = ('elcid.migrations', 'elcid.tests',
 LIST_SCHEMA_RESEARCH_NURSE = 'elcid.schema.list_columns_research_nurse'
 LIST_SCHEMA_SCIENTIST = 'elcid.schema.list_columns_scientist'
 
-DDD_ON = True
-DDD_ENDPOINT = 'http://localhost:4000/api/v0.1/'
+INTEGRATING = True
+GLOSSOLALIA_URL = 'http://localhost:5000/'
+GLOSSOLALIA_NAME = 'elcid'
 
 try:
     from local_settings import *
