@@ -1,5 +1,34 @@
 {
-  "line_removal_reason": [], 
+  "line_removal_reason": [
+    {
+      "synonyms": [], 
+      "name": "Displaced"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Extravasation"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "No longer required"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Occluded"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Routine replacement"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Signs of phlebitis"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Signs of thromboembolism"
+    }
+  ], 
   "micro_test_single_test_pos_neg_equiv": [
     {
       "synonyms": [], 
@@ -677,7 +706,14 @@
       "name": "VIM"
     }
   ], 
-  "line_type": [], 
+  "micro_test_hepititis_b_serology": [
+    {
+      "synonyms": [
+        "Hepatitis B Serology"
+      ], 
+      "name": "HBV Serology"
+    }
+  ], 
   "micro_test_hiv": [
     {
       "synonyms": [], 
@@ -708,7 +744,102 @@
       "name": "CSF PCR"
     }
   ], 
-  "line_site": [], 
+  "ethnicity": [
+    {
+      "synonyms": [], 
+      "name": "African"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Any other Asian background"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Any other Black background"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Any other White background"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Any other ethnic group"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Any other mixed background"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Bangladeshi"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "British"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Caribbean"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Chinese"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Indian"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Irish"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Not stated"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Pakistani"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "White and Asian"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "White and Black African"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "White and Black Caribbean"
+    }
+  ], 
+  "line_site": [
+    {
+      "synonyms": [], 
+      "name": "Left Arm"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Left Hand"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Left Subclavian"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Right Arm"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Right Hand"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Right Subclavian"
+    }
+  ], 
   "micro_test_single_igg_test": [
     {
       "synonyms": [], 
@@ -744,6 +875,10 @@
     {
       "synonyms": [], 
       "name": "NHNN"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Royal Free"
     }, 
     {
       "synonyms": [], 
@@ -4523,14 +4658,75 @@
   ], 
   "antimicrobial_frequency": [], 
   "management_follow_up": [], 
-  "antimicrobial_susceptability": [], 
-  "antimicrobial_adverse_event": [], 
-  "micro_test_hepititis_b_serology": [
+  "gender": [
     {
-      "synonyms": [
-        "Hepatitis B Serology"
-      ], 
-      "name": "HBV Serology"
+      "synonyms": [], 
+      "name": "Female"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Male"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Not Known"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Not Specified"
+    }
+  ], 
+  "antimicrobial_susceptability": [], 
+  "antimicrobial_adverse_event": [
+    {
+      "synonyms": [], 
+      "name": "Anaphylaxis"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Blood dyscrasia"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Diarrhoea (C diff negative)"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Diarrhoea (C diff positive)"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Intolerance"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Rash"
+    }
+  ], 
+  "line_type": [
+    {
+      "synonyms": [], 
+      "name": "CVC"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Hickman"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Midline"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "PICC"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Peripheral cannula"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Portacath"
     }
   ], 
   "unplanned_stop": [], 
