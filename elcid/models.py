@@ -4,7 +4,6 @@ ELCID implementation specific models!
 from django.db import models
 
 from opal.models import (Subrecord,
-#                         TaggedSubrecordMixin,
                          option_models,
                          EpisodeSubrecord, PatientSubrecord, GP, CommunityNurse)
 from opal.utils.fields import ForeignKeyOrFreeText
@@ -99,11 +98,6 @@ class Location(EpisodeSubrecord):
 
 class PresentingComplaint(EpisodeSubrecord):
     _title = 'Presenting Complaint'
-    _fieldnames = [
-        'episode_id',
-        'symptom', 'duration',
-        'details'
-        ]
 
     symptom = ForeignKeyOrFreeText(option_models['symptom'])
     duration = ForeignKeyOrFreeText(option_models['duration'])
@@ -357,6 +351,7 @@ class LabSpecimin(EpisodeSubrecord):
     date_tested       = models.DateField(blank=True, null=True)
     external_id       = models.CharField(max_length=200, blank=True, null=True)
     biobanking        = models.BooleanField(default=False)
+    biobanking_box    = models.CharField(max_length=200, blank=True, null=True)
     date_biobanked    = models.DateField(blank=True, null=True)
     volume_biobanked  = models.CharField(max_length=200, blank=True, null=True)
 
