@@ -248,10 +248,10 @@ COVERAGE_EXCLUDE_MODULES = ('elcid.migrations', 'elcid.tests',
                             'opal.wsgi')
 
 # Research settings
-LIST_SCHEMA_RESEARCH_PRACTITIONER = 'elcid.schema.list_columns_research_practitioner'
-LIST_SCHEMA_SCIENTIST = 'elcid.schema.list_columns_scientist'
+LIST_SCHEMA_RESEARCH_PRACTITIONER = "elcid.schema.list_columns_research_practitioner"
+LIST_SCHEMA_SCIENTIST = "elcid.schema.list_columns_scientist"
 
-INTEGRATING = True
+INTEGRATING = False
 GLOSSOLALIA_URL = 'http://localhost:5000/'
 GLOSSOLALIA_NAME = 'elcid'
 
