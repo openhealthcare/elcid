@@ -226,6 +226,7 @@ OPAL_EXTRA_HEADER = 'elcid/print_header.html'
 
 CONTACT_EMAIL = ['michael.marks@uclh.nhs.uk', 'david@openhealthcare.org.uk']
 DEFAULT_FROM_EMAIL = 'elcid@openhealthcare.org.uk'
+DEFAULT_DOMAIN = 'http://ELCIDL/'
 
 EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND', 'django.core.mail.backends.smtp.EmailBackend')
 if not DEBUG:
@@ -249,6 +250,10 @@ COVERAGE_EXCLUDE_MODULES = ('elcid.migrations', 'elcid.tests',
 # Research settings
 LIST_SCHEMA_RESEARCH_PRACTITIONER = 'elcid.schema.list_columns_research_practitioner'
 LIST_SCHEMA_SCIENTIST = 'elcid.schema.list_columns_scientist'
+
+INTEGRATING = True
+GLOSSOLALIA_URL = 'http://localhost:5000/'
+GLOSSOLALIA_NAME = 'elcid'
 
 try:
     from local_settings import *
