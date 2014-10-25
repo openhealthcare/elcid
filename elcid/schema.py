@@ -70,7 +70,7 @@ list_columns_walkin = [
     models.Location,
     models.Travel,
     wimodels.Symptom,
-    wimodels.ClinicalFinding,
+    wimodels.ClinicalFindings,
     models.MicrobiologyTest,
     models.Diagnosis,
     obsmodels.Observation,
