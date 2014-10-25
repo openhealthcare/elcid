@@ -81,7 +81,7 @@ angular.module('opal.controllers').controller(
                     // Ask user if they want to reopen an episode, or open a new one
                     modal = $modal.open({
                         templateUrl: '/templates/modals/reopen_episode.html/',
-                        controller: 'DiagnosisReopenEpisodeCtrl',
+                        controller: 'ReopenEpisodeCtrl',
                         resolve: {
                             patient: function() { return patient; },
                             tag: function() { return $scope.tags.tag; }
