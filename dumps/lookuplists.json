@@ -4645,15 +4645,91 @@
   "symptom": [
     {
       "synonyms": [], 
-      "name": "Symptom 1"
+      "name": "Fever"
     }, 
     {
       "synonyms": [], 
-      "name": "Symptom 2"
+      "name": "Rigors"
     }, 
     {
       "synonyms": [], 
-      "name": "Symptom 3"
+      "name": "Headache"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Sore throat"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Myalgia"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Arthalgia"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Cough"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Shortness of Breath"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Chest Pain"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Palpitations"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Haemoptysis"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Abdominal Pain"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Diarrhoea"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Constipation"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Vomiting"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Urinary Frequency"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Nocturia"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Dysuria"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Flank Pain"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Weight Loss"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Night Sweats"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Nausea"
     }
   ], 
   "antimicrobial_frequency": [], 

@@ -99,9 +99,9 @@ class Location(EpisodeSubrecord):
 class PresentingComplaint(EpisodeSubrecord):
     _title = 'Presenting Complaint'
 
-    symptom = ForeignKeyOrFreeText(option_models['symptom'])
-    duration = ForeignKeyOrFreeText(option_models['duration'])
-    details = models.CharField(max_length=255, blank=True)
+    symptom  = ForeignKeyOrFreeText(option_models['symptom'])
+    duration = models.CharField(max_length=255, blank=True, null=True)
+    details  = models.CharField(max_length=255, blank=True, null=True)
 
 
 class Diagnosis(EpisodeSubrecord):
