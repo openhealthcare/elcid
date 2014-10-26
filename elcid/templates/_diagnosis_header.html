@@ -2,7 +2,12 @@
   ng-show="row.presenting_complaint.0.symptom || row.presenting_complaint.0.duration || row.presenting_complaint.0.details"
   ng-click="editNamedItem(row, 'presenting_complaint', 0)"
   ng-class="{selected: false}">
-  [[row.date_of_admission | shortDate]] <strong>Presenting:</strong><br /> [[row.presenting_complaint.0.symptom]] ([[row.presenting_complaint.0.duration]]<span ng-show="row.presenting_complaint.0.details">. [[row.presenting_complaint.0.details]]</span>)
+
+  [[row.date_of_admission | shortDate]] <strong>Presenting:</strong><br /> 
+  [[row.presenting_complaint.0.symptom]]
+  <span ng-show="row.presenting_complaint.0.details">
+    ([[row.presenting_complaint.0.duration]]. [[row.presenting_complaint.0.details]])
+  </span>
   <hr>
 </li>
 <li
