@@ -132,3 +132,11 @@ class UsageReportView(ReportView):
 
     def get_data(self):
         return reports.usage()
+
+class ElcidTemplateView(TemplateView):
+    def dispatch(self, *args, **kwargs):
+        self.name = kwargs['name']
+        return super(ElcidTemplateView, self).dispatch(*args, **kwargs)
+
+    def get_template_names(self, *args, **kwargs):
+        return ['elcid/modals/'+self.name]

@@ -1,6 +1,17 @@
 """
 Defining the patient flows for our system.
 """
+diagnosis_flow = {
+    'enter': {
+        'controller': 'DiagnosisHospitalNumberCtrl',
+        'template'  : '/templates/modals/hospital_number.html/'
+    },
+    'exit': {
+        'controller': 'DiagnosisDischargeCtrl',
+        'template'  : '/templates/elcid/modals/diagnosis_discharge.html'
+    }
+}
+
 
 flows = {
     'default': {
@@ -26,28 +37,14 @@ flows = {
         }
     },
     'infectious_diseases': {
-        'id_inpatients': {
-            'enter': {
-                'controller': 'DiagnosisHospitalNumberCtrl',
-                'template'  : '/templates/modals/hospital_number.html/'
-            }
-        }
+        'id_inpatients': diagnosis_flow
     },
     'hiv': {
-        'immune_inpatients': {
-            'enter': {
-                'controller': 'DiagnosisHospitalNumberCtrl',
-                'template'  : '/templates/modals/hospital_number.html/'
-            }
-        }
+        'immune_inpatients': diagnosis_flow
     },
     'tropical_diseases': {
-        'default': {
-            'enter': {
-                'controller': 'DiagnosisHospitalNumberCtrl',
-                'template'  : '/templates/modals/hospital_number.html/'
-            }
-        }
+        'default': diagnosis_flow
+        
     },
     'walkin': {
         'default': {

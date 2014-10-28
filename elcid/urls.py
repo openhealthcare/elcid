@@ -15,6 +15,10 @@ urlpatterns = patterns(
     url(r'^feedback/sent/??$', views.FeedbackSentView.as_view(), name='feedback-sent'),
     url(r'^test/500$', views.Error500View.as_view(), name='test-500'),
     url(r'^reports/usage$', views.UsageReportView.as_view(), name='usage-report'),
+
+
+    url(r'^templates/elcid/modals/(?P<name>[a-z_]+.html)$', views.ElcidTemplateView.as_view()),
+    
 )
 
 urlpatterns += opatterns

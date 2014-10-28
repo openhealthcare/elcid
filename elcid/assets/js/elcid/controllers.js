@@ -12,9 +12,14 @@ controllers.controller(
              $modalInstance, episode,
              tags) {
 
-        var currentTag = tags.tag;
-        var currentSubTag = tags.subtag;
-
+        if(tags){
+            var currentTag = tags.tag;
+            var currentSubTag = tags.subtag;
+        }else{
+            var currentTag = 'mine';
+            var currentSubTag = 'all';
+        }
+        
         $scope.currentCategory = episode.location[0].category;
         var newCategory;
 
