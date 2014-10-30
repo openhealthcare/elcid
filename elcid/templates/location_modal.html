@@ -9,11 +9,14 @@
           <button class="btn" ng-click="undischarge()">Undischarge</button>
         </p>
       </div>
-      <div class="col-sm-8" ng-hide="editing.category == 'Discharged'">        
+      <div class="col-sm-8" ng-hide="editing.category && editing.category == 'Discharged' || episode_category_list.indexOf(editing.category) == -1">
         <select class="form-control" ng-model="editing.category" autofocus>
           <option value="">---------</option>
           <option ng-repeat="category in episode_category_list">[[category]]</option>
         </select>
+      </div>
+      <div class="col-sm-8" ng-show="episode_category_list.indexOf(editing.category) == -1 && editing.category != 'Discharged'">
+        <p>[[ editing.category ]]</p>
       </div>
     </div>
 
