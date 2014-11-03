@@ -19,3 +19,4 @@ django-debug-toolbar
 -e git://github.com/openhealthcare/opal-walk-in.git@#egg=opal_walk_in
 -e git://github.com/openhealthcare/opal-wardround.git@#egg=opal_wardround
 
+requests
