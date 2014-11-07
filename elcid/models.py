@@ -104,13 +104,32 @@ class PresentingComplaint(EpisodeSubrecord):
     details  = models.CharField(max_length=255, blank=True, null=True)
 
 
+class PrimaryDiagnosis(EpisodeSubrecord):
+    """
+    This is the confirmed primary diagnosisa
+    """
+    condition = ForeignKeyOrFreeText(option_models['condition'])
+
+
+class SecondaryDiagnosis(EpisodeSubrecord):
+    """
+    This is a confirmed diagnosis at discharge time.
+    """
+    condition   = ForeignKeyOrFreeText(option_models['condition'])
+    co_priamary = models.BooleanField(default=False)
+
+    
 class Diagnosis(EpisodeSubrecord):
+    """
+    This is a working-diagnosis list, will often contain things that are
+    not technically diagnoses, but is for historical reasons, called diagnosis.
+    """
     _title = 'Diagnosis / Issues'
     _sort = 'date_of_diagnosis'
 
-    condition = ForeignKeyOrFreeText(option_models['condition'])
-    provisional = models.BooleanField()
-    details = models.CharField(max_length=255, blank=True)
+    condition         = ForeignKeyOrFreeText(option_models['condition'])
+    provisional       = models.BooleanField()
+    details           = models.CharField(max_length=255, blank=True)
     date_of_diagnosis = models.DateField(blank=True, null=True)
 
     def __unicode__(self):
