@@ -1,7 +1,8 @@
-
+"""
+Defining the schemas for various list / detail views
+"""
 from elcid import models
 from opal import models as omodels
-#from infectioncontrol import models as icmodels
 
 list_columns = [
     models.Demographics,
@@ -31,9 +32,7 @@ list_columns_id_liaison = [
 list_columns_infection_control = [
     models.Demographics,
     models.Location,
-#    icmodels.ReportedInfection,
     models.MicrobiologyTest,
-#    icmodels.InfectionControlAdvice,
 ]
 
 list_columns_micro = [
@@ -105,8 +104,10 @@ detail_columns = [
     models.Carers,
     models.Location,
     omodels.Tagging,
-    models.Diagnosis,
     models.PresentingComplaint,
+    models.Diagnosis,
+    models.PrimaryDiagnosis,
+    models.SecondaryDiagnosis,
     obsmodels.Observation,
     models.PastMedicalHistory,
     models.Antimicrobial,
