@@ -163,6 +163,7 @@ INSTALLED_APPS = (
     'walkin',
     'research',
     'wardround',
+    'referral',
 )
 
 # A sample logging configuration. The only tangible logging
