@@ -11,7 +11,7 @@ class MicroHaem(WardRound):
 
     @staticmethod
     def episodes():
-        return Episode.objects.filter(active=True, tagging__team__name=='micro_haem')
+        return Episode.objects.filter(active=True, tagging__team__name='micro_haem')
 
 
 class FinalDiagnosisReview(WardRound):

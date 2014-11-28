@@ -124,7 +124,6 @@
         "fields": {
             "consistency_token": "12345678",
             "episode": 1,
-            "symptom": "",
             "duration": 1
         }
     },
