@@ -1,7 +1,9 @@
 <div ng-hide="row.location[0].category=='Research'">
   [[item.hospital_number]]<br />
   [[item.name]]<br />
-  [[item.date_of_birth | shortDate]]<br />
+  <span ng-show="item.date_of_birth">
+    [[item.date_of_birth | shortDate]] ([[ item.date_of_birth | age ]])<br />
+  </span>
   [[ item.country_of_birth ]] [[ item.ethnicity ]]<br />
   <a class="btn btn-default screen-only" href="#/episode/[[row.id]]">Patient Details</a>
 </div>
@@ -14,7 +16,9 @@
     <br />
     <span ng-hide="profile.has_role('researcher')">
       [[item.name]]<br />
-      [[item.date_of_birth | shortDate]]<br />
+      <span ng-show="item.date_of_birth">
+        [[item.date_of_birth | shortDate]] ([[ item.date_of_birth | age ]])<br />
+      </span>
       [[ item.country_of_birth ]] [[ item.ethnicity ]]<br />
     </span>
     <span ng-show="profile.has_role('researcher')">
