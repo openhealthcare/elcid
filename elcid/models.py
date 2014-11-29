@@ -116,7 +116,7 @@ class SecondaryDiagnosis(EpisodeSubrecord):
     This is a confirmed diagnosis at discharge time.
     """
     condition   = ForeignKeyOrFreeText(option_models['condition'])
-    co_priamary = models.BooleanField(default=False)
+    co_primary = models.BooleanField(default=False)
 
     
 class Diagnosis(EpisodeSubrecord):

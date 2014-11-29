@@ -15,8 +15,8 @@ controllers.controller(
         $scope.episode = episode;
         $scope.editing = {
             primary_diagnosis  : null,
-            secondary_diagnosis: [{condition: null, co_priamary: false, id: 1},
-                                  {condition: null, co_priamary: false, id: 2}]
+            secondary_diagnosis: [{condition: null, co_primary: false, id: 1},
+                                  {condition: null, co_primary: false, id: 2}]
 
         }
 
@@ -72,7 +72,7 @@ controllers.controller(
         $scope.addSecondary = function(){
             var d = {
                 condition: null,
-                co_priamary: false,
+                co_primary: false,
                 id: $scope.editing.secondary_diagnosis.length + 1
             };
             $scope.editing.secondary_diagnosis.push(d)
