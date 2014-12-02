@@ -106,8 +106,6 @@ detail_columns = [
     omodels.Tagging,
     models.PresentingComplaint,
     models.Diagnosis,
-    models.PrimaryDiagnosis,
-    models.SecondaryDiagnosis,
     obsmodels.Observation,
     models.PastMedicalHistory,
     models.Antimicrobial,
