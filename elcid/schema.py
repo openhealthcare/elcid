@@ -27,6 +27,7 @@ list_columns_id_liaison = [
     models.MicrobiologyTest,
     models.MicrobiologyInput,
     models.GeneralNote,
+    models.Todo
 ]
 
 list_columns_infection_control = [
