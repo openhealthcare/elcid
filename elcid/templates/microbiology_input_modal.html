@@ -32,12 +32,12 @@
 	<textarea class="form-control" ng-model="editing.clinical_discussion" rows="5"></textarea>
       </div>
     </div>
-    <div class="form-group">
-      <label class="control-label col-sm-3">Agreed plan</label>
-      <div class="col-sm-8">
-	<textarea class="form-control" ng-model="editing.agreed_plan" rows="5"></textarea>
-      </div>
-    </div>
+    <!-- <div class="form-group"> -->
+    <!--   <label class="control-label col-sm-3">Agreed plan</label> -->
+    <!--   <div class="col-sm-8"> -->
+    <!--     <textarea class="form-control" ng-model="editing.agreed_plan" rows="5"></textarea> -->
+    <!--   </div> -->
+    <!-- </div> -->
     <div class="form-group">
       <label class="control-label col-sm-3">Discussed with</label>
       <div class="col-sm-8">
@@ -89,10 +89,10 @@
       <li ng-show="editing.clinical_discussion">
 	<div markdown="clinical_discussion"></div>
       </li>
-      <li ng-show="editing.agreed_plan">
-	<span class="underline">Agreed Plan:</span>
-	<div markdown="agreed_plan"></div>
-      </li>
+      <!-- <li ng-show="editing.agreed_plan"> -->
+      <!--   <span class="underline">Agreed Plan:</span> -->
+      <!--   <div markdown="agreed_plan"></div> -->
+      <!-- </li> -->
       <li ng-show="editing.clinical_advice_given">
 	Clinical Advice Given
       </li>
