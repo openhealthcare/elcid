@@ -29,3 +29,17 @@ class FinalDiagnosisReview(WardRound):
     def episodes():
         unconfirmed = PrimaryDiagnosis.objects.filter(confirmed=False)
         return set([d.episode for d in unconfirmed])
+
+    @staticmethod
+    def schema():
+        from elcid import models
+        return [
+            models.Demographics,
+            models.Location,
+            models.Diagnosis,
+            models.MicrobiologyTest,
+            models.Antimicrobial,
+            models.PrimaryDiagnosis,
+            models.SecondaryDiagnosis
+        ]
+
