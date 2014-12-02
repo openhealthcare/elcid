@@ -46,9 +46,16 @@
 <div class="modal-footer">
   <button class="btn btn-primary"
           ng-click="save()"
+          ng-hide="editing.unconfirmed"
           ng-disabled="invalid()"
           >
-    Save
   </button>
+  <button class="btn btn-primary"
+          ng-click="save()"
+          ng-show="editing.unconfirmed"
+          ng-disabled="invalid()"
+          >
+    Confirm
+  </button>  
   <button class="btn" ng-click="cancel()">Cancel</button>
 </div>

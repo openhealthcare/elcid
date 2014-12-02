@@ -25,6 +25,7 @@ controllers.controller(
         //
         if(episode.primary_diagnosis.length == 1){
             $scope.editing.primary_diagnosis = episode.primary_diagnosis[0].condition;
+            $scope.editing.unconfirmed = true;
         };
         if(episode.secondary_diagnosis && episode.secondary_diagnosis.length > 0){
             $scope.editing.secondary_diagnosis = _.map(
@@ -42,27 +43,32 @@ controllers.controller(
 	};
         
         initialize = function(){
+            // 
+            // TODO: Get category more dynamically
+            // 
+            if(episode.location[0].category != 'Discharged'){
 
-            var classic_discharge = Flow.flow_for_verb('exit')
-            var classic_result    = $modal.open({
-		templateUrl: classic_discharge.template,
-		controller:  classic_discharge.controller,
-		resolve: {
-		    episode: function() { return $scope.episode; },
-                    tags   : function() { return $scope.tags; },
-                    options: function() { return options; },
-                    schema : function() { return schema; }
-		}
-	    }).result
+                var classic_discharge = Flow.flow_for_verb('exit')
+                var classic_result    = $modal.open({
+		    templateUrl: classic_discharge.template,
+		    controller:  classic_discharge.controller,
+		    resolve: {
+		        episode: function() { return $scope.episode; },
+                        tags   : function() { return $scope.tags; },
+                        options: function() { return options; },
+                        schema : function() { return schema; }
+		    }
+	        }).result
 
-            classic_result.then(
-                function(result){ // Resolve
-                    console.log('collect our extra data now !')
-                    
-                },
-                function(result){ // Reject
-                    $scope.cancel();
-                });
+                classic_result.then(
+                    function(result){ // Resolve
+                        console.log('collect our extra data now !')
+                        
+                    },
+                    function(result){ // Reject
+                        $scope.cancel();
+                    });
+            }
         }
 
 
@@ -83,9 +89,23 @@ controllers.controller(
 	    $modalInstance.close('cancel');
         };
 
+        // 
+        // Check to see if we're confirming or creating, then save
+        // 
         $scope.save = function() {
-            var primary = episode.newItem('primary_diagnosis');
-            primary.save({condition: $scope.editing.primary_diagnosis}).then(
+            var primary;
+            if($scope.editing.unconfirmed){
+                primary = episode.primary_diagnosis[0];
+            }else{
+                primary = episode.newItem('primary_diagnosis');
+            }
+            var primaryAttrs = primary.makeCopy();
+            primaryAttrs.condition = $scope.editing.primary_diagnosis;
+            if($scope.editing.unconfirmed){
+                primaryAttrs.confirmed = true;
+            }
+
+            primary.save(primaryAttrs).then(
                 function(){
                     var secondaries = _.map(
                         _.filter($scope.editing.secondary_diagnosis, function(sd){ return sd.condition!= null }), 
