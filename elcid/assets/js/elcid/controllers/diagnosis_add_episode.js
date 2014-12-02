@@ -18,7 +18,6 @@ angular.module('opal.controllers')
         $scope.episode_category_list = ['OPAT', 'Inpatient', 'Outpatient', 'Review'];
         // TODO - this is no longer the way location/admission date works.
         $scope.editing = {
-            date_of_admission: moment().format('DD/MM/YYYY'),
             tagging: [{}],
             location: {
                 hospital: 'UCLH'
