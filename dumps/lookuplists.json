@@ -4732,7 +4732,28 @@
       "name": "Nausea"
     }
   ], 
-  "antimicrobial_frequency": [], 
+  "antimicrobial_frequency": [
+    {
+      "synonyms": [], 
+      "name": "Four times a day"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Once a day"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Twice a day"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Six times a day"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Three times a day"
+    }
+  ], 
   "management_follow_up": [], 
   "gender": [
     {
