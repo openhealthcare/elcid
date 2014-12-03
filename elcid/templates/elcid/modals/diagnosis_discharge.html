@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <button type="button" class="close" ng-click="cancel()">×</button>
+  <button type="button" class="close" ng-click="cancel()" ng-show="editing.unconfirmed">×</button>
   <h3>Discharge Diagnosis</h3>
 </div>
 <div class="modal-body">
@@ -58,5 +58,5 @@
           >
     Confirm
   </button>  
-  <button class="btn" ng-click="cancel()">Cancel</button>
+  <button class="btn" ng-click="cancel()" ng-show="editing.unconfirmed">Cancel</button>
 </div>
