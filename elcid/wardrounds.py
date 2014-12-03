@@ -1,10 +1,12 @@
 """
 [Virtual] Ward Round implementations
 """
+import datetime
+
 from opal.models import Episode
 from wardround import WardRound
 
-from elcid.models import PrimaryDiagnosis
+from elcid import models
 
 class MicroHaem(WardRound):
     name        = 'Micro Haem'
@@ -27,12 +29,11 @@ class FinalDiagnosisReview(WardRound):
     
     @staticmethod
     def episodes():
-        unconfirmed = PrimaryDiagnosis.objects.filter(confirmed=False)
+        unconfirmed = models.PrimaryDiagnosis.objects.filter(confirmed=False)
         return set([d.episode for d in unconfirmed])
 
     @staticmethod
     def schema():
-        from elcid import models
         return [
             models.Demographics,
             models.Location,
@@ -43,3 +44,12 @@ class FinalDiagnosisReview(WardRound):
             models.SecondaryDiagnosis
         ]
 
+
+class OPATReviewList(WardRound):
+    name = 'OPAT Review'
+    description = 'Final review of OPAT patients post end-of-treatment'
+
+    @staticmethod
+    def episodes():
+        review_ready = models.OPATMeta.objects.filter(review_date__lte=datetime.date.today())
+        return set([om.episode for om in review_ready])
