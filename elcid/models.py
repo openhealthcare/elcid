@@ -153,6 +153,7 @@ class PastMedicalHistory(EpisodeSubrecord):
 class GeneralNote(EpisodeSubrecord):
     _title = 'General Notes'
     _sort  = 'date'
+    _episode_category_excludes = ["OPAT"]
 
     date    = models.DateField(null=True, blank=True)
     comment = models.TextField()
@@ -190,6 +191,7 @@ class MicrobiologyInput(EpisodeSubrecord):
     _title = 'Clinical Advice'
     _sort = 'date'
     _read_only = 'true'
+    _episode_category_excludes = ["OPAT"]
 
     date                              = models.DateField(null=True, blank=True)
     initials                          = models.CharField(max_length=255, blank=True)
@@ -206,6 +208,8 @@ class MicrobiologyInput(EpisodeSubrecord):
 
 class Todo(EpisodeSubrecord):
     _title = 'To Do'
+    _episode_category_excludes = ["OPAT"]
+    
     details = models.TextField(blank=True)
 
 
