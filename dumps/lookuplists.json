@@ -4731,7 +4731,25 @@
       "synonyms": [], 
       "name": "Nausea"
     }
-  ], 
+  ],
+   "iv_stop": [
+    {
+      "synonyms": [], 
+      "name": "Completed course"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Antimicrobial resistance"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Disease Progression"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Adverse Event"
+    }
+   ],
   "antimicrobial_frequency": [
     {
       "synonyms": [], 

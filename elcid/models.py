@@ -165,6 +165,7 @@ class Travel(EpisodeSubrecord):
     reason_for_travel = ForeignKeyOrFreeText(option_models['travel_reason'])
     specific_exposures = models.CharField(max_length=255, blank=True)
 
+ReasonForStoppingLookupList = type(*lookup_list('iv_stop', module=__name__))
 
 class Antimicrobial(EpisodeSubrecord):
     _title = 'Antimicrobials'
@@ -176,6 +177,7 @@ class Antimicrobial(EpisodeSubrecord):
     start_date    = models.DateField(null=True, blank=True)
     end_date      = models.DateField(null=True, blank=True)
     delivered_by  = models.CharField(max_length=255, blank=True, null=True)
+    reason_for_stopping = ForeignKeyOrFreeText(ReasonForStoppingLookupList)
     adverse_event = ForeignKeyOrFreeText(option_models['antimicrobial_adverse_event'])
     comments      = models.TextField(blank=True, null=True)
     frequency     = ForeignKeyOrFreeText(option_models['antimicrobial_frequency'])
