@@ -1,6 +1,7 @@
 [[item.line_type]] [[item.site]] ([[item.inserted_by]])<br />
 
 Inserted [[item.insertion_date| shortDate]]
+<br />
 (
 day [[item.insertion_date | daysSince:1 ]]
 <span ng-show="item.line_type == 'Peripheral cannula'">
@@ -10,7 +11,20 @@ day [[item.insertion_date | daysSince:1 ]]
 <span ng-show="item.external_length">
   External Length [[item.external_length]] cm
 </span>
-<span ng-show="item.removal_date" >Removed [[item.removal_date | shortDate]] </span>
-[[item.removal_reason]] [[item.vip_score]]<br />
+<br />
+<span ng-hide="item.removal_date">
+  [[ item.insertion_date | daysSince:1 ]] days 
+  <span ng-show="item.line_type == 'Peripheral cannula'">
+    hour [[ item.insertion_time | hoursSince ]]
+  </span>
+  since insertion
+</span>
+<span ng-show="item.removal_date" >
+  Removed [[item.removal_date | shortDate]] ([[item.removal_reason]])
+  <br />
+  In place for [[ (item.removal_date - item.insertion_date) /86400000   ]] days
+</span> 
+<br />
+[[item.vip_score]]<br />
 [[item.special_instructions ]]
 <span ng-show="item.complications">[[item.complications]]<br /></span>
