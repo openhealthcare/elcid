@@ -102,7 +102,7 @@ list_schemas = {
 detail_columns = [
     models.Demographics,
     models.ContactDetails,
-    models.Carers,
+#    models.Carers,
     models.Location,
     omodels.Tagging,
     models.PresentingComplaint,
