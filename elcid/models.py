@@ -268,6 +268,7 @@ Begin OPAT specific fields.
 """
 
 OPATUnplannedStopLookupList = type(*lookup_list('unplanned_stop', module=__name__))
+OPATReviewTypeLookupList = type(*lookup_list('opat_rvt', module=__name__))
 
 class OPATMeta(EpisodeSubrecord):
     _episode_category = 'OPAT'
@@ -319,7 +320,7 @@ class OPATReview(EpisodeSubrecord):
     date        = models.DateField(null=True, blank=True)
     time        = models.IntegerField(blank=True, null=True)
     initials    = models.CharField(max_length=255, blank=True)
-    rv_type     = models.CharField(max_length=255, blank=True, null=True)
+    rv_type     = ForeignKeyOrFreeText(OPATReviewTypeLookupList)
     discussion  = models.TextField(blank=True, null=True)
     opat_plan   = models.TextField(blank=True)
     next_review = models.DateField(blank=True, null=True)
