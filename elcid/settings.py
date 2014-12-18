@@ -97,8 +97,8 @@ STATICFILES_FINDERS = (
 )
 
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.CachedStaticFilesStorage'
-if 'test' in sys.argv:
-    STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+# if 'test' in sys.argv:
+#     STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'hq6wg27$1pnjvuesa-1%-wiqrpnms_kx+w4g&&o^wr$5@stjbu'
