@@ -4815,6 +4815,36 @@
     }
   ], 
   "management_follow_up": [], 
+  "drug_delivered": [
+    {
+      "synonyms": [], 
+      "name": "Carer"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "District Nurse"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Inpatient Team"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "OPAT Clinic"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Other Hospital"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Self"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "UCLH@Home"
+    }
+  ], 
   "gender": [
     {
       "synonyms": [], 

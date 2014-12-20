@@ -166,6 +166,7 @@ class Travel(EpisodeSubrecord):
     specific_exposures = models.CharField(max_length=255, blank=True)
 
 ReasonForStoppingLookupList = type(*lookup_list('iv_stop', module=__name__))
+DrugDeliveredLookupList = type(*lookup_list('drug_delivered', module=__name__))
 
 class Antimicrobial(EpisodeSubrecord):
     _title = 'Antimicrobials'
@@ -176,7 +177,7 @@ class Antimicrobial(EpisodeSubrecord):
     route         = ForeignKeyOrFreeText(option_models['antimicrobial_route'])
     start_date    = models.DateField(null=True, blank=True)
     end_date      = models.DateField(null=True, blank=True)
-    delivered_by  = models.CharField(max_length=255, blank=True, null=True)
+    delivered_by  = ForeignKeyOrFreeText(DrugDeliveredLookupList)
     reason_for_stopping = ForeignKeyOrFreeText(ReasonForStoppingLookupList)
     adverse_event = ForeignKeyOrFreeText(option_models['antimicrobial_adverse_event'])
     comments      = models.TextField(blank=True, null=True)

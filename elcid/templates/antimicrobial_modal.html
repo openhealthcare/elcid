@@ -51,7 +51,11 @@
     <div class="form-group" ng-show="episode_category =='OPAT'">
       <label class="control-label col-sm-3">Delivered by</label>
       <div class="col-sm-8">
-	<input class="form-control" type="text" ng-model="editing.delivered_by">
+	<input class="form-control" type="text"
+               ng-options="d for d in drug_delivered_list"
+               ng-model="editing.delivered_by"
+               bs-typeahead
+               />
       </div>
     </div>
 
