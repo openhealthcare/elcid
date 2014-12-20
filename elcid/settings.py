@@ -145,7 +145,7 @@ TEMPLATE_CONTEXT_PROCESSORS= (
     'opal.context_processors.settings',
 )
 
-installed_APPS = (
+INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
