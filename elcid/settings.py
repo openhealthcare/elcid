@@ -145,16 +145,13 @@ TEMPLATE_CONTEXT_PROCESSORS= (
     'opal.context_processors.settings',
 )
 
-INSTALLED_APPS = (
+installed_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # Uncomment the next line to enable the admin:
-    # Uncomment the next line to enable admin documentation:
-    # 'django.contrib.admindocs',
     'axes',
     'reversion',
     'south',
@@ -216,18 +213,20 @@ APPEND_SLASH = False
 
 AXES_LOCK_OUT_AT_FAILURE = False
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-#SESSION_COOKIE_AGE = 15 * 60
 
 # New modular settings!
+# !!! TODO: Are these how we want to discover these ? 
 OPAL_SCHEMA_MODULE = 'elcid.schema'
 OPAL_OPTIONS_MODULE = 'elcid.options'
 OPAL_FLOW_MODULE = 'elcid.flow'
 OPAL_TAGS_MODULE = 'elcid.tags'
 OPAL_BRAND_NAME = 'elCID - OPAT'
-OPAL_EXTRA_APPLICATION = 'elcid/extra_application.html'
 OPAL_LOG_OUT_MINUTES = 15
 OPAL_LOG_OUT_DURATION = OPAL_LOG_OUT_MINUTES*60*1000
+
+# Do we need these at all ? 
 OPAL_EXTRA_HEADER = 'elcid/print_header.html'
+OPAL_EXTRA_APPLICATION = 'elcid/extra_application.html'
 
 CONTACT_EMAIL = ['michael.marks@uclh.nhs.uk', 'david@openhealthcare.org.uk']
 DEFAULT_FROM_EMAIL = 'elcid@openhealthcare.org.uk'
