@@ -720,6 +720,36 @@
       "name": "HIV"
     }
   ], 
+  "opat_rvt": [
+    {
+      "synonyms": [], 
+      "name": "Doctor phone consultation"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Doctor review - scheduled visit"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Doctor review - unscheduled visit"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "MDT"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Nurse phone consultation"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Nurse review - scheduled visit"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Nurse review - unscheduled visit"
+    }
+  ], 
   "duration": [
     {
       "synonyms": [], 
@@ -855,8 +885,7 @@
     }, 
     {
       "synonyms": [
-        "Hepatitis C Serology",
-          "HCV serology"
+        "Hepatitis C Serology"
       ], 
       "name": "Hep C Serology"
     }, 
@@ -3901,6 +3930,24 @@
       "name": "OPAT referral"
     }
   ], 
+  "iv_stop": [
+    {
+      "synonyms": [], 
+      "name": "Adverse Event"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Antimicrobial resistance"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Completed course"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Disease Progression"
+    }
+  ], 
   "antimicrobial": [
     {
       "synonyms": [], 
@@ -4646,23 +4693,7 @@
   "symptom": [
     {
       "synonyms": [], 
-      "name": "Fever"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Rigors"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Headache"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Sore throat"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Myalgia"
+      "name": "Abdominal Pain"
     }, 
     {
       "synonyms": [], 
@@ -4670,31 +4701,7 @@
     }, 
     {
       "synonyms": [], 
-      "name": "Cough"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Shortness of Breath"
-    }, 
-    {
-      "synonyms": [], 
       "name": "Chest Pain"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Palpitations"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Haemoptysis"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Abdominal Pain"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Diarrhoea"
     }, 
     {
       "synonyms": [], 
@@ -4702,15 +4709,11 @@
     }, 
     {
       "synonyms": [], 
-      "name": "Vomiting"
+      "name": "Cough"
     }, 
     {
       "synonyms": [], 
-      "name": "Urinary Frequency"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Nocturia"
+      "name": "Diarrhoea"
     }, 
     {
       "synonyms": [], 
@@ -4718,11 +4721,27 @@
     }, 
     {
       "synonyms": [], 
+      "name": "Fever"
+    }, 
+    {
+      "synonyms": [], 
       "name": "Flank Pain"
     }, 
     {
       "synonyms": [], 
-      "name": "Weight Loss"
+      "name": "Haemoptysis"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Headache"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Myalgia"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Nausea"
     }, 
     {
       "synonyms": [], 
@@ -4730,27 +4749,49 @@
     }, 
     {
       "synonyms": [], 
-      "name": "Nausea"
+      "name": "Nocturia"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Palpitations"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Rigors"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Shortness of Breath"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Sore throat"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Symptom 1"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Symptom 2"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Symptom 3"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Urinary Frequency"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Vomiting"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Weight Loss"
     }
-  ],
-   "iv_stop": [
-    {
-      "synonyms": [], 
-      "name": "Completed course"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Antimicrobial resistance"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Disease Progression"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Adverse Event"
-    }
-   ],
+  ], 
   "antimicrobial_frequency": [
     {
       "synonyms": [], 
@@ -4762,15 +4803,15 @@
     }, 
     {
       "synonyms": [], 
-      "name": "Twice a day"
-    }, 
-    {
-      "synonyms": [], 
       "name": "Six times a day"
     }, 
     {
       "synonyms": [], 
       "name": "Three times a day"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Twice a day"
     }
   ], 
   "management_follow_up": [], 
