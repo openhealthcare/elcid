@@ -60,7 +60,7 @@ module.exports =  function(config){
         // Stolen from http://oligofren.wordpress.com/2014/05/27/running-karma-tests-on-browserstack/
         browserDisconnectTimeout : 10000, // default 2000
         browserDisconnectTolerance : 1, // default 0
-        browserNoActivityTimeout : 4*60*1000 //default 10000
-        captureTimeout : 4*60*1000 //default 60000
+        browserNoActivityTimeout : 4*60*1000, //default 10000
+        captureTimeout : 4*60*1000, //default 60000
     })
 }
