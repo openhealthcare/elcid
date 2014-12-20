@@ -50,6 +50,7 @@ list_columns_micro = [
 list_columns_opat = [
     models.Demographics,
     models.Location,
+    models.PastMedicalHistory,
     models.Diagnosis,
     models.Antimicrobial,
     models.MicrobiologyTest,
