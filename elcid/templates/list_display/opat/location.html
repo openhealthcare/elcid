@@ -1,10 +1,11 @@
 [[item.category]]<br />
 <span ng-hide="item.hospital=='UCH'">[[item.hospital]] </span>
 [[item.ward]] [[item.bed]]<br />
-Admitted: [[row.date_of_admission | shortDate]]
+Admitted: [[row.date_of_admission | shortDate]] <br />
 <span ng-show="row.discharge_date">
-  Discharged [[row.discharge_date | shortDate]]
+  Discharged [[row.discharge_date | shortDate]] <br />
 </span>
+Referred: [[item.opat_referral | shortDate]]
 <br />
 <a
    class="screen-only btn btn-primary" href="#"
