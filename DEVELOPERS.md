@@ -4,7 +4,7 @@ Welcome to elCID's dev docs.
 
 elCID is an implementation of the OPAL framework for Digital Clinical Services. 
 
-The developer docs for OPAL - particularly the Your Implementation sections are your friend.
+The developer docs for OPAL are your friend.
 
 In this document we'll run through setting up a development environment, walk you through the codebase, brief you on the location of the project's governance and development toolchain.
 
