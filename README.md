@@ -1,4 +1,4 @@
-# elCID
+## elCID
 
 elCID is an electronic Clinical Infection Database.
 
