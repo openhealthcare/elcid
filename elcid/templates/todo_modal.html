@@ -1,6 +1,8 @@
 {% extends 'modal_base.html' %}
 {% block modal_body %}
 <form>
-  <textarea class="form-control" ng-model="editing.details" rows="10" autofocus></textarea>
+  <textarea class="form-control" ng-model="editing.details" rows="10" autofocus
+            {% include 'partials/_mentio_edit_item.html' %}
+            ></textarea>
 </form>
 {% endblock %}
