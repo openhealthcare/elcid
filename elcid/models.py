@@ -288,6 +288,24 @@ class OPATMeta(EpisodeSubrecord):
     notes                 = models.TextField(blank=True, null=True)
 
 
+class OPATOutcome(EpisodeSubrecord):
+    """
+    This captures the final data for an OAPT episode - it is much the
+    same as OPAT meta data, but captured on the ward round and interrogated
+    differently. 
+    """
+    _episode_category = 'OPAT'
+    _is_singleton     = True
+
+    treatment_outcome     = models.CharField(max_length=200, blank=True, null=True)
+    deceased              = models.BooleanField(default=False)
+    death_category        = models.CharField(max_length=200, blank=True, null=True)
+    cause_of_death        = models.CharField(max_length=200, blank=True, null=True)
+    readmitted            = models.BooleanField(default=False)
+    readmission_cause     = models.CharField(max_length=200, blank=True, null=True)
+    notes                 = models.TextField(blank=True, null=True)
+
+
 class OPATRejection(EpisodeSubrecord):
     _episode_category = 'OPAT'
 
