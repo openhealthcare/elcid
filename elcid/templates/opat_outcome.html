@@ -1,0 +1,12 @@
+Treatment Outcome[[ item.treatment_outcome ]] <br />
+<span ng-show="item.deceased">
+  Deceased
+  [[ item.death_category ]] <br />
+  [[ item.cause_of_death ]] <br />
+</span>
+
+<span ng-show="item.readmitted">
+  Readmitted
+  [[ item.readmission_cause ]] <br />
+</span>
+Notes: [[ item.notes ]]

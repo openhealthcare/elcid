@@ -5,6 +5,7 @@ import datetime
 
 from opal.models import Episode
 from wardround import WardRound
+from obs import models as obsmodels
 
 from elcid import models
 
@@ -52,4 +53,32 @@ class OPATReviewList(WardRound):
     @staticmethod
     def episodes():
         review_ready = models.OPATMeta.objects.filter(review_date__lte=datetime.date.today())
-        return set([om.episode for om in review_ready])
+        return set([om.episode for om in review_ready
+                    if om.episode.opatoutcome_set.get().treatment_outcome is None])
+
+    @staticmethod
+    def schema():
+        return [
+            models.OPATOutcome,
+            models.Demographics,
+            models.ContactDetails,
+            #    models.Carers,
+            models.Location,
+            models.PresentingComplaint,
+            models.Diagnosis,
+            obsmodels.Observation,
+            models.PastMedicalHistory,
+            models.Antimicrobial,
+            models.Allergies,
+            models.MicrobiologyTest,
+            models.Line,
+            models.OPATLineAssessment,
+            models.MicrobiologyInput,
+            models.OPATReview,
+            models.Travel,
+            models.Appointment,
+            models.Todo,
+            models.OPATOutstandingIssues,
+            models.GeneralNote,
+        ]
+
