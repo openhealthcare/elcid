@@ -4916,7 +4916,32 @@
       "name": "Portacath"
     }
   ], 
-  "unplanned_stop": [], 
+  "unplanned_stop": [
+    {
+      "synonyms": [], 
+      "name": "Antimicrobial Resistance"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Disease Progression"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Intolerance"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Logistical Issue"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Other"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Patient Preference"
+    }
+  ], 
   "micro_test_mcs": [
     {
       "synonyms": [], 
