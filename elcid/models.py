@@ -309,9 +309,15 @@ class OPATOutcome(EpisodeSubrecord):
 class OPATRejection(EpisodeSubrecord):
     _episode_category = 'OPAT'
 
-    decided_by = models.CharField(max_length=255, blank=True, null=True)
-    reason     = models.CharField(max_length=255, blank=True, null=True)
-    date       = models.DateField(blank=True, null=True)
+    decided_by            = models.CharField(max_length=255, blank=True, null=True)
+    patient_choice        = models.BooleanField(default=False)
+    oral_available        = models.BooleanField(default=False)
+    not_needed            = models.BooleanField(default=False)
+    patient_suitability   = models.BooleanField(default=False)
+    not_fit_for_discharge = models.BooleanField(default=False)
+    no_social_support     = models.BooleanField(default=False)
+    reason                = models.CharField(max_length=255, blank=True, null=True)
+    date                  = models.DateField(blank=True, null=True)
 
 
 class Line(EpisodeSubrecord):
