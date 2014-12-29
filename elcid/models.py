@@ -273,7 +273,6 @@ OPATReviewTypeLookupList = type(*lookup_list('opat_rvt', module=__name__))
 
 class OPATMeta(EpisodeSubrecord):
     _episode_category = 'OPAT'
-    _is_singleton     = True
 
     review_date           = models.DateField(blank=True, null=True)
     reason_for_stopping   = models.CharField(max_length=200, blank=True, null=True)
