@@ -10,9 +10,9 @@ Referred: [[item.opat_referral | shortDate]]
 <a
    class="screen-only btn btn-primary" href="#"
    ng-click="dischargeEpisode($parent.$index, $event)">
+  <i class="glyphicon glyphicon-ok"></i>
   <span ng-show="currentSubTag == 'opat_referrals'" >Accept / refuse</span>
   <span ng-show="currentSubTag == 'opat_current'" >Completed IV</span>
-  <span ng-show="currentSubTag == 'opat_followup'" >Completed Rx</span> 
-  <i class="glyphicon glyphicon-ok"></i>
+  <span ng-show="currentSubTag == 'opat_followup'" >Next</span> 
 </a>
 
