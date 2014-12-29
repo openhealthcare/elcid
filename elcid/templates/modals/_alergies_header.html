@@ -1,0 +1,10 @@
+<div class="well" ng-show="the_episode.allergies.length > 0">
+  <h4 class="text-danger">Allergies</h4>
+  <small class="text-danger">
+    <ul>
+      <li ng-repeat="a in the_episode.allergies">
+        [[a.drug]]
+      </li>
+    </ul>
+  </small>
+</div>
