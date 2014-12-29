@@ -304,7 +304,8 @@ class OPATOutcome(EpisodeSubrecord):
     readmitted            = models.BooleanField(default=False)
     readmission_cause     = models.CharField(max_length=200, blank=True, null=True)
     notes                 = models.TextField(blank=True, null=True)
-
+    patient_feedback      = models.BooleanField(default=False)
+    
 
 class OPATRejection(EpisodeSubrecord):
     _episode_category = 'OPAT'
@@ -354,6 +355,7 @@ class OPATReview(EpisodeSubrecord):
     bung_changed            = models.BooleanField(default=False)
     medication_administered = models.TextField(blank=True, null=True)
     adverse_events          = ForeignKeyOrFreeText(option_models['antimicrobial_adverse_event'])
+
 
 class OPATOutstandingIssues(EpisodeSubrecord):
     _title = 'Outstanding Issues'
