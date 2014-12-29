@@ -1,19 +1,31 @@
 <ul>
-	<li>
-          <b>
-		[[item.date | shortDate]]
-		([[item.initials]]<span ng-show="item.discussed_with"> with [[item.discussed_with]]</span>)
-		[[item.rv_type]]
-          </b>
-	</li>
-	<li ng-show="item.discussion">
-		<div markdown="discussion"></div>
-	</li>
-	<li ng-show="item.opat_plan">
-                <span class="underline">OPAT Plan:</span>
-		<div markdown="opat_plan"></div>
-	</li>
-        <li ng-show="item.next_review">
-          [[next_review|shortDate]]
-        </li>
+  <li>
+    <b>
+      [[item.date | shortDate]]
+      ([[item.initials]]<span ng-show="item.discussed_with"> with [[item.discussed_with]]</span>)
+      [[item.rv_type]]
+    </b>
+  </li>
+  <li ng-show="item.discussion">
+    <div markdown="discussion"></div>
+  </li>
+  <li ng-show="item.opat_plan">
+    <span class="underline">OPAT Plan:</span>
+    <div markdown="opat_plan"></div>
+  </li>
+  <li ng-show="item.next_review">
+    [[next_review|shortDate]]
+  </li>
+  <li ng-show="item.dressing_changed">
+    Dressing Changed
+  </li>
+  <li ng-show="item.bung_changed">
+    Bung Changed
+  </li>
+  <li ng-show="item.medication_administered">
+    Medication: [[ item.medication_administered ]]
+  </li>
+  <li ng-show="item.adverse_events">
+    Adverse Events: [[ item.adverse_events ]]
+  </li>
 </ul>

@@ -343,14 +343,17 @@ class OPATReview(EpisodeSubrecord):
     _episode_category = 'OPAT'
     _read_only = 'true'
 
-    date        = models.DateField(null=True, blank=True)
-    time        = models.IntegerField(blank=True, null=True)
-    initials    = models.CharField(max_length=255, blank=True)
-    rv_type     = ForeignKeyOrFreeText(OPATReviewTypeLookupList)
-    discussion  = models.TextField(blank=True, null=True)
-    opat_plan   = models.TextField(blank=True)
-    next_review = models.DateField(blank=True, null=True)
-
+    date                    = models.DateField(null=True, blank=True)
+    time                    = models.IntegerField(blank=True, null=True)
+    initials                = models.CharField(max_length=255, blank=True)
+    rv_type                 = ForeignKeyOrFreeText(OPATReviewTypeLookupList)
+    discussion              = models.TextField(blank=True, null=True)
+    opat_plan               = models.TextField(blank=True)
+    next_review             = models.DateField(blank=True, null=True)    
+    dressing_changed        = models.BooleanField(default=False)
+    bung_changed            = models.BooleanField(default=False)
+    medication_administered = models.TextField(blank=True, null=True)
+    adverse_events          = ForeignKeyOrFreeText(option_models['antimicrobial_adverse_event'])
 
 class OPATOutstandingIssues(EpisodeSubrecord):
     _title = 'Outstanding Issues'
@@ -370,13 +373,18 @@ class Appointment(EpisodeSubrecord):
 
 class OPATLineAssessment(EpisodeSubrecord):
     _episode_category = 'OPAT'
-    
+
+    line                   = models.CharField(max_length=200, blank=True, null=True)
     assessment_date        = models.DateField(blank=True, null=True)
     vip_score              = models.IntegerField(blank=True, null=True)
     dressing_type          = models.CharField(max_length=200, blank=True, null=True)
     dressing_change_date   = models.DateField(blank=True, null=True)
     dressing_change_reason = models.CharField(max_length=200, blank=True, null=True)
     bionector_change_date  = models.DateField(blank=True, null=True)
+    dressing_intact        = models.BooleanField(default=False)
+    lumen_flush_ok         = models.BooleanField(default=False)
+    blood_drawback_seen    = models.BooleanField(default=False)
+    cm_from_exit_site      = models.BooleanField(default=False)
 
 
 """

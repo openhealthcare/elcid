@@ -38,6 +38,15 @@
     {% textarea label="Discussion" model="editing.discussion" %}
     {% textarea label="OPAT Plan" model="editing.opat_plan" %}
     
+    <div ng-show="editing.rv_type.indexOf('Nurse') == 0">
+      <hr >
+      <h4>Nurse Review</h4>
+      {% checkbox label="Dressing changed" model="editing.dressing_changed" %}
+      {% checkbox label="Bung changed" model="editing.bung_changed" %}
+      {% textarea label="Medication Administered" model="editing.medication_administered" %}
+      {% input label="Adverse Events" model="editing.adverse_events" lookuplist="antimicrobial_adverse_event_list" %}
+    </div>
+    
   </form>
     <div ng-show="editing.consistency_token">
       <ul>
@@ -53,7 +62,6 @@
         <li ng-show="item.next_review">
           Next review: [[next_review|shortDate]]
         </li>
-
       </ul>
     </div>
 
