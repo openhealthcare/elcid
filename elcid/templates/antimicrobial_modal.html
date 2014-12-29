@@ -1,90 +1,18 @@
 {% extends 'modal_base.html' %}
+{% load forms %}
 {% block modal_body %}
   <form class="form-horizontal">
-    <div class="form-group">
-      <label class="control-label col-sm-3">Drug</label>
-      <div class="col-sm-8">
-	<input class="form-control" type="text"
-               ng-model="editing.drug"
-               ng-options="d for d in antimicrobial_list"
-               bs-typeahead
-               autofocus>
-      </div>
+    {% input "autofous" label="Drug" model="editing.drug" lookuplist="antimicrobial_list" %}
+    {% datepicker label="Start date" model="editing.start_date" %}
+    {% datepicker label="End date" model="editing.end_date" %}
+    {% input label="Dose" model="editing.dose" %}
+    {% input label="Route" model="editing.route" lookuplist="antimicrobial_route_list" %}
+    {% input label="Frequency" model="editing.frequency" lookuplist="antimicrobial_frequency_list" %}
+    <div ng-show="episode_category == 'OPAT'" >
+      {% input label="Delivered by" model="editing.delivered_by" lookuplist="drug_delivered_list" %}
+      {% select label="Adverse events" model="editing.adverse_event" lookuplist="antimicrobial_adverse_event_list" %}
+      {% select label="Reason for Stopping" model="editing.reason_for_stopping" lookuplist="iv_stop_list" %}
+      {% textarea label="Comments" model="editing.comments" %}
     </div>
-    <div class="form-group">
-      <label class="control-label col-sm-3">Start date</label>
-      <div class="col-sm-8">
-	<input class="form-control" type="text" ng-model="editing.start_date" bs-datepicker data-autoclose="true">
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="control-label col-sm-3">End date</label>
-      <div class="col-sm-8">
-	<input class="form-control" type="text" ng-model="editing.end_date" bs-datepicker data-autoclose="true">
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="control-label col-sm-3">Dose</label>
-      <div class="col-sm-8">
-	<input class="form-control" type="text" ng-model="editing.dose">
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="control-label col-sm-3">Route</label>
-      <div class="col-sm-8">
-	<input class="form-control" type="text"
-               ng-model="editing.route"
-               ng-options="r for r in antimicrobial_route_list"
-               bs-typeahead>
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="control-label col-sm-3">Frequency</label>
-      <div class="col-sm-8">
-	<input class="form-control" type="text"
-               ng-model="editing.frequency"
-               ng-options="r for r in antimicrobial_frequency_list"
-               bs-typeahead>
-      </div>
-    </div>
-
-    <div class="form-group" ng-show="episode_category =='OPAT'">
-      <label class="control-label col-sm-3">Delivered by</label>
-      <div class="col-sm-8">
-	<input class="form-control" type="text"
-               ng-options="d for d in drug_delivered_list"
-               ng-model="editing.delivered_by"
-               bs-typeahead
-               />
-      </div>
-    </div>
-
-    <div class="form-group" ng-show="episode_category =='OPAT'">
-      <label class="control-label col-sm-3">Adverse events</label>
-      <div class="col-sm-8">
-	<input class="form-control" type="text"
-               ng-model="editing.adverse_event"
-               ng-options="r for r in antimicrobial_adverse_event_list"
-               bs-typeahead>
-      </div>
-    </div>
-    <div class="form-group" ng-show="episode_category =='OPAT'">
-      <label class="control-label col-sm-3">Reason For Stopping</label>
-      <div class="col-sm-8">
-	<input class="form-control" type="text"
-               ng-model="editing.reason_for_stopping"
-               ng-options="r for r in iv_stop_list"
-               bs-typeahead>
-      </div>
-    </div>
-
-    <div class="form-group" ng-show="episode_category =='OPAT'">
-      <label class="control-label col-sm-3">Comments</label>
-      <div class="col-sm-8">
-	<textarea class="form-control" ng-model="editing.comments" rows="10"></textarea>
-      </div>
-    </div>
-
-
   </form>
 {% endblock %}
