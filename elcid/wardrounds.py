@@ -9,6 +9,20 @@ from obs import models as obsmodels
 
 from elcid import models
 
+class HistoricTagsMixin(object):
+    
+    @classmethod
+    def to_dict(klass, user):
+        """
+        We're overriding this so that we can set the extra flag on historic Tags.
+        """
+        return dict(name=klass.name, 
+                    description=klass.description,
+                    episodes=Episode.objects.serialised(user, klass.episodes(),
+                                                    historic_tags=True),
+                    filters=klass.filters)
+
+
 class MicroHaem(WardRound):
     name        = 'Micro Haem'
     description = 'All patients on the Micro haem list in ward location order'
@@ -18,7 +32,7 @@ class MicroHaem(WardRound):
         return Episode.objects.filter(active=True, tagging__team__name='micro_haem')
 
 
-class FinalDiagnosisReview(WardRound):
+class FinalDiagnosisReview(HistoricTagsMixin, WardRound):
     name        = 'Final Diagnosis Review'
     description = 'Discharged Patients with a final diagnosis for consultant review.'
     
@@ -82,3 +96,15 @@ class OPATReviewList(WardRound):
             models.GeneralNote,
         ]
 
+
+class Discharged(HistoricTagsMixin, WardRound):
+    name = 'Discharged'
+    description = 'Patients discharged in the last two weeks'
+
+    @staticmethod
+    def episodes():
+        today = datetime.date.today()
+        two_weeks_ago = today - datetime.timedelta(days=14)
+        episodes = Episode.objects.filter(
+            discharge_date__gte=two_weeks_ago)
+        return episodes
