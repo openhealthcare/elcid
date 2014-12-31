@@ -1,8 +1,8 @@
-<form name="datepickerForm" class="form-horizontal" role="form">
+{% load wardrounds %}
 
-  <!-- Date range example -->
+<form name="datepickerForm" class="form-horizontal" role="form">
   <div class="form-group">
-    <label class="control-label col-sm-2"><i class="fa fa-calendar"></i> <i class="fa fa-arrows-h"></i> <i class="fa fa-calendar"></i> Discharge</label>
+    <label class="control-label col-sm-3"><i class="fa fa-calendar"></i> <i class="fa fa-arrows-h"></i> <i class="fa fa-calendar"></i> Discharge</label>
     <div class="col-sm-4">
       <input type="text" class="form-control" ng-model="filters.discharge_from" data-max-date="{{untilDate}}" data-min-view="1" placeholder="From" bs-datepicker>
     </div>
@@ -10,5 +10,7 @@
       <input type="text" class="form-control" ng-model="filters.discharge_to" data-min-date="{{fromDate}}" data-min-view="1" placeholder="Until" bs-datepicker>
     </div>
   </div>
-</form>
 
+  {% team_filter %}
+  
+</form>

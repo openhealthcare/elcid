@@ -4,7 +4,7 @@
   <div class="span3">
     <div class="control-group">
       <label>Teams</label>
-      <div >
+      <div>
 	{% for team in teams %}{% if not team.parent %}{% if team.direct_add %}
           {% if team.has_subtags %}
             <h4>{{team.title}}:</h4>

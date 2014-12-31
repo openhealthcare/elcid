@@ -39,7 +39,8 @@ class FinalDiagnosisReview(HistoricTagsMixin, WardRound):
     filter_template = 'wardrounds/final_diagnosis_filter.html'
     filters    = {
         'discharge_from': 'episode.discharge_date >= moment(value, "DD-MM-YYYY")',
-        'discharge_to'  : 'episode.discharge_date <= moment(value, "DD-MM-YYYY")'
+        'discharge_to'  : 'episode.discharge_date <= moment(value, "DD-MM-YYYY")',
+        'team'          : 'episode.tagging[0][value]'
     }
     
     @staticmethod
@@ -98,13 +99,18 @@ class OPATReviewList(WardRound):
 
 
 class Discharged(HistoricTagsMixin, WardRound):
-    name = 'Discharged'
-    description = 'Patients discharged in the last two weeks'
+    name = 'Discharged last week'
+    description = 'Patients discharged in the last week'
 
+    filter_template = 'wardrounds/discharged_filter.html'
+    filters = {
+        'team': 'episode.tagging[0][value]'
+    }
+    
     @staticmethod
     def episodes():
         today = datetime.date.today()
-        two_weeks_ago = today - datetime.timedelta(days=14)
+        two_weeks_ago = today - datetime.timedelta(days=7)
         episodes = Episode.objects.filter(
             discharge_date__gte=two_weeks_ago)
         return episodes
