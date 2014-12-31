@@ -75,10 +75,9 @@ class OPATReviewList(WardRound):
     def schema():
         return [
             models.OPATOutcome,
+            models.Location,
             models.Demographics,
             models.ContactDetails,
-            #    models.Carers,
-            models.Location,
             models.PresentingComplaint,
             models.Diagnosis,
             obsmodels.Observation,

@@ -1,4 +1,4 @@
-[[item.category]] <span ng-show="item.category == 'OPAT' && episode.opat_rejection[0].date">(Rejected from OPAT)</span>
+[[item.category]] <span ng-show="item.category == 'OPAT' && episode.opat_rejection[0].date" class="text-danger">(Rejected from OPAT)</span><br />
 <span ng-hide="item.hospital=='UCH'">[[item.hospital]] </span>[[item.ward]] [[item.bed]]
 Admitted: [[episode.date_of_admission | shortDate]]
 <span ng-show="episode.discharge_date">Discharged:</span>
