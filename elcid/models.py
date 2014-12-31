@@ -315,7 +315,7 @@ class OPATRejection(EpisodeSubrecord):
     not_needed            = models.BooleanField(default=False)
     patient_suitability   = models.BooleanField(default=False)
     not_fit_for_discharge = models.BooleanField(default=False)
-    non_complex_infextion = models.BooleanField(default=False)
+    non_complex_infection = models.BooleanField(default=False)
     no_social_support     = models.BooleanField(default=False)
     reason                = models.CharField(max_length=255, blank=True, null=True)
     date                  = models.DateField(blank=True, null=True)
