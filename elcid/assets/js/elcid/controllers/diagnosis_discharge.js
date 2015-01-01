@@ -8,6 +8,7 @@ controllers.controller(
     'DiagnosisDischargeCtrl',
     function(
         $scope, $rootScope, $modalInstance, $modal, $q,
+        growl,
         Flow,
         tags, schema, options, episode){
 
@@ -94,8 +95,10 @@ controllers.controller(
         // 
         $scope.save = function() {
             var primary;
+            var confirming
             if($scope.editing.unconfirmed){
                 primary = episode.primary_diagnosis[0];
+                confirming = true;
             }else{
                 primary = episode.newItem('primary_diagnosis');
             }
@@ -115,6 +118,7 @@ controllers.controller(
                         return secondary.save(sd)
                     })
                     $q.all(secondaries).then(function(){
+                        growl.success('Final Diagnosis approved.')
                         $modalInstance.close('discharged');
                     });
                 });
