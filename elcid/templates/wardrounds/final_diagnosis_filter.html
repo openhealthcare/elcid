@@ -10,7 +10,17 @@
       <input type="text" class="form-control" ng-model="filters.discharge_to" data-min-date="{{fromDate}}" data-min-view="1" placeholder="Until" bs-datepicker>
     </div>
   </div>
-
-  {% team_filter %}
+  
+  <div class="form-group">
+    <label class="control-label col-sm-3"><i class="fa fa-users"></i> Teams</label>
+    <div class="col-sm-8">
+      <select class="form-control" ng-model="filters.team">
+        <option value="">---------</option>
+        <option value="id_inpatients">ID Inpatients</option>
+        <option value="immune_inpatients">Immune Inpatients</option>
+        <option value="tropical_diseases">Tropical</option>
+      </select>
+    </div>
+  </div>
   
 </form>
