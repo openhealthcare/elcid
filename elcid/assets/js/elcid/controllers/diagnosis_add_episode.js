@@ -6,10 +6,6 @@ angular.module('opal.controllers')
                                                     demographics) {
         $scope.currentTag = $cookieStore.get('opal.currentTag') || 'mine';
         $scope.currentSubTag = $cookieStore.get('opal.currentSubTag') || 'all';
-        // TODO - find a way to reimplement this
-        // $timeout(function() {
-        //  dialog.modalEl.find('input,textarea').first().focus();
-        // });
 
         for (var name in options) {
             $scope[name + '_list'] = options[name];
@@ -24,7 +20,6 @@ angular.module('opal.controllers')
             },
             demographics: demographics
         };
-
 
         $scope.editing.tagging[0][$scope.currentTag] = true;
         if($scope.currentSubTag != 'all'){
@@ -95,9 +90,8 @@ angular.module('opal.controllers')
                     episode: function() { return $scope.episode; },
                     profile: function(UserProfile) { return UserProfile }
                 }
-            }).result.then(function(result) {
-                $modalInstance.close($scope.episode);
             });
+            $modalInstance.close($scope.episode);
         };
 
         $scope.cancel = function() {

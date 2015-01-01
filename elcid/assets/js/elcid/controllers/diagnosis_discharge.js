@@ -8,6 +8,7 @@ controllers.controller(
     'DiagnosisDischargeCtrl',
     function(
         $scope, $rootScope, $modalInstance, $modal, $q,
+        $location,
         growl,
         Flow,
         tags, schema, options, episode){
@@ -20,14 +21,24 @@ controllers.controller(
                                   {condition: null, co_primary: false, id: 2}]
 
         }
-
+        $scope.confirming = false;
+        $scope.is_list_view = $location.path().indexOf('/list/') == 0;
+        // 
+        // This flag sets the visibility of the modal body
+        //
+        $scope.discharged = false;
+        
         // 
         // We should deal with the case where we're confirming discharge
         //
         if(episode.primary_diagnosis.length == 1){
             $scope.editing.primary_diagnosis = episode.primary_diagnosis[0].condition;
             $scope.editing.unconfirmed = true;
+            if(!$scope.is_list_view){
+                $scope.confirming = true;
+            }
         };
+
         if(episode.secondary_diagnosis && episode.secondary_diagnosis.length > 0){
             $scope.editing.secondary_diagnosis = _.map(
                 episode.secondary_diagnosis,
@@ -47,7 +58,7 @@ controllers.controller(
             // 
             // TODO: Get category more dynamically
             // 
-            if(episode.location[0].category != 'Discharged'){
+            if($scope.is_list_view || episode.location[0].category != 'Discharged'){
 
                 var classic_discharge = Flow.flow_for_verb('exit')
                 var classic_result    = $modal.open({
@@ -63,12 +74,17 @@ controllers.controller(
 
                 classic_result.then(
                     function(result){ // Resolve
-                        console.log('collect our extra data now !')
-                        
+                        $scope.discharged = true;
                     },
                     function(result){ // Reject
                         $scope.cancel();
                     });
+            }else{
+                // if($scope.confirming {
+                //     $scope.cancel();
+                //     return
+                // }
+                $scope.discharged = true;
             }
         }
 
@@ -95,10 +111,8 @@ controllers.controller(
         // 
         $scope.save = function() {
             var primary;
-            var confirming
             if($scope.editing.unconfirmed){
                 primary = episode.primary_diagnosis[0];
-                confirming = true;
             }else{
                 primary = episode.newItem('primary_diagnosis');
             }
@@ -118,7 +132,11 @@ controllers.controller(
                         return secondary.save(sd)
                     })
                     $q.all(secondaries).then(function(){
-                        growl.success('Final Diagnosis approved.')
+                        if($scope.confirming){
+                            growl.success('Final Diagnosis approved.')
+                        }else{
+                            growl.success($scope.episode.demographics[0].name + ' discharged.')
+                        }
                         $modalInstance.close('discharged');
                     });
                 });
