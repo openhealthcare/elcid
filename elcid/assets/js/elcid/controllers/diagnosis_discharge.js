@@ -15,12 +15,28 @@ controllers.controller(
 
         $scope.tags = tags;
         $scope.episode = episode;
+
+        // 
+        // This shouldn't happen as PD is a singleton, but we have old patients...
+        //
+        if($scope.episode.primary_diagnosis.length == 0){
+            var primary = $scope.episode.newItem('primary_diagnosis');
+        }
+        
         $scope.editing = {
-            primary_diagnosis  : null,
-            secondary_diagnosis: [{condition: null, co_primary: false, id: 1},
-                                  {condition: null, co_primary: false, id: 2}]
+            primary_diagnosis  : $scope.episode.primary_diagnosis[0].makeCopy(),
 
         }
+        if($scope.episode.secondary_diagnosis.length == 0){
+            $scope.editing.secondary_diagnosis =  [{condition: null, co_primary: false, id: 1},
+                                                   {condition: null, co_primary: false, id: 2}]
+        }else{
+            $scope.editing.secondary_diagnosis = _.map(
+                $scope.episode.secondary_diagnosis, function(sd){
+                    return sd.makeCopy();
+                } )
+        }
+        
         $scope.confirming = false;
         $scope.is_list_view = $location.path().indexOf('/list/') == 0;
         // 
@@ -31,23 +47,14 @@ controllers.controller(
         // 
         // We should deal with the case where we're confirming discharge
         //
-        if(episode.primary_diagnosis.length == 1){
-            $scope.editing.primary_diagnosis = episode.primary_diagnosis[0].condition;
-            if(!$scope.is_list_view){
-                $scope.editing.unconfirmed = true;
-                $scope.confirming = true;
-            }
-        };
-
-        if(episode.secondary_diagnosis && episode.secondary_diagnosis.length > 0){
-            $scope.editing.secondary_diagnosis = _.map(
-                episode.secondary_diagnosis,
-                function(d){
-                    return d.makeCopy();
-                }
-            );
+        if(!$scope.is_list_view){
+            $scope.confirming = true;
         }
-        
+
+        // 
+        // We only really need one lookuplist.
+        // TODO: put these into a nicer service.
+        // 
 	for (var name in options) {
 	    if (name.indexOf('micro_test') != 0) {
 		$scope[name + '_list'] = options[name];
@@ -74,16 +81,16 @@ controllers.controller(
 
                 classic_result.then(
                     function(result){ // Resolve
-                        $scope.discharged = true;
+                        if(result == 'cancel'){
+                            $scope.cancel();
+                        }else{
+                            $scope.discharged = true;
+                        }
                     },
                     function(result){ // Reject
                         $scope.cancel();
                     });
             }else{
-                // if($scope.confirming {
-                //     $scope.cancel();
-                //     return
-                // }
                 $scope.discharged = true;
             }
         }
@@ -107,35 +114,56 @@ controllers.controller(
         };
 
         // 
-        // Check to see if we're confirming or creating, then save
+        // We need to save both the primary diagnosis and any secondary diagnoses.
+        // The PD is simple as it's a singleton model, and we ensured it existed
+        // above.
+        //
+        // For SDs, we need to check whether we are creating or updating, and
+        // hit the appropriate .save().
+        //
+        // Once everything has come back from the server, growl the user and kill
+        // the modal.
         // 
         $scope.save = function() {
-            var primary;
-            primary = episode.primary_diagnosis[0];
-            var primaryAttrs = primary.makeCopy();
-            primaryAttrs.condition = $scope.editing.primary_diagnosis;
-            if($scope.editing.unconfirmed){
-                primaryAttrs.confirmed = true;
+            var primary = episode.primary_diagnosis[0];
+            
+            if($scope.confirming){
+                $scope.editing.primary_diagnosis.confirmed = true;
             }
+            
+            var saves = []
+            saves.push(primary.save($scope.editing.primary_diagnosis));
+            _.each(_.filter($scope.editing.secondary_diagnosis,
+                            function(sd){ return sd.condition!= null }),
+                   function(sd, index){
+                       var save
 
-            primary.save(primaryAttrs).then(
-                function(){
-                    var secondaries = _.map(
-                        _.filter($scope.editing.secondary_diagnosis, function(sd){ return sd.condition!= null }), 
-                        function(sd){
-                        var secondary = $scope.episode.newItem('secondary_diagnosis');
-                        delete sd.id;
-                        return secondary.save(sd)
-                    })
-                    $q.all(secondaries).then(function(){
-                        if($scope.confirming){
-                            growl.success('Final Diagnosis approved.')
-                        }else{
-                            growl.success($scope.episode.demographics[0].name + ' discharged.')
-                        }
-                        $modalInstance.close('discharged');
-                    });
-                });
+                       if(sd.consistency_token){
+                           var consistency_token = sd.consistency_token;
+                           var secondary = _.find(
+                               $scope.episode.secondary_diagnosis,
+                               function(sd){
+                                   return sd.consistency_token == consistency_token;
+                               }
+                           );
+                           save = secondary.save(sd)
+                       }else{
+                           var secondary = $scope.episode.newItem('secondary_diagnosis');
+                           delete sd.id;
+                           save = secondary.save(sd)
+                       }
+                       saves.push(save)
+                   }
+                  );
+            
+            $q.all(saves).then(function(){
+                if($scope.confirming){
+                    growl.success('Final Diagnosis approved.')
+                }else{
+                    growl.success($scope.episode.demographics[0].name + ' discharged.')
+                }
+                $modalInstance.close('discharged');
+            });
         };
 
         $scope.invalid = function() {
