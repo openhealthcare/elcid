@@ -108,6 +108,8 @@ class PrimaryDiagnosis(EpisodeSubrecord):
     """
     This is the confirmed primary diagnosisa
     """
+    _is_singleton= True
+
     condition = ForeignKeyOrFreeText(option_models['condition'])
     confirmed = models.BooleanField(default=False)
 

@@ -33,8 +33,8 @@ controllers.controller(
         //
         if(episode.primary_diagnosis.length == 1){
             $scope.editing.primary_diagnosis = episode.primary_diagnosis[0].condition;
-            $scope.editing.unconfirmed = true;
             if(!$scope.is_list_view){
+                $scope.editing.unconfirmed = true;
                 $scope.confirming = true;
             }
         };
@@ -111,11 +111,7 @@ controllers.controller(
         // 
         $scope.save = function() {
             var primary;
-            if($scope.editing.unconfirmed){
-                primary = episode.primary_diagnosis[0];
-            }else{
-                primary = episode.newItem('primary_diagnosis');
-            }
+            primary = episode.primary_diagnosis[0];
             var primaryAttrs = primary.makeCopy();
             primaryAttrs.condition = $scope.editing.primary_diagnosis;
             if($scope.editing.unconfirmed){
