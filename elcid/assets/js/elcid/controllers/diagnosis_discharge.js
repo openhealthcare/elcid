@@ -65,7 +65,7 @@ controllers.controller(
             // 
             // TODO: Get category more dynamically
             // 
-            if($scope.is_list_view || episode.location[0].category != 'Discharged'){
+            if($scope.is_list_view || !episode.isDischarged()){
 
                 var classic_discharge = Flow.flow_for_verb('exit')
                 var classic_result    = $modal.open({
