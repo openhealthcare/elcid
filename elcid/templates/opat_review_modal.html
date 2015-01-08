@@ -35,8 +35,7 @@
 
     {% input "autofocus" label="Review Undertaken by" model="editing.initials" %}
     {% select label="RV Type" model="editing.rv_type" lookuplist="opat_rvt_list" %} 
-    {% textarea label="Discussion" model="editing.discussion" %}
-    {% textarea label="OPAT Plan" model="editing.opat_plan" %}
+    {% textarea label="OPAT Plan" model="editing.opat_plan" macros=True %}
     
     <div ng-show="editing.rv_type.indexOf('Nurse') == 0">
       <hr >
@@ -54,7 +53,7 @@
           [[editing.rv_type]] [[editing.date ]]
           <br />By [[editing.initials]]
         </li>
-        <li>[[editing.discussion]]</li>
+        <!-- <li>[[editing.discussion]]</li>  -->
         <li>
           <span class="underline">OPAT Plan:</span>
 	  <div markdown="opat_plan"></div>
