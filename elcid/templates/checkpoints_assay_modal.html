@@ -1,4 +1,5 @@
 {% extends 'modal_base.html' %}
+{% load forms %}
 {% block modal_body %}
   <form class="form-horizontal">
 
@@ -11,6 +12,8 @@
         [[ cp ]]
       </label>
     </div>
+    {% checkbox label="Negative?" model="editing.negative" %}
+    {% textarea label="Comments" model="editing.comments" %}
 
   </form>
 {% endblock %}

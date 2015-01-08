@@ -536,3 +536,5 @@ class CheckpointsAssay(EpisodeSubrecord):
     veb = models.BooleanField(default=False)
     vim = models.BooleanField(default=False)
     
+    negative = models.BooleanField(default=False)
+    comments = models.TextField(blank=True, null=True)
