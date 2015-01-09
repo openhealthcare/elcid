@@ -15,7 +15,7 @@ supervisor
 django-debug-toolbar
 -e git://github.com/openhealthcare/opal.git@opat#egg=opal
 -e git://github.com/openhealthcare/opal-research.git@#egg=opal_research
--e git://github.com/openhealthcare/opal-observations.git@#egg=opal_observations
+-e git://github.com/openhealthcare/opal-observations.git@master#egg=opal_observations
 -e git://github.com/openhealthcare/opal-walk-in.git@#egg=opal_walk_in
 -e git://github.com/openhealthcare/opal-wardround.git@#egg=opal_wardround
 -e git://github.com/openhealthcare/opal-referral.git@#egg=opal_referral
