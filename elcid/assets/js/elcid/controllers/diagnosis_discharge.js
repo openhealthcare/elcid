@@ -166,10 +166,6 @@ controllers.controller(
                 $modalInstance.close('discharged');
             });
         };
-
-        $scope.invalid = function() {
-            return $scope.editing.primary_diagnosis == null
-        };
         
         initialize();
         
