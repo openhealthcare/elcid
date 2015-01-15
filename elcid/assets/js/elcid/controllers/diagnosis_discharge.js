@@ -21,6 +21,7 @@ controllers.controller(
         //
         if($scope.episode.primary_diagnosis.length == 0){
             var primary = $scope.episode.newItem('primary_diagnosis');
+            $scope.episode.primary_diagnosis[0] = primary;
         }
         
         $scope.editing = {
