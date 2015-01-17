@@ -1,21 +1,13 @@
+{% load forms %}
 <div class="modal-header">
   <button type="button" class="close" ng-click="cancel()" ng-show="editing.unconfirmed">×</button>
   <h3>Discharge Diagnosis</h3>
 </div>
 <div class="modal-body" ng-show="discharged">
   <form class="form-horizontal" name="dischargeDiagnosisForm">
+
+    {% input autofocus label="Primary Diagnosis" model="editing.primary_diagnosis.condition" lookuplist="condition_list" required="Primary Diagnosis is required." formname="dischargeDiagnosisForm" %}
     
-    <div class="form-group">
-      <label class="control-label col-sm-3">Primary Diagnosis</label>
-      <div class="col-sm-8">
-        <input class="form-control" type="text"
-               name="primary_diagnosis"
-               ng-model="editing.primary_diagnosis.condition"
-               ng-options="s for s in condition_list"
-               bs-typeahead
-               autofocus>
-      </div>
-    </div>
     <div ng-repeat="secondary in editing.secondary_diagnosis track by $index">
       <div class="form-group">
         <label class="control-label col-sm-3">Secondary Diagnosis [[$index + 1]]</label>
@@ -47,14 +39,14 @@
   <button class="btn btn-primary"
           ng-click="save()"
           ng-hide="confirming"
-          ng-disabled="invalid()"
+          ng-disabled="!dischargeDiagnosisForm.$valid"
           >
     Save
   </button>
   <button class="btn btn-primary"
           ng-click="save()"
           ng-show="confirming"
-          ng-disabled="invalid()"
+          ng-disabled="!dischargeDiagnosisForm.$valid"
           >
     Confirm
   </button>  

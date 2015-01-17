@@ -1,29 +1,10 @@
 {% extends 'modal_base.html' %}
+{% load forms %}p
 {% block modal_body %}
   <form name="lineForm" class="form-horizontal">
-    <div class="form-group">
-      <label class="control-label col-sm-3">Line Type</label>
-      <div class="col-sm-8">
-	<input class="form-control" type="text" ng-model="editing.line_type"
-               ng-options="t for t in line_type_list"
-               bs-typeahead
-               autofocus>
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="control-label col-sm-3">Site</label>
-      <div class="col-sm-8">
-	<input class="form-control" type="text" ng-model="editing.site"
-               ng-options="s for s in line_site_list"
-               bs-typeahead>
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="control-label col-sm-3">Insertion Date</label>
-      <div class="col-sm-8">
-	<input class="form-control" type="text" ng-model="editing.insertion_date" bs-datepicker>
-      </div>
-    </div>
+    {% input "autofocus" label="Line Type" model="editing.line_type" lookuplist="line_type_list" %}
+    {% input label="Site" model="editing.site" lookuplist="line_site_list" %}
+    {% datepicker label="Insertion Date" model="editing.insertion_date" %}
     <div class="form-group" ng-show="editing.line_type == 'Peripheral cannula'">
       <label class="control-label col-sm-3">Insertion Time</label>
       <div class="col-sm-8">
@@ -35,54 +16,24 @@
                />
       </div>
     </div>
-    <div class="form-group">
-      <label class="control-label col-sm-3">Inserted By</label>
-      <div class="col-sm-8">
-	<input class="form-control" type="text" ng-model="editing.inserted_by">
-      </div>
-    </div>
-    <div class="form-group" ng-show="editing.line_type != 'Peripheral cannula'">
-      <label class="control-label col-sm-3">External Length (cm)</label>
-      <div class="col-sm-8">
-	<input class="form-control" type="text" ng-model="editing.external_length">
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="control-label col-sm-3">Removal Date</label>
-      <div class="col-sm-8">
-        <input class="form-control" type="text" ng-model="editing.removal_date" bs-datepicker>
-      </div>
-    </div>
+    {% input label="Inserted By" model="editing.inserted_by" %}
+    {% input label="External Length When Inserted" model="editing.external_length" show="editing.line_type != 'Peripheral cannula'" unit="cm" %}
+    {% datepicker label="Removal Date" model="editing.removal_date" %}
+
     <div class="form-group" ng-show="editing.line_type == 'Peripheral cannula'">
       <label class="control-label col-sm-3">Removal Time</label>
       <div class="col-sm-8">
-        <input class="form-control" type="text" ng-model="editing.removal_time" bs-datepicker>
+	<input class="form-control" type="text"
+               name="insertion_time"
+               ng-model="editing.removal_time"
+               placeholder="HHMM"
+               ng-pattern="/^([01]\d|2[0-3])([0-5]\d)$/"
+               />
       </div>
     </div>
-
-    <div class="form-group">
-      <label class="control-label col-sm-3">Complications</label>
-      <div class="col-sm-8">
-        <input class="form-control" type="text" ng-model="editing.complications"
-               ng-options="t for t in line_complication_list"
-               bs-typeahead>
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="control-label col-sm-3">Removal Reason</label>
-      <div class="col-sm-8">
-        <input class="form-control" type="text" ng-model="editing.removal_reason"
-               ng-options="t for t in line_removal_reason_list"
-               bs-typeahead>
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="control-label col-sm-3">Special Instructions</label>
-      <div class="col-sm-8">
-	<textarea class="form-control" ng-model="editing.special_instructions" rows="10"></textarea>
-      </div>
-    </div>
-
+    {% input label="Complications" model="editing.complications" lookuplist="line_complication_list" %}
+    {% input label="Removal Reason" model="editing.removal_reason" lookuplist="removal_reason_list" %}
+    {% textarea label="Special Instructions" model="editing.special_instructions" %}
   </form>
 {% endblock %}
 {% block modal_save %}

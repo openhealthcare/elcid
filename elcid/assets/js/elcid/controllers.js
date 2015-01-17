@@ -80,9 +80,10 @@ controllers.controller(
             }
 
 	    if ($scope.editing.category != 'Followup') {
-	        taggingAttrs[currentTag] = false;
                 if(currentSubTag != 'all'){
                     taggingAttrs[currentSubTag] = false;
+                }else{
+                    taggingAttrs[currentTag] = false;
                 }
 	    }
 
