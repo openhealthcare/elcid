@@ -4,30 +4,26 @@
   <form name="lineForm" class="form-horizontal">
     {% input "autofocus" label="Line Type" model="editing.line_type" lookuplist="line_type_list" %}
     {% input label="Site" model="editing.site" lookuplist="line_site_list" %}
-    {% datepicker label="Insertion Date" model="editing.insertion_date" %}
+    {% datepicker "data-date-type=\"date\"" label="Insertion Date" model="editing.insertion_datetime" %}
     <div class="form-group" ng-show="editing.line_type == 'Peripheral cannula'">
       <label class="control-label col-sm-3">Insertion Time</label>
-      <div class="col-sm-8">
+      <div class="col-sm-3">
 	<input class="form-control" type="text"
-               name="insertion_time"
-               ng-model="editing.insertion_time"
-               placeholder="HHMM"
-               ng-pattern="/^([01]\d|2[0-3])([0-5]\d)$/"
+               ng-model="editing.insertion_datetime"
+               bs-timepicker
                />
       </div>
     </div>
     {% input label="Inserted By" model="editing.inserted_by" %}
     {% input label="External Length When Inserted" model="editing.external_length" show="editing.line_type != 'Peripheral cannula'" unit="cm" %}
-    {% datepicker label="Removal Date" model="editing.removal_date" %}
+    {% datepicker "data-date-type=\"date\"" label="Removal Date" model="editing.removal_datetime" %}
 
     <div class="form-group" ng-show="editing.line_type == 'Peripheral cannula'">
       <label class="control-label col-sm-3">Removal Time</label>
-      <div class="col-sm-8">
+      <div class="col-sm-3">
 	<input class="form-control" type="text"
-               name="insertion_time"
-               ng-model="editing.removal_time"
-               placeholder="HHMM"
-               ng-pattern="/^([01]\d|2[0-3])([0-5]\d)$/"
+               ng-model="editing.removal_datetime"
+               bs-timepicker
                />
       </div>
     </div>

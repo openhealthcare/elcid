@@ -1,12 +1,9 @@
 [[item.line_type]] [[item.site]] ([[item.inserted_by]])<br />
 
-Inserted [[item.insertion_date| shortDate]]
+Inserted [[item.insertion_datetime| shortDate]]
 <br />
 (
-day [[item.insertion_date | daysSince:1 ]]
-<span ng-show="item.line_type == 'Peripheral cannula'">
-  hour [[item.insertion_time | hoursSince ]]
-</span>
+day [[item.insertion_datetime | daysSince ]]
 ) <br />
 <span ng-show="item.external_length">
   External Length [[item.external_length]] cm
@@ -14,9 +11,6 @@ day [[item.insertion_date | daysSince:1 ]]
 <br />
 <span ng-hide="item.removal_date">
   [[ item.insertion_date | daysSince:1 ]] days 
-  <span ng-show="item.line_type == 'Peripheral cannula'">
-    hour [[ item.insertion_time | hoursSince ]]
-  </span>
   since insertion
 </span>
 <span ng-show="item.removal_date" >
