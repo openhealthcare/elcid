@@ -65,22 +65,13 @@ angular.module('opal.controllers')
 
             $http.post('episode/', $scope.editing).success(function(episode) {
                 $scope.episode = new Episode(episode, schema);
-                // $modalInstance.close($scope.episode);
                 $scope.presenting_complaint();
             });
         };
 
         $scope.presenting_complaint = function() {
-            var presenting_complaint_cols = {
-                name: 'presenting_complaint',
-                fields: [
-                    {type: 'string', name: 'symptom'},
-                    {type: 'string', name: 'duration'},
-                    {type: 'string', name: 'details'}
-                ]
-            }
-
-            var item = $scope.episode.newItem('presenting_complaint', {column: presenting_complaint_cols});
+            var item = $scope.episode.newItem('presenting_complaint');
+            $scope.episode.presenting_complaint[0] = item;
             modal = $modal.open({
                 templateUrl: '/templates/modals/presenting_complaint.html/',
                 controller: 'EditItemCtrl',
