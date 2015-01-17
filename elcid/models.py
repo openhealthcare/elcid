@@ -329,12 +329,10 @@ class Line(EpisodeSubrecord):
 
     line_type            = ForeignKeyOrFreeText(option_models['line_type'])
     site                 = ForeignKeyOrFreeText(option_models['line_site'])
-    insertion_date       = models.DateField(blank=True, null=True)
-    insertion_time       = models.IntegerField(blank=True, null=True)
+    insertion_datetime   = models.DateTimeField(blank=True, null=True)
     inserted_by          = models.CharField(max_length=255, blank=True, null=True)
     external_length      = models.CharField(max_length=255, blank=True, null=True)
-    removal_date         = models.DateField(blank=True, null=True)
-    removal_time         = models.IntegerField(blank=True, null=True)
+    removal_datetime     = models.DateTimeField(blank=True, null=True)
     complications        = ForeignKeyOrFreeText(option_models['line_complication'])
     removal_reason       = ForeignKeyOrFreeText(option_models['line_removal_reason'])
     special_instructions = models.TextField()
@@ -345,8 +343,7 @@ class OPATReview(EpisodeSubrecord):
     _episode_category = 'OPAT'
     _read_only = 'true'
 
-    date                    = models.DateField(null=True, blank=True)
-    time                    = models.IntegerField(blank=True, null=True)
+    datetime                = models.DateTimeField(null=True, blank=True)
     initials                = models.CharField(max_length=255, blank=True)
     rv_type                 = ForeignKeyOrFreeText(OPATReviewTypeLookupList)
     discussion              = models.TextField(blank=True, null=True)
