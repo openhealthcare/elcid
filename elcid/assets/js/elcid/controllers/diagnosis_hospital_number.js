@@ -51,7 +51,11 @@ angular.module('opal.controllers').controller(
                 }
             }).result.then(function(result) {
                 // The user has created the episode, or cancelled
-                $modalInstance.close(result);
+                if(result.then){
+                    result.then(function(r){ $modalInstance.close(r) });
+                }else{
+                    $modalInstance.close(result);                 
+                }
             });
         };
 

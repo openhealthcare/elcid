@@ -1,5 +1,5 @@
 angular.module('opal.controllers')
-    .controller('DiagnosisAddEpisodeCtrl', function($scope, $http, $cookieStore,
+    .controller('DiagnosisAddEpisodeCtrl', function($scope, $http, $cookieStore, $q,
                                                     $timeout, $modal,
                                                     $modalInstance, Episode, schema,
                                                     options,
@@ -70,6 +70,9 @@ angular.module('opal.controllers')
         };
 
         $scope.presenting_complaint = function() {
+            var deferred = $q.defer();
+            $modalInstance.close(deferred.promise);
+
             var item = $scope.episode.newItem('presenting_complaint');
             $scope.episode.presenting_complaint[0] = item;
             modal = $modal.open({
@@ -81,8 +84,10 @@ angular.module('opal.controllers')
                     episode: function() { return $scope.episode; },
                     profile: function(UserProfile) { return UserProfile }
                 }
-            });
-            $modalInstance.close($scope.episode);
+            }).result.then(
+                function(){deferred.resolve($scope.episode)},
+                function(){deferred.resolve($scope.episode)}
+            );
         };
 
         $scope.cancel = function() {
