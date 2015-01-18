@@ -896,7 +896,36 @@
       "name": "Hep D Serology"
     }
   ], 
-  "line_complication": [], 
+  "line_complication": [
+    {
+      "synonyms": [], 
+      "name": "Bleeding"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Blockage"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Fell Out"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Infection (Systemic / bacteraemia)"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Infection (local)"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Migrated"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Thrombus"
+    }
+  ], 
   "hospital": [
     {
       "synonyms": [], 
