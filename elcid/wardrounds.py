@@ -3,7 +3,7 @@
 """
 import datetime
 
-from opal.models import Episode
+from opal.models import Episode, Tagging
 from wardround import WardRound
 from obs import models as obsmodels
 
@@ -46,7 +46,19 @@ class FinalDiagnosisReview(HistoricTagsMixin, WardRound):
     @staticmethod
     def episodes():
         unconfirmed = models.PrimaryDiagnosis.objects.filter(confirmed=False)
-        return set([d.episode for d in unconfirmed])
+
+        def interesting(episode):
+            """
+            Is episode interesting for the FDR?
+            """
+            if not episode.is_discharged:
+                return False
+            interesting_teams = set(['id_inpatients', 
+                                     'tropical_diseases',
+                                     'immune_inpatients'])
+            return bool(interesting_teams.intersection(episode.get_tag_names(None, historic=True)))
+            
+        return set([d.episode for d in unconfirmed if interesting(d.episode)])
 
     @staticmethod
     def schema():
