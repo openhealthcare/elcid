@@ -34,45 +34,45 @@ class MicroHaem(WardRound):
         return Episode.objects.filter(active=True, tagging__team__name='micro_haem')
 
 
-class FinalDiagnosisReview(HistoricTagsMixin, WardRound):
-    name        = 'Final Diagnosis Review'
-    description = 'Discharged Patients with a final diagnosis for consultant review.'
+# class FinalDiagnosisReview(HistoricTagsMixin, WardRound):
+#     name        = 'Final Diagnosis Review'
+#     description = 'Discharged Patients with a final diagnosis for consultant review.'
     
-    filter_template = 'wardrounds/final_diagnosis_filter.html'
-    filters    = {
-        'discharge_from': 'episode.discharge_date >= moment(value, "DD-MM-YYYY")',
-        'discharge_to'  : 'episode.discharge_date <= moment(value, "DD-MM-YYYY")',
-        'team'          : 'episode.tagging[0][value]'
-    }
+#     filter_template = 'wardrounds/final_diagnosis_filter.html'
+#     filters    = {
+#         'discharge_from': 'episode.discharge_date >= moment(value, "DD-MM-YYYY")',
+#         'discharge_to'  : 'episode.discharge_date <= moment(value, "DD-MM-YYYY")',
+#         'team'          : 'episode.tagging[0][value]'
+#     }
     
-    @staticmethod
-    def episodes():
-        unconfirmed = models.PrimaryDiagnosis.objects.filter(confirmed=False).filter(Q(condition_ft__isnull=False)|Q(condition_fk__isnull=False))
+#     @staticmethod
+#     def episodes():
+#         unconfirmed = models.PrimaryDiagnosis.objects.filter(confirmed=False).filter(Q())
 
-        def interesting(episode):
-            """
-            Is episode interesting for the FDR?
-            """
-            if not episode.is_discharged:
-                return False
-            interesting_teams = set(['id_inpatients', 
-                                     'tropical_diseases',
-                                     'immune_inpatients'])
-            return bool(interesting_teams.intersection(episode.get_tag_names(None, historic=True)))
+#         def interesting(episode):
+#             """
+#             Is episode interesting for the FDR?
+#             """
+#             if not episode.is_discharged:
+#                 return False
+#             interesting_teams = set(['id_inpatients', 
+#                                      'tropical_diseases',
+#                                      'immune_inpatients'])
+#             return bool(interesting_teams.intersection(episode.get_tag_names(None, historic=True)))
             
-        return set([d.episode for d in unconfirmed if interesting(d.episode)])
+#         return set([d.episode for d in unconfirmed if interesting(d.episode)])
 
-    @staticmethod
-    def schema():
-        return [
-            models.Demographics,
-            models.Location,
-            models.Diagnosis,
-            models.MicrobiologyTest,
-            models.Antimicrobial,
-            models.PrimaryDiagnosis,
-            models.SecondaryDiagnosis
-        ]
+#     @staticmethod
+#     def schema():
+#         return [
+#             models.Demographics,
+#             models.Location,
+#             models.Diagnosis,
+#             models.MicrobiologyTest,
+#             models.Antimicrobial,
+#             models.PrimaryDiagnosis,
+#             models.SecondaryDiagnosis
+#         ]
 
 
 class OPATReviewList(WardRound):
@@ -127,3 +127,10 @@ class Discharged(HistoricTagsMixin, WardRound):
         episodes = Episode.objects.filter(
             discharge_date__gte=two_weeks_ago)
         return episodes
+
+
+    @staticmethod
+    def schema():
+        from elcid import schema as s
+        cols = s.detail_columns
+        return [models.PrimaryDiagnosis, models.SecondaryDiagnosis] + cols
