@@ -3,6 +3,8 @@
 """
 import datetime
 
+from django.db.models import Q
+
 from opal.models import Episode, Tagging
 from wardround import WardRound
 from obs import models as obsmodels
@@ -45,7 +47,7 @@ class FinalDiagnosisReview(HistoricTagsMixin, WardRound):
     
     @staticmethod
     def episodes():
-        unconfirmed = models.PrimaryDiagnosis.objects.filter(confirmed=False)
+        unconfirmed = models.PrimaryDiagnosis.objects.filter(confirmed=False).filter(Q(condition_ft__isnull=False)|Q(condition_fk__isnull=False))
 
         def interesting(episode):
             """
