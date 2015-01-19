@@ -3,12 +3,7 @@
 {% load forms %}
 
 {% block modal_body %}
-  <div class="well">
-    <small class="text-warning">
-      Entries made in this OPAT review cannot be edited after saving. Any further modifications to OPAT review given will require a new entry
-    </small>
-  </div>
-  <form class="form-horizontal" ng-hide="editing.consistency_token" name="modal_form">
+  <form class="form-horizontal" name="modal_form">
 
     <div class="form-group">
       <label class="control-label col-sm-3">Date</label>
@@ -46,22 +41,6 @@
     </div>
     
   </form>
-    <div ng-show="editing.consistency_token">
-      <ul>
-        <li>
-          [[editing.rv_type]] [[editing.date ]]
-          <br />By [[editing.initials]]
-        </li>
-        <!-- <li>[[editing.discussion]]</li>  -->
-        <li>
-          <span class="underline">OPAT Plan:</span>
-	  <div markdown="opat_plan"></div>
-        </li>
-        <li ng-show="item.next_review">
-          Next review: [[next_review|shortDate]]
-        </li>
-      </ul>
-    </div>
 
 {% endblock %}
   {% block modal_save %}
