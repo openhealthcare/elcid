@@ -9,6 +9,8 @@ It is a ward management tool with a particular focus on ID and related disciplin
 [![Build
 Status](https://travis-ci.org/openhealthcare/elcid.png)](https://travis-ci.org/openhealthcare/elcid)
 
+http://elcid.openhealthcare.org.uk
+
 ## What problem does elCID solve?
 
 elCID aims to make it easier to manage clinical interactions on hospital wards, focussed on Infectious Diseases.
