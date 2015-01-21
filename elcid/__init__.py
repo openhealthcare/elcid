@@ -5,8 +5,6 @@ from django.conf import settings
 
 from opal.utils import OpalApplication
 
-from elcid import flow, schema
-
 class Application(OpalApplication):
-    schema_module = schema
-    flow_module   = flow
+    schema_module = 'elcid.schema'
+    flow_module   = 'elcid.flow'
