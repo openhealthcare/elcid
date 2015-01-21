@@ -156,6 +156,7 @@ INSTALLED_APPS = (
     'reversion',
     'south',
     'opal',
+    'analytics',
     'elcid',
     'obs',
     'django.contrib.admin',
@@ -216,9 +217,7 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 # New modular settings!
 # !!! TODO: Are these how we want to discover these ? 
-OPAL_SCHEMA_MODULE = 'elcid.schema'
 OPAL_OPTIONS_MODULE = 'elcid.options'
-OPAL_FLOW_MODULE = 'elcid.flow'
 OPAL_BRAND_NAME = 'elCID - OPAT'
 OPAL_LOG_OUT_MINUTES = 15
 OPAL_LOG_OUT_DURATION = OPAL_LOG_OUT_MINUTES*60*1000
@@ -226,6 +225,10 @@ OPAL_LOG_OUT_DURATION = OPAL_LOG_OUT_MINUTES*60*1000
 # Do we need these at all ? 
 OPAL_EXTRA_HEADER = 'elcid/print_header.html'
 OPAL_EXTRA_APPLICATION = 'elcid/extra_application.html'
+
+# ANALYTICS Settings
+OPAL_ANALYTICS_ID = 'UA-XXXXXXX'
+OPAL_ANALYTICS_NODOMAIN = True
 
 CONTACT_EMAIL = ['michael.marks@uclh.nhs.uk', 'david@openhealthcare.org.uk']
 DEFAULT_FROM_EMAIL = 'elcid@openhealthcare.org.uk'
