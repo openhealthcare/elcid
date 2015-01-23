@@ -3,8 +3,8 @@ elCID OPAL implementation
 """
 from django.conf import settings
 
-from opal import application
+from opal.utils import OpalApplication
 
-class Application(application.OpalApplication):
+class Application(OpalApplication):
     schema_module = 'elcid.schema'
     flow_module   = 'elcid.flow'

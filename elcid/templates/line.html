@@ -1,5 +1,5 @@
 [[item.line_type]] [[item.site]] <span ng-show="item.external_length" >([[item.external_length]]cm)</span><br />
 
-<span ng-show="item.insertion_datetime" >Inserted [[item.insertion_datetime| shortDate]] <span ng-show="item.line_type == 'Peripheral cannula'" >[[item.insertion_datetime| hhmm]]</span>
+<span ng-show="item.insertion_datetime" >Inserted [[item.insertion_datetime| shortDate]] [[item.insertion_datetime| hhmm]]
 (day [[item.insertion_datetime | daysSince ]])
 <span ng-show="item.complications">[[item.complications]]<br /></span>
