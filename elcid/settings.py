@@ -222,9 +222,8 @@ OPAL_BRAND_NAME = 'elCID - OPAT'
 OPAL_LOG_OUT_MINUTES = 15
 OPAL_LOG_OUT_DURATION = OPAL_LOG_OUT_MINUTES*60*1000
 
-# Do we need these at all ? 
+# Do we need this at all ? 
 OPAL_EXTRA_HEADER = 'elcid/print_header.html'
-OPAL_EXTRA_APPLICATION = 'elcid/extra_application.html'
 
 # ANALYTICS Settings
 OPAL_ANALYTICS_ID = 'UA-XXXXXXX'
