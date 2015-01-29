@@ -10,13 +10,3 @@
   </span>
   <hr>
 </li>
-<li
-  ng-hide="row.presenting_complaint.0.symptom || row.presenting_complaint.0.duration || row.presenting_complaint.0.details"
-  ng-click="newNamedItem(row, 'presenting_complaint')"
-  ng-dblclick=""
-  ng-class="{selected: false}">
-  <button class="screen-only btn btn-primary"
-    ng-show="!profile.readonly && !row.presenting_complaint.0.symptom">
-    <i class="glyphicon glyphicon-plus"></i> Symptoms
-  </button>
-</li>

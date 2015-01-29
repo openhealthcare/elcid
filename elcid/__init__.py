@@ -15,3 +15,7 @@ class Application(application.OpalApplication):
         'js/elcid/controllers/diagnosis_add_episode.js',
         'js/elcid/controllers/diagnosis_discharge.js'
     ]
+    
+    actions = [
+        'actions/presenting_complaint.html'
+    ]

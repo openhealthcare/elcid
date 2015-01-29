@@ -98,6 +98,7 @@ class Location(EpisodeSubrecord):
 
 class PresentingComplaint(EpisodeSubrecord):
     _title = 'Presenting Complaint'
+    _icon = 'fa fa-stethoscope'
 
     symptom  = ForeignKeyOrFreeText(option_models['symptom'])
     duration = models.CharField(max_length=255, blank=True, null=True)
@@ -129,6 +130,7 @@ class Diagnosis(EpisodeSubrecord):
     """
     _title = 'Diagnosis / Issues'
     _sort = 'date_of_diagnosis'
+    _icon = 'fa fa-stethoscope'
 
     condition         = ForeignKeyOrFreeText(option_models['condition'])
     provisional       = models.BooleanField()
@@ -136,8 +138,7 @@ class Diagnosis(EpisodeSubrecord):
     date_of_diagnosis = models.DateField(blank=True, null=True)
 
     def __unicode__(self):
-        return u'Diagnosis for {0}: {1} - {2}'.format(
-            self.episode.patient.demographics_set.get().name,
+        return u'Diagnosis of {0} - {1}'.format(
             self.condition,
             self.date_of_diagnosis
             )
@@ -146,7 +147,8 @@ class Diagnosis(EpisodeSubrecord):
 class PastMedicalHistory(EpisodeSubrecord):
     _title = 'PMH'
     _sort = 'year'
-
+    _icon = 'fa fa-history'
+    
     condition = ForeignKeyOrFreeText(option_models['condition'])
     year      = models.CharField(max_length=4, blank=True)
     details   = models.CharField(max_length=255, blank=True)
@@ -156,12 +158,15 @@ class GeneralNote(EpisodeSubrecord):
     _title = 'General Notes'
     _sort  = 'date'
     _episode_category_excludes = ["OPAT"]
+    _icon = 'fa fa-info-circle'
 
     date    = models.DateField(null=True, blank=True)
     comment = models.TextField()
 
 
 class Travel(EpisodeSubrecord):
+    _icon = 'fa fa-plane'
+
     destination = ForeignKeyOrFreeText(option_models['destination'])
     dates = models.CharField(max_length=255, blank=True)
     reason_for_travel = ForeignKeyOrFreeText(option_models['travel_reason'])
@@ -173,7 +178,8 @@ DrugDeliveredLookupList = type(*lookup_list('drug_delivered', module=__name__))
 class Antimicrobial(EpisodeSubrecord):
     _title = 'Antimicrobials'
     _sort = 'start_date'
-
+    _icon = 'fa fa-flask'
+    
     drug          = ForeignKeyOrFreeText(option_models['antimicrobial'])
     dose          = models.CharField(max_length=255, blank=True)
     route         = ForeignKeyOrFreeText(option_models['antimicrobial_route'])
@@ -186,7 +192,8 @@ class Antimicrobial(EpisodeSubrecord):
     frequency     = ForeignKeyOrFreeText(option_models['antimicrobial_frequency'])
 
 class Allergies(PatientSubrecord):
-
+    _icon = 'fa fa-warning'
+    
     drug        = ForeignKeyOrFreeText(option_models['antimicrobial'])
     provisional = models.BooleanField()
     details     = models.CharField(max_length=255, blank=True)
@@ -197,6 +204,7 @@ class MicrobiologyInput(EpisodeSubrecord):
     _sort = 'date'
     _read_only = 'true'
     _episode_category_excludes = ["OPAT"]
+    _icon = 'fa fa-comments'
 
     date                              = models.DateField(null=True, blank=True)
     initials                          = models.CharField(max_length=255, blank=True)
@@ -214,6 +222,7 @@ class MicrobiologyInput(EpisodeSubrecord):
 class Todo(EpisodeSubrecord):
     _title = 'To Do'
     _episode_category_excludes = ["OPAT"]
+    _icon = 'fa fa-th-list'
     
     details = models.TextField(blank=True)
 
@@ -221,6 +230,7 @@ class Todo(EpisodeSubrecord):
 class MicrobiologyTest(EpisodeSubrecord):
     _title = 'Investigations'
     _sort = 'date_ordered'
+    _icon = 'fa fa-eyedropper'
 
     test                  = models.CharField(max_length=255)
     date_ordered          = models.DateField(null=True, blank=True)

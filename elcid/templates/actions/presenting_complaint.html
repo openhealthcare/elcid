@@ -1,0 +1,11 @@
+<p
+  ng-hide="(episode.presenting_complaint.0.symptom || episode.presenting_complaint.0.duration || episode.presenting_complaint.0.details) || (!episode.tagging[0].tropical_diseases && !episode.tagging[0].id_inpatients && !episode.tagging[0].immune_inpatients)"
+  ng-show=""
+  ng-click="newNamedItem(episode, 'presenting_complaint')"
+  ng-dblclick=""
+  ng-class="{selected: false}">
+  <button class="screen-only btn btn-primary"
+    ng-show="!profile.readonly">
+    <i class="glyphicon glyphicon-plus"></i> Symptoms
+  </button>
+</p>

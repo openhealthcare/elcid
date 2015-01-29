@@ -6,13 +6,5 @@ Admitted: [[row.date_of_admission | shortDate]] <br />
   Discharged [[row.discharge_date | shortDate]] <br />
 </span>
 Referred: [[item.opat_referral | shortDate]]
-<br />
-<a
-   class="screen-only btn btn-primary" href="#"
-   ng-click="dischargeEpisode($parent.$index, $event)">
-  <i class="glyphicon glyphicon-ok"></i>
-  <span ng-show="currentSubTag == 'opat_referrals'" >Accept / refuse</span>
-  <span ng-show="currentSubTag == 'opat_current'" >Completed IV</span>
-  <span ng-show="currentSubTag == 'opat_followup'" >Next</span> 
-</a>
+
 
