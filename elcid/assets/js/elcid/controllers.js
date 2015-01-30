@@ -3,9 +3,6 @@
 // It is included from the eLCID extra aplication template as defined in
 // settings.py
 //
-// TODO: Refactor the inclusion to be via a plugin.
-// TODO: Set the controller more explicitly via flow
-//
 controllers.controller(
     'ElcidDischargeEpisodeCtrl', 
     function($scope, $timeout,
