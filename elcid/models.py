@@ -351,6 +351,7 @@ class Line(EpisodeSubrecord):
 class OPATReview(EpisodeSubrecord):
     _sort = 'date'
     _episode_category = 'OPAT'
+    _title = 'OPAT Review'
     _read_only = 'true'
 
     datetime                = models.DateTimeField(null=True, blank=True)
@@ -383,6 +384,7 @@ class Appointment(EpisodeSubrecord):
 
 class OPATLineAssessment(EpisodeSubrecord):
     _episode_category = 'OPAT'
+    _title = 'OPAT Line Assessment'
 
     line                   = models.CharField(max_length=200, blank=True, null=True)
     assessment_date        = models.DateField(blank=True, null=True)
