@@ -245,7 +245,7 @@ else:
     EMAIL_HOST = 'localhost'
 
 
-VERSION_NUMBER = '0.3.0'
+VERSION_NUMBER = '0.4.0'
 TEST_RUNNER = 'django_test_coverage.runner.CoverageTestSuiteRunner'
 COVERAGE_EXCLUDE_MODULES = ('elcid.migrations', 'elcid.tests',
                             'elcid.local_settings',
