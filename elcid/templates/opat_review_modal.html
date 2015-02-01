@@ -45,7 +45,10 @@
 {% endblock %}
   {% block modal_save %}
   <button ng-hide="editing.consistency_token"
-     class="btn btn-primary" ng-click="save('save')">Save</button>
+     class="btn btn-primary" ng-click="save('save')">
+    <i class="fa fa-save"></i>
+      Save
+  </button>
   {% endblock %}
   {% block modal_another %}{% endblock %}
   {% block modal_cancel %}<button class="btn" ng-click="cancel()">Close</button>{% endblock %}
