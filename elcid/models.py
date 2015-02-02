@@ -9,29 +9,6 @@ from opal.models import (Subrecord,
 from opal.utils.fields import ForeignKeyOrFreeText
 from opal.utils.models import lookup_list
 
-__all__ = [
-    'Demographcs',
-    'ContactDetails',
-    'Carers',
-    'Location',
-    'Allergies',
-    'PresentingComplaint',
-    'Diagnosis',
-    'PastMedicalHistory',
-    'GeneralNote',
-    'Travel',
-    'Antimicrobial',
-    'MicrobiologyInput',
-    'Todo',
-    'MicrobiologyTest',
-    'Line',
-    'Appointment',
-    'OPATReview',
-    'OPATOutstandingIssues',
-    'OPATLineAssessment',
-    ]
-
-
 class Demographics(PatientSubrecord):
     _is_singleton = True
 
@@ -69,9 +46,8 @@ class Carers(PatientSubrecord):
     nurse = models.ForeignKey(CommunityNurse, blank=True, null=True)
 
 
-#class Location(TaggedSubrecordMixin, EpisodeSubrecord):
 class Location(EpisodeSubrecord):
-    _is_singleton = True
+    _is_singleton = True    
 
     category                   = models.CharField(max_length=255, blank=True)
     hospital                   = models.CharField(max_length=255, blank=True)
@@ -230,7 +206,7 @@ class Todo(EpisodeSubrecord):
 class MicrobiologyTest(EpisodeSubrecord):
     _title = 'Investigations'
     _sort = 'date_ordered'
-    _icon = 'fa fa-eyedropper'
+    _icon = 'fa fa-crosshairs'
 
     test                  = models.CharField(max_length=255)
     date_ordered          = models.DateField(null=True, blank=True)
