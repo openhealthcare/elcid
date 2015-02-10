@@ -4,7 +4,7 @@
   {% include 'detail/_demographics_location_panels.html' %}
   {% record_panel models.ContactDetails %}
   {% record_panel models.Allergies %}
-  {% record_panel models.Observation %}
+  {% include 'obs/detail_panel.html' %}
   {% record_panel models.PastMedicalHistory %}
   {% record_panel models.Travel %}
   {% record_panel models.Appointment %}
