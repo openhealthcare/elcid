@@ -61,15 +61,18 @@ class Location(EpisodeSubrecord):
     opat_discharge             = models.DateField(blank=True, null=True)
 
     def __unicode__(self):
-        demographics = self.episode.patient.demographics_set.get()
-        return u'Location for {0}({1}) {2} {3} {4} {5}'.format(
-            demographics.name,
-            demographics.hospital_number,
-            self.category,
-            self.hospital,
-            self.ward,
-            self.bed
+        try:
+            demographics = self.episode.patient.demographics_set.get()
+            return u'Location for {0}({1}) {2} {3} {4} {5}'.format(
+                demographics.name,
+                demographics.hospital_number,
+                self.category,
+                self.hospital,
+                self.ward,
+                self.bed
             )
+        except:
+            return 'demographics'
 
 
 class PresentingComplaint(EpisodeSubrecord):
