@@ -179,7 +179,6 @@ class Allergies(PatientSubrecord):
 class MicrobiologyInput(EpisodeSubrecord):
     _title = 'Clinical Advice'
     _sort = 'date'
-    _read_only = 'true'
     _icon = 'fa fa-comments'
 
     date                              = models.DateField(null=True, blank=True)
@@ -323,7 +322,6 @@ class OPATReview(EpisodeSubrecord):
     _sort = 'date'
     _title = 'OPAT Review'
     _icon = 'fa fa-comments'
-    _read_only = 'true'
 
     datetime                = models.DateTimeField(null=True, blank=True)
     initials                = models.CharField(max_length=255, blank=True)
