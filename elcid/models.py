@@ -23,7 +23,7 @@ class Demographics(PatientSubrecord):
 
 class ContactDetails(PatientSubrecord):
     _is_singleton = True
-    _episode_category = 'OPAT'
+    _icon = 'fa fa-phone'
 
     address_line1 = models.CharField("Address line 1", max_length = 45,
                                      blank=True, null=True)
@@ -40,7 +40,6 @@ class ContactDetails(PatientSubrecord):
 
 class Carers(PatientSubrecord):
     _is_singleton = True
-    _episode_category = 'OPAT'
 
     gp    = models.ForeignKey(GP, blank=True, null=True)
     nurse = models.ForeignKey(CommunityNurse, blank=True, null=True)
@@ -136,7 +135,6 @@ class PastMedicalHistory(EpisodeSubrecord):
 class GeneralNote(EpisodeSubrecord):
     _title = 'General Notes'
     _sort  = 'date'
-    _episode_category_excludes = ["OPAT"]
     _icon = 'fa fa-info-circle'
 
     date    = models.DateField(null=True, blank=True)
@@ -182,7 +180,6 @@ class MicrobiologyInput(EpisodeSubrecord):
     _title = 'Clinical Advice'
     _sort = 'date'
     _read_only = 'true'
-    _episode_category_excludes = ["OPAT"]
     _icon = 'fa fa-comments'
 
     date                              = models.DateField(null=True, blank=True)
@@ -200,7 +197,6 @@ class MicrobiologyInput(EpisodeSubrecord):
 
 class Todo(EpisodeSubrecord):
     _title = 'To Do'
-    _episode_category_excludes = ["OPAT"]
     _icon = 'fa fa-th-list'
     
     details = models.TextField(blank=True)
@@ -263,8 +259,6 @@ OPATUnplannedStopLookupList = type(*lookup_list('unplanned_stop', module=__name_
 OPATReviewTypeLookupList = type(*lookup_list('opat_rvt', module=__name__))
 
 class OPATMeta(EpisodeSubrecord):
-    _episode_category = 'OPAT'
-
     review_date           = models.DateField(blank=True, null=True)
     reason_for_stopping   = models.CharField(max_length=200, blank=True, null=True)
     unplanned_stop_reason = ForeignKeyOrFreeText(OPATUnplannedStopLookupList)
@@ -284,7 +278,6 @@ class OPATOutcome(EpisodeSubrecord):
     same as OPAT meta data, but captured on the ward round and interrogated
     differently. 
     """
-    _episode_category = 'OPAT'
     _is_singleton     = True
 
     treatment_outcome     = models.CharField(max_length=200, blank=True, null=True)
@@ -298,7 +291,6 @@ class OPATOutcome(EpisodeSubrecord):
     
 
 class OPATRejection(EpisodeSubrecord):
-    _episode_category = 'OPAT'
 
     decided_by            = models.CharField(max_length=255, blank=True, null=True)
     patient_choice        = models.BooleanField(default=False)
@@ -314,7 +306,7 @@ class OPATRejection(EpisodeSubrecord):
 
 class Line(EpisodeSubrecord):
     _sort = 'insertion_date'
-    _episode_category = 'OPAT'
+    _icon = 'fa fa-bolt'
 
     line_type            = ForeignKeyOrFreeText(option_models['line_type'])
     site                 = ForeignKeyOrFreeText(option_models['line_site'])
@@ -329,8 +321,8 @@ class Line(EpisodeSubrecord):
 
 class OPATReview(EpisodeSubrecord):
     _sort = 'date'
-    _episode_category = 'OPAT'
     _title = 'OPAT Review'
+    _icon = 'fa fa-comments'
     _read_only = 'true'
 
     datetime                = models.DateTimeField(null=True, blank=True)
@@ -347,23 +339,24 @@ class OPATReview(EpisodeSubrecord):
 
 class OPATOutstandingIssues(EpisodeSubrecord):
     _title = 'Outstanding Issues'
-    _episode_category = 'OPAT'
+    _icon = 'fa fa-th-list'
+
     details = models.TextField(blank=True)
 
 
 class Appointment(EpisodeSubrecord):
     _title = 'Upcoming Appointments'
     _sort = 'date'
-    _episode_category = 'OPAT'
+    _icon = 'fa fa-calendar'
 
     appointment_type = models.CharField(max_length=200, blank=True, null=True)
     appointment_with = models.CharField(max_length=200, blank=True, null=True)
     date             = models.DateField(blank=True, null=True)
 
 
-class OPATLineAssessment(EpisodeSubrecord):
-    _episode_category = 'OPAT'
+class OPATLineAssessment(EpisodeSubrecord):    
     _title = 'OPAT Line Assessment'
+    _icon = 'fa fa-check-square-o'
 
     line                   = models.CharField(max_length=200, blank=True, null=True)
     assessment_date        = models.DateField(blank=True, null=True)

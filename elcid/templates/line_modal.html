@@ -1,5 +1,6 @@
 {% extends 'modal_base.html' %}
-{% load forms %}p
+{% load forms %}
+{% block icon %}<i class="fa fa-bolt"></i>{% endblock %}
 {% block modal_body %}
   <form name="lineForm" class="form-horizontal">
     {% input "autofocus" label="Line Type" model="editing.line_type" lookuplist="line_type_list" %}
