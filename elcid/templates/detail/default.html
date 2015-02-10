@@ -1,0 +1,17 @@
+{% extends 'detail/two_column.html' %}
+{% load panels %}
+{% block left_column %}
+  {% include 'detail/_demographics_location_panels.html' %}
+  {% record_panel models.Allergies %}
+  {% record_panel models.PastMedicalHistory %}
+  {% record_panel models.Travel %}
+  {% record_panel models.MicrobiologyInput %}
+{% endblock %}
+{% block right_column %}
+  {% record_panel models.PresentingComplaint %}
+  {% record_panel models.Diagnosis %}
+  {% record_panel models.Antimicrobial %}
+  {% record_panel models.MicrobiologyTest %}
+  {% record_panel models.Todo %}
+  {% record_panel models.GeneralNote %}
+{% endblock %}
