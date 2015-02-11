@@ -207,7 +207,8 @@ class MicrobiologyTest(EpisodeSubrecord):
     _title = 'Investigations'
     _sort = 'date_ordered'
     _icon = 'fa fa-crosshairs'
-
+    _modal = 'lg'
+    
     test                  = models.CharField(max_length=255)
     date_ordered          = models.DateField(null=True, blank=True)
     details               = models.CharField(max_length=255, blank=True)
