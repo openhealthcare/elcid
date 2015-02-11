@@ -11,7 +11,8 @@ from opal.utils.models import lookup_list
 
 class Demographics(PatientSubrecord):
     _is_singleton = True
-
+    _icon = 'fa fa-users'
+    
     name             = models.CharField(max_length=255, blank=True)
     hospital_number  = models.CharField(max_length=255, blank=True)
     nhs_number       = models.CharField(max_length=255, blank=True, null=True)
@@ -47,7 +48,8 @@ class Carers(PatientSubrecord):
 
 class Location(EpisodeSubrecord):
     _is_singleton = True    
-
+    _icon = 'fa fa-map-marker'
+    
     category                   = models.CharField(max_length=255, blank=True)
     hospital                   = models.CharField(max_length=255, blank=True)
     ward                       = models.CharField(max_length=255, blank=True)
