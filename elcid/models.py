@@ -158,6 +158,7 @@ class Antimicrobial(EpisodeSubrecord):
     _title = 'Antimicrobials'
     _sort = 'start_date'
     _icon = 'fa fa-flask'
+    _modal = 'lg'
     
     drug          = ForeignKeyOrFreeText(option_models['antimicrobial'])
     dose          = models.CharField(max_length=255, blank=True)
@@ -182,6 +183,7 @@ class MicrobiologyInput(EpisodeSubrecord):
     _title = 'Clinical Advice'
     _sort = 'date'
     _icon = 'fa fa-comments'
+    _modal = 'lg'
 
     date                              = models.DateField(null=True, blank=True)
     initials                          = models.CharField(max_length=255, blank=True)
