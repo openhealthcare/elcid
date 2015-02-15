@@ -184,6 +184,7 @@ class MicrobiologyInput(EpisodeSubrecord):
     _sort = 'date'
     _icon = 'fa fa-comments'
     _modal = 'lg'
+    _list_limit = 3
 
     date                              = models.DateField(null=True, blank=True)
     initials                          = models.CharField(max_length=255, blank=True)
@@ -324,9 +325,10 @@ class Line(EpisodeSubrecord):
 
 
 class OPATReview(EpisodeSubrecord):
-    _sort = 'date'
+    _sort = 'datetime'
     _title = 'OPAT Review'
     _icon = 'fa fa-comments'
+    _list_limit = 1
 
     datetime                = models.DateTimeField(null=True, blank=True)
     initials                = models.CharField(max_length=255, blank=True)
