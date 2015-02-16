@@ -1,0 +1,30 @@
+{% extends 'detail/two_column.html' %}
+{% load panels %}
+{% block heading %}
+  [[episode.demographics[0].name]]
+{% endblock %}
+{% block subheading %}
+  ([[ ward_round.name]])
+{% endblock %}
+
+{% block left_column %}
+  {% include 'detail/_demographics_location_panels.html' %}
+  {% record_panel models.Allergies %}
+  {% record_panel models.PastMedicalHistory %}
+  {% record_panel models.Travel %}
+  {% record_panel models.MicrobiologyInput %}
+{% endblock %}
+{% block right_column %}
+  {% record_panel models.PresentingComplaint %}
+  {% record_panel models.PrimaryDiagnosis %}
+  {% record_panel models.SecondaryDiagnosis %}
+  {% record_panel models.Diagnosis %}
+  {% record_panel models.Antimicrobial %}
+  {% record_panel models.MicrobiologyTest %}
+  {% record_panel models.Todo %}
+  {% record_panel models.GeneralNote %}
+{% endblock %}
+{% block sidebar_panels %}
+  {{ block.super }}
+  {% include 'actions/wardround.html' %}
+{% endblock %}

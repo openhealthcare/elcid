@@ -1,0 +1,6 @@
+{% extends 'detail/opat.html' %}
+{% load panels %}
+{% block right_column %}
+  {% record_panel models.OPATOutcome %}
+  {{ block.super }}
+{% endblock %}
