@@ -85,30 +85,7 @@ class OPATReviewList(WardRound):
         return set([om.episode for om in review_ready
                     if om.episode.opatoutcome_set.get().treatment_outcome is None])
 
-    @staticmethod
-    def schema():
-        return [
-            models.OPATOutcome,
-            models.Location,
-            models.Demographics,
-            models.ContactDetails,
-            models.PresentingComplaint,
-            models.Diagnosis,
-            obsmodels.Observation,
-            models.PastMedicalHistory,
-            models.Antimicrobial,
-            models.Allergies,
-            models.MicrobiologyTest,
-            models.Line,
-            models.OPATLineAssessment,
-            models.MicrobiologyInput,
-            models.OPATReview,
-            models.Travel,
-            models.Appointment,
-            models.Todo,
-            models.OPATOutstandingIssues,
-            models.GeneralNote,
-        ]
+    detail_template = 'wardrounds/opat_detail.html'
 
 
 class Discharged(HistoricTagsMixin, WardRound):
@@ -116,6 +93,7 @@ class Discharged(HistoricTagsMixin, WardRound):
     description = 'Patients discharged in the last week'
 
     filter_template = 'wardrounds/discharged_filter.html'
+    detail_template = 'wardrounds/discharged_detail.html'
     filters = {
         'team': 'episode.tagging[0][value]'
     }
@@ -125,12 +103,7 @@ class Discharged(HistoricTagsMixin, WardRound):
         today = datetime.date.today()
         two_weeks_ago = today - datetime.timedelta(days=7)
         episodes = Episode.objects.filter(
+            category__iexact='inpatient',
             discharge_date__gte=two_weeks_ago)
         return episodes
 
-
-    @staticmethod
-    def schema():
-        from elcid import schema as s
-        cols = s.detail_columns
-        return [models.PrimaryDiagnosis, models.SecondaryDiagnosis] + cols
