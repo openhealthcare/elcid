@@ -64,20 +64,6 @@ class DemographicsTest(TestCase):
         with self.assertRaises(exceptions.ConsistencyError):
             self.demographics.update_from_dict({'consistency_token': '87654321'}, self.user)
 
-    def test_field_schema(self):
-        schema = models.Demographics.build_field_schema()
-        expected_schema = [
-            {'name': 'consistency_token', 'type': 'token', 'lookup_list': None},
-            {'name': 'name', 'type': 'string', 'lookup_list': None},
-            {'name': 'hospital_number', 'type': 'string', 'lookup_list': None},
-            {'name': 'nhs_number', 'type': 'string', 'lookup_list': None},
-            {'name': 'date_of_birth', 'type': 'date', 'lookup_list': None},
-            {'name': 'ethnicity', 'type': 'string', 'lookup_list': None},
-            {'name': 'gender', 'type': 'string', 'lookup_list': None},
-            {'name': 'country_of_birth', 'type': 'string', 'lookup_list': 'destination'},
-            ]
-        self.assertEqual(expected_schema, schema)
-
 
 class LocationTest(TestCase):
     fixtures = ['patients_users', 'patients_records']
@@ -116,23 +102,6 @@ class LocationTest(TestCase):
             }
         self.location.update_from_dict(data, self.user)
         self.assertEqual('HH', self.location.hospital)
-
-    def test_field_schema(self):
-        schema = models.Location.build_field_schema()
-        expected_schema = [
-            {'name': 'consistency_token', 'type': 'token', 'lookup_list': None},
-            {'name': 'category', 'type': 'string', 'lookup_list': None},
-            {'name': 'hospital', 'type': 'string', 'lookup_list': None},
-            {'name': 'ward', 'type': 'string', 'lookup_list': None},
-            {'name': 'bed', 'type': 'string', 'lookup_list': None},
-            {'name': 'opat_referral_route', 'type': 'string', 'lookup_list': None},
-            {'name': 'opat_referral_team', 'type': 'string', 'lookup_list': None},
-            {'name': 'opat_referral_consultant', 'type': 'string', 'lookup_list': None},
-            {'name': 'opat_referral_team_address', 'type': 'text', 'lookup_list': None},
-            {'name': 'opat_referral', 'type': 'date', 'lookup_list': None},
-            {'name': 'opat_discharge', 'type': 'date', 'lookup_list': None}
-            ]
-        self.assertEqual(expected_schema, schema)
 
 
 class DiagnosisTest(TestCase):
@@ -187,17 +156,6 @@ class DiagnosisTest(TestCase):
         diagnosis = self.episode.diagnosis_set.all()[0]
         self.assertEqual('New condition', diagnosis.condition)
 
-    def test_field_schema(self):
-        schema = models.Diagnosis.build_field_schema()
-        expected_schema = [
-            {'name': 'consistency_token', 'type': 'token', 'lookup_list': None},
-            {'name': 'provisional', 'type': 'boolean', 'lookup_list': None},
-            {'name': 'details', 'type': 'string', 'lookup_list': None},
-            {'name': 'date_of_diagnosis', 'type': 'date', 'lookup_list': None},
-            {'name': 'condition', 'type': 'string', 'lookup_list': 'condition'},
-            ]
-        self.assertEqual(expected_schema, schema)
-
 
 class ViewsTest(TestCase):
     fixtures = ['patients_users', 'patients_options', 'patients_records']
@@ -234,26 +192,6 @@ class ViewsTest(TestCase):
 
     def test_get_episode_list(self):
         self.assertStatusCode('/episode/', 200)
-
-    def test_create_episode_for_existing_patient(self):
-        # First, remove tags from patient's existing episode so it is not
-        # active anymore.
-        for episode in self.patient.episode_set.all():
-            episode.set_tag_names([], self.user)
-
-        data = {
-            'demographics': self.patient.demographics_set.get().to_dict(self.user),
-            'location': {
-                'category': 'Inpatient',
-                'hospital': 'UCH',
-                'ward': 'T13',
-                'bed': 10
-                },
-            'tagging': [{}]
-            }
-
-        response = self.post_json('/episode/', data)
-        self.assertEqual(201, response.status_code)
 
     def test_try_to_create_episode_for_existing_patient_with_active_episode(self):
         data = {
@@ -356,7 +294,7 @@ class ViewsTest(TestCase):
         self.assertStatusCode('/templates/episode_list.html/', 200)
 
     def test_patient_detail_template_view(self):
-        self.assertStatusCode('/templates/episode_detail.html/', 200)
+        self.assertStatusCode('/templates/episode_detail.html/1', 200)
 
     def test_search_template_view(self):
         self.assertStatusCode('/templates/search.html/', 200)
