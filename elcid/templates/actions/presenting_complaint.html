@@ -4,8 +4,16 @@
   ng-click="newNamedItem(episode, 'presenting_complaint')"
   ng-dblclick=""
   ng-class="{selected: false}">
-  <button class="screen-only btn btn-primary"
+  <button class="screen-only btn btn-primary btn-sm"
     ng-show="!profile.readonly">
     <i class="glyphicon glyphicon-plus"></i> Symptoms
   </button>
 </p>
+
+<p ng-hide="!ward_round || episode.primary_diagnosis[0].confirmed">
+  <button class="screen-only btn btn-primary btn-sm"
+          ng-click="named_controller('/templates/elcid/modals/diagnosis_discharge.html', 'DiagnosisDischargeCtrl')">
+    <i class="glyphicon glyphicon-ok"></i>    
+    Confirm Final Diagnosis
+  </button>
+</span>

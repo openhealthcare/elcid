@@ -15,3 +15,6 @@
   {% record_panel models.Todo %}
   {% record_panel models.GeneralNote %}
 {% endblock %}
+{% block sidebar_panels %}
+  {{ block.super }}
+{% endblock %}

@@ -1,8 +1,1 @@
 ([[ item.confirmed ? 'Diagnosis approved by consultant' : 'Diagnosis needs consultant approval' ]]) [[item.condition]]
-<span ng-hide="item.confirmed">
-  <br /><br />
-  <button class="screen-only btn btn-success"
-          ng-click="named_controller('/templates/elcid/modals/diagnosis_discharge.html', 'DiagnosisDischargeCtrl')">
-    Confirm Final Diagnosis
-  </button>
-</span>
