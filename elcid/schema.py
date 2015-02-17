@@ -76,6 +76,15 @@ list_columns_walkin = [
     wimodels.Management,
 ]
 
+list_columns_triage = [
+    models.Demographics,
+    models.Location,
+    models.Travel,
+    wimodels.Symptom,
+    models.MicrobiologyTest,
+    obsmodels.Observation,
+]
+
 list_schemas = {
     'default': list_columns,
     'microbiology': {
@@ -93,6 +102,7 @@ list_schemas = {
         'id_liaison': list_columns_id_liaison
     },
     'walkin': {
+        'walkin_triage': list_columns_triage,
         'default': list_columns_walkin
     }
 }
