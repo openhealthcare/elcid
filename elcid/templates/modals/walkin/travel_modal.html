@@ -1,0 +1,14 @@
+{% extends 'modal_base.html' %}
+{% load forms %}
+{% block icon %}<i class="fa fa-plane"></i>{% endblock %}
+{% block modal_body %}
+  <form class="form-horizontal">
+    {% input "autofocus" label="Destination" model="editing.destination" lookuplist="destination_list" %}
+    {% input label="Dates" model="editing.dates" %}
+    {% input label="Reason for travel" model="editing.reason_for_travel" lookuplist="travel_reason_list" %}
+    {% input label="Specific exposures" model="editing.specific_exposures" %}
+    {% checkbox label="Malaria Prohylaxis" model="editing.malaria_prophylaxis" %}
+    {% input label="Drug" model="editing.malaria_drug" lookuplist="antimicrobial_list" show="editing.malaria_prophylaxis" %}
+    {% select label="Compliance" model="editing.malaria_compliance" lookuplist="['Complete', 'Incomplete']" show="editing.malaria_prophylaxis" %}
+  </form>
+{% endblock %}

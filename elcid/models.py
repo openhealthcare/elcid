@@ -146,10 +146,13 @@ class GeneralNote(EpisodeSubrecord):
 class Travel(EpisodeSubrecord):
     _icon = 'fa fa-plane'
 
-    destination = ForeignKeyOrFreeText(option_models['destination'])
-    dates = models.CharField(max_length=255, blank=True)
-    reason_for_travel = ForeignKeyOrFreeText(option_models['travel_reason'])
-    specific_exposures = models.CharField(max_length=255, blank=True)
+    destination         = ForeignKeyOrFreeText(option_models['destination'])
+    dates               = models.CharField(max_length=255, blank=True)
+    reason_for_travel   = ForeignKeyOrFreeText(option_models['travel_reason'])
+    specific_exposures  = models.CharField(max_length=255, blank=True)
+    malaria_prophylaxis = models.BooleanField(default=False)
+    malaria_drug        = ForeignKeyOrFreeText(option_models['antimicrobial'])
+    malaria_compliance  = models.CharField(max_length=200, blank=True, null=True)
 
 ReasonForStoppingLookupList = type(*lookup_list('iv_stop', module=__name__))
 DrugDeliveredLookupList = type(*lookup_list('drug_delivered', module=__name__))
