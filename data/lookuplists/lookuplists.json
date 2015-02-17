@@ -87,6 +87,271 @@
       "name": "Stool Parasitology PCR"
     }
   ], 
+  "line_site": [
+    {
+      "synonyms": [], 
+      "name": "Left Arm"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Left Hand"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Left Subclavian"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Right Arm"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Right Hand"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Right Subclavian"
+    }
+  ], 
+  "micro_test_respiratory_virus_pcr": [
+    {
+      "synonyms": [], 
+      "name": "Respiratory Virus PCR"
+    }
+  ], 
+  "micro_test_c_difficile": [
+    {
+      "synonyms": [
+        "Clostridium difficile"
+      ], 
+      "name": "C diff"
+    }
+  ], 
+  "micro_test_parasitaemia": [
+    {
+      "synonyms": [], 
+      "name": "Babesia Film"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Malaria Film"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Microfilarial Film"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Trypanosomes Film"
+    }
+  ], 
+  "micro_test_ebv_serology": [
+    {
+      "synonyms": [
+        "Epstein Barr Serology"
+      ], 
+      "name": "EBV Serology"
+    }
+  ], 
+  "micro_test_viral_load": [
+    {
+      "synonyms": [], 
+      "name": "CMV Viral Load"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "EBV Viral Load"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "HBV Viral Load"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "HCV Viral Load"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "HHV-6 Viral Load"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "HHV-7 Viral Load"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "HHV-8 Viral Load"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "HIV Viral Load"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Measles PCR"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "VZV Viral Load"
+    }
+  ], 
+  "duration": [
+    {
+      "synonyms": [], 
+      "name": "2 days \u2013\u00a02 weeks"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "2 weeks \u2013\u00a03 months"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "< 2 days"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "> 3 months"
+    }
+  ], 
+  "line_type": [
+    {
+      "synonyms": [], 
+      "name": "CVC"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Hickman"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Midline"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "PICC"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Peripheral cannula"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Portacath"
+    }
+  ], 
+  "micro_test_hiv": [
+    {
+      "synonyms": [], 
+      "name": "HIV"
+    }
+  ], 
+  "opat_rvt": [
+    {
+      "synonyms": [], 
+      "name": "Doctor phone consultation"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Doctor review - scheduled visit"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Doctor review - unscheduled visit"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "MDT"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Nurse phone consultation"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Nurse review - scheduled visit"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Nurse review - unscheduled visit"
+    }
+  ], 
+  "drugfreq": [], 
+  "micro_test_csf_pcr": [
+    {
+      "synonyms": [], 
+      "name": "CSF PCR"
+    }
+  ], 
+  "ethnicity": [
+    {
+      "synonyms": [], 
+      "name": "African"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Any other Asian background"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Any other Black background"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Any other White background"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Any other ethnic group"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Any other mixed background"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Bangladeshi"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "British"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Caribbean"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Chinese"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Indian"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Irish"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Not stated"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Pakistani"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "White and Asian"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "White and Black African"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "White and Black Caribbean"
+    }
+  ], 
   "microbiology_organism": [
     {
       "synonyms": [], 
@@ -468,406 +733,6 @@
     {
       "synonyms": [], 
       "name": "Vibrio cholerae"
-    }
-  ], 
-  "micro_test_respiratory_virus_pcr": [
-    {
-      "synonyms": [], 
-      "name": "Respiratory Virus PCR"
-    }
-  ], 
-  "micro_test_c_difficile": [
-    {
-      "synonyms": [
-        "Clostridium difficile"
-      ], 
-      "name": "C diff"
-    }
-  ], 
-  "micro_test_parasitaemia": [
-    {
-      "synonyms": [], 
-      "name": "Babesia Film"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Malaria Film"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Microfilarial Film"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Trypanosomes Film"
-    }
-  ], 
-  "micro_test_ebv_serology": [
-    {
-      "synonyms": [
-        "Epstein Barr Serology"
-      ], 
-      "name": "EBV Serology"
-    }
-  ], 
-  "micro_test_viral_load": [
-    {
-      "synonyms": [], 
-      "name": "CMV Viral Load"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "EBV Viral Load"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "HBV Viral Load"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "HCV Viral Load"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "HHV-6 Viral Load"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "HHV-7 Viral Load"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "HHV-8 Viral Load"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "HIV Viral Load"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Measles PCR"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "VZV Viral Load"
-    }
-  ], 
-  "checkpoints_assay": [
-    {
-      "synonyms": [], 
-      "name": "ACC"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "ACT/MIR"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "BEL"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "CMY I/MOX"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "CMY II"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "CTX-M-1 group"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "CTX-M-1 like"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "CTX-M-15 like"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "CTX-M-2 group"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "CTX-M-3 like"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "CTX-M-32 like"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "CTX-M-8 & -25 group"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "CTX-M-9 group"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "DHA"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "FOX"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "GES"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "GIM"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "IMP"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "KPC"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "NDM"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "OXA-23-like"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "OXA-24-like"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "OXA-48-like"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "OXA-58-like"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "PER"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "SHV E240K"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "SHV G238A"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "SHV G238S"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "SHV wt"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "SPM"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "TEM E104K"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "TEM G238S"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "TEM R164C"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "TEM R164H"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "TEM R164S"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "TEM wt"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "VEB"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "VIM"
-    }
-  ], 
-  "micro_test_hepititis_b_serology": [
-    {
-      "synonyms": [
-        "Hepatitis B Serology"
-      ], 
-      "name": "HBV Serology"
-    }
-  ], 
-  "micro_test_hiv": [
-    {
-      "synonyms": [], 
-      "name": "HIV"
-    }
-  ], 
-  "opat_rvt": [
-    {
-      "synonyms": [], 
-      "name": "Doctor phone consultation"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Doctor review - scheduled visit"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Doctor review - unscheduled visit"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "MDT"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Nurse phone consultation"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Nurse review - scheduled visit"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Nurse review - unscheduled visit"
-    }
-  ], 
-  "duration": [
-    {
-      "synonyms": [], 
-      "name": "2 days \u2013\u00a02 weeks"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "2 weeks \u2013\u00a03 months"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "< 2 days"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "> 3 months"
-    }
-  ], 
-  "micro_test_csf_pcr": [
-    {
-      "synonyms": [], 
-      "name": "CSF PCR"
-    }
-  ], 
-  "ethnicity": [
-    {
-      "synonyms": [], 
-      "name": "African"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Any other Asian background"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Any other Black background"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Any other White background"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Any other ethnic group"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Any other mixed background"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Bangladeshi"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "British"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Caribbean"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Chinese"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Indian"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Irish"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Not stated"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Pakistani"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "White and Asian"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "White and Black African"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "White and Black Caribbean"
-    }
-  ], 
-  "line_site": [
-    {
-      "synonyms": [], 
-      "name": "Left Arm"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Left Hand"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Left Subclavian"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Right Arm"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Right Hand"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Right Subclavian"
     }
   ], 
   "micro_test_single_igg_test": [
@@ -2021,6 +1886,7 @@
       "name": "VFR"
     }
   ], 
+  "drugroute": [], 
   "condition": [
     {
       "synonyms": [
@@ -4539,6 +4405,24 @@
     }
   ], 
   "findings_rash_distribution": [], 
+  "wi_nurse_reason": [
+    {
+      "synonyms": [], 
+      "name": "Inappropriate referral"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Needs referral to consultant clinic"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Needs to be seen in post-tropical screening clinic"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Treated by nurse"
+    }
+  ], 
   "micro_test_single_test_pos_neg": [
     {
       "synonyms": [
@@ -4874,6 +4758,160 @@
       "name": "UCLH@Home"
     }
   ], 
+  "checkpoints_assay": [
+    {
+      "synonyms": [], 
+      "name": "ACC"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "ACT/MIR"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "BEL"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "CMY I/MOX"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "CMY II"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "CTX-M-1 group"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "CTX-M-1 like"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "CTX-M-15 like"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "CTX-M-2 group"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "CTX-M-3 like"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "CTX-M-32 like"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "CTX-M-8 & -25 group"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "CTX-M-9 group"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "DHA"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "FOX"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "GES"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "GIM"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "IMP"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "KPC"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "NDM"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "OXA-23-like"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "OXA-24-like"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "OXA-48-like"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "OXA-58-like"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "PER"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "SHV E240K"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "SHV G238A"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "SHV G238S"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "SHV wt"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "SPM"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "TEM E104K"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "TEM G238S"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "TEM R164C"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "TEM R164H"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "TEM R164S"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "TEM wt"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "VEB"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "VIM"
+    }
+  ], 
   "gender": [
     {
       "synonyms": [], 
@@ -4893,6 +4931,7 @@
     }
   ], 
   "antimicrobial_susceptability": [], 
+  "drug": [], 
   "antimicrobial_adverse_event": [
     {
       "synonyms": [], 
@@ -4919,30 +4958,12 @@
       "name": "Rash"
     }
   ], 
-  "line_type": [
+  "micro_test_hepititis_b_serology": [
     {
-      "synonyms": [], 
-      "name": "CVC"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Hickman"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Midline"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "PICC"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Peripheral cannula"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Portacath"
+      "synonyms": [
+        "Hepatitis B Serology"
+      ], 
+      "name": "HBV Serology"
     }
   ], 
   "unplanned_stop": [
