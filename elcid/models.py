@@ -11,7 +11,7 @@ from opal.utils.models import lookup_list
 
 class Demographics(PatientSubrecord):
     _is_singleton = True
-    _icon = 'fa fa-users'
+    _icon = 'fa fa-user'
     
     name             = models.CharField(max_length=255, blank=True)
     hospital_number  = models.CharField(max_length=255, blank=True)
