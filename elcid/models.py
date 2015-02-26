@@ -313,7 +313,7 @@ class OPATRejection(EpisodeSubrecord):
 
 
 class Line(EpisodeSubrecord):
-    _sort = 'insertion_date'
+    _sort = 'insertion_datetime'
     _icon = 'fa fa-bolt'
 
     line_type            = ForeignKeyOrFreeText(option_models['line_type'])
