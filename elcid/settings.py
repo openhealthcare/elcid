@@ -160,7 +160,7 @@ INSTALLED_APPS = (
     'elcid',
     'obs',
     'django.contrib.admin',
-#    'infectioncontrol',
+    'opat',
     'walkin',
     'research',
     # 'zendesk',
