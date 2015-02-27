@@ -332,6 +332,7 @@ class OPATReview(EpisodeSubrecord):
     _title = 'OPAT Review'
     _icon = 'fa fa-comments'
     _list_limit = 1
+    _modal = 'lg'
 
     datetime                = models.DateTimeField(null=True, blank=True)
     initials                = models.CharField(max_length=255, blank=True)
