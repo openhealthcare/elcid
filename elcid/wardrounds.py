@@ -107,3 +107,4 @@ class Discharged(HistoricTagsMixin, WardRound):
             discharge_date__gte=two_weeks_ago)
         return episodes
 
+    

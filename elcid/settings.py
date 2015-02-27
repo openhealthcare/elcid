@@ -163,8 +163,10 @@ INSTALLED_APPS = (
 #    'infectioncontrol',
     'walkin',
     'research',
+    # 'zendesk',
     'wardround',
     'referral',
+    'tour',
 )
 
 # A sample logging configuration. The only tangible logging
