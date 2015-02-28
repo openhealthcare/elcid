@@ -166,7 +166,8 @@ INSTALLED_APPS = (
     # 'zendesk',
     'wardround',
     'referral',
-    'tour',
+    # 'tour',
+    'dashboard',
 )
 
 # A sample logging configuration. The only tangible logging

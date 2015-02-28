@@ -20,6 +20,7 @@ django-debug-toolbar
 -e git://github.com/openhealthcare/opal-wardround.git@#egg=opal_wardround
 -e git://github.com/openhealthcare/opal-referral.git@#egg=opal_referral
 -e git://github.com/openhealthcare/opal-analytics.git@#egg=opal_analytics
--e git://github.com/openhealthcare/opal-opat.git@#egg=opal_analytics
+-e git://github.com/openhealthcare/opal-opat.git@#egg=opal_opat
+-e git://github.com/openhealthcare/opal-dashboard.git@#egg=opal_dashboard
 mock
 requests
