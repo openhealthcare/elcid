@@ -413,10 +413,7 @@ class LabSpecimin(EpisodeSubrecord):
 # This is based on the investigations record type from elCID
 class LabTest(EpisodeSubrecord):
     _sort = 'date_ordered'
-
-    """
-    Begin elCID.models.investigations fields
-    """
+    _icon = 'fa fa-crosshairs'
 
     test                         = models.CharField(max_length=255)
     date_ordered                 = models.DateField(null=True, blank=True)
@@ -424,10 +421,13 @@ class LabTest(EpisodeSubrecord):
     result                       = models.CharField(max_length=255, blank=True)
     significant_organism         = models.BooleanField(default=False)
     organism_details             = ForeignKeyOrFreeText(OrganismDetailsLookupList)
-    antimicrobial_susceptability = ForeignKeyOrFreeText(AntimicrobialSusceptabilityLookupList)
+    antimicrobials_susceptible   = ForeignKeyOrFreeText(AntimicrobialSusceptabilityLookupList, related_name='susceptible')
+    antimicrobials_intermediate  = ForeignKeyOrFreeText(AntimicrobialSusceptabilityLookupList, related_name='intermediate')
+    antimicrobials_resistant     = ForeignKeyOrFreeText(AntimicrobialSusceptabilityLookupList, related_name='resistant')
     retrieved                    = models.BooleanField(default=False)
     date_retrieved               = models.DateField(null=True, blank=True)
-    biobanked                    = models.BooleanField(default=False)
+    sweep_biobanked              = models.BooleanField(default=False)
+    organism_biobanked           = models.BooleanField(default=False)
     freezer_box_number           = models.CharField(max_length=200, blank=True, null=True)
     esbl                         = models.BooleanField(default=False)
     carbapenemase                = models.BooleanField(default=False)

@@ -1,0 +1,36 @@
+<div class="[[item.date_ordered == null && 'italic']]">
+
+[[item.date_ordered | shortDate]]
+[[item.test]]
+
+<span ng-show="item.result && item.result != 'pending'" class="break-word">
+  ([[item.result | microresult]])
+</span>
+
+<span ng-show="item.significant_organism">
+  Significant Organism: [[ item.organism_details ]]
+  <br />
+  Antimicrobials
+  Susceptible: [[ item.antimicrobials_susceptible ]]
+  <br />
+  Intermediate: [[ item.antimicrobials_intermediate ]]
+  <br />
+  Resistant: [[ item.antimicrobials_resistant ]]
+  <br />
+</span>
+<span ng-show="item.retrieved">
+  Retrieved: [[ item.date_retrieved | shortDate ]]
+  <br />
+</span>
+<span ng-show="item.sweep_biobanked">
+  Seep Biobanked: [X]
+  <br />
+</span>
+<span ng-show="item.organism_biobanked">
+  Organism Biobanked: [X]
+  <br />
+</span>
+ESBL: [[ item.esbl|boxed ]] <br />
+Carbapenemase: [[ item.carbapenemase | boxed ]]
+
+</div>
