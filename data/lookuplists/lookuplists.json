@@ -48,6 +48,10 @@
     }, 
     {
       "synonyms": [], 
+      "name": "HIV Point of Care"
+    }, 
+    {
+      "synonyms": [], 
       "name": "Hydatid Serology"
     }, 
     {
@@ -1802,23 +1806,11 @@
   "specimin_appearance": [
     {
       "synonyms": [], 
-      "name": "Mucoid"
+      "name": "Atypical PCR"
     }, 
     {
       "synonyms": [], 
-      "name": "Mucopurulent"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Mucosalivary"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Purulent"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Salivary"
+      "name": "Sputum culture"
     }
   ], 
   "micro_test_syphilis_serology": [
@@ -1884,6 +1876,36 @@
         "Visiting Friends and Relatives"
       ], 
       "name": "VFR"
+    }
+  ], 
+  "hiv_no": [
+    {
+      "synonyms": [], 
+      "name": "Already HIV positive"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Don't trust point of care test"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "More time to think"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "No Reason"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Recent negative test"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Worried about confidentiality"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Worried about the result"
     }
   ], 
   "drugroute": [], 
@@ -4583,7 +4605,42 @@
       "name": "Swab PCR"
     }
   ], 
-  "management_clinics": [], 
+  "management_clinics": [
+    {
+      "synonyms": [], 
+      "name": "Discharged from clinic: Follow-Up in clinic"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Discharged from clinic: No Follow-up"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "General Infection Clinic"
+    }, 
+    {
+      "synonyms": [
+        "DL"
+      ], 
+      "name": "Leishmania Clinic"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Mortimer Market Centre"
+    }, 
+    {
+      "synonyms": [
+        "PLC"
+      ], 
+      "name": "Parasitology Clinic"
+    }, 
+    {
+      "synonyms": [
+        "FVL"
+      ], 
+      "name": "Tropical Dermatology Clinic"
+    }
+  ], 
   "organism_details": [], 
   "antimicrobial_route": [
     {
@@ -4727,7 +4784,20 @@
       "name": "Twice a day"
     }
   ], 
-  "management_follow_up": [], 
+  "management_follow_up": [
+    {
+      "synonyms": [], 
+      "name": "Admitted to Ward"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Discharged from clinic: Follow-Up in clinic"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Discharged from clinic: No Follow-up"
+    }
+  ], 
   "drug_delivered": [
     {
       "synonyms": [], 
