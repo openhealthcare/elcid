@@ -10,7 +10,7 @@
 <!-- Research study overrides. -->
 <div ng-show="row.location[0].category=='Research'">
   <b>Study ID:</b> 
-  RiDRTI/[[ row.location[0].hospital ]]/[[row.id]]
+  [[ row.study_participation[0].study_id ]]
   <span ng-hide="currentSubTag.indexOf('scientist') != -1">
     <br />
     <span ng-hide="profile.has_role('researcher')">
