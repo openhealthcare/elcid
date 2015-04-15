@@ -208,6 +208,8 @@ class Todo(EpisodeSubrecord):
     
     details = models.TextField(blank=True)
 
+HIVDeclinedLookupList = type(*lookup_list('hiv_no', module=__name__))
+
 
 class MicrobiologyTest(EpisodeSubrecord):
     _title = 'Investigations'
@@ -258,6 +260,7 @@ class MicrobiologyTest(EpisodeSubrecord):
     giardia               = models.CharField(max_length=20, blank=True)
     entamoeba_histolytica = models.CharField(max_length=20, blank=True)
     cryptosporidium       = models.CharField(max_length=20, blank=True)
+    hiv_declined          = ForeignKeyOrFreeText(HIVDeclinedLookupList)
 
 """
 Begin OPAT specific fields.
