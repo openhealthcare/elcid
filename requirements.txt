@@ -1,4 +1,4 @@
-Django==1.5.2
+Django==1.5.5
 South==0.8.1
 coverage==3.6
 dj-database-url==0.2.1
@@ -24,3 +24,4 @@ django-debug-toolbar
 -e git://github.com/openhealthcare/opal-dashboard.git@#egg=opal_dashboard
 mock
 requests
+djangorestframework

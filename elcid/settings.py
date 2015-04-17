@@ -156,6 +156,7 @@ INSTALLED_APPS = (
     'reversion',
     'south',
     'opal',
+    'rest_framework',
     'analytics',
     'elcid',
     'obs',
