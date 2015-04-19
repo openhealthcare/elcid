@@ -52,7 +52,7 @@
     <div class="form-group" ng-hide="editing.location.category == 'OPAT'">
       <label class="control-label col-sm-3">Hospital</label>
       <div class="col-sm-8">
-        <select class="form-control" ng-model="editing.hospital">
+        <select class="form-control" ng-model="editing.location.hospital">
           <option value="">---------</option>
           <option ng-repeat="hospital in hospital_list">[[hospital]]</option>
           <option>Other</option>
