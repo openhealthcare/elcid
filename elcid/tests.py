@@ -190,9 +190,6 @@ class ViewsTest(TestCase):
     def test_try_to_search_with_no_search_terms(self):
         self.assertStatusCode('/patient/', 400)
 
-    def test_get_episode_list(self):
-        self.assertStatusCode('/episode/', 200)
-
     def test_try_to_create_episode_for_existing_patient_with_active_episode(self):
         data = {
             'demographics': self.patient.demographics_set.get().to_dict(self.user),
@@ -251,11 +248,11 @@ class ViewsTest(TestCase):
             'date_of_birth': '1972-6-21',
             'hospital_number': 'AA1112',
             }
-        response = self.put_json('/demographics/%s' % demographics.id, data)
-        self.assertEqual(200, response.status_code)
+        response = self.put_json('/api/v0.1/demographics/%s/' % demographics.id, data)
+        self.assertEqual(202, response.status_code)
 
     def test_try_to_update_nonexistent_demographics_subrecord(self):
-        response = self.put_json('/demographics/1234', {})
+        response = self.put_json('/api/v0.1/demographics/1234/', {})
         self.assertEqual(404, response.status_code)
 
     def test_try_to_update_demographics_subrecord_with_old_consistency_token(self):
@@ -267,15 +264,15 @@ class ViewsTest(TestCase):
             'date_of_birth': '1972-6-21',
             'hospital_number': 'AA1112',
             }
-        response = self.put_json('/demographics/%s' % demographics.id, data)
+        response = self.put_json('/api/v0.1/demographics/%s/' % demographics.id, data)
         self.assertEqual(409, response.status_code)
 
     def test_delete_demographics_subrecord(self):
         # In real application, client prevents deletion of demographics
         # subrecord.
         demographics = self.patient.demographics_set.get()
-        response = self.client.delete('/demographics/%s' % demographics.id)
-        self.assertEqual(200, response.status_code)
+        response = self.client.delete('/api/v0.1/demographics/%s/' % demographics.id)
+        self.assertEqual(202, response.status_code)
 
     def test_create_demographics_subrecord(self):
         # In real application, client prevents creation of demographics
@@ -287,7 +284,7 @@ class ViewsTest(TestCase):
             'date_of_birth': '1972-6-21',
             'hospital_number': 'AA1112',
             }
-        response = self.post_json('/demographics/', data)
+        response = self.post_json('/api/v0.1/demographics/', data)
         self.assertEqual(201, response.status_code)
 
     def test_patient_list_template_view(self):
@@ -310,9 +307,6 @@ class ViewsTest(TestCase):
 
     def test_location_modal_template_view(self):
         self.assertStatusCode('/templates/modals/location.html/', 200)
-
-    def test_detail_schema_view(self):
-        self.assertStatusCode('/schema/detail/', 200)
 
 
 class ListSchemaViewTest(TestCase):

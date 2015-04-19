@@ -155,6 +155,7 @@ INSTALLED_APPS = (
     'axes',
     'reversion',
     'south',
+    'django_nose',
     'opal',
     'rest_framework',
     'analytics',
@@ -170,6 +171,9 @@ INSTALLED_APPS = (
     # 'tour',
     'dashboard',
 )
+
+if 'test' in sys.argv:
+    INSTALLED_APPS += ('opal.tests',)
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
@@ -250,7 +254,8 @@ else:
 
 
 VERSION_NUMBER = '0.4.0'
-TEST_RUNNER = 'django_test_coverage.runner.CoverageTestSuiteRunner'
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner' #'django_test_coverage.runner.CoverageTestSuiteRunner'
+
 COVERAGE_EXCLUDE_MODULES = ('elcid.migrations', 'elcid.tests',
                             'elcid.local_settings',
                             'opal.migrations', 'opal.tests',
