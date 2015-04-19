@@ -24,18 +24,6 @@ flows = {
             'template'  : '/templates/modals/discharge_episode.html/'
         }
     },
-    'opat': {
-        'default': {
-            'enter': {
-                'controller': 'OPATReferralCtrl',
-                'template'  : '/templates/modals/opat_referral.html/'
-            },
-            'exit': {
-                'controller': 'OPATDischargeCtrl',
-                'template'  : '/templates/modals/discharge_opat_episode.html/'
-            }
-        }
-    },
     'infectious_diseases': {
         'id_inpatients': diagnosis_flow
     },
