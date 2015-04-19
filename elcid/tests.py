@@ -181,12 +181,6 @@ class ViewsTest(TestCase):
     def test_try_to_get_patient_detail_for_nonexistent_patient(self):
         self.assertStatusCode('/patient/%s' % 1234, 404)
 
-    def test_search_with_hospital_number(self):
-        self.assertStatusCode('/patient/?hospital_number=AA1111', 200)
-
-    def test_search_with_name(self):
-        self.assertStatusCode('/patient/?name=John', 200)
-
     def test_try_to_search_with_no_search_terms(self):
         self.assertStatusCode('/patient/', 400)
 
@@ -239,53 +233,9 @@ class ViewsTest(TestCase):
         response = self.post_json('/episode/', data)
         self.assertEqual(201, response.status_code)
 
-    def test_update_demographics_subrecord(self):
-        demographics = self.patient.demographics_set.get()
-        data = {
-            'consistency_token': '12345678',
-            'id': demographics.id,
-            'name': 'Johann Schmidt',
-            'date_of_birth': '1972-6-21',
-            'hospital_number': 'AA1112',
-            }
-        response = self.put_json('/api/v0.1/demographics/%s/' % demographics.id, data)
-        self.assertEqual(202, response.status_code)
-
     def test_try_to_update_nonexistent_demographics_subrecord(self):
         response = self.put_json('/api/v0.1/demographics/1234/', {})
         self.assertEqual(404, response.status_code)
-
-    def test_try_to_update_demographics_subrecord_with_old_consistency_token(self):
-        demographics = self.patient.demographics_set.get()
-        data = {
-            'consistency_token': '87654321',
-            'id': demographics.id,
-            'name': 'Johann Schmidt',
-            'date_of_birth': '1972-6-21',
-            'hospital_number': 'AA1112',
-            }
-        response = self.put_json('/api/v0.1/demographics/%s/' % demographics.id, data)
-        self.assertEqual(409, response.status_code)
-
-    def test_delete_demographics_subrecord(self):
-        # In real application, client prevents deletion of demographics
-        # subrecord.
-        demographics = self.patient.demographics_set.get()
-        response = self.client.delete('/api/v0.1/demographics/%s/' % demographics.id)
-        self.assertEqual(202, response.status_code)
-
-    def test_create_demographics_subrecord(self):
-        # In real application, client prevents creation of demographics
-        # subrecord.
-        data = {
-            'patient_id': self.patient.id,
-            'episode_id': self.patient.episode_set.all()[0].id,
-            'name': 'Johann Schmidt',
-            'date_of_birth': '1972-6-21',
-            'hospital_number': 'AA1112',
-            }
-        response = self.post_json('/api/v0.1/demographics/', data)
-        self.assertEqual(201, response.status_code)
 
     def test_patient_list_template_view(self):
         self.assertStatusCode('/templates/episode_list.html/', 200)

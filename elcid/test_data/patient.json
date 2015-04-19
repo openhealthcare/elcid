@@ -74,10 +74,6 @@
                     "episode_id": 1,
                     "hospital": "UCH",
                     "id": 1,
-                    "tags": {
-                        "microbiology": true,
-                        "mine": true
-                    },
                     "ward": "T10"
                 }
             ],
