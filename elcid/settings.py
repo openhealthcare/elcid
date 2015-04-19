@@ -155,7 +155,6 @@ INSTALLED_APPS = (
     'axes',
     'reversion',
     'south',
-    'django_nose',
     'opal',
     'rest_framework',
     'analytics',
@@ -254,9 +253,11 @@ else:
 
 
 VERSION_NUMBER = '0.4.0'
-TEST_RUNNER = 'django_nose.NoseTestSuiteRunner' #'django_test_coverage.runner.CoverageTestSuiteRunner'
+#TEST_RUNNER = 'django_nose.NoseTestSuiteRunner' 
+#TEST_RUNNER = 'django_test_coverage.runner.CoverageTestSuiteRunner'
 
 COVERAGE_EXCLUDE_MODULES = ('elcid.migrations', 'elcid.tests',
+                            'elcid.settings',
                             'elcid.local_settings',
                             'opal.migrations', 'opal.tests',
                             'opal.wsgi')
