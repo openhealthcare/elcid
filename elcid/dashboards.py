@@ -16,12 +16,14 @@ class NumberOfDiagnoses(widgets.Number):
     def get_number(kls):
         return Diagnosis.objects.count()
 
+
 class CurrentPatients(widgets.Number):
     tagline = 'Active'
 
     @classmethod
     def get_number(kls):
         return Episode.objects.filter(active=True).count()
+
 
 class Admissions(widgets.LineChart):
     tagline = 'Admissions'
@@ -38,6 +40,7 @@ class Admissions(widgets.LineChart):
                 lines.append(date['date_of_admission__count'])
                 
         return [ticks, lines]
+
 
 class UsageDashboard(Dashboard):
     """

@@ -12,8 +12,6 @@ from django.views.generic import TemplateView, FormView, View
 import letter
 from letter.contrib.contact import EmailForm, EmailView
 
-from opal.views import ReportView
-
 from elcid.forms import BulkCreateUsersForm
 from elcid import reports
 
@@ -123,15 +121,6 @@ class BulkCreateUserView(FormView):
 
         return super(BulkCreateUserView, self).form_valid(form)
 
-
-class UsageReportView(ReportView):
-    """
-    Provide a usage statistics dashboard.
-    """
-    template_name = 'reports/usage.html'
-
-    def get_data(self):
-        return reports.usage()
 
 class ElcidTemplateView(TemplateView):
     def dispatch(self, *args, **kwargs):
