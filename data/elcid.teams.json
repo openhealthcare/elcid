@@ -1,0 +1,302 @@
+[
+{
+    "pk": 1, 
+    "model": "opal.team", 
+    "fields": {
+        "name": "opat", 
+        "parent": null, 
+        "title": "OPAT", 
+        "restricted": false, 
+        "show_all": false, 
+        "direct_add": false, 
+        "useful_numbers": [], 
+        "active": true, 
+        "order": null
+    }
+},
+{
+    "pk": 2, 
+    "model": "opal.team", 
+    "fields": {
+        "name": "opat_referrals", 
+        "parent": 1, 
+        "title": "OPAT Referrals", 
+        "restricted": false, 
+        "show_all": false, 
+        "direct_add": false, 
+        "useful_numbers": [], 
+        "active": true, 
+        "order": null
+    }
+},
+{
+    "pk": 3, 
+    "model": "opal.team", 
+    "fields": {
+        "name": "opat_current", 
+        "parent": 1, 
+        "title": "OPAT Current", 
+        "restricted": false, 
+        "show_all": false, 
+        "direct_add": false, 
+        "useful_numbers": [], 
+        "active": true, 
+        "order": null
+    }
+},
+{
+    "pk": 4, 
+    "model": "opal.team", 
+    "fields": {
+        "name": "opat_followup", 
+        "parent": 1, 
+        "title": "OPAT Follow-up", 
+        "restricted": false, 
+        "show_all": false, 
+        "direct_add": false, 
+        "useful_numbers": [], 
+        "active": true, 
+        "order": null
+    }
+},
+{
+    "pk": 6, 
+    "model": "opal.team", 
+    "fields": {
+        "name": "microbiology", 
+        "parent": null, 
+        "title": "Micro", 
+        "restricted": false, 
+        "show_all": false, 
+        "direct_add": true, 
+        "useful_numbers": [], 
+        "active": true, 
+        "order": null
+    }
+},
+{
+    "pk": 7, 
+    "model": "opal.team", 
+    "fields": {
+        "name": "micro_ortho", 
+        "parent": 6, 
+        "title": "Micro-Ortho", 
+        "restricted": false, 
+        "show_all": false, 
+        "direct_add": true, 
+        "useful_numbers": [], 
+        "active": true, 
+        "order": null
+    }
+},
+{
+    "pk": 9, 
+    "model": "opal.team", 
+    "fields": {
+        "name": "micro_haem", 
+        "parent": 6, 
+        "title": "Micro-Haem", 
+        "restricted": false, 
+        "show_all": false, 
+        "direct_add": true, 
+        "useful_numbers": [], 
+        "active": true, 
+        "order": null
+    }
+},
+{
+    "pk": 16, 
+    "model": "opal.team", 
+    "fields": {
+        "name": "infectious_diseases", 
+        "parent": null, 
+        "title": "ID", 
+        "restricted": false, 
+        "show_all": false, 
+        "direct_add": true, 
+        "useful_numbers": [], 
+        "active": true, 
+        "order": null
+    }
+},
+{
+    "pk": 17, 
+    "model": "opal.team", 
+    "fields": {
+        "name": "id_inpatients", 
+        "parent": 16, 
+        "title": "ID Inpatients", 
+        "restricted": false, 
+        "show_all": false, 
+        "direct_add": true, 
+        "useful_numbers": [], 
+        "active": true, 
+        "order": null
+    }
+},
+{
+    "pk": 18, 
+    "model": "opal.team", 
+    "fields": {
+        "name": "id_liaison", 
+        "parent": 16, 
+        "title": "ID Liaison", 
+        "restricted": false, 
+        "show_all": false, 
+        "direct_add": true, 
+        "useful_numbers": [], 
+        "active": true, 
+        "order": null
+    }
+},
+{
+    "pk": 19, 
+    "model": "opal.team", 
+    "fields": {
+        "name": "hiv", 
+        "parent": null, 
+        "title": "Immune", 
+        "restricted": false, 
+        "show_all": false, 
+        "direct_add": true, 
+        "useful_numbers": [], 
+        "active": true, 
+        "order": null
+    }
+},
+{
+    "pk": 20, 
+    "model": "opal.team", 
+    "fields": {
+        "name": "immune_inpatients", 
+        "parent": 19, 
+        "title": "Immune Inpatients", 
+        "restricted": false, 
+        "show_all": false, 
+        "direct_add": true, 
+        "useful_numbers": [], 
+        "active": true, 
+        "order": null
+    }
+},
+{
+    "pk": 21, 
+    "model": "opal.team", 
+    "fields": {
+        "name": "immune_liason", 
+        "parent": 19, 
+        "title": "Immune Liason", 
+        "restricted": false, 
+        "show_all": false, 
+        "direct_add": true, 
+        "useful_numbers": [], 
+        "active": true, 
+        "order": null
+    }
+},
+{
+    "pk": 22, 
+    "model": "opal.team", 
+    "fields": {
+        "name": "tropical_diseases", 
+        "parent": null, 
+        "title": "Tropical", 
+        "restricted": false, 
+        "show_all": false, 
+        "direct_add": true, 
+        "useful_numbers": [], 
+        "active": true, 
+        "order": null
+    }
+},
+{
+    "pk": 23, 
+    "model": "opal.team", 
+    "fields": {
+        "name": "virology", 
+        "parent": null, 
+        "title": "Virology", 
+        "restricted": false, 
+        "show_all": false, 
+        "direct_add": true, 
+        "useful_numbers": [], 
+        "active": true, 
+        "order": null
+    }
+},
+{
+    "pk": 24, 
+    "model": "opal.team", 
+    "fields": {
+        "name": "mine", 
+        "parent": null, 
+        "title": "Mine", 
+        "restricted": false, 
+        "show_all": false, 
+        "direct_add": false, 
+        "useful_numbers": [], 
+        "active": true, 
+        "order": -2
+    }
+},
+{
+    "pk": 25, 
+    "model": "opal.team", 
+    "fields": {
+        "name": "walkin", 
+        "parent": null, 
+        "title": "Walk-in", 
+        "restricted": false, 
+        "show_all": false, 
+        "direct_add": false, 
+        "useful_numbers": [], 
+        "active": true, 
+        "order": null
+    }
+},
+{
+    "pk": 26, 
+    "model": "opal.team", 
+    "fields": {
+        "name": "walkin_triage", 
+        "parent": 25, 
+        "title": "Nurse Triage", 
+        "restricted": false, 
+        "show_all": false, 
+        "direct_add": false, 
+        "useful_numbers": [], 
+        "active": true, 
+        "order": null
+    }
+},
+{
+    "pk": 27, 
+    "model": "opal.team", 
+    "fields": {
+        "name": "walkin_doctor", 
+        "parent": 25, 
+        "title": "Doctor", 
+        "restricted": false, 
+        "show_all": false, 
+        "direct_add": false, 
+        "useful_numbers": [], 
+        "active": true, 
+        "order": null
+    }
+},
+{
+    "pk": 28, 
+    "model": "opal.team", 
+    "fields": {
+        "name": "walkin_review", 
+        "parent": 25, 
+        "title": "Review", 
+        "restricted": false, 
+        "show_all": false, 
+        "direct_add": false, 
+        "useful_numbers": [], 
+        "active": true, 
+        "order": null
+    }
+},
+]
