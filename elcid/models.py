@@ -7,7 +7,7 @@ from opal.models import (Subrecord,
                          option_models,
                          EpisodeSubrecord, PatientSubrecord, GP, CommunityNurse)
 from opal.core.fields import ForeignKeyOrFreeText
-from opal.utils.models import lookup_list
+from opal.core.lookuplists import lookup_list
 
 class Demographics(PatientSubrecord):
     _is_singleton = True
