@@ -6,7 +6,7 @@ from django.db import models
 from opal.models import (Subrecord,
                          option_models,
                          EpisodeSubrecord, PatientSubrecord, GP, CommunityNurse)
-from opal.utils.fields import ForeignKeyOrFreeText
+from opal.core.fields import ForeignKeyOrFreeText
 from opal.utils.models import lookup_list
 
 class Demographics(PatientSubrecord):
