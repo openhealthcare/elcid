@@ -164,10 +164,8 @@ INSTALLED_APPS = (
     'opat',
     'walkin',
     'research',
-    # 'zendesk',
     'wardround',
     'referral',
-    # 'tour',
     'dashboard',
 )
 
