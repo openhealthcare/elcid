@@ -10,8 +10,8 @@ from django.contrib.auth.models import User
 import ffs
 
 from elcid import models
+from opal.core import exceptions
 from opal.models import Patient, Episode, Team
-from opal import exceptions
 
 HERE = ffs.Path.here()
 TEST_DATA = HERE/'test_data'
