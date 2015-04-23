@@ -4,19 +4,18 @@ Unittests for the UCLH eLCID OPAL implementation.
 import datetime
 import json
 
-from django.core.serializers.json import DjangoJSONEncoder
-from django.test import TestCase
 from django.contrib.auth.models import User
 import ffs
 
 from elcid import models
 from opal.core import exceptions
+from opal.core.test import OpalTestCase
 from opal.models import Patient, Episode, Team
 
 HERE = ffs.Path.here()
 TEST_DATA = HERE/'test_data'
 
-class DemographicsTest(TestCase):
+class DemographicsTest(OpalTestCase):
     fixtures = ['patients_users', 'patients_records']
 
     def setUp(self):
@@ -65,7 +64,7 @@ class DemographicsTest(TestCase):
             self.demographics.update_from_dict({'consistency_token': '87654321'}, self.user)
 
 
-class LocationTest(TestCase):
+class LocationTest(OpalTestCase):
     fixtures = ['patients_users', 'patients_records']
 
     def setUp(self):
@@ -104,7 +103,7 @@ class LocationTest(TestCase):
         self.assertEqual('HH', self.location.hospital)
 
 
-class DiagnosisTest(TestCase):
+class DiagnosisTest(OpalTestCase):
     fixtures = ['patients_users', 'patients_records', 'patients_options']
 
     def setUp(self):
@@ -157,7 +156,7 @@ class DiagnosisTest(TestCase):
         self.assertEqual('New condition', diagnosis.condition)
 
 
-class ViewsTest(TestCase):
+class ViewsTest(OpalTestCase):
     fixtures = ['patients_users', 'patients_options', 'patients_records']
 
     def setUp(self):
@@ -165,18 +164,6 @@ class ViewsTest(TestCase):
         self.assertTrue(self.client.login(username=self.user.username,
                                           password='password'))
         self.patient = Patient.objects.get(pk=1)
-
-    def assertStatusCode(self, path, expected_status_code):
-        response = self.client.get(path)
-        self.assertEqual(expected_status_code, response.status_code)
-
-    def post_json(self, path, data):
-        json_data = json.dumps(data, cls=DjangoJSONEncoder)
-        return self.client.post(path, content_type='application/json', data=json_data)
-
-    def put_json(self, path, data):
-        json_data = json.dumps(data, cls=DjangoJSONEncoder)
-        return self.client.put(path, content_type='application/json', data=json_data)
 
     def test_try_to_get_patient_detail_for_nonexistent_patient(self):
         self.assertStatusCode('/patient/%s' % 1234, 404)
@@ -243,9 +230,6 @@ class ViewsTest(TestCase):
     def test_patient_detail_template_view(self):
         self.assertStatusCode('/templates/episode_detail.html/1', 200)
 
-    def test_search_template_view(self):
-        self.assertStatusCode('/templates/search.html/', 200)
-
     def test_add_patient_template_view(self):
         self.assertStatusCode('/templates/modals/add_episode.html/', 200)
 
@@ -259,7 +243,7 @@ class ViewsTest(TestCase):
         self.assertStatusCode('/templates/modals/location.html/', 200)
 
 
-class ListSchemaViewTest(TestCase):
+class ListSchemaViewTest(OpalTestCase):
     fixtures = ['patients_users', 'patients_options', 'patients_records']
 
     def setUp(self):
@@ -275,7 +259,7 @@ class ListSchemaViewTest(TestCase):
         self.assertEqual(expected_status_code, response.status_code)
 
 
-class DetailSchemaViewTest(TestCase):
+class DetailSchemaViewTest(OpalTestCase):
     fixtures = ['patients_users', 'patients_options', 'patients_records']
 
     def setUp(self):
@@ -291,7 +275,7 @@ class DetailSchemaViewTest(TestCase):
         self.assertEqual(expected_status_code, response.status_code)
 
 
-class ExtractSchemaViewTest(TestCase):
+class ExtractSchemaViewTest(OpalTestCase):
     fixtures = ['patients_users', 'patients_options', 'patients_records']
 
     def setUp(self):
