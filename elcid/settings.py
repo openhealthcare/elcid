@@ -155,8 +155,8 @@ INSTALLED_APPS = (
     'axes',
     'reversion',
     'south',
-    'rest_framework',
     'opal',
+    'rest_framework',
     'opal.core.search',
     'analytics',
     'elcid',
@@ -168,6 +168,7 @@ INSTALLED_APPS = (
     'wardround',
     'referral',
     'dashboard',
+    'opal.core.collaborative',
 )
 
 if 'test' in sys.argv:
