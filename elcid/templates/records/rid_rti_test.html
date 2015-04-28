@@ -1,51 +1,129 @@
 Test: [[ item.test | upper]]<br />
 
 <div ng-show="item.test == 'hapvap'">
+  <span ng-show="item.pseudomonas_aeruginosa">
     Pseudomonas aeruginosa [[ item.pseudomonas_aeruginosa | boxed ]] <br />
+  </span>
+  <span ng-show="item.acinetobacter_baumannii">
     Acinetobacter baumannii [[ item.acinetobacter_baumannii | boxed ]] <br />
+  </span>
+  <span ng-show="item.stenotrophomanas_maltophilia">
     Stenotrophomonas maltophilia [[ item.stenotrophomanas_maltophilia | boxed ]] <br />
+  </span>
+  <span ng-show="item.klebsiella_spp">
     Klebsiella spp [[ item.klebsiella_spp | boxed ]] <br />
+  </span>
+  <span ng-show="item.enterobacter_spp">
     Enterobacter spp [[ item.enterobacter_spp | boxed ]] <br />
+  </span>
+  <span ng-show="item.staphylococcus_aureus">
     Staphylococcus aureus [[ item.staphylococcus_aureus | boxed ]] <br />
+  </span>
+  <span ng-show="item.staphylococcus_mrsa">
     Staphylococcus MRSA [[ item.staphylococcus_mrsa | boxed ]] <br />
+  </span>
+  <span ng-show="item.ctx_m">
     CTX-M [[ item.ctx_m | boxed ]] <br />
+  </span>
+  <span ng-show="item.shv_esbl">
     SHV ESBL [[ item.shv_esbl | boxed ]] <br />
+  </span>
+  <span ng-show="item.tem_esbl">
     TEM ESBL [[ item.tem_esbl | boxed ]] <br />
+  </span>
+  <span ng-show="item.vim">
     VIM [[ item.vim | boxed ]] <br />
+  </span>
+  <span ng-show="item.imp">
     IMP [[ item.imp | boxed ]] <br />
+  </span>
+  <span ng-show="item.ndm">
     NDM [[ item.ndm | boxed ]] <br />
+  </span>
+  <span ng-show="item.kpc">
     KPC [[ item.kpc | boxed ]] <br />
+  </span>
+  <span ng-show="item.oxa_48">
     OXA-48 [[ item.oxa_48 | boxed ]] <br />
-    mecA [[ item.meca | boxed ]]
+  </span>
+  <span ng-show="item.meca">
+    mecA [[ item.meca | boxed ]] <br />
+  </span>
 </div>
 
 <div ng-show="item.test == 'cap'">
+  <span ng-show="item.mycoplasma_pneumoniae">
     Mycoplasma pneumoniae [[ item.mycoplasma_pneumoniae | boxed ]] <br />
+  </span>
+  <span ng-show="item.chlamydophila_pneumoniae">
     Chlamydophila pneumoniae [[ item.chlamydophila_pneumoniae | boxed ]] <br />
+  </span>
+  <span ng-show="item.legionella_pneumophila">
     Legionella pneumophila [[ item.legionella_pneumophila | boxed ]] <br />
+  </span>
+  <span ng-show="item.mtc">
     Mycobacterium tuberculosis complex [[ item.mtc | boxed ]] <br />
+  </span>
+  <span ng-show="item.haemophilus_influenzae">
     Haemophilus influenzae [[ item.haemophilus_influenzae | boxed ]] <br />
+  </span>
+  <span ng-show="item.streptococcus_pneumoniae">
     Streptococcus pneumoniae [[ item.streptococcus_pneumoniae | boxed ]] <br />
+  </span>
+  <span ng-show="item.rsva">
     RSVA [[ item.rsva | boxed ]] <br />
+  </span>
+  <span ng-show="item.rsvb">
     RSVB [[ item.rsvb | boxed ]] <br />
+  </span>
+  <span ng-show="item.influenza_a">
     Influenza A [[ item.influenza_a | boxed ]] <br />
+  </span>
+  <span ng-show="item.influenza_b">
     Influenza B [[ item.influenza_b | boxed ]] <br />
+  </span>
+  <span ng-show="item.cap_coronavirus_oc43">
     Coronavirus OC43 [[ item.cap_coronavirus_oc43 | boxed ]] <br />
+  </span>
+  <span ng-show="item.cap_coronavirus_hku1">
     Coronavirus HKU1 [[ item.cap_coronavirus_hku1 | boxed ]] <br />
-    Coronavirus NL63 [[ item.cap_coronavirus_nl63 | boxed ]]
-    Coronavirus 229E [[ item.cap_coronavirus_229e | boxed ]]
+  </span>
+  <span ng-show="item.cap_coronavirus_nl63">
+    Coronavirus NL63 [[ item.cap_coronavirus_nl63 | boxed ]] <br />
+  </span>
+  <span ng-show="item.cap_coronavirus_229e">
+    Coronavirus 229E [[ item.cap_coronavirus_229e | boxed ]] <br />
+  </span>
 </div>
 
 <div ng-show="item.test == 'orti'">
+  <span ng-show="item.nocardia_spp">
     Nocardia spp [[ item.nocardia_spp | boxed ]] <br />
+  </span>
+  <span ng-show="item.rhodococcus_equi">
     Rhodococcus equi [[ item.rhodococcus_equi | boxed ]] <br />
+  </span>
+  <span ng-show="item.aspergillus_spp">
     Aspergillus spp [[ item.aspergillus_spp | boxed ]] <br />
+  </span>
+  <span ng-show="item.cryptococcus_neoformans">
     Cryptococcus neoformans [[ item.cryptococcus_neoformans | boxed ]] <br />
+  </span>
+  <span ng-show="item.pneumocystis_jiroveci">
     Pneumocystis jiroveci [[ item.pneumocystis_jiroveci | boxed ]] <br />
+  </span>
+  <span ng-show="item.orti_coronavirus_oc43">
     Coronavirus OC43 [[ item.orti_coronavirus_oc43 | boxed ]] <br />
+  </span>
+  <span ng-show="item.orti_coronavirus_hku1">
     Coronavirus HKU1 [[ item.orti_coronavirus_hku1 | boxed ]] <br />
+  </span>
+  <span ng-show="item.orti_coronavirus_nl63">
     Coronavirus NL63 [[ item.orti_coronavirus_nl63 | boxed ]] <br />
-    Coronavirus 229E [[ item.orti_coronavirus_nl63 | boxed ]]
+  </span>
+  <span ng-show="item.orti_coronavirus_nl63">
+    Coronavirus 229E [[ item.orti_coronavirus_nl63 | boxed ]] <br />
+  </span>
 </div>
 <br />
 Notes: [[ item.notes ]]
