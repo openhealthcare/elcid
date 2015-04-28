@@ -32,7 +32,7 @@ class Admissions(widgets.LineChart):
 
     @classmethod
     def get_lines(kls):
-        twentyten = datetime.datetime(2010, 1, 1)
+        twentyten = datetime.datetime(2013, 1, 1)
         dates = Episode.objects.filter(date_of_admission__gte=twentyten).values('date_of_admission').annotate(Count('date_of_admission'))
         ticks = ['x']
         lines = ['Date of admission']
