@@ -1,7 +1,8 @@
 """
 elCID Dashboards
 """
-import collections 
+import collections
+import datetime
 
 from dashboard import Dashboard, widgets
 from django.db.models import Count
@@ -31,7 +32,8 @@ class Admissions(widgets.LineChart):
 
     @classmethod
     def get_lines(kls):
-        dates = Episode.objects.values('date_of_admission').annotate(Count('date_of_admission'))
+        twentyten = datetime.datetime(2010, 1, 1)
+        dates = Episode.objects.filter(date_of_admission__gte=twentyten).values('date_of_admission').annotate(Count('date_of_admission'))
         ticks = ['x']
         lines = ['Date of admission']
         for date in dates:
