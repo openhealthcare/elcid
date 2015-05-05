@@ -33,8 +33,6 @@ module.exports =  function(config){
             'bower_components/angular-growl-v2/build/angular-growl.js',
             'bower_components/ment.io/dist/mentio.js',
             'bower_components/ment.io/dist/templates.js',
-
-            
             
             'opal/utils.js',
             'opal/directives.js',

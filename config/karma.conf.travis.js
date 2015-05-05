@@ -45,7 +45,7 @@ module.exports =  function(config){
             '../../core/search/static/js/search/controllers/*',
             '../../core/search/static/js/search/services/*',
             '../../../../elcid/elcid/assets/js/elcid/*.js',
-            'opaltest/*.js',
+
             '../../../../elcid/elcid/assets/js/elcidtest/*.js',
         ],
 
