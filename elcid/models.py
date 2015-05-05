@@ -196,10 +196,10 @@ class MicrobiologyInput(EpisodeSubrecord):
     clinical_discussion               = models.TextField(blank=True)
     agreed_plan                       = models.TextField(blank=True)
     discussed_with                    = models.CharField(max_length=255, blank=True)
-    clinical_advice_given             = models.BooleanField()
-    infection_control_advice_given    = models.BooleanField()
-    change_in_antibiotic_prescription = models.BooleanField()
-    referred_to_opat                  = models.BooleanField()
+    clinical_advice_given             = models.NullBooleanField()
+    infection_control_advice_given    = models.NullBooleanField()
+    change_in_antibiotic_prescription = models.NullBooleanField()
+    referred_to_opat                  = models.NullBooleanField()
 
 
 class Todo(EpisodeSubrecord):
