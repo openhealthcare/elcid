@@ -25,6 +25,26 @@ class HistoricTagsMixin(object):
                     filters=klass.filters)
 
 
+class Discharged(HistoricTagsMixin, WardRound):
+    name = 'Discharged last week'
+    description = 'Patients discharged in the last week'
+
+    filter_template = 'wardrounds/discharged_filter.html'
+    detail_template = 'wardrounds/discharged_detail.html'
+    filters = {
+        'team': 'episode.tagging[0][value]'
+    }
+    
+    @staticmethod
+    def episodes():
+        today = datetime.date.today()
+        two_weeks_ago = today - datetime.timedelta(days=7)
+        episodes = Episode.objects.filter(
+            category__iexact='inpatient',
+            discharge_date__gte=two_weeks_ago)
+        return episodes
+
+    
 class MicroHaem(WardRound):
     name        = 'Micro Haem'
     description = 'All patients on the Micro haem list in ward location order'
@@ -88,23 +108,3 @@ class OPATReviewList(WardRound):
     detail_template = 'wardrounds/opat_detail.html'
 
 
-class Discharged(HistoricTagsMixin, WardRound):
-    name = 'Discharged last week'
-    description = 'Patients discharged in the last week'
-
-    filter_template = 'wardrounds/discharged_filter.html'
-    detail_template = 'wardrounds/discharged_detail.html'
-    filters = {
-        'team': 'episode.tagging[0][value]'
-    }
-    
-    @staticmethod
-    def episodes():
-        today = datetime.date.today()
-        two_weeks_ago = today - datetime.timedelta(days=7)
-        episodes = Episode.objects.filter(
-            category__iexact='inpatient',
-            discharge_date__gte=two_weeks_ago)
-        return episodes
-
-    
