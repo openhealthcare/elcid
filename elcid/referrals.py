@@ -1,7 +1,10 @@
 """
 Referral routes for elCID
 """
+import datetime
+
 from referral import ReferralRoute
+from walkin.models import Management
 
 from elcid.models import MicrobiologyTest
 
@@ -15,6 +18,9 @@ class HTDWalkInRoute(ReferralRoute):
     def post_create(self, episode):
         """
         Auto populate HIV POC
+        Set date of appointment to today.
         """
         MicrobiologyTest.objects.create(episode=episode, test='HIV Point of Care')
+        episode.date_of_episode = datetime.date.today()
+        episode.save()
         return

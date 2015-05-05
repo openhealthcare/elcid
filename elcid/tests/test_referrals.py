@@ -1,11 +1,15 @@
 """
 Unittests for elcid.referrals
 """
+import datetime
+
 from opal.core.test import OpalTestCase
 from opal.models import Patient, Episode
 from mock import patch
 
 from elcid import referrals
+
+TODAY = datetime.date.today()
 
 class WalkinTestCase(OpalTestCase):
     def setUp(self):
@@ -17,3 +21,8 @@ class WalkinTestCase(OpalTestCase):
         referrals.HTDWalkInRoute().post_create(self.episode)
         create.assert_called_with(episode=self.episode, test='HIV Point of Care')
         
+    @patch('elcid.referrals.Management.objects.create')        
+    def test_date_of_appointment(self, create):
+        referrals.HTDWalkInRoute().post_create(self.episode)
+        self.assertEqual(TODAY, self.episode.date_of_episode)
+
