@@ -1,8 +1,8 @@
-PROJ = "eLCID"
+PROJ = "elCID"
 
 task :pytest do
   p "Running Python Unit tests for #{PROJ}"
-  sh "python manage.py test elcid opal wardround" do | ok, res |
+  sh "python manage.py test elcid" do | ok, res |
     if not ok # Don't stacktrace please Rake. Ta.
       exit 1
     end
