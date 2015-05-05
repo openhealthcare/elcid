@@ -44,9 +44,9 @@ module.exports =  function(config){
             'opal/app.js',
             '../../core/search/static/js/search/controllers/*',
             '../../core/search/static/js/search/services/*',
-            '../../../../elcid/elcid/assets/js/elcid/*.js',
-
-            '../../../../elcid/elcid/assets/js/elcidtest/*.js',
+            
+            __dirname + '/../elcid/assets/js/elcid/*.js',
+            __dirname + '/../elcid/assets/js/elcidtest/*.js',
         ],
 
         preprocessors: {
