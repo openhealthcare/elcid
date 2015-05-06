@@ -633,7 +633,7 @@
 
     </span>
 
-    {% input label="Reason not done" model="editing.hiv_declined" show="editing.test == 'HIV Point of Care' && editing.result == 'not done'" lookuplist="hiv_no_list" %}
+    {% select label="Reason not done" model="editing.hiv_declined" show="editing.test == 'HIV Point of Care' && editing.result == 'not done'" lookuplist="hiv_no_list" %}
 
   </form>
 {% endblock %}
