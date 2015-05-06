@@ -169,6 +169,7 @@ INSTALLED_APPS = (
     'referral',
     'dashboard',
     'opal.core.collaborative',
+    'dischargesummary',
 )
 
 if 'test' in sys.argv:
