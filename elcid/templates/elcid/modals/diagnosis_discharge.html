@@ -1,10 +1,10 @@
+{% extends 'modal_base.html' %}
 {% load forms %}
-<div class="modal-header">
-  <button type="button" class="close" ng-click="cancel()" ng-show="editing.unconfirmed">×</button>
-  <h3>Discharge Diagnosis</h3>
-</div>
-<div class="modal-body" ng-show="discharged">
-  <form class="form-horizontal" name="dischargeDiagnosisForm">
+{% block icon_name %}fa fa-home{% endblock %}
+{% block title %}Discharge Diagnosis{% endblock %}
+{% block modal_body_extra %}ng-show="discharged"{% endblock %}
+{% block modal_body %}
+    <form class="form-horizontal" name="dischargeDiagnosisForm">
 
     {% input autofocus label="Primary Diagnosis" model="editing.primary_diagnosis.condition" lookuplist="condition_list" required="Primary Diagnosis is required." formname="dischargeDiagnosisForm" %}
     
@@ -27,28 +27,31 @@
       </div>
       <hr />
     </div>
-    <button type="button" class="btn btn-success"
+    <button type="button" class="btn btn-primary"
             ng-click="addSecondary()"
             >
       <span class="glyphicon glyphicon-plus"></span>
       Add Secondary Diagnosis
     </button>
   </form>
-</div>
-<div class="modal-footer">
+
+{% endblock %}
+{% block modal_save %}
   <button class="btn btn-primary"
           ng-click="save()"
           ng-hide="confirming"
           ng-disabled="!dischargeDiagnosisForm.$valid"
           >
+    <i class="fa fa-save"></i>
     Save
   </button>
-  <button class="btn btn-primary"
+    <button class="btn btn-primary"
           ng-click="save()"
           ng-show="confirming"
           ng-disabled="!dischargeDiagnosisForm.$valid"
           >
+    <i class="fa fa-save"></i>      
     Confirm
   </button>  
-  <button class="btn" ng-click="cancel()" ng-show="editing.unconfirmed">Cancel</button>
-</div>
+{% endblock %}
+{% block modal_another %}{% endblock %}
