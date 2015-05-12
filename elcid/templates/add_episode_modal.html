@@ -1,24 +1,16 @@
-<div class="modal-header">
-  <button type="button" class="close" ng-click="cancel()">×</button>
-  <h3>
-    <i class="glyphicon glyphicon-plus"></i>    
-    New Episode
-  </h3>
-</div>
-<div class="modal-body">
+{% extends 'modal_base.html' %}
+{% load forms %}
+{% block icon_name %}glyphicon glyphicon-plus{% endblock %}
+{% block title %}Add Patient{% endblock %}
+{% block modal_body %}
   <form class="form-horizontal" name="newEpisodeForm">
     <div class="form-group">
       <label class="control-label col-sm-3">Hospital number</label>
       <div class="col-sm-8"><label>[[editing.demographics.hospital_number]]</label></div>
     </div>
-    <div class="form-group">
-      <label class="control-label col-sm-3">Name</label>
-      <div class="col-sm-8">
-	<input type="text" class="form-control"
-               ng-keypress="$event.keyCode == 13 && save()"
-               ng-model="editing.demographics.name" autofocus>
-      </div>
-    </div>
+
+    {% input "autofocus" label="Name" model="editing.demographics.name" enter="save()"%}
+    
     <div class="form-group">
       <label class="control-label col-sm-3">Date of birth</label>
       <div class="col-sm-8">
@@ -30,90 +22,38 @@
         <span class="help-block" ng-show="newEpisodeForm.date_of_birth.$invalid">
           Date of Birth must be dd/mm/yyyy
         </span>
-
       </div>
     </div>
 
-    <div class="form-group" >
-      <label class="control-label col-sm-3">Gender</label>
-      <div class="col-sm-8">
-	<input type="text" class="form-control" ng-model="editing.demographics.gender"
-               ng-options="d for d in gender_list"
-               bs-typeahead >
-      </div>
-    </div>
+    {% select label="Gender" model="editing.demographics.gender" lookuplist="gender_list" %}
+    {% select label="Hospital" model="editing.location.hospital" lookuplist="hospital_list" %}
+    
+    {% input label="Ward" model="editing.location.ward" %}
+    {% input label="Bed" model="editing.location.bed" %}
 
-    <div class="form-group">
-      <label class="control-label col-sm-3">Category</label>
-      <div class="col-sm-8">
-        <select class="form-control" ng-model="editing.location.category">
-          <option value="">---------</option>
-          <option ng-repeat="category in episode_category_list">[[category]]</option>
-        </select>
-      </div>
-    </div>
-    <div class="form-group" ng-hide="editing.location.category == 'OPAT'">
-      <label class="control-label col-sm-3">Hospital</label>
-      <div class="col-sm-8">
-        <select class="form-control" ng-model="editing.location.hospital">
-          <option value="">---------</option>
-          <option ng-repeat="hospital in hospital_list">[[hospital]]</option>
-          <option>Other</option>
-        </select>
-      </div>
-    </div>
-    <div class="form-group" ng-hide="editing.location.category == 'OPAT'">
-      <label class="control-label col-sm-3">Ward</label>
-      <div class="col-sm-8">
-	<input type="text" class="form-control" ng-model="editing.location.ward">
-      </div>
-    </div>
-    <div class="form-group" ng-hide="editing.location.category == 'OPAT'">
-      <label class="control-label col-sm-3">Bed</label>
-      <div class="col-sm-8">
-	<input type="text" class="form-control" ng-model="editing.location.bed">
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="control-label col-sm-3">Date of admission</label>
-      <div class="col-sm-8">
-	<input type="text" class="form-control" ng-model="editing.date_of_admission" bs-datepicker>
-      </div>
-    </div>
-
+    {% datepicker label="Date of admission" model="editing.date_of_admission" %}
+    
     {% if teams %}
-    <div class="control-group">
-      <label>Teams</label>
-      <div >
-	{% for team in teams %}{% if not team.parent %}{% if team.direct_add %}
-          {% if team.has_subtags %}
-            <h4>{{team.title}}:</h4>
-              {% for subteam in team.team_set.all %}{% if subteam.active %}{% if subteam.direct_add %}
-	        <label class="checkbox">
-	          <input type="checkbox" ng-model="editing.tagging[0].{{subteam.name}}">
-	          {{subteam.title}}
-	        </label>            
-              {% endif %}{% endif %}{% endfor %}
-          {% else %}
-            <h4>{{team.title}}:</h4>
-	    <label class="checkbox">
-	      <input type="checkbox" ng-model="editing.tagging[0].{{team.name}}">
-	      {{team.title}}
-	    </label>
-          {% endif %}
-        {% endif %}{% endif %}{% endfor %}
+      <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+          <h4>Teams</h4>
+          {% with tagging="editing.tagging[0]" %}
+            {% include 'partials/_teams_form.html' %}
+          {% endwith %}
+        </div>
       </div>
-    </div>
     {% endif %}
 
-
   </form>
-</div>
+  
+{% endblock %}
+
 <div class="modal-footer">
   <button class="btn btn-primary"
           ng-click="save()"
           ng-disabled="newEpisodeForm.date_of_birth.$invalid"
           >
+    <i class="fa fa-save"></i>
     Save record
   </button>
   <button class="btn" ng-click="cancel()">Cancel</button>
