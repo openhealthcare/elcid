@@ -1,5 +1,6 @@
-{% extends 'layouts/two_column.html' %}
+{% extends 'detail/detail_base.html' %}
 {% load panels %}
+
 {% block left_column %}
   {% include 'detail/_demographics_location_panels.html' %}
   {% record_panel models.Allergies %}
@@ -14,7 +15,4 @@
   {% record_panel models.MicrobiologyTest %}
   {% record_panel models.Todo %}
   {% record_panel models.GeneralNote %}
-{% endblock %}
-{% block sidebar_panels %}
-  {{ block.super }}
 {% endblock %}
