@@ -26,3 +26,4 @@ django-debug-toolbar
 mock
 requests
 djangorestframework
+django-compressor==1.5
