@@ -24,3 +24,10 @@ class HTDWalkInRoute(ReferralRoute):
         episode.date_of_episode = datetime.date.today()
         episode.save()
         return
+
+class OPATRoute(ReferralRoute):
+    name = 'OPAT'
+    description = 'The Outpatient Parenteral Antibiotic Therapy (OPAT) service at UCLH'
+    target_teams = ['opat', 'opat_referrals']
+    target_category = 'OPAT'
+    success_link = '/#/list/opat'
