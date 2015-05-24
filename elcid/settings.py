@@ -171,6 +171,7 @@ INSTALLED_APPS = (
     'referral',
     'dashboard',
 #    'opal.core.collaborative',
+    'guidelines',
     'dischargesummary',
 )
 
