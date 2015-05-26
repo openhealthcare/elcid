@@ -3,11 +3,14 @@ Root elCID urlconf
 """
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
+
+admin.autodiscover()
+
 from opal.urls import urlpatterns as opatterns
 
 from elcid import views
 
-admin.autodiscover()
+
 
 
 urlpatterns = patterns(
