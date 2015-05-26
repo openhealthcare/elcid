@@ -28,7 +28,7 @@
     {% select label="Gender" model="editing.demographics.gender" lookuplist="gender_list" %}
     {% select label="Hospital" model="editing.location.hospital" lookuplist="hospital_list" %}
     
-    {% input label="Ward" model="editing.location.ward" %}
+    {% input label="Ward" model="editing.location.ward" lookuplist="ward_list" %}
     {% input label="Bed" model="editing.location.bed" %}
 
     {% datepicker label="Date of admission" model="editing.date_of_admission" %}

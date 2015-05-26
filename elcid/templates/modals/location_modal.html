@@ -1,5 +1,9 @@
 {% extends 'modal_base.html' %}
-{% block icon %}<i class="fa fa-map-marker"></i>{% endblock %}
+
+{% load forms %}
+
+{% block icon_name %}fa fa-map-marker{% endblock %}
+
 {% block modal_body %}
   <form class="form-horizontal">
     <div class="form-group">
@@ -17,11 +21,11 @@
         </select>
       </div>
       <div class="col-sm-8" ng-show="episode_category_list.indexOf(editing.category) == -1 && editing.category != 'Discharged'">
-        <p>[[ editing.category ]]</p>
+        <p>[[ episode.category ]]</p>
       </div>
     </div>
 
-    <div class="form-group" ng-hide="editing.category == 'OPAT'">
+    <div class="form-group" ng-hide="episode.category == 'OPAT'">
       <label class="control-label col-sm-3">Hospital</label>
       <div class="col-sm-8">
         <select class="form-control" ng-model="editing.hospital">
@@ -32,54 +36,31 @@
       </div>
     </div>
 
-    <div class="form-group" ng-show="hospital_list.indexOf(editing.hospital) == -1" ng-hide="editing.category == 'OPAT'">
-      <label class="control-label col-sm-3">Hospital - other</label>
-      <div class="col-sm-8">
-	<input class="form-control" type="text" ng-model="editing.hospital">
-      </div>
-    </div>
-
-    <div class="form-group" ng-hide="editing.category == 'OPAT'">
-      <label class="control-label col-sm-3">Ward</label>
-      <div class="col-sm-8">
-	<input class="form-control" type="text" ng-model="editing.ward">
-      </div>
-    </div>
-
-    <div class="form-group" ng-hide="editing.category == 'OPAT'">
-      <label class="control-label col-sm-3">Bed</label>
-      <div class="col-sm-8">
-	<input class="form-control" type="text" ng-model="editing.bed">
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label class="control-label col-sm-3">Date of admission</label>
-      <div class="col-sm-8">
-	<input class="form-control" type="text" ng-model="episode.date_of_admission" bs-datepicker>
-      </div>
-    </div>
+    {% input model="editing.hospital" label="Hospital - Other" hide="episode.category == 'OPAT'" show="hospital_list.indexOf(editing.hospital) == -1" %}
+    {% input model="editing.ward" label="Ward" lookuplist="ward_list" hide="episode.category == 'OPAT'" %}
+    {% input model="editing.bed" label="Bed" hide="episode.category == 'OPAT'" %}
+    {% datepicker model="episode.date_of_admission" label="Date of admission" %}
 
     <!-- OPAT Only fields -->
-    <div class="form-group" ng-show="editing.category == 'OPAT'">
+    <div class="form-group" ng-show="episode.category == 'OPAT'">
       <label class="control-label col-sm-3">Date of referral to OPAT</label>
       <div class="col-sm-8">
 	<input class="form-control" type="text" ng-model="editing.opat_referral" bs-datepicker>
       </div>
     </div>    
-    <div class="form-group" ng-show="editing.category == 'OPAT'">
+    <div class="form-group" ng-show="episode.category == 'OPAT'">
       <label class="control-label col-sm-3">Referring consultant</label>
       <div class="col-sm-8">
 	<input class="form-control" type="text" ng-model="editing.opat_referral_consultant" >
       </div>
     </div>    
-    <div class="form-group" ng-show="editing.category == 'OPAT'">
+    <div class="form-group" ng-show="episode.category == 'OPAT'">
       <label class="control-label col-sm-3">Referring team</label>
       <div class="col-sm-8">
 	<input class="form-control" type="text" ng-model="editing.opat_referral_team" >
       </div>
     </div>    
-    <div class="form-group" ng-show="editing.category == 'OPAT'">
+    <div class="form-group" ng-show="episode.category == 'OPAT'">
       <label class="control-label col-sm-3">Referring team address</label>
       <div class="col-sm-8">
 	<textarea class="form-control" ng-model="editing.opat_referral_team_address" rows="5"></textarea>
