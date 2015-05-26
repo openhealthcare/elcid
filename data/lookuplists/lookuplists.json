@@ -1813,18 +1813,6 @@
       "name": "Sputum culture"
     }
   ], 
-  "micro_test_syphilis_serology": [
-    {
-      "synonyms": [], 
-      "name": "Syphilis Serology"
-    }
-  ], 
-  "micro_test_stool_pcr": [
-    {
-      "synonyms": [], 
-      "name": "Stool PCR"
-    }
-  ], 
   "travel_reason": [
     {
       "synonyms": [
@@ -1878,6 +1866,18 @@
       "name": "VFR"
     }
   ], 
+  "micro_test_stool_pcr": [
+    {
+      "synonyms": [], 
+      "name": "Stool PCR"
+    }
+  ], 
+  "micro_test_syphilis_serology": [
+    {
+      "synonyms": [], 
+      "name": "Syphilis Serology"
+    }
+  ], 
   "hiv_no": [
     {
       "synonyms": [], 
@@ -1909,6 +1909,1170 @@
     }
   ], 
   "drugroute": [], 
+  "symptom": [
+    {
+      "synonyms": [], 
+      "name": "Abdominal Pain"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Arthalgia"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Chest Pain"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Constipation"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Cough"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Diarrhoea"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Dysuria"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Fever"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Flank Pain"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Haemoptysis"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Headache"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Myalgia"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Nausea"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Night Sweats"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Nocturia"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Palpitations"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Rigors"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Shortness of Breath"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Sore throat"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Symptom 1"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Symptom 2"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Symptom 3"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Urinary Frequency"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Vomiting"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Weight Loss"
+    }
+  ], 
+  "clinical_advice_reason_for_interaction": [
+    {
+      "synonyms": [], 
+      "name": "Antibiotic stewardship ward round"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Called by GP"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Called by outside hospital"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Called by team"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Calling with result"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Clinical review with result"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Follow up by infection team"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Microbiology meeting"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "OPAT referral"
+    }
+  ], 
+  "iv_stop": [
+    {
+      "synonyms": [], 
+      "name": "Adverse Event"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Antimicrobial resistance"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Completed course"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Disease Progression"
+    }
+  ], 
+  "antimicrobial": [
+    {
+      "synonyms": [], 
+      "name": "Abacavir"
+    }, 
+    {
+      "synonyms": [
+        "ACV"
+      ], 
+      "name": "Aciclovir"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Adefovir"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Albendazole"
+    }, 
+    {
+      "synonyms": [
+        "Liposomal amphotericin"
+      ], 
+      "name": "Ambisome"
+    }, 
+    {
+      "synonyms": [
+        "AK"
+      ], 
+      "name": "Amikacin"
+    }, 
+    {
+      "synonyms": [
+        "AML"
+      ], 
+      "name": "Amoxicilin"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Amphotericin"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Artesunate"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Atazanavir"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Ataznavir"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Atovaquone"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Atripla"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Azithromycin"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Benznidazole"
+    }, 
+    {
+      "synonyms": [
+        "Ben-Pen", 
+        "BZP"
+      ], 
+      "name": "Benzylpenicillin"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Bocepravir"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Caspofungin"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Cefadroxil"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Cefixime"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Cefotaxime"
+    }, 
+    {
+      "synonyms": [
+        "CAZ"
+      ], 
+      "name": "Ceftazidime"
+    }, 
+    {
+      "synonyms": [
+        "CRO"
+      ], 
+      "name": "Ceftriaxone"
+    }, 
+    {
+      "synonyms": [
+        "CXM"
+      ], 
+      "name": "Cefuroxime"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Chloramphenicol"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Chloroquine"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Cidofovir"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Ciprofloxacin"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Clarithromycin"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Clindamycin"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Clotrimazole"
+    }, 
+    {
+      "synonyms": [
+        "Augmentin", 
+        "AMC"
+      ], 
+      "name": "Co-Amoxiclav"
+    }, 
+    {
+      "synonyms": [
+        "Septrin", 
+        "SXT"
+      ], 
+      "name": "Co-Trimoxazole"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Colistin"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Combivir"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Daktacort"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Daptomycin"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Darunavir"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Didanosine"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Doxycycline"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Efavirenz"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Emtricitabine"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Enfurvitide"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Entecavir"
+    }, 
+    {
+      "synonyms": [
+        "ETP"
+      ], 
+      "name": "Ertapenem"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Erythromycin"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Ethambutol"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Famciclovir"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Fansidar"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Fidaxomicin"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Flucloxacillin"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Fluconazole"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Flucytosine"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Fosamprenavir"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Foscarnet"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Fosfomycin"
+    }, 
+    {
+      "synonyms": [
+        "Fucidate"
+      ], 
+      "name": "Fusidate"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Ganciclovir"
+    }, 
+    {
+      "synonyms": [
+        "CN"
+      ], 
+      "name": "Gentamicin"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Griseofulvin"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Indinavir"
+    }, 
+    {
+      "synonyms": [
+        "INH"
+      ], 
+      "name": "Isoniazid"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Itraconazole"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Ivermectin"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Kaletra"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Ketoconazole"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Kivexxa"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Lamivudine"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Linezolid"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Lopinavir"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Malarone"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Mebendazole"
+    }, 
+    {
+      "synonyms": [
+        "MEM"
+      ], 
+      "name": "Meropenem"
+    }, 
+    {
+      "synonyms": [
+        "MTZ"
+      ], 
+      "name": "Metronidazole"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Miconazole"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Miltefosine"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Minocycline"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Moxifloxacin"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Nelfinavir"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Neomycin"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Nevirapine"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Nitazoxanide"
+    }, 
+    {
+      "synonyms": [
+        "NFU"
+      ], 
+      "name": "Nitrofurantoin"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Ofloxacin"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Oseltamivir"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Peg-Interferon"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Penicillin V"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Pentamidine"
+    }, 
+    {
+      "synonyms": [
+        "Tazocin", 
+        "TZP"
+      ], 
+      "name": "Piperacillin Tazobactam"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Posaconazole"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Praziquantel"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Primaquine"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Procaine Benzylpenicillin"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Pyrazinamide"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Pyrimethamine"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Quinine"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Raltegravir"
+    }, 
+    {
+      "synonyms": [
+        "Co-artem", 
+        "Artemether lumefantrine"
+      ], 
+      "name": "Riamet"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Ribavarin"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Rifabutin"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Rifampicin"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Rifinah"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Rifinah 150"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Rifinah 300"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Ritonavir"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Saquinavir"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Sodium stibogluconate"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Spectinomycin"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Stavudine"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Sulfadoxine"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Teicoplanin"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Telaprevir"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Temocillin"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Tenofovir"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Terbinafine"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Tetracycline"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Tinidazole"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Tipranavir"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Tobramycin"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Triclabendazole"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Trimethroprim"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Trizivir"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Truvada"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Valaciclovir"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Valganciclovir"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Vancomycin"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Voriconazole"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Zanamavir"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Zidovudine"
+    }
+  ], 
+  "findings_rash_distribution": [], 
+  "wi_nurse_reason": [
+    {
+      "synonyms": [], 
+      "name": "Inappropriate referral"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Needs referral to consultant clinic"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Needs to be seen in post-tropical screening clinic"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Treated by nurse"
+    }
+  ], 
+  "micro_test_single_test_pos_neg": [
+    {
+      "synonyms": [
+        "Cryptococcal antigen"
+      ], 
+      "name": "CRAG"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Dengue PCR"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "JC Virus PCR"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "MRSA PCR"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Rickettsia PCR"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Scrub Typhus PCR"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Skin Snip"
+    }, 
+    {
+      "synonyms": [
+        "Viral Haemorrhagic Fever PCR"
+      ], 
+      "name": "VHF PCR"
+    }
+  ], 
+  "specimin": [
+    {
+      "synonyms": [
+        "Bronchial aspirates"
+      ], 
+      "name": "BA"
+    }, 
+    {
+      "synonyms": [
+        "Broncho-alveolar lavage"
+      ], 
+      "name": "BAL"
+    }, 
+    {
+      "synonyms": [
+        "ET secretions", 
+        "Endotracheal secretions"
+      ], 
+      "name": "ETT"
+    }, 
+    {
+      "synonyms": [
+        "Induced sputum"
+      ], 
+      "name": "ISPU"
+    }, 
+    {
+      "synonyms": [
+        "Non-directed bronchoalveolar lavage"
+      ], 
+      "name": "NBL"
+    }, 
+    {
+      "synonyms": [
+        "Sputum"
+      ], 
+      "name": "SPU"
+    }, 
+    {
+      "synonyms": [
+        "Tracheal aspirate"
+      ], 
+      "name": "TA"
+    }
+  ], 
+  "micro_test_other": [
+    {
+      "synonyms": [], 
+      "name": "Other"
+    }
+  ], 
+  "micro_test_leishmaniasis_pcr": [
+    {
+      "synonyms": [], 
+      "name": "Leishmaniasis PCR"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Malaria PCR"
+    }
+  ], 
+  "micro_test_serology": [
+    {
+      "synonyms": [], 
+      "name": "Brucella Serology"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "CMV Serology"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Dengue Serology"
+    }, 
+    {
+      "synonyms": [
+        "Hepatitis A Serology"
+      ], 
+      "name": "Hep A Serology"
+    }, 
+    {
+      "synonyms": [
+        "Hepatitis E Serology"
+      ], 
+      "name": "Hep E Serology"
+    }, 
+    {
+      "synonyms": [
+        "Borrelia reference lab serology"
+      ], 
+      "name": "Lyme reference lab serology"
+    }, 
+    {
+      "synonyms": [
+        "Borrelia screening serology"
+      ], 
+      "name": "Lyme screening serology"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Measles Serology"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Rubella Serology"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Toxoplasmosis Serology"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "VZV Serology"
+    }
+  ], 
+  "findings_rash_type": [], 
+  "micro_test_swab_pcr": [
+    {
+      "synonyms": [], 
+      "name": "Swab PCR"
+    }
+  ], 
+  "management_clinics": [
+    {
+      "synonyms": [], 
+      "name": "Discharged from clinic: Follow-Up in clinic"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Discharged from clinic: No Follow-up"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "General Infection Clinic"
+    }, 
+    {
+      "synonyms": [
+        "DL"
+      ], 
+      "name": "Leishmania Clinic"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Mortimer Market Centre"
+    }, 
+    {
+      "synonyms": [
+        "PLC"
+      ], 
+      "name": "Parasitology Clinic"
+    }, 
+    {
+      "synonyms": [
+        "FVL"
+      ], 
+      "name": "Tropical Dermatology Clinic"
+    }
+  ], 
+  "ward": [
+    {
+      "synonyms": [
+        "Accident and Emergency"
+      ], 
+      "name": "A&E"
+    }, 
+    {
+      "synonyms": [
+        "Acute Assessment Unit", 
+        "T1", 
+        "T 1"
+      ], 
+      "name": "AAU"
+    }, 
+    {
+      "synonyms": [
+        "ACW"
+      ], 
+      "name": "Acute Coronary Wing"
+    }, 
+    {
+      "synonyms": [
+        "BS"
+      ], 
+      "name": "Bernard Sunley"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Brain Injury Unit"
+    }, 
+    {
+      "synonyms": [
+        "Clinical Decision Unit"
+      ], 
+      "name": "CDU"
+    }, 
+    {
+      "synonyms": [
+        "CICU (north)"
+      ], 
+      "name": "Cardiac ICU North"
+    }, 
+    {
+      "synonyms": [
+        "CICU (south)"
+      ], 
+      "name": "Cardiac ICU South"
+    }, 
+    {
+      "synonyms": [
+        "DF (stroke)"
+      ], 
+      "name": "David Ferrier Stroke Unit"
+    }, 
+    {
+      "synonyms": [
+        "DF (ward)"
+      ], 
+      "name": "David Ferrier Ward"
+    }, 
+    {
+      "synonyms": [
+        "Hyper Acute Stroke Unit"
+      ], 
+      "name": "HASU"
+    }, 
+    {
+      "synonyms": [
+        "HH3"
+      ], 
+      "name": "Heart Ward 3"
+    }, 
+    {
+      "synonyms": [
+        "HH4"
+      ], 
+      "name": "Heart Ward 4"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Hughlings Jackson"
+    }, 
+    {
+      "synonyms": [
+        "Intensive Care", 
+        "Critical Care", 
+        "T3", 
+        "T 3"
+      ], 
+      "name": "ICU"
+    }, 
+    {
+      "synonyms": [
+        "JY"
+      ], 
+      "name": "John Young"
+    }, 
+    {
+      "synonyms": [
+        "LAA"
+      ], 
+      "name": "Lady Anne Allerton"
+    }, 
+    {
+      "synonyms": [
+        "MITU"
+      ], 
+      "name": "Medical ICU"
+    }, 
+    {
+      "synonyms": [
+        "MLF"
+      ], 
+      "name": "Molly Lane Fox Unit"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "NQ - HDU"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Nuffield "
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Rehab"
+    }, 
+    {
+      "synonyms": [
+        "SITU"
+      ], 
+      "name": "Surgical ICU"
+    }, 
+    {
+      "synonyms": [
+        "T 10"
+      ], 
+      "name": "T10"
+    }, 
+    {
+      "synonyms": [
+        "T 11"
+      ], 
+      "name": "T11"
+    }, 
+    {
+      "synonyms": [
+        "T 12"
+      ], 
+      "name": "T12"
+    }, 
+    {
+      "synonyms": [
+        "T 13"
+      ], 
+      "name": "T13"
+    }, 
+    {
+      "synonyms": [
+        "T 14"
+      ], 
+      "name": "T14"
+    }, 
+    {
+      "synonyms": [
+        "T 15"
+      ], 
+      "name": "T15"
+    }, 
+    {
+      "synonyms": [
+        "T 16"
+      ], 
+      "name": "T16"
+    }, 
+    {
+      "synonyms": [
+        "T 6"
+      ], 
+      "name": "T6"
+    }, 
+    {
+      "synonyms": [
+        "T 7"
+      ], 
+      "name": "T7"
+    }, 
+    {
+      "synonyms": [
+        "T 8"
+      ], 
+      "name": "T8"
+    }, 
+    {
+      "synonyms": [
+        "T 9"
+      ], 
+      "name": "T9"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Telemetry Unit"
+    }, 
+    {
+      "synonyms": [
+        "VH"
+      ], 
+      "name": "Victor Horsley"
+    }
+  ], 
+  "organism_details": [], 
+  "antimicrobial_route": [
+    {
+      "synonyms": [
+        "Intravenous"
+      ], 
+      "name": "IV"
+    }, 
+    {
+      "synonyms": [
+        "Oral"
+      ], 
+      "name": "PO"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Topical"
+    }
+  ], 
   "condition": [
     {
       "synonyms": [
@@ -3807,959 +4971,6 @@
     {
       "synonyms": [], 
       "name": "Yellow fever"
-    }
-  ], 
-  "clinical_advice_reason_for_interaction": [
-    {
-      "synonyms": [], 
-      "name": "Antibiotic stewardship ward round"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Called by GP"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Called by outside hospital"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Called by team"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Calling with result"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Clinical review with result"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Follow up by infection team"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Microbiology meeting"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "OPAT referral"
-    }
-  ], 
-  "iv_stop": [
-    {
-      "synonyms": [], 
-      "name": "Adverse Event"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Antimicrobial resistance"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Completed course"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Disease Progression"
-    }
-  ], 
-  "antimicrobial": [
-    {
-      "synonyms": [], 
-      "name": "Abacavir"
-    }, 
-    {
-      "synonyms": [
-        "ACV"
-      ], 
-      "name": "Aciclovir"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Adefovir"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Albendazole"
-    }, 
-    {
-      "synonyms": [
-        "Liposomal amphotericin"
-      ], 
-      "name": "Ambisome"
-    }, 
-    {
-      "synonyms": [
-        "AK"
-      ], 
-      "name": "Amikacin"
-    }, 
-    {
-      "synonyms": [
-        "AML"
-      ], 
-      "name": "Amoxicilin"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Amphotericin"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Artesunate"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Atazanavir"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Ataznavir"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Atovaquone"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Atripla"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Azithromycin"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Benznidazole"
-    }, 
-    {
-      "synonyms": [
-        "Ben-Pen", 
-        "BZP"
-      ], 
-      "name": "Benzylpenicillin"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Bocepravir"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Caspofungin"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Cefadroxil"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Cefixime"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Cefotaxime"
-    }, 
-    {
-      "synonyms": [
-        "CAZ"
-      ], 
-      "name": "Ceftazidime"
-    }, 
-    {
-      "synonyms": [
-        "CRO"
-      ], 
-      "name": "Ceftriaxone"
-    }, 
-    {
-      "synonyms": [
-        "CXM"
-      ], 
-      "name": "Cefuroxime"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Chloramphenicol"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Chloroquine"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Cidofovir"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Ciprofloxacin"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Clarithromycin"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Clindamycin"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Clotrimazole"
-    }, 
-    {
-      "synonyms": [
-        "Augmentin", 
-        "AMC"
-      ], 
-      "name": "Co-Amoxiclav"
-    }, 
-    {
-      "synonyms": [
-        "Septrin", 
-        "SXT"
-      ], 
-      "name": "Co-Trimoxazole"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Colistin"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Combivir"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Daktacort"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Daptomycin"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Darunavir"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Didanosine"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Doxycycline"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Efavirenz"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Emtricitabine"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Enfurvitide"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Entecavir"
-    }, 
-    {
-      "synonyms": [
-        "ETP"
-      ], 
-      "name": "Ertapenem"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Erythromycin"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Ethambutol"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Famciclovir"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Fansidar"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Fidaxomicin"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Flucloxacillin"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Fluconazole"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Flucytosine"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Fosamprenavir"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Foscarnet"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Fosfomycin"
-    }, 
-    {
-      "synonyms": [
-        "Fucidate"
-      ], 
-      "name": "Fusidate"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Ganciclovir"
-    }, 
-    {
-      "synonyms": [
-        "CN"
-      ], 
-      "name": "Gentamicin"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Griseofulvin"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Indinavir"
-    }, 
-    {
-      "synonyms": [
-        "INH"
-      ], 
-      "name": "Isoniazid"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Itraconazole"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Ivermectin"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Kaletra"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Ketoconazole"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Kivexxa"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Lamivudine"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Linezolid"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Lopinavir"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Malarone"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Mebendazole"
-    }, 
-    {
-      "synonyms": [
-        "MEM"
-      ], 
-      "name": "Meropenem"
-    }, 
-    {
-      "synonyms": [
-        "MTZ"
-      ], 
-      "name": "Metronidazole"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Miconazole"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Miltefosine"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Minocycline"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Moxifloxacin"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Nelfinavir"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Neomycin"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Nevirapine"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Nitazoxanide"
-    }, 
-    {
-      "synonyms": [
-        "NFU"
-      ], 
-      "name": "Nitrofurantoin"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Ofloxacin"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Oseltamivir"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Peg-Interferon"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Penicillin V"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Pentamidine"
-    }, 
-    {
-      "synonyms": [
-        "Tazocin", 
-        "TZP"
-      ], 
-      "name": "Piperacillin Tazobactam"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Posaconazole"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Praziquantel"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Primaquine"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Procaine Benzylpenicillin"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Pyrazinamide"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Pyrimethamine"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Quinine"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Raltegravir"
-    }, 
-    {
-      "synonyms": [
-        "Co-artem", 
-        "Artemether lumefantrine"
-      ], 
-      "name": "Riamet"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Ribavarin"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Rifabutin"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Rifampicin"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Rifinah"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Rifinah 150"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Rifinah 300"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Ritonavir"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Saquinavir"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Sodium stibogluconate"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Spectinomycin"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Stavudine"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Sulfadoxine"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Teicoplanin"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Telaprevir"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Temocillin"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Tenofovir"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Terbinafine"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Tetracycline"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Tinidazole"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Tipranavir"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Tobramycin"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Triclabendazole"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Trimethroprim"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Trizivir"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Truvada"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Valaciclovir"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Valganciclovir"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Vancomycin"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Voriconazole"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Zanamavir"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Zidovudine"
-    }
-  ], 
-  "findings_rash_distribution": [], 
-  "wi_nurse_reason": [
-    {
-      "synonyms": [], 
-      "name": "Inappropriate referral"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Needs referral to consultant clinic"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Needs to be seen in post-tropical screening clinic"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Treated by nurse"
-    }
-  ], 
-  "micro_test_single_test_pos_neg": [
-    {
-      "synonyms": [
-        "Cryptococcal antigen"
-      ], 
-      "name": "CRAG"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Dengue PCR"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "JC Virus PCR"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "MRSA PCR"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Rickettsia PCR"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Scrub Typhus PCR"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Skin Snip"
-    }, 
-    {
-      "synonyms": [
-        "Viral Haemorrhagic Fever PCR"
-      ], 
-      "name": "VHF PCR"
-    }
-  ], 
-  "specimin": [
-    {
-      "synonyms": [
-        "Bronchial aspirates"
-      ], 
-      "name": "BA"
-    }, 
-    {
-      "synonyms": [
-        "Broncho-alveolar lavage"
-      ], 
-      "name": "BAL"
-    }, 
-    {
-      "synonyms": [
-        "ET secretions", 
-        "Endotracheal secretions"
-      ], 
-      "name": "ETT"
-    }, 
-    {
-      "synonyms": [
-        "Induced sputum"
-      ], 
-      "name": "ISPU"
-    }, 
-    {
-      "synonyms": [
-        "Non-directed bronchoalveolar lavage"
-      ], 
-      "name": "NBL"
-    }, 
-    {
-      "synonyms": [
-        "Sputum"
-      ], 
-      "name": "SPU"
-    }, 
-    {
-      "synonyms": [
-        "Tracheal aspirate"
-      ], 
-      "name": "TA"
-    }
-  ], 
-  "micro_test_other": [
-    {
-      "synonyms": [], 
-      "name": "Other"
-    }
-  ], 
-  "micro_test_leishmaniasis_pcr": [
-    {
-      "synonyms": [], 
-      "name": "Leishmaniasis PCR"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Malaria PCR"
-    }
-  ], 
-  "micro_test_serology": [
-    {
-      "synonyms": [], 
-      "name": "Brucella Serology"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "CMV Serology"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Dengue Serology"
-    }, 
-    {
-      "synonyms": [
-        "Hepatitis A Serology"
-      ], 
-      "name": "Hep A Serology"
-    }, 
-    {
-      "synonyms": [
-        "Hepatitis E Serology"
-      ], 
-      "name": "Hep E Serology"
-    }, 
-    {
-      "synonyms": [
-        "Borrelia reference lab serology"
-      ], 
-      "name": "Lyme reference lab serology"
-    }, 
-    {
-      "synonyms": [
-        "Borrelia screening serology"
-      ], 
-      "name": "Lyme screening serology"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Measles Serology"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Rubella Serology"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Toxoplasmosis Serology"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "VZV Serology"
-    }
-  ], 
-  "findings_rash_type": [], 
-  "micro_test_swab_pcr": [
-    {
-      "synonyms": [], 
-      "name": "Swab PCR"
-    }
-  ], 
-  "management_clinics": [
-    {
-      "synonyms": [], 
-      "name": "Discharged from clinic: Follow-Up in clinic"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Discharged from clinic: No Follow-up"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "General Infection Clinic"
-    }, 
-    {
-      "synonyms": [
-        "DL"
-      ], 
-      "name": "Leishmania Clinic"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Mortimer Market Centre"
-    }, 
-    {
-      "synonyms": [
-        "PLC"
-      ], 
-      "name": "Parasitology Clinic"
-    }, 
-    {
-      "synonyms": [
-        "FVL"
-      ], 
-      "name": "Tropical Dermatology Clinic"
-    }
-  ], 
-  "organism_details": [], 
-  "antimicrobial_route": [
-    {
-      "synonyms": [
-        "Intravenous"
-      ], 
-      "name": "IV"
-    }, 
-    {
-      "synonyms": [
-        "Oral"
-      ], 
-      "name": "PO"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Topical"
-    }
-  ], 
-  "symptom": [
-    {
-      "synonyms": [], 
-      "name": "Abdominal Pain"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Arthalgia"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Chest Pain"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Constipation"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Cough"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Diarrhoea"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Dysuria"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Fever"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Flank Pain"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Haemoptysis"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Headache"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Myalgia"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Nausea"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Night Sweats"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Nocturia"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Palpitations"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Rigors"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Shortness of Breath"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Sore throat"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Symptom 1"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Symptom 2"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Symptom 3"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Urinary Frequency"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Vomiting"
-    }, 
-    {
-      "synonyms": [], 
-      "name": "Weight Loss"
     }
   ], 
   "antimicrobial_frequency": [
