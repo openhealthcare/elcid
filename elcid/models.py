@@ -3,11 +3,11 @@ ELCID implementation specific models!
 """
 from django.db import models
 
+import opal.models as omodels
 from opal.models import (Subrecord,
-                         option_models,
                          EpisodeSubrecord, PatientSubrecord, GP, CommunityNurse)
 from opal.core.fields import ForeignKeyOrFreeText
-from opal.core.lookuplists import lookup_list
+from opal.core import lookuplists
 
 class Demographics(PatientSubrecord):
     _is_singleton = True
@@ -17,7 +17,7 @@ class Demographics(PatientSubrecord):
     hospital_number  = models.CharField(max_length=255, blank=True)
     nhs_number       = models.CharField(max_length=255, blank=True, null=True)
     date_of_birth    = models.DateField(null=True, blank=True)
-    country_of_birth = ForeignKeyOrFreeText(option_models['destination'])
+    country_of_birth = ForeignKeyOrFreeText(omodels.Destination)
     ethnicity        = models.CharField(max_length=255, blank=True, null=True)
     gender           = models.CharField(max_length=255, blank=True, null=True)
 
@@ -80,7 +80,7 @@ class PresentingComplaint(EpisodeSubrecord):
     _title = 'Presenting Complaint'
     _icon = 'fa fa-stethoscope'
 
-    symptom  = ForeignKeyOrFreeText(option_models['symptom'])
+    symptom  = ForeignKeyOrFreeText(omodels.Symptom)
     duration = models.CharField(max_length=255, blank=True, null=True)
     details  = models.CharField(max_length=255, blank=True, null=True)
 
@@ -91,7 +91,7 @@ class PrimaryDiagnosis(EpisodeSubrecord):
     """
     _is_singleton= True
 
-    condition = ForeignKeyOrFreeText(option_models['condition'])
+    condition = ForeignKeyOrFreeText(omodels.Condition)
     confirmed = models.NullBooleanField(default=False)
 
 
@@ -99,7 +99,7 @@ class SecondaryDiagnosis(EpisodeSubrecord):
     """
     This is a confirmed diagnosis at discharge time.
     """
-    condition   = ForeignKeyOrFreeText(option_models['condition'])
+    condition   = ForeignKeyOrFreeText(omodels.Condition)
     co_primary = models.NullBooleanField(default=False)
 
     
@@ -112,7 +112,7 @@ class Diagnosis(EpisodeSubrecord):
     _sort = 'date_of_diagnosis'
     _icon = 'fa fa-stethoscope'
 
-    condition         = ForeignKeyOrFreeText(option_models['condition'])
+    condition         = ForeignKeyOrFreeText(omodels.Condition)
     provisional       = models.NullBooleanField()
     details           = models.CharField(max_length=255, blank=True)
     date_of_diagnosis = models.DateField(blank=True, null=True)
@@ -129,7 +129,7 @@ class PastMedicalHistory(EpisodeSubrecord):
     _sort = 'year'
     _icon = 'fa fa-history'
     
-    condition = ForeignKeyOrFreeText(option_models['condition'])
+    condition = ForeignKeyOrFreeText(omodels.Condition)
     year      = models.CharField(max_length=4, blank=True)
     details   = models.CharField(max_length=255, blank=True)
 
@@ -146,16 +146,16 @@ class GeneralNote(EpisodeSubrecord):
 class Travel(EpisodeSubrecord):
     _icon = 'fa fa-plane'
 
-    destination         = ForeignKeyOrFreeText(option_models['destination'])
+    destination         = ForeignKeyOrFreeText(omodels.Destination)
     dates               = models.CharField(max_length=255, blank=True)
-    reason_for_travel   = ForeignKeyOrFreeText(option_models['travel_reason'])
+    reason_for_travel   = ForeignKeyOrFreeText(omodels.Travel_reason)
     specific_exposures  = models.CharField(max_length=255, blank=True)
     malaria_prophylaxis = models.NullBooleanField(default=False)
-    malaria_drug        = ForeignKeyOrFreeText(option_models['antimicrobial'])
+    malaria_drug        = ForeignKeyOrFreeText(omodels.Antimicrobial)
     malaria_compliance  = models.CharField(max_length=200, blank=True, null=True)
 
-ReasonForStoppingLookupList = type(*lookup_list('iv_stop', module=__name__))
-DrugDeliveredLookupList = type(*lookup_list('drug_delivered', module=__name__))
+class Iv_stop(lookuplists.LookupList): pass
+class Drug_delivered(lookuplists.LookupList): pass
 
 class Antimicrobial(EpisodeSubrecord):
     _title = 'Antimicrobials'
@@ -163,21 +163,21 @@ class Antimicrobial(EpisodeSubrecord):
     _icon = 'fa fa-flask'
     _modal = 'lg'
     
-    drug          = ForeignKeyOrFreeText(option_models['antimicrobial'])
+    drug          = ForeignKeyOrFreeText(omodels.Antimicrobial)
     dose          = models.CharField(max_length=255, blank=True)
-    route         = ForeignKeyOrFreeText(option_models['antimicrobial_route'])
+    route         = ForeignKeyOrFreeText(omodels.Antimicrobial_route)
     start_date    = models.DateField(null=True, blank=True)
     end_date      = models.DateField(null=True, blank=True)
-    delivered_by  = ForeignKeyOrFreeText(DrugDeliveredLookupList)
-    reason_for_stopping = ForeignKeyOrFreeText(ReasonForStoppingLookupList)
-    adverse_event = ForeignKeyOrFreeText(option_models['antimicrobial_adverse_event'])
+    delivered_by  = ForeignKeyOrFreeText(Drug_delivered)
+    reason_for_stopping = ForeignKeyOrFreeText(Iv_stop)
+    adverse_event = ForeignKeyOrFreeText(omodels.Antimicrobial_adverse_event)
     comments      = models.TextField(blank=True, null=True)
-    frequency     = ForeignKeyOrFreeText(option_models['antimicrobial_frequency'])
+    frequency     = ForeignKeyOrFreeText(omodels.Antimicrobial_frequency)
 
 class Allergies(PatientSubrecord):
     _icon = 'fa fa-warning'
     
-    drug        = ForeignKeyOrFreeText(option_models['antimicrobial'])
+    drug        = ForeignKeyOrFreeText(omodels.Antimicrobial)
     provisional = models.NullBooleanField()
     details     = models.CharField(max_length=255, blank=True)
 
@@ -192,7 +192,7 @@ class MicrobiologyInput(EpisodeSubrecord):
     date                              = models.DateField(null=True, blank=True)
     initials                          = models.CharField(max_length=255, blank=True)
     reason_for_interaction            = ForeignKeyOrFreeText(
-        option_models['clinical_advice_reason_for_interaction'])
+        omodels.Clinical_advice_reason_for_interaction)
     clinical_discussion               = models.TextField(blank=True)
     agreed_plan                       = models.TextField(blank=True)
     discussed_with                    = models.CharField(max_length=255, blank=True)
@@ -208,8 +208,7 @@ class Todo(EpisodeSubrecord):
     
     details = models.TextField(blank=True)
 
-HIVDeclinedLookupList = type(*lookup_list('hiv_no', module=__name__))
-
+class Hiv_no(lookuplists.LookupList): pass    
 
 class MicrobiologyTest(EpisodeSubrecord):
     _title = 'Investigations'
@@ -260,19 +259,20 @@ class MicrobiologyTest(EpisodeSubrecord):
     giardia               = models.CharField(max_length=20, blank=True)
     entamoeba_histolytica = models.CharField(max_length=20, blank=True)
     cryptosporidium       = models.CharField(max_length=20, blank=True)
-    hiv_declined          = ForeignKeyOrFreeText(HIVDeclinedLookupList)
+    hiv_declined          = ForeignKeyOrFreeText(Hiv_no)
 
 """
 Begin OPAT specific fields.
 """
 
-OPATUnplannedStopLookupList = type(*lookup_list('unplanned_stop', module=__name__))
-OPATReviewTypeLookupList = type(*lookup_list('opat_rvt', module=__name__))
+class Unplanned_stop(lookuplists.LookupList): pass
+class Opat_rvt(lookuplists.LookupList): pass
+
 
 class OPATMeta(EpisodeSubrecord):
     review_date           = models.DateField(blank=True, null=True)
     reason_for_stopping   = models.CharField(max_length=200, blank=True, null=True)
-    unplanned_stop_reason = ForeignKeyOrFreeText(OPATUnplannedStopLookupList)
+    unplanned_stop_reason = ForeignKeyOrFreeText(Unplanned_stop)
     stopping_iv_details   = models.CharField(max_length=200, blank=True, null=True)
     treatment_outcome     = models.CharField(max_length=200, blank=True, null=True)
     deceased              = models.NullBooleanField(default=False)
@@ -319,14 +319,14 @@ class Line(EpisodeSubrecord):
     _sort = 'insertion_datetime'
     _icon = 'fa fa-bolt'
 
-    line_type            = ForeignKeyOrFreeText(option_models['line_type'])
-    site                 = ForeignKeyOrFreeText(option_models['line_site'])
+    line_type            = ForeignKeyOrFreeText(omodels.Line_type)
+    site                 = ForeignKeyOrFreeText(omodels.Line_site)
     insertion_datetime   = models.DateTimeField(blank=True, null=True)
     inserted_by          = models.CharField(max_length=255, blank=True, null=True)
     external_length      = models.CharField(max_length=255, blank=True, null=True)
     removal_datetime     = models.DateTimeField(blank=True, null=True)
-    complications        = ForeignKeyOrFreeText(option_models['line_complication'])
-    removal_reason       = ForeignKeyOrFreeText(option_models['line_removal_reason'])
+    complications        = ForeignKeyOrFreeText(omodels.Line_complication)
+    removal_reason       = ForeignKeyOrFreeText(omodels.Line_removal_reason)
     special_instructions = models.TextField()
 
 
@@ -339,14 +339,14 @@ class OPATReview(EpisodeSubrecord):
 
     datetime                = models.DateTimeField(null=True, blank=True)
     initials                = models.CharField(max_length=255, blank=True)
-    rv_type                 = ForeignKeyOrFreeText(OPATReviewTypeLookupList)
+    rv_type                 = ForeignKeyOrFreeText(Opat_rvt)
     discussion              = models.TextField(blank=True, null=True)
     opat_plan               = models.TextField(blank=True)
     next_review             = models.DateField(blank=True, null=True)    
     dressing_changed        = models.NullBooleanField(default=False)
     bung_changed            = models.NullBooleanField(default=False)
     medication_administered = models.TextField(blank=True, null=True)
-    adverse_events          = ForeignKeyOrFreeText(option_models['antimicrobial_adverse_event'])
+    adverse_events          = ForeignKeyOrFreeText(omodels.Antimicrobial_adverse_event)
 
 
 class OPATOutstandingIssues(EpisodeSubrecord):
@@ -388,11 +388,11 @@ Fields for UCLH - specific Research studies.
 """
 
 """ RiD RTI (http://www.rid-rti.eu/ ) """
-SpeciminLookupList = type(*lookup_list('specimin', module=__name__))
-SpeciminAppearanceLookupList = type(*lookup_list('specimin_appearance', module=__name__))
-OrganismDetailsLookupList = type(*lookup_list('organism_details', module=__name__))
-AntimicrobialSusceptabilityLookupList = type(*lookup_list('antimicrobial_susceptability', module=__name__))
-CheckpointsAssayLookupList = type(*lookup_list('checkpoints_assay', module=__name__))
+class Specimin(lookuplists.LookupList): pass
+class Specimin_appearance(lookuplists.LookupList): pass
+class Organism_details(lookuplists.LookupList): pass
+class Antimicrobial_susceptability(lookuplists.LookupList): pass
+class Checkpoints_assay(lookuplists.LookupList): pass
 
 
 class LabSpecimin(EpisodeSubrecord):
@@ -400,10 +400,10 @@ class LabSpecimin(EpisodeSubrecord):
     _sort = 'date_collected'
     _icon = 'fa fa-flask'
 
-    specimin_type     = ForeignKeyOrFreeText(SpeciminLookupList)
+    specimin_type     = ForeignKeyOrFreeText(Specimin)
     date_collected    = models.DateField(blank=True, null=True)
     volume            = models.CharField(max_length=200, blank=True, null=True)
-    appearance        = ForeignKeyOrFreeText(SpeciminAppearanceLookupList)
+    appearance        = ForeignKeyOrFreeText(Specimin_appearance)
     epithelial_cell   = models.CharField(max_length=200, blank=True, null=True)
     white_blood_cells = models.CharField(max_length=200, blank=True, null=True)
     date_tested       = models.DateField(blank=True, null=True)
@@ -424,10 +424,13 @@ class LabTest(EpisodeSubrecord):
     details                      = models.CharField(max_length=255, blank=True)
     result                       = models.CharField(max_length=255, blank=True)
     significant_organism         = models.NullBooleanField(default=False)
-    organism_details             = ForeignKeyOrFreeText(OrganismDetailsLookupList)
-    antimicrobials_susceptible   = ForeignKeyOrFreeText(AntimicrobialSusceptabilityLookupList, related_name='susceptible')
-    antimicrobials_intermediate  = ForeignKeyOrFreeText(AntimicrobialSusceptabilityLookupList, related_name='intermediate')
-    antimicrobials_resistant     = ForeignKeyOrFreeText(AntimicrobialSusceptabilityLookupList, related_name='resistant')
+    organism_details             = ForeignKeyOrFreeText(Organism_details)
+    antimicrobials_susceptible   = ForeignKeyOrFreeText(Antimicrobial_susceptability,
+                                                        related_name='susceptible')
+    antimicrobials_intermediate  = ForeignKeyOrFreeText(Antimicrobial_susceptability,
+                                                        related_name='intermediate')
+    antimicrobials_resistant     = ForeignKeyOrFreeText(Antimicrobial_susceptability,
+                                                        related_name='resistant')
     retrieved                    = models.NullBooleanField(default=False)
     date_retrieved               = models.DateField(null=True, blank=True)
     sweep_biobanked              = models.NullBooleanField(default=False)
