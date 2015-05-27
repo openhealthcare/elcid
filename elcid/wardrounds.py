@@ -21,7 +21,8 @@ class HistoricTagsMixin(object):
         return dict(name=klass.name, 
                     description=klass.description,
                     episodes=Episode.objects.serialised(user, klass.episodes(),
-                                                    historic_tags=True),
+                                                        episode_history=True,
+                                                        historic_tags=True),
                     filters=klass.filters)
 
 
