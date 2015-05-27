@@ -1,5 +1,5 @@
 """
-ELCID implementation specific models!
+elCID implementation specific models!
 """
 from django.db import models
 
@@ -54,9 +54,12 @@ class Location(EpisodeSubrecord):
     hospital                   = models.CharField(max_length=255, blank=True)
     ward                       = models.CharField(max_length=255, blank=True)
     bed                        = models.CharField(max_length=255, blank=True)
-    opat_referral_route        = models.CharField(max_length=255, blank=True, null=True)
-    opat_referral_team         = models.CharField(max_length=255, blank=True, null=True)
-    opat_referral_consultant   = models.CharField(max_length=255, blank=True, null=True)
+    opat_referral_route        = models.CharField(max_length=255, blank=True,
+                                                  null=True)
+    opat_referral_team         = models.CharField(max_length=255, blank=True,
+                                                  null=True)
+    opat_referral_consultant   = models.CharField(max_length=255, blank=True,
+                                                  null=True)
     opat_referral_team_address = models.TextField(blank=True, null=True)
     opat_referral              = models.DateField(blank=True, null=True)
     opat_discharge             = models.DateField(blank=True, null=True)
