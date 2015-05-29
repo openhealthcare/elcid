@@ -107,44 +107,6 @@ list_schemas = {
     }
 }
 
-detail_columns = [
-    models.Demographics,
-    models.ContactDetails,
-#    models.Carers,
-    models.Location,
-    models.PresentingComplaint,
-    models.Diagnosis,
-    obsmodels.Observation,
-    models.PastMedicalHistory,
-    models.Antimicrobial,
-    models.Allergies,
-    models.MicrobiologyTest,
-    models.Line,
-    models.OPATLineAssessment,
-    models.MicrobiologyInput,
-    models.OPATReview,
-    models.Travel,
-    models.Appointment,
-    models.Todo,
-    models.OPATOutstandingIssues,
-    models.GeneralNote,
- ]
-
-extract_columns = [
-    omodels.Tagging,
-    models.Demographics,
-    models.Location,
-    models.Diagnosis,
-    models.Antimicrobial,
-    models.Allergies,
-    models.PastMedicalHistory,
-    models.MicrobiologyInput,
-    models.MicrobiologyTest,
-    models.Travel,
-    models.Todo,
-    models.GeneralNote,
-    ]
-
 # Research study schemas
 
 from research import models as researchmodels
