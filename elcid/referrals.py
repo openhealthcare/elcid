@@ -15,7 +15,7 @@ class HTDWalkInRoute(ReferralRoute):
     target_category = 'Walkin'
     success_link = '/#/list/walkin'
 
-    def post_create(self, episode):
+    def post_create(self, episode, user):
         """
         Auto populate HIV POC
         Set date of appointment to today.
