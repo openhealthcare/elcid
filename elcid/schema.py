@@ -90,6 +90,9 @@ list_schemas = {
     'microbiology': {
         'default': list_columns_micro,
         },
+    'virology': {
+        'default': list_columns_micro
+    },
     'opat': {
         'default': list_columns_opat,
 #        'opat_review': list_columns_opat_review
