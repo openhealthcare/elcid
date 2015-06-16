@@ -4,13 +4,14 @@
   <form class="form-horizontal">
 
     <div
-       class="form-group col-sm-3"
+       class="checkbox checkbox-primary"
        ng-repeat="cp in checkpoints_assay_list"
        >
-      <label class="checkbox inline">
-        <input type="checkbox" ng-model="editing[cp.replace('-', '_').toLowerCase().replace('/', '_').replace('-', '_'). replace(' ', '_').replace(' ', '').replace('-', '').replace('&', '').replace(' ', '_')]">
-        [[ cp ]]
-      </label>
+      <input type="checkbox"
+             ng-model="editing[cp.replace('-', '_').toLowerCase().replace('/', '_').replace('-', '_'). replace(' ', '_').replace(' ', '').replace('-', '').replace('&', '').replace(' ', '_')]"
+             id="checkbox_[[ $index ]]"
+             >
+      <label for="checkbox_[[ $index ]]">[[ cp ]]</label>
     </div>
     {% checkbox label="Negative?" model="editing.negative" %}
     {% textarea label="Comments" model="editing.comments" %}
