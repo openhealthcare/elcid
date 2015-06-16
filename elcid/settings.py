@@ -155,7 +155,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'axes',
     'reversion',
-    'south',
+#    'south',
     'opal',
     'rest_framework',
     'compressor',
