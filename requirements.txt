@@ -11,19 +11,19 @@ django-axes==1.3.4
 ffs==0.0.7.6
 letter==0.4.1
 supervisor
--e git://github.com/srosro/django-test-coverage#egg=django-test-coverage
+-e git+https://github.com/srosro/django-test-coverage#egg=django-test-coverage
 django-debug-toolbar
--e git://github.com/openhealthcare/opal.git@0.4release#egg=opal
--e git://github.com/openhealthcare/opal-research.git@#egg=opal_research
--e git://github.com/openhealthcare/opal-observations.git@master#egg=opal_observations
--e git://github.com/openhealthcare/opal-walk-in.git@#egg=opal_walk_in
--e git://github.com/openhealthcare/opal-wardround.git@#egg=opal_wardround
--e git://github.com/openhealthcare/opal-referral.git@#egg=opal_referral
--e git://github.com/openhealthcare/opal-analytics.git@#egg=opal_analytics
--e git://github.com/openhealthcare/opal-opat.git@#egg=opal_opat
--e git://github.com/openhealthcare/opal-dashboard.git@#egg=opal_dashboard
--e git://github.com/openhealthcare/opal-dischargesummary.git@#egg=opal_dischargesummary
--e git://github.com/openhealthcare/opal-guidelines.git@#egg=opal_guidelines
+-e git+https://github.com/openhealthcare/opal.git@#egg=opal
+-e git+https://github.com/openhealthcare/opal-research.git@#egg=opal_research
+-e git+https://github.com/openhealthcare/opal-observations.git@master#egg=opal_observations
+-e git+https://github.com/openhealthcare/opal-walk-in.git@#egg=opal_walk_in
+-e git+https://github.com/openhealthcare/opal-wardround.git@#egg=opal_wardround
+-e git+https://github.com/openhealthcare/opal-referral.git@#egg=opal_referral
+-e git+https://github.com/openhealthcare/opal-analytics.git@#egg=opal_analytics
+-e git+https://github.com/openhealthcare/opal-opat.git@#egg=opal_opat
+-e git+https://github.com/openhealthcare/opal-dashboard.git@#egg=opal_dashboard
+-e git+https://github.com/openhealthcare/opal-dischargesummary.git@#egg=opal_dischargesummary
+-e git+https://github.com/openhealthcare/opal-guidelines.git@#egg=opal_guidelines
 mock
 requests
 djangorestframework
