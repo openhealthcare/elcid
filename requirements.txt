@@ -17,6 +17,7 @@ django-debug-toolbar
 -e git+https://github.com/openhealthcare/opal-research.git@#egg=opal_research
 -e git+https://github.com/openhealthcare/opal-observations.git@master#egg=opal_observations
 -e git+https://github.com/openhealthcare/opal-walk-in.git@#egg=opal_walk_in
+
 -e git+https://github.com/openhealthcare/opal-wardround.git@v0.1#egg=opal_wardround
 -e git+https://github.com/openhealthcare/opal-referral.git@v0.1#egg=opal_referral
 -e git+https://github.com/openhealthcare/opal-analytics.git@v0.1#egg=opal_analytics
