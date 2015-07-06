@@ -13,7 +13,7 @@ letter==0.4.1
 supervisor
 -e git+https://github.com/srosro/django-test-coverage#egg=django-test-coverage
 django-debug-toolbar
--e git+https://github.com/openhealthcare/opal.git@0.4.1#egg=opal
+-e git+https://github.com/openhealthcare/opal.git@v0.4.1#egg=opal
 -e git+https://github.com/openhealthcare/opal-research.git@#egg=opal_research
 -e git+https://github.com/openhealthcare/opal-observations.git@master#egg=opal_observations
 -e git+https://github.com/openhealthcare/opal-walk-in.git@#egg=opal_walk_in
