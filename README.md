@@ -28,7 +28,6 @@ Roadmap: https://github.com/openhealthcare/opal/wiki/Roadmap
 
 Discussion List: https://groups.google.com/forum/?ohc-dev#!forum/ohc-opal
 
-
 Access: availability of the latest source code, developer
 support mechanisms, public roadmap, and transparency of
 decision-making
