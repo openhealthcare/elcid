@@ -4,3 +4,7 @@
   {% record_panel models.OPATOutcome %}
   {{ block.super }}
 {% endblock %}
+{% block sidebar_panels %}
+  {{ block.super }}
+  {% include 'actions/wardround.html' %}
+{% endblock %}
