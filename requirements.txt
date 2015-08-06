@@ -24,7 +24,7 @@ django-debug-toolbar
 -e git+https://github.com/openhealthcare/opal-dashboard.git@#egg=opal_dashboard
 -e git+https://github.com/openhealthcare/opal-dischargesummary.git@#egg=opal_dischargesummary
 -e git+https://github.com/openhealthcare/opal-guidelines.git@#egg=opal_guidelines
-mock
+mock==1.0.1
 requests
 djangorestframework
 django-compressor==1.5
