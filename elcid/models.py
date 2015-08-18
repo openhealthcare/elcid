@@ -12,7 +12,7 @@ from opal.core import lookuplists
 class Demographics(PatientSubrecord):
     _is_singleton = True
     _icon = 'fa fa-user'
-    
+
     name             = models.CharField(max_length=255, blank=True)
     hospital_number  = models.CharField(max_length=255, blank=True)
     nhs_number       = models.CharField(max_length=255, blank=True, null=True)
@@ -20,6 +20,9 @@ class Demographics(PatientSubrecord):
     country_of_birth = ForeignKeyOrFreeText(omodels.Destination)
     ethnicity        = models.CharField(max_length=255, blank=True, null=True)
     gender           = models.CharField(max_length=255, blank=True, null=True)
+
+    class Meta:
+        verbose_name_plural = "Demographics"
 
 
 class ContactDetails(PatientSubrecord):
@@ -38,6 +41,9 @@ class ContactDetails(PatientSubrecord):
     tel1          = models.CharField(blank=True, null=True, max_length=50)
     tel2          = models.CharField(blank=True, null=True, max_length=50)
 
+    class Meta:
+        verbose_name_plural = "Contact details"
+
 
 class Carers(PatientSubrecord):
     _is_singleton = True
@@ -45,11 +51,14 @@ class Carers(PatientSubrecord):
     gp    = models.ForeignKey(GP, blank=True, null=True)
     nurse = models.ForeignKey(CommunityNurse, blank=True, null=True)
 
+    class Meta:
+        verbose_name_plural = "Carers"
+
 
 class Location(EpisodeSubrecord):
-    _is_singleton = True    
+    _is_singleton = True
     _icon = 'fa fa-map-marker'
-    
+
     category                   = models.CharField(max_length=255, blank=True)
     hospital                   = models.CharField(max_length=255, blank=True)
     ward                       = models.CharField(max_length=255, blank=True)
@@ -97,6 +106,9 @@ class PrimaryDiagnosis(EpisodeSubrecord):
     condition = ForeignKeyOrFreeText(omodels.Condition)
     confirmed = models.NullBooleanField(default=False)
 
+    class Meta:
+        verbose_name_plural = "Primary diagnoses"
+
 
 class SecondaryDiagnosis(EpisodeSubrecord):
     """
@@ -105,7 +117,10 @@ class SecondaryDiagnosis(EpisodeSubrecord):
     condition   = ForeignKeyOrFreeText(omodels.Condition)
     co_primary = models.NullBooleanField(default=False)
 
-    
+    class Meta:
+        verbose_name_plural = "Secondary diagnoses"
+
+
 class Diagnosis(EpisodeSubrecord):
     """
     This is a working-diagnosis list, will often contain things that are
@@ -126,15 +141,21 @@ class Diagnosis(EpisodeSubrecord):
             self.date_of_diagnosis
             )
 
+    class Meta:
+        verbose_name_plural = "Diagnoses"
+
 
 class PastMedicalHistory(EpisodeSubrecord):
     _title = 'PMH'
     _sort = 'year'
     _icon = 'fa fa-history'
-    
+
     condition = ForeignKeyOrFreeText(omodels.Condition)
     year      = models.CharField(max_length=4, blank=True)
     details   = models.CharField(max_length=255, blank=True)
+
+    class Meta:
+        verbose_name_plural = "Past medical histories"
 
 
 class GeneralNote(EpisodeSubrecord):
@@ -157,15 +178,23 @@ class Travel(EpisodeSubrecord):
     malaria_drug        = ForeignKeyOrFreeText(omodels.Antimicrobial)
     malaria_compliance  = models.CharField(max_length=200, blank=True, null=True)
 
-class Iv_stop(lookuplists.LookupList): pass
-class Drug_delivered(lookuplists.LookupList): pass
+
+class Iv_stop(lookuplists.LookupList):
+    class Meta:
+        verbose_name = "IV stop"
+
+
+class Drug_delivered(lookuplists.LookupList):
+    class Meta:
+        verbose_name_plural = "Drugs delivered"
+
 
 class Antimicrobial(EpisodeSubrecord):
     _title = 'Antimicrobials'
     _sort = 'start_date'
     _icon = 'fa fa-flask'
     _modal = 'lg'
-    
+
     drug          = ForeignKeyOrFreeText(omodels.Antimicrobial)
     dose          = models.CharField(max_length=255, blank=True)
     route         = ForeignKeyOrFreeText(omodels.Antimicrobial_route)
@@ -179,10 +208,13 @@ class Antimicrobial(EpisodeSubrecord):
 
 class Allergies(PatientSubrecord):
     _icon = 'fa fa-warning'
-    
+
     drug        = ForeignKeyOrFreeText(omodels.Antimicrobial)
     provisional = models.NullBooleanField()
     details     = models.CharField(max_length=255, blank=True)
+
+    class Meta:
+        verbose_name_plural = "Allergies"
 
 
 class MicrobiologyInput(EpisodeSubrecord):
@@ -208,17 +240,20 @@ class MicrobiologyInput(EpisodeSubrecord):
 class Todo(EpisodeSubrecord):
     _title = 'To Do'
     _icon = 'fa fa-th-list'
-    
+
     details = models.TextField(blank=True)
 
-class Hiv_no(lookuplists.LookupList): pass    
+class Hiv_no(lookuplists.LookupList):
+    class Meta:
+        verbose_name = "HIV refusal reason"
+
 
 class MicrobiologyTest(EpisodeSubrecord):
     _title = 'Investigations'
     _sort = 'date_ordered'
     _icon = 'fa fa-crosshairs'
     _modal = 'lg'
-    
+
     test                  = models.CharField(max_length=255)
     date_ordered          = models.DateField(null=True, blank=True)
     details               = models.CharField(max_length=255, blank=True)
@@ -268,8 +303,14 @@ class MicrobiologyTest(EpisodeSubrecord):
 Begin OPAT specific fields.
 """
 
-class Unplanned_stop(lookuplists.LookupList): pass
-class Opat_rvt(lookuplists.LookupList): pass
+class Unplanned_stop(lookuplists.LookupList):
+    class Meta:
+        verbose_name = "Unplanned stop"
+
+
+class Opat_rvt(lookuplists.LookupList):
+    class Meta:
+        verbose_name = "OPAT RVT"
 
 
 class OPATMeta(EpisodeSubrecord):
@@ -285,12 +326,15 @@ class OPATMeta(EpisodeSubrecord):
     readmission_cause     = models.CharField(max_length=200, blank=True, null=True)
     notes                 = models.TextField(blank=True, null=True)
 
+    class Meta:
+        verbose_name = "OPAT meta"
+
 
 class OPATOutcome(EpisodeSubrecord):
     """
     This captures the final data for an OAPT episode - it is much the
     same as OPAT meta data, but captured on the ward round and interrogated
-    differently. 
+    differently.
     """
     _is_singleton     = True
 
@@ -302,7 +346,10 @@ class OPATOutcome(EpisodeSubrecord):
     readmission_cause     = models.CharField(max_length=200, blank=True, null=True)
     notes                 = models.TextField(blank=True, null=True)
     patient_feedback      = models.NullBooleanField(default=False)
-    
+
+    class Meta:
+        verbose_name = "OPAT outcome"
+
 
 class OPATRejection(EpisodeSubrecord):
 
@@ -316,6 +363,9 @@ class OPATRejection(EpisodeSubrecord):
     no_social_support     = models.NullBooleanField(default=False)
     reason                = models.CharField(max_length=255, blank=True, null=True)
     date                  = models.DateField(blank=True, null=True)
+
+    class Meta:
+        verbose_name = "OPAT rejection"
 
 
 class Line(EpisodeSubrecord):
@@ -345,11 +395,14 @@ class OPATReview(EpisodeSubrecord):
     rv_type                 = ForeignKeyOrFreeText(Opat_rvt)
     discussion              = models.TextField(blank=True, null=True)
     opat_plan               = models.TextField(blank=True)
-    next_review             = models.DateField(blank=True, null=True)    
+    next_review             = models.DateField(blank=True, null=True)
     dressing_changed        = models.NullBooleanField(default=False)
     bung_changed            = models.NullBooleanField(default=False)
     medication_administered = models.TextField(blank=True, null=True)
     adverse_events          = ForeignKeyOrFreeText(omodels.Antimicrobial_adverse_event)
+
+    class Meta:
+        verbose_name = "OPAT review"
 
 
 class OPATOutstandingIssues(EpisodeSubrecord):
@@ -357,6 +410,9 @@ class OPATOutstandingIssues(EpisodeSubrecord):
     _icon = 'fa fa-th-list'
 
     details = models.TextField(blank=True)
+
+    class Meta:
+        verbose_name = "OPAT outstanding issue"
 
 
 class Appointment(EpisodeSubrecord):
@@ -369,7 +425,7 @@ class Appointment(EpisodeSubrecord):
     date             = models.DateField(blank=True, null=True)
 
 
-class OPATLineAssessment(EpisodeSubrecord):    
+class OPATLineAssessment(EpisodeSubrecord):
     _title = 'OPAT Line Assessment'
     _icon = 'fa fa-check-square-o'
 
@@ -385,6 +441,9 @@ class OPATLineAssessment(EpisodeSubrecord):
     blood_drawback_seen    = models.NullBooleanField(default=False)
     cm_from_exit_site      = models.NullBooleanField(default=False)
 
+    class Meta:
+        verbose_name = "OPAT line assessment"
+
 
 """
 Fields for UCLH - specific Research studies.
@@ -392,11 +451,28 @@ Fields for UCLH - specific Research studies.
 
 """ RiD RTI (http://www.rid-rti.eu/ ) """
 class Specimin(lookuplists.LookupList): pass
-class Specimin_appearance(lookuplists.LookupList): pass
-class Organism_details(lookuplists.LookupList): pass
-class Antimicrobial_susceptability(lookuplists.LookupList): pass
-class Checkpoints_assay(lookuplists.LookupList): pass
 
+
+class Organism_details(lookuplists.LookupList):
+    class Meta:
+        verbose_name_plural = "Organism details"
+
+
+class Checkpoints_assay(lookuplists.LookupList):
+    class Meta:
+        verbose_name = "Checkpoints assay values"
+        verbose_name_plural = "Checkpoints assay values"
+
+
+class Antimicrobial_susceptability(lookuplists.LookupList):
+
+    class Meta:
+        verbose_name = "Antimicrobial susceptability"
+        verbose_name_plural = "Antimicrobial susceptibilities"
+
+class Specimin_appearance(lookuplists.LookupList):
+    class Meta:
+        verbose_name = "Specimin appearance"
 
 class LabSpecimin(EpisodeSubrecord):
     _title = 'Lab Specimen'
@@ -445,7 +521,7 @@ class LabTest(EpisodeSubrecord):
 
 class RidRTITest(EpisodeSubrecord):
     """
-    Results of the actual RiD RTI test ! 
+    Results of the actual RiD RTI test !
     """
     test            = models.CharField(max_length=200, blank=True, null=True)
     notes           = models.TextField(blank=True, null=True)
@@ -494,6 +570,9 @@ class RidRTITest(EpisodeSubrecord):
     orti_coronavirus_nl63 = models.NullBooleanField(default=False)
     orti_coronavirus_229e = models.NullBooleanField(default=False)
 
+    class Meta:
+        verbose_name = "RiD-RTI"
+
 class CheckpointsAssay(EpisodeSubrecord):
     _is_singleton = True
 
@@ -535,6 +614,9 @@ class CheckpointsAssay(EpisodeSubrecord):
     tem_wt = models.NullBooleanField(default=False)
     veb = models.NullBooleanField(default=False)
     vim = models.NullBooleanField(default=False)
-    
+
     negative = models.NullBooleanField(default=False)
     comments = models.TextField(blank=True, null=True)
+
+    class Meta:
+        verbose_name = "Checkpoints assay"
