@@ -97,7 +97,7 @@ STATICFILES_FINDERS = (
     'compressor.finders.CompressorFinder',
 )
 
-# STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.CachedStaticFilesStorage'
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.CachedStaticFilesStorage'
 # if 'test' in sys.argv:
 #     STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
