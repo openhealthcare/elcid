@@ -132,4 +132,3 @@ list_columns_scientist = [
     models.CheckpointsAssay,
     models.RidRTITest
 ]
-

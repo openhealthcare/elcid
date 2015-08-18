@@ -450,8 +450,9 @@ Fields for UCLH - specific Research studies.
 """
 
 """ RiD RTI (http://www.rid-rti.eu/ ) """
-class Specimin(lookuplists.LookupList): pass
-
+class Specimin(lookuplists.LookupList):
+    class Meta:
+        verbose_name = "Specimen"
 
 class Organism_details(lookuplists.LookupList):
     class Meta:
@@ -472,9 +473,12 @@ class Antimicrobial_susceptability(lookuplists.LookupList):
 
 class Specimin_appearance(lookuplists.LookupList):
     class Meta:
-        verbose_name = "Specimin appearance"
+        verbose_name = "Specimen appearance"
 
 class LabSpecimin(EpisodeSubrecord):
+    class Meta:
+        verbose_name = "Lab specimen appearance"    
+
     _title = 'Lab Specimen'
     _sort = 'date_collected'
     _icon = 'fa fa-flask'
