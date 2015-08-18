@@ -14,6 +14,7 @@ django-debug-toolbar
 mock==1.0.1
 requests==2.7.0
 djangorestframework==3.2.2
+
 django-compressor==1.5
 
 -e git+https://github.com/openhealthcare/opal.git@v0.4.2#egg=opal
