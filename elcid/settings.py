@@ -155,7 +155,6 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'axes',
     'reversion',
-    'south',
     'opal',
     'rest_framework',
     'compressor',
@@ -226,13 +225,13 @@ AXES_LOCK_OUT_AT_FAILURE = False
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 # New modular settings!
-# !!! TODO: Are these how we want to discover these ? 
+# !!! TODO: Are these how we want to discover these ?
 OPAL_OPTIONS_MODULE = 'elcid.options'
 OPAL_BRAND_NAME = 'elCID'
 OPAL_LOG_OUT_MINUTES = 15
 OPAL_LOG_OUT_DURATION = OPAL_LOG_OUT_MINUTES*60*1000
 
-# Do we need this at all ? 
+# Do we need this at all ?
 OPAL_EXTRA_HEADER = 'elcid/print_header.html'
 
 # ANALYTICS Settings
@@ -256,7 +255,7 @@ else:
 
 
 VERSION_NUMBER = '0.4.1'
-#TEST_RUNNER = 'django_nose.NoseTestSuiteRunner' 
+#TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 #TEST_RUNNER = 'django_test_coverage.runner.CoverageTestSuiteRunner'
 
 COVERAGE_EXCLUDE_MODULES = ('elcid.migrations', 'elcid.tests',
@@ -282,5 +281,3 @@ except:
 # MIDDLEWARE_CLASSES = MIDDLEWARE_CLASSES + ('debug_toolbar.middleware.DebugToolbarMiddleware',)
 # INSTALLED_APPS = INSTALLED_APPS + ('debug_toolbar',)
 # #INTERNAL_IPS = ('127.0.0.1',)
-
-
