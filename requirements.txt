@@ -11,8 +11,12 @@ django-axes==1.3.4
 ffs==0.0.7.6
 letter==0.4.1
 supervisor
--e git+https://github.com/srosro/django-test-coverage#egg=django-test-coverage
 django-debug-toolbar
+mock==1.0.1
+requests==2.7.0
+djangorestframework==3.2.2
+django-compressor==1.5
+
 -e git+https://github.com/openhealthcare/opal.git@v0.4.2#egg=opal
 -e git+https://github.com/openhealthcare/opal-observations.git@master#egg=opal_observations
 -e git+https://github.com/openhealthcare/opal-walk-in.git@v0.1.1#egg=opal_walk_in
@@ -24,7 +28,4 @@ django-debug-toolbar
 -e git+https://github.com/openhealthcare/opal-dashboard.git@#egg=opal_dashboard
 -e git+https://github.com/openhealthcare/opal-dischargesummary.git@v0.1#egg=opal_dischargesummary
 -e git+https://github.com/openhealthcare/opal-guidelines.git@#egg=opal_guidelines
-mock==1.0.1
-requests==2.7.0
-djangorestframework==3.2.2
-django-compressor==1.5
+-e git+https://github.com/srosro/django-test-coverage#egg=django-test-coverage
