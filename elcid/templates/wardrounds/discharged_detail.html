@@ -25,6 +25,8 @@
   {% record_panel models.GeneralNote %}
 {% endblock %}
 {% block sidebar_panels %}
+  <span ng-show="hide_discharge_action=true">
   {{ block.super }}
+  </span>
   {% include 'actions/wardround.html' %}
 {% endblock %}
