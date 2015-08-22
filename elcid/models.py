@@ -173,6 +173,7 @@ class Travel(EpisodeSubrecord):
     destination         = ForeignKeyOrFreeText(omodels.Destination)
     dates               = models.CharField(max_length=255, blank=True)
     reason_for_travel   = ForeignKeyOrFreeText(omodels.Travel_reason)
+    did_not_travel      = models.NullBooleanField(default=False)
     specific_exposures  = models.CharField(max_length=255, blank=True)
     malaria_prophylaxis = models.NullBooleanField(default=False)
     malaria_drug        = ForeignKeyOrFreeText(omodels.Antimicrobial)
