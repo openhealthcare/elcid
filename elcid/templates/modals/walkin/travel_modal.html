@@ -10,5 +10,6 @@
     {% checkbox label="Malaria Prohylaxis" model="editing.malaria_prophylaxis" %}
     {% input label="Drug" model="editing.malaria_drug" lookuplist="antimicrobial_list" show="editing.malaria_prophylaxis" %}
     {% select label="Compliance" model="editing.malaria_compliance" lookuplist="['Complete', 'Incomplete']" show="editing.malaria_prophylaxis" %}
+    {% checkbox label="Did not travel" model="editing.did_not_travel" %}    
   </form>
 {% endblock %}
