@@ -169,6 +169,7 @@ INSTALLED_APPS = (
     'wardround',
     'referral',
     'dashboard',
+    'iframeapi',
 #    'opal.core.collaborative',
     'guidelines',
     'dischargesummary',
