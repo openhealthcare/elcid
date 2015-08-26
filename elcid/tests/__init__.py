@@ -86,7 +86,7 @@ class LocationTest(OpalTestCase):
             'opat_referral_route': None,
             'opat_referral_team': None,
             'opat_referral_consultant': None,
-            'opat_referral_team_address': None,            
+            'opat_referral_team_address': None,
             }
         self.assertEqual(expected_data, self.location.to_dict(self.user))
 
@@ -160,9 +160,8 @@ class ViewsTest(OpalTestCase):
     fixtures = ['patients_users', 'patients_options', 'patients_records']
 
     def setUp(self):
-        self.user = User.objects.get(pk=1)
         self.assertTrue(self.client.login(username=self.user.username,
-                                          password='password'))
+                                          password=self.PASSWORD))
         self.patient = Patient.objects.get(pk=1)
 
     def test_try_to_get_patient_detail_for_nonexistent_patient(self):
@@ -247,9 +246,8 @@ class ListSchemaViewTest(OpalTestCase):
     fixtures = ['patients_users', 'patients_options', 'patients_records']
 
     def setUp(self):
-        self.user = User.objects.get(pk=1)
         self.assertTrue(self.client.login(username=self.user.username,
-                                          password='password'))
+                                          password=self.PASSWORD))
         self.patient = Patient.objects.get(pk=1)
         schema_file = TEST_DATA/'list.schema.json'
         self.schema = schema_file.json_load()
@@ -289,4 +287,3 @@ class ExtractSchemaViewTest(OpalTestCase):
     def assertStatusCode(self, path, expected_status_code):
         response = self.client.get(path)
         self.assertEqual(expected_status_code, response.status_code)
-
