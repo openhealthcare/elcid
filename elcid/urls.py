@@ -10,9 +10,6 @@ from opal.urls import urlpatterns as opatterns
 
 from elcid import views
 
-
-
-
 urlpatterns = patterns(
     '',
     url('^admin/bulk-create-users$', views.BulkCreateUserView.as_view(), name='bulk-create-users'),
@@ -23,10 +20,3 @@ urlpatterns = patterns(
 )
 
 urlpatterns += opatterns
-
-from django.conf import settings
-if settings.DEBUG:
-    import debug_toolbar
-    urlpatterns += patterns('',
-        url(r'^__debug__/', include(debug_toolbar.urls)),
-    )

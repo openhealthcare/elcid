@@ -1,415 +1,825 @@
 # -*- coding: utf-8 -*-
-import datetime
-from south.db import db
-from south.v2 import SchemaMigration
-from django.db import models
+from __future__ import unicode_literals
+
+from django.db import models, migrations
+import opal.models.mixins
 
 
-class Migration(SchemaMigration):
+class Migration(migrations.Migration):
 
-    def forwards(self, orm):
-        # Adding model 'Demographics'
-        db.create_table(u'elcid_demographics', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('consistency_token', self.gf('django.db.models.fields.CharField')(max_length=8)),
-            ('patient', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['opal.Patient'])),
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
-            ('hospital_number', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
-            ('date_of_birth', self.gf('django.db.models.fields.DateField')(null=True, blank=True)),
-        ))
-        db.send_create_signal(u'elcid', ['Demographics'])
+    dependencies = [
+        ('opal', '0002_auto_20150822_0820'),
+    ]
 
-        # Adding model 'Location'
-        db.create_table(u'elcid_location', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('consistency_token', self.gf('django.db.models.fields.CharField')(max_length=8)),
-            ('episode', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['opal.Episode'], null=True)),
-            ('category', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
-            ('hospital', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
-            ('ward', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
-            ('bed', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
-            ('date_of_admission', self.gf('django.db.models.fields.DateField')(null=True, blank=True)),
-            ('discharge_date', self.gf('django.db.models.fields.DateField')(null=True, blank=True)),
-        ))
-        db.send_create_signal(u'elcid', ['Location'])
-
-        # Adding model 'Diagnosis'
-        db.create_table(u'elcid_diagnosis', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('consistency_token', self.gf('django.db.models.fields.CharField')(max_length=8)),
-            ('episode', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['opal.Episode'], null=True)),
-            ('provisional', self.gf('django.db.models.fields.BooleanField')(default=False)),
-            ('details', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
-            ('date_of_diagnosis', self.gf('django.db.models.fields.DateField')(null=True, blank=True)),
-            ('condition_fk', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['opal.Condition'], null=True, blank=True)),
-            ('condition_ft', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
-        ))
-        db.send_create_signal(u'elcid', ['Diagnosis'])
-
-        # Adding model 'PastMedicalHistory'
-        db.create_table(u'elcid_pastmedicalhistory', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('consistency_token', self.gf('django.db.models.fields.CharField')(max_length=8)),
-            ('episode', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['opal.Episode'], null=True)),
-            ('year', self.gf('django.db.models.fields.CharField')(max_length=4, blank=True)),
-            ('condition_fk', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['opal.Condition'], null=True, blank=True)),
-            ('condition_ft', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
-        ))
-        db.send_create_signal(u'elcid', ['PastMedicalHistory'])
-
-        # Adding model 'GeneralNote'
-        db.create_table(u'elcid_generalnote', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('consistency_token', self.gf('django.db.models.fields.CharField')(max_length=8)),
-            ('episode', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['opal.Episode'], null=True)),
-            ('date', self.gf('django.db.models.fields.DateField')(null=True, blank=True)),
-            ('comment', self.gf('django.db.models.fields.TextField')()),
-        ))
-        db.send_create_signal(u'elcid', ['GeneralNote'])
-
-        # Adding model 'Travel'
-        db.create_table(u'elcid_travel', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('consistency_token', self.gf('django.db.models.fields.CharField')(max_length=8)),
-            ('episode', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['opal.Episode'], null=True)),
-            ('dates', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
-            ('specific_exposures', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
-            ('destination_fk', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['opal.Destination'], null=True, blank=True)),
-            ('destination_ft', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
-            ('reason_for_travel_fk', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['opal.Travel_reason'], null=True, blank=True)),
-            ('reason_for_travel_ft', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
-        ))
-        db.send_create_signal(u'elcid', ['Travel'])
-
-        # Adding model 'Antimicrobial'
-        db.create_table(u'elcid_antimicrobial', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('consistency_token', self.gf('django.db.models.fields.CharField')(max_length=8)),
-            ('episode', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['opal.Episode'], null=True)),
-            ('dose', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
-            ('start_date', self.gf('django.db.models.fields.DateField')(null=True, blank=True)),
-            ('end_date', self.gf('django.db.models.fields.DateField')(null=True, blank=True)),
-            ('route_fk', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['opal.Antimicrobial_route'], null=True, blank=True)),
-            ('route_ft', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
-            ('drug_fk', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['opal.Antimicrobial'], null=True, blank=True)),
-            ('drug_ft', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
-        ))
-        db.send_create_signal(u'elcid', ['Antimicrobial'])
-
-        # Adding model 'MicrobiologyInput'
-        db.create_table(u'elcid_microbiologyinput', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('consistency_token', self.gf('django.db.models.fields.CharField')(max_length=8)),
-            ('episode', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['opal.Episode'], null=True)),
-            ('date', self.gf('django.db.models.fields.DateField')(null=True, blank=True)),
-            ('initials', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
-            ('clinical_discussion', self.gf('django.db.models.fields.TextField')(blank=True)),
-            ('agreed_plan', self.gf('django.db.models.fields.TextField')(blank=True)),
-            ('discussed_with', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
-            ('clinical_advice_given', self.gf('django.db.models.fields.BooleanField')(default=False)),
-            ('infection_control_advice_given', self.gf('django.db.models.fields.BooleanField')(default=False)),
-            ('change_in_antibiotic_prescription', self.gf('django.db.models.fields.BooleanField')(default=False)),
-            ('referred_to_opat', self.gf('django.db.models.fields.BooleanField')(default=False)),
-            ('reason_for_interaction_fk', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['opal.Clinical_advice_reason_for_interaction'], null=True, blank=True)),
-            ('reason_for_interaction_ft', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
-        ))
-        db.send_create_signal(u'elcid', ['MicrobiologyInput'])
-
-        # Adding model 'Todo'
-        db.create_table(u'elcid_todo', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('consistency_token', self.gf('django.db.models.fields.CharField')(max_length=8)),
-            ('episode', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['opal.Episode'], null=True)),
-            ('details', self.gf('django.db.models.fields.TextField')(blank=True)),
-        ))
-        db.send_create_signal(u'elcid', ['Todo'])
-
-        # Adding model 'MicrobiologyTest'
-        db.create_table(u'elcid_microbiologytest', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('consistency_token', self.gf('django.db.models.fields.CharField')(max_length=8)),
-            ('episode', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['opal.Episode'], null=True)),
-            ('test', self.gf('django.db.models.fields.CharField')(max_length=255)),
-            ('date_ordered', self.gf('django.db.models.fields.DateField')(null=True, blank=True)),
-            ('details', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
-            ('microscopy', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
-            ('organism', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
-            ('sensitive_antibiotics', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
-            ('resistant_antibiotics', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
-            ('result', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('igm', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('igg', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('vca_igm', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('vca_igg', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('ebna_igg', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('hbsag', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('anti_hbs', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('anti_hbcore_igm', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('anti_hbcore_igg', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('rpr', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('tppa', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('viral_load', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('parasitaemia', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('hsv', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('vzv', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('syphilis', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('c_difficile_antigen', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('c_difficile_toxin', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('species', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('hsv_1', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('hsv_2', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('enterovirus', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('cmv', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('ebv', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('influenza_a', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('influenza_b', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('parainfluenza', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('metapneumovirus', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('rsv', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('adenovirus', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('norovirus', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('rotavirus', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('giardia', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('entamoeba_histolytica', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('cryptosporidium', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-        ))
-        db.send_create_signal(u'elcid', ['MicrobiologyTest'])
-
-
-    def backwards(self, orm):
-        # Deleting model 'Demographics'
-        db.delete_table(u'elcid_demographics')
-
-        # Deleting model 'Location'
-        db.delete_table(u'elcid_location')
-
-        # Deleting model 'Diagnosis'
-        db.delete_table(u'elcid_diagnosis')
-
-        # Deleting model 'PastMedicalHistory'
-        db.delete_table(u'elcid_pastmedicalhistory')
-
-        # Deleting model 'GeneralNote'
-        db.delete_table(u'elcid_generalnote')
-
-        # Deleting model 'Travel'
-        db.delete_table(u'elcid_travel')
-
-        # Deleting model 'Antimicrobial'
-        db.delete_table(u'elcid_antimicrobial')
-
-        # Deleting model 'MicrobiologyInput'
-        db.delete_table(u'elcid_microbiologyinput')
-
-        # Deleting model 'Todo'
-        db.delete_table(u'elcid_todo')
-
-        # Deleting model 'MicrobiologyTest'
-        db.delete_table(u'elcid_microbiologytest')
-
-
-    models = {
-        u'contenttypes.contenttype': {
-            'Meta': {'ordering': "('name',)", 'unique_together': "(('app_label', 'model'),)", 'object_name': 'ContentType', 'db_table': "'django_content_type'"},
-            'app_label': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
-        },
-        u'elcid.antimicrobial': {
-            'Meta': {'object_name': 'Antimicrobial'},
-            'consistency_token': ('django.db.models.fields.CharField', [], {'max_length': '8'}),
-            'dose': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
-            'drug_fk': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['opal.Antimicrobial']", 'null': 'True', 'blank': 'True'}),
-            'drug_ft': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
-            'end_date': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
-            'episode': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['opal.Episode']", 'null': 'True'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'route_fk': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['opal.Antimicrobial_route']", 'null': 'True', 'blank': 'True'}),
-            'route_ft': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
-            'start_date': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'})
-        },
-        u'elcid.demographics': {
-            'Meta': {'object_name': 'Demographics'},
-            'consistency_token': ('django.db.models.fields.CharField', [], {'max_length': '8'}),
-            'date_of_birth': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
-            'hospital_number': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
-            'patient': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['opal.Patient']"})
-        },
-        u'elcid.diagnosis': {
-            'Meta': {'object_name': 'Diagnosis'},
-            'condition_fk': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['opal.Condition']", 'null': 'True', 'blank': 'True'}),
-            'condition_ft': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
-            'consistency_token': ('django.db.models.fields.CharField', [], {'max_length': '8'}),
-            'date_of_diagnosis': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
-            'details': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
-            'episode': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['opal.Episode']", 'null': 'True'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'provisional': ('django.db.models.fields.BooleanField', [], {'default': 'False'})
-        },
-        u'elcid.generalnote': {
-            'Meta': {'object_name': 'GeneralNote'},
-            'comment': ('django.db.models.fields.TextField', [], {}),
-            'consistency_token': ('django.db.models.fields.CharField', [], {'max_length': '8'}),
-            'date': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
-            'episode': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['opal.Episode']", 'null': 'True'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
-        },
-        u'elcid.location': {
-            'Meta': {'object_name': 'Location'},
-            'bed': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
-            'category': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
-            'consistency_token': ('django.db.models.fields.CharField', [], {'max_length': '8'}),
-            'date_of_admission': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
-            'discharge_date': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
-            'episode': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['opal.Episode']", 'null': 'True'}),
-            'hospital': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'ward': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'})
-        },
-        u'elcid.microbiologyinput': {
-            'Meta': {'object_name': 'MicrobiologyInput'},
-            'agreed_plan': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
-            'change_in_antibiotic_prescription': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'clinical_advice_given': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'clinical_discussion': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
-            'consistency_token': ('django.db.models.fields.CharField', [], {'max_length': '8'}),
-            'date': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
-            'discussed_with': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
-            'episode': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['opal.Episode']", 'null': 'True'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'infection_control_advice_given': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'initials': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
-            'reason_for_interaction_fk': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['opal.Clinical_advice_reason_for_interaction']", 'null': 'True', 'blank': 'True'}),
-            'reason_for_interaction_ft': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
-            'referred_to_opat': ('django.db.models.fields.BooleanField', [], {'default': 'False'})
-        },
-        u'elcid.microbiologytest': {
-            'Meta': {'object_name': 'MicrobiologyTest'},
-            'adenovirus': ('django.db.models.fields.CharField', [], {'max_length': '20', 'blank': 'True'}),
-            'anti_hbcore_igg': ('django.db.models.fields.CharField', [], {'max_length': '20', 'blank': 'True'}),
-            'anti_hbcore_igm': ('django.db.models.fields.CharField', [], {'max_length': '20', 'blank': 'True'}),
-            'anti_hbs': ('django.db.models.fields.CharField', [], {'max_length': '20', 'blank': 'True'}),
-            'c_difficile_antigen': ('django.db.models.fields.CharField', [], {'max_length': '20', 'blank': 'True'}),
-            'c_difficile_toxin': ('django.db.models.fields.CharField', [], {'max_length': '20', 'blank': 'True'}),
-            'cmv': ('django.db.models.fields.CharField', [], {'max_length': '20', 'blank': 'True'}),
-            'consistency_token': ('django.db.models.fields.CharField', [], {'max_length': '8'}),
-            'cryptosporidium': ('django.db.models.fields.CharField', [], {'max_length': '20', 'blank': 'True'}),
-            'date_ordered': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
-            'details': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
-            'ebna_igg': ('django.db.models.fields.CharField', [], {'max_length': '20', 'blank': 'True'}),
-            'ebv': ('django.db.models.fields.CharField', [], {'max_length': '20', 'blank': 'True'}),
-            'entamoeba_histolytica': ('django.db.models.fields.CharField', [], {'max_length': '20', 'blank': 'True'}),
-            'enterovirus': ('django.db.models.fields.CharField', [], {'max_length': '20', 'blank': 'True'}),
-            'episode': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['opal.Episode']", 'null': 'True'}),
-            'giardia': ('django.db.models.fields.CharField', [], {'max_length': '20', 'blank': 'True'}),
-            'hbsag': ('django.db.models.fields.CharField', [], {'max_length': '20', 'blank': 'True'}),
-            'hsv': ('django.db.models.fields.CharField', [], {'max_length': '20', 'blank': 'True'}),
-            'hsv_1': ('django.db.models.fields.CharField', [], {'max_length': '20', 'blank': 'True'}),
-            'hsv_2': ('django.db.models.fields.CharField', [], {'max_length': '20', 'blank': 'True'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'igg': ('django.db.models.fields.CharField', [], {'max_length': '20', 'blank': 'True'}),
-            'igm': ('django.db.models.fields.CharField', [], {'max_length': '20', 'blank': 'True'}),
-            'influenza_a': ('django.db.models.fields.CharField', [], {'max_length': '20', 'blank': 'True'}),
-            'influenza_b': ('django.db.models.fields.CharField', [], {'max_length': '20', 'blank': 'True'}),
-            'metapneumovirus': ('django.db.models.fields.CharField', [], {'max_length': '20', 'blank': 'True'}),
-            'microscopy': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
-            'norovirus': ('django.db.models.fields.CharField', [], {'max_length': '20', 'blank': 'True'}),
-            'organism': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
-            'parainfluenza': ('django.db.models.fields.CharField', [], {'max_length': '20', 'blank': 'True'}),
-            'parasitaemia': ('django.db.models.fields.CharField', [], {'max_length': '20', 'blank': 'True'}),
-            'resistant_antibiotics': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
-            'result': ('django.db.models.fields.CharField', [], {'max_length': '20', 'blank': 'True'}),
-            'rotavirus': ('django.db.models.fields.CharField', [], {'max_length': '20', 'blank': 'True'}),
-            'rpr': ('django.db.models.fields.CharField', [], {'max_length': '20', 'blank': 'True'}),
-            'rsv': ('django.db.models.fields.CharField', [], {'max_length': '20', 'blank': 'True'}),
-            'sensitive_antibiotics': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
-            'species': ('django.db.models.fields.CharField', [], {'max_length': '20', 'blank': 'True'}),
-            'syphilis': ('django.db.models.fields.CharField', [], {'max_length': '20', 'blank': 'True'}),
-            'test': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
-            'tppa': ('django.db.models.fields.CharField', [], {'max_length': '20', 'blank': 'True'}),
-            'vca_igg': ('django.db.models.fields.CharField', [], {'max_length': '20', 'blank': 'True'}),
-            'vca_igm': ('django.db.models.fields.CharField', [], {'max_length': '20', 'blank': 'True'}),
-            'viral_load': ('django.db.models.fields.CharField', [], {'max_length': '20', 'blank': 'True'}),
-            'vzv': ('django.db.models.fields.CharField', [], {'max_length': '20', 'blank': 'True'})
-        },
-        u'elcid.pastmedicalhistory': {
-            'Meta': {'object_name': 'PastMedicalHistory'},
-            'condition_fk': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['opal.Condition']", 'null': 'True', 'blank': 'True'}),
-            'condition_ft': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
-            'consistency_token': ('django.db.models.fields.CharField', [], {'max_length': '8'}),
-            'episode': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['opal.Episode']", 'null': 'True'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'year': ('django.db.models.fields.CharField', [], {'max_length': '4', 'blank': 'True'})
-        },
-        u'elcid.todo': {
-            'Meta': {'object_name': 'Todo'},
-            'consistency_token': ('django.db.models.fields.CharField', [], {'max_length': '8'}),
-            'details': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
-            'episode': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['opal.Episode']", 'null': 'True'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
-        },
-        u'elcid.travel': {
-            'Meta': {'object_name': 'Travel'},
-            'consistency_token': ('django.db.models.fields.CharField', [], {'max_length': '8'}),
-            'dates': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
-            'destination_fk': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['opal.Destination']", 'null': 'True', 'blank': 'True'}),
-            'destination_ft': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
-            'episode': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['opal.Episode']", 'null': 'True'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'reason_for_travel_fk': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['opal.Travel_reason']", 'null': 'True', 'blank': 'True'}),
-            'reason_for_travel_ft': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
-            'specific_exposures': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'})
-        },
-        u'opal.antimicrobial': {
-            'Meta': {'ordering': "['name']", 'object_name': 'Antimicrobial'},
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '255'})
-        },
-        u'opal.antimicrobial_route': {
-            'Meta': {'ordering': "['name']", 'object_name': 'Antimicrobial_route'},
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '255'})
-        },
-        u'opal.clinical_advice_reason_for_interaction': {
-            'Meta': {'ordering': "['name']", 'object_name': 'Clinical_advice_reason_for_interaction'},
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '255'})
-        },
-        u'opal.condition': {
-            'Meta': {'ordering': "['name']", 'object_name': 'Condition'},
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '255'})
-        },
-        u'opal.destination': {
-            'Meta': {'ordering': "['name']", 'object_name': 'Destination'},
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '255'})
-        },
-        u'opal.episode': {
-            'Meta': {'object_name': 'Episode'},
-            'active': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'patient': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['opal.Patient']"})
-        },
-        u'opal.patient': {
-            'Meta': {'object_name': 'Patient'},
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
-        },
-        u'opal.synonym': {
-            'Meta': {'unique_together': "(('name', 'content_type'),)", 'object_name': 'Synonym'},
-            'content_type': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['contenttypes.ContentType']"}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
-            'object_id': ('django.db.models.fields.PositiveIntegerField', [], {})
-        },
-        u'opal.travel_reason': {
-            'Meta': {'ordering': "['name']", 'object_name': 'Travel_reason'},
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '255'})
-        }
-    }
-
-    complete_apps = ['elcid']
+    operations = [
+        migrations.CreateModel(
+            name='Allergies',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('consistency_token', models.CharField(max_length=8)),
+                ('provisional', models.NullBooleanField()),
+                ('details', models.CharField(max_length=255, blank=True)),
+                ('drug_ft', models.CharField(default=b'', max_length=255, null=True, blank=True)),
+            ],
+            options={
+                'verbose_name_plural': 'Allergies',
+            },
+            bases=(opal.models.mixins.UpdatesFromDictMixin, models.Model),
+        ),
+        migrations.CreateModel(
+            name='Antimicrobial',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('consistency_token', models.CharField(max_length=8)),
+                ('dose', models.CharField(max_length=255, blank=True)),
+                ('start_date', models.DateField(null=True, blank=True)),
+                ('end_date', models.DateField(null=True, blank=True)),
+                ('comments', models.TextField(null=True, blank=True)),
+                ('route_ft', models.CharField(default=b'', max_length=255, null=True, blank=True)),
+                ('drug_ft', models.CharField(default=b'', max_length=255, null=True, blank=True)),
+                ('delivered_by_ft', models.CharField(default=b'', max_length=255, null=True, blank=True)),
+                ('frequency_ft', models.CharField(default=b'', max_length=255, null=True, blank=True)),
+                ('adverse_event_ft', models.CharField(default=b'', max_length=255, null=True, blank=True)),
+                ('reason_for_stopping_ft', models.CharField(default=b'', max_length=255, null=True, blank=True)),
+                ('adverse_event_fk', models.ForeignKey(blank=True, to='opal.Antimicrobial_adverse_event', null=True)),
+            ],
+            options={
+                'abstract': False,
+            },
+            bases=(opal.models.mixins.UpdatesFromDictMixin, models.Model),
+        ),
+        migrations.CreateModel(
+            name='Antimicrobial_susceptability',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('name', models.CharField(unique=True, max_length=255)),
+            ],
+            options={
+                'verbose_name': 'Antimicrobial susceptability',
+                'verbose_name_plural': 'Antimicrobial susceptibilities',
+            },
+        ),
+        migrations.CreateModel(
+            name='Appointment',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('consistency_token', models.CharField(max_length=8)),
+                ('appointment_type', models.CharField(max_length=200, null=True, blank=True)),
+                ('appointment_with', models.CharField(max_length=200, null=True, blank=True)),
+                ('date', models.DateField(null=True, blank=True)),
+                ('episode', models.ForeignKey(to='opal.Episode')),
+            ],
+            options={
+                'abstract': False,
+            },
+            bases=(opal.models.mixins.UpdatesFromDictMixin, models.Model),
+        ),
+        migrations.CreateModel(
+            name='Carers',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('consistency_token', models.CharField(max_length=8)),
+                ('gp', models.ForeignKey(blank=True, to='opal.GP', null=True)),
+                ('nurse', models.ForeignKey(blank=True, to='opal.CommunityNurse', null=True)),
+                ('patient', models.ForeignKey(to='opal.Patient')),
+            ],
+            options={
+                'verbose_name_plural': 'Carers',
+            },
+            bases=(opal.models.mixins.UpdatesFromDictMixin, models.Model),
+        ),
+        migrations.CreateModel(
+            name='Checkpoints_assay',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('name', models.CharField(unique=True, max_length=255)),
+            ],
+            options={
+                'verbose_name': 'Checkpoints assay values',
+                'verbose_name_plural': 'Checkpoints assay values',
+            },
+        ),
+        migrations.CreateModel(
+            name='CheckpointsAssay',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('consistency_token', models.CharField(max_length=8)),
+                ('acc', models.NullBooleanField(default=False)),
+                ('act_mir', models.NullBooleanField(default=False)),
+                ('bel', models.NullBooleanField(default=False)),
+                ('cmy_i_mox', models.NullBooleanField(default=False)),
+                ('cmy_ii', models.NullBooleanField(default=False)),
+                ('ctx_m_1_group', models.NullBooleanField(default=False)),
+                ('ctx_m_1_like', models.NullBooleanField(default=False)),
+                ('ctx_m_15_like', models.NullBooleanField(default=False)),
+                ('ctx_m_2_group', models.NullBooleanField(default=False)),
+                ('ctx_m_3_like', models.NullBooleanField(default=False)),
+                ('ctx_m_32_like', models.NullBooleanField(default=False)),
+                ('ctx_m_8_25_group', models.NullBooleanField(default=False)),
+                ('ctx_m_9_group', models.NullBooleanField(default=False)),
+                ('dha', models.NullBooleanField(default=False)),
+                ('fox', models.NullBooleanField(default=False)),
+                ('ges', models.NullBooleanField(default=False)),
+                ('gim', models.NullBooleanField(default=False)),
+                ('imp', models.NullBooleanField(default=False)),
+                ('kpc', models.NullBooleanField(default=False)),
+                ('ndm', models.NullBooleanField(default=False)),
+                ('oxa_23_like', models.NullBooleanField(default=False)),
+                ('oxa_24_like', models.NullBooleanField(default=False)),
+                ('oxa_48_like', models.NullBooleanField(default=False)),
+                ('oxa_58_like', models.NullBooleanField(default=False)),
+                ('per', models.NullBooleanField(default=False)),
+                ('shv_e240k', models.NullBooleanField(default=False)),
+                ('shv_g238a', models.NullBooleanField(default=False)),
+                ('shv_g238s', models.NullBooleanField(default=False)),
+                ('shv_wt', models.NullBooleanField(default=False)),
+                ('spm', models.NullBooleanField(default=False)),
+                ('tem_e104k', models.NullBooleanField(default=False)),
+                ('tem_g238s', models.NullBooleanField(default=False)),
+                ('tem_r164c', models.NullBooleanField(default=False)),
+                ('tem_r164h', models.NullBooleanField(default=False)),
+                ('tem_r164s', models.NullBooleanField(default=False)),
+                ('tem_wt', models.NullBooleanField(default=False)),
+                ('veb', models.NullBooleanField(default=False)),
+                ('vim', models.NullBooleanField(default=False)),
+                ('negative', models.NullBooleanField(default=False)),
+                ('comments', models.TextField(null=True, blank=True)),
+                ('episode', models.ForeignKey(to='opal.Episode')),
+            ],
+            options={
+                'verbose_name': 'Checkpoints assay',
+            },
+            bases=(opal.models.mixins.UpdatesFromDictMixin, models.Model),
+        ),
+        migrations.CreateModel(
+            name='ContactDetails',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('consistency_token', models.CharField(max_length=8)),
+                ('address_line1', models.CharField(max_length=45, null=True, verbose_name=b'Address line 1', blank=True)),
+                ('address_line2', models.CharField(max_length=45, null=True, verbose_name=b'Address line 2', blank=True)),
+                ('city', models.CharField(max_length=50, blank=True)),
+                ('county', models.CharField(max_length=40, null=True, verbose_name=b'County', blank=True)),
+                ('post_code', models.CharField(max_length=10, null=True, verbose_name=b'Post Code', blank=True)),
+                ('tel1', models.CharField(max_length=50, null=True, blank=True)),
+                ('tel2', models.CharField(max_length=50, null=True, blank=True)),
+                ('patient', models.ForeignKey(to='opal.Patient')),
+            ],
+            options={
+                'verbose_name_plural': 'Contact details',
+            },
+            bases=(opal.models.mixins.UpdatesFromDictMixin, models.Model),
+        ),
+        migrations.CreateModel(
+            name='Demographics',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('consistency_token', models.CharField(max_length=8)),
+                ('name', models.CharField(max_length=255, blank=True)),
+                ('hospital_number', models.CharField(max_length=255, blank=True)),
+                ('nhs_number', models.CharField(max_length=255, null=True, blank=True)),
+                ('date_of_birth', models.DateField(null=True, blank=True)),
+                ('ethnicity', models.CharField(max_length=255, null=True, blank=True)),
+                ('gender', models.CharField(max_length=255, null=True, blank=True)),
+                ('country_of_birth_ft', models.CharField(default=b'', max_length=255, null=True, blank=True)),
+                ('country_of_birth_fk', models.ForeignKey(blank=True, to='opal.Destination', null=True)),
+                ('patient', models.ForeignKey(to='opal.Patient')),
+            ],
+            options={
+                'verbose_name_plural': 'Demographics',
+            },
+            bases=(opal.models.mixins.UpdatesFromDictMixin, models.Model),
+        ),
+        migrations.CreateModel(
+            name='Diagnosis',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('consistency_token', models.CharField(max_length=8)),
+                ('provisional', models.NullBooleanField()),
+                ('details', models.CharField(max_length=255, blank=True)),
+                ('date_of_diagnosis', models.DateField(null=True, blank=True)),
+                ('condition_ft', models.CharField(default=b'', max_length=255, null=True, blank=True)),
+                ('condition_fk', models.ForeignKey(blank=True, to='opal.Condition', null=True)),
+                ('episode', models.ForeignKey(to='opal.Episode')),
+            ],
+            options={
+                'verbose_name_plural': 'Diagnoses',
+            },
+            bases=(opal.models.mixins.UpdatesFromDictMixin, models.Model),
+        ),
+        migrations.CreateModel(
+            name='Drug_delivered',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('name', models.CharField(unique=True, max_length=255)),
+            ],
+            options={
+                'verbose_name_plural': 'Drugs delivered',
+            },
+        ),
+        migrations.CreateModel(
+            name='GeneralNote',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('consistency_token', models.CharField(max_length=8)),
+                ('date', models.DateField(null=True, blank=True)),
+                ('comment', models.TextField()),
+                ('episode', models.ForeignKey(to='opal.Episode')),
+            ],
+            options={
+                'abstract': False,
+            },
+            bases=(opal.models.mixins.UpdatesFromDictMixin, models.Model),
+        ),
+        migrations.CreateModel(
+            name='Hiv_no',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('name', models.CharField(unique=True, max_length=255)),
+            ],
+            options={
+                'verbose_name': 'HIV refusal reason',
+            },
+        ),
+        migrations.CreateModel(
+            name='Iv_stop',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('name', models.CharField(unique=True, max_length=255)),
+            ],
+            options={
+                'verbose_name': 'IV stop',
+            },
+        ),
+        migrations.CreateModel(
+            name='LabSpecimin',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('consistency_token', models.CharField(max_length=8)),
+                ('date_collected', models.DateField(null=True, blank=True)),
+                ('volume', models.CharField(max_length=200, null=True, blank=True)),
+                ('epithelial_cell', models.CharField(max_length=200, null=True, blank=True)),
+                ('white_blood_cells', models.CharField(max_length=200, null=True, blank=True)),
+                ('date_tested', models.DateField(null=True, blank=True)),
+                ('external_id', models.CharField(max_length=200, null=True, blank=True)),
+                ('biobanking', models.NullBooleanField(default=False)),
+                ('biobanking_box', models.CharField(max_length=200, null=True, blank=True)),
+                ('date_biobanked', models.DateField(null=True, blank=True)),
+                ('volume_biobanked', models.CharField(max_length=200, null=True, blank=True)),
+                ('specimin_type_ft', models.CharField(default=b'', max_length=255, null=True, blank=True)),
+                ('appearance_ft', models.CharField(default=b'', max_length=255, null=True, blank=True)),
+            ],
+            options={
+                'verbose_name': 'Lab specimen appearance',
+            },
+            bases=(opal.models.mixins.UpdatesFromDictMixin, models.Model),
+        ),
+        migrations.CreateModel(
+            name='LabTest',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('consistency_token', models.CharField(max_length=8)),
+                ('test', models.CharField(max_length=255)),
+                ('date_ordered', models.DateField(null=True, blank=True)),
+                ('details', models.CharField(max_length=255, blank=True)),
+                ('result', models.CharField(max_length=255, blank=True)),
+                ('significant_organism', models.NullBooleanField(default=False)),
+                ('retrieved', models.NullBooleanField(default=False)),
+                ('date_retrieved', models.DateField(null=True, blank=True)),
+                ('sweep_biobanked', models.NullBooleanField(default=False)),
+                ('organism_biobanked', models.NullBooleanField(default=False)),
+                ('freezer_box_number', models.CharField(max_length=200, null=True, blank=True)),
+                ('esbl', models.NullBooleanField(default=False)),
+                ('carbapenemase', models.NullBooleanField(default=False)),
+                ('antimicrobials_resistant_ft', models.CharField(default=b'', max_length=255, null=True, blank=True)),
+                ('antimicrobials_susceptible_ft', models.CharField(default=b'', max_length=255, null=True, blank=True)),
+                ('antimicrobials_intermediate_ft', models.CharField(default=b'', max_length=255, null=True, blank=True)),
+                ('organism_details_ft', models.CharField(default=b'', max_length=255, null=True, blank=True)),
+                ('antimicrobials_intermediate_fk', models.ForeignKey(related_name='intermediate', blank=True, to='elcid.Antimicrobial_susceptability', null=True)),
+                ('antimicrobials_resistant_fk', models.ForeignKey(related_name='resistant', blank=True, to='elcid.Antimicrobial_susceptability', null=True)),
+                ('antimicrobials_susceptible_fk', models.ForeignKey(related_name='susceptible', blank=True, to='elcid.Antimicrobial_susceptability', null=True)),
+                ('episode', models.ForeignKey(to='opal.Episode')),
+            ],
+            options={
+                'abstract': False,
+            },
+            bases=(opal.models.mixins.UpdatesFromDictMixin, models.Model),
+        ),
+        migrations.CreateModel(
+            name='Line',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('consistency_token', models.CharField(max_length=8)),
+                ('insertion_datetime', models.DateTimeField(null=True, blank=True)),
+                ('inserted_by', models.CharField(max_length=255, null=True, blank=True)),
+                ('external_length', models.CharField(max_length=255, null=True, blank=True)),
+                ('removal_datetime', models.DateTimeField(null=True, blank=True)),
+                ('special_instructions', models.TextField()),
+                ('site_ft', models.CharField(default=b'', max_length=255, null=True, blank=True)),
+                ('removal_reason_ft', models.CharField(default=b'', max_length=255, null=True, blank=True)),
+                ('line_type_ft', models.CharField(default=b'', max_length=255, null=True, blank=True)),
+                ('complications_ft', models.CharField(default=b'', max_length=255, null=True, blank=True)),
+                ('complications_fk', models.ForeignKey(blank=True, to='opal.Line_complication', null=True)),
+                ('episode', models.ForeignKey(to='opal.Episode')),
+                ('line_type_fk', models.ForeignKey(blank=True, to='opal.Line_type', null=True)),
+                ('removal_reason_fk', models.ForeignKey(blank=True, to='opal.Line_removal_reason', null=True)),
+                ('site_fk', models.ForeignKey(blank=True, to='opal.Line_site', null=True)),
+            ],
+            options={
+                'abstract': False,
+            },
+            bases=(opal.models.mixins.UpdatesFromDictMixin, models.Model),
+        ),
+        migrations.CreateModel(
+            name='Location',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('consistency_token', models.CharField(max_length=8)),
+                ('category', models.CharField(max_length=255, blank=True)),
+                ('hospital', models.CharField(max_length=255, blank=True)),
+                ('ward', models.CharField(max_length=255, blank=True)),
+                ('bed', models.CharField(max_length=255, blank=True)),
+                ('opat_referral_route', models.CharField(max_length=255, null=True, blank=True)),
+                ('opat_referral_team', models.CharField(max_length=255, null=True, blank=True)),
+                ('opat_referral_consultant', models.CharField(max_length=255, null=True, blank=True)),
+                ('opat_referral_team_address', models.TextField(null=True, blank=True)),
+                ('opat_referral', models.DateField(null=True, blank=True)),
+                ('opat_discharge', models.DateField(null=True, blank=True)),
+                ('episode', models.ForeignKey(to='opal.Episode')),
+            ],
+            options={
+                'abstract': False,
+            },
+            bases=(opal.models.mixins.UpdatesFromDictMixin, models.Model),
+        ),
+        migrations.CreateModel(
+            name='MicrobiologyInput',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('consistency_token', models.CharField(max_length=8)),
+                ('date', models.DateField(null=True, blank=True)),
+                ('initials', models.CharField(max_length=255, blank=True)),
+                ('clinical_discussion', models.TextField(blank=True)),
+                ('agreed_plan', models.TextField(blank=True)),
+                ('discussed_with', models.CharField(max_length=255, blank=True)),
+                ('clinical_advice_given', models.NullBooleanField()),
+                ('infection_control_advice_given', models.NullBooleanField()),
+                ('change_in_antibiotic_prescription', models.NullBooleanField()),
+                ('referred_to_opat', models.NullBooleanField()),
+                ('reason_for_interaction_ft', models.CharField(default=b'', max_length=255, null=True, blank=True)),
+                ('episode', models.ForeignKey(to='opal.Episode')),
+                ('reason_for_interaction_fk', models.ForeignKey(blank=True, to='opal.Clinical_advice_reason_for_interaction', null=True)),
+            ],
+            options={
+                'abstract': False,
+            },
+            bases=(opal.models.mixins.UpdatesFromDictMixin, models.Model),
+        ),
+        migrations.CreateModel(
+            name='MicrobiologyTest',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('consistency_token', models.CharField(max_length=8)),
+                ('test', models.CharField(max_length=255)),
+                ('date_ordered', models.DateField(null=True, blank=True)),
+                ('details', models.CharField(max_length=255, blank=True)),
+                ('microscopy', models.CharField(max_length=255, blank=True)),
+                ('organism', models.CharField(max_length=255, blank=True)),
+                ('sensitive_antibiotics', models.CharField(max_length=255, blank=True)),
+                ('resistant_antibiotics', models.CharField(max_length=255, blank=True)),
+                ('result', models.CharField(max_length=255, blank=True)),
+                ('igm', models.CharField(max_length=20, blank=True)),
+                ('igg', models.CharField(max_length=20, blank=True)),
+                ('vca_igm', models.CharField(max_length=20, blank=True)),
+                ('vca_igg', models.CharField(max_length=20, blank=True)),
+                ('ebna_igg', models.CharField(max_length=20, blank=True)),
+                ('hbsag', models.CharField(max_length=20, blank=True)),
+                ('anti_hbs', models.CharField(max_length=20, blank=True)),
+                ('anti_hbcore_igm', models.CharField(max_length=20, blank=True)),
+                ('anti_hbcore_igg', models.CharField(max_length=20, blank=True)),
+                ('rpr', models.CharField(max_length=20, blank=True)),
+                ('tppa', models.CharField(max_length=20, blank=True)),
+                ('viral_load', models.CharField(max_length=20, blank=True)),
+                ('parasitaemia', models.CharField(max_length=20, blank=True)),
+                ('hsv', models.CharField(max_length=20, blank=True)),
+                ('vzv', models.CharField(max_length=20, blank=True)),
+                ('syphilis', models.CharField(max_length=20, blank=True)),
+                ('c_difficile_antigen', models.CharField(max_length=20, blank=True)),
+                ('c_difficile_toxin', models.CharField(max_length=20, blank=True)),
+                ('species', models.CharField(max_length=20, blank=True)),
+                ('hsv_1', models.CharField(max_length=20, blank=True)),
+                ('hsv_2', models.CharField(max_length=20, blank=True)),
+                ('enterovirus', models.CharField(max_length=20, blank=True)),
+                ('cmv', models.CharField(max_length=20, blank=True)),
+                ('ebv', models.CharField(max_length=20, blank=True)),
+                ('influenza_a', models.CharField(max_length=20, blank=True)),
+                ('influenza_b', models.CharField(max_length=20, blank=True)),
+                ('parainfluenza', models.CharField(max_length=20, blank=True)),
+                ('metapneumovirus', models.CharField(max_length=20, blank=True)),
+                ('rsv', models.CharField(max_length=20, blank=True)),
+                ('adenovirus', models.CharField(max_length=20, blank=True)),
+                ('norovirus', models.CharField(max_length=20, blank=True)),
+                ('rotavirus', models.CharField(max_length=20, blank=True)),
+                ('giardia', models.CharField(max_length=20, blank=True)),
+                ('entamoeba_histolytica', models.CharField(max_length=20, blank=True)),
+                ('cryptosporidium', models.CharField(max_length=20, blank=True)),
+                ('hiv_declined_ft', models.CharField(default=b'', max_length=255, null=True, blank=True)),
+                ('episode', models.ForeignKey(to='opal.Episode')),
+                ('hiv_declined_fk', models.ForeignKey(blank=True, to='elcid.Hiv_no', null=True)),
+            ],
+            options={
+                'abstract': False,
+            },
+            bases=(opal.models.mixins.UpdatesFromDictMixin, models.Model),
+        ),
+        migrations.CreateModel(
+            name='Opat_rvt',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('name', models.CharField(unique=True, max_length=255)),
+            ],
+            options={
+                'verbose_name': 'OPAT RVT',
+            },
+        ),
+        migrations.CreateModel(
+            name='OPATLineAssessment',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('consistency_token', models.CharField(max_length=8)),
+                ('line', models.CharField(max_length=200, null=True, blank=True)),
+                ('assessment_date', models.DateField(null=True, blank=True)),
+                ('vip_score', models.IntegerField(null=True, blank=True)),
+                ('dressing_type', models.CharField(max_length=200, null=True, blank=True)),
+                ('dressing_change_date', models.DateField(null=True, blank=True)),
+                ('dressing_change_reason', models.CharField(max_length=200, null=True, blank=True)),
+                ('bionector_change_date', models.DateField(null=True, blank=True)),
+                ('dressing_intact', models.NullBooleanField(default=False)),
+                ('lumen_flush_ok', models.NullBooleanField(default=False)),
+                ('blood_drawback_seen', models.NullBooleanField(default=False)),
+                ('cm_from_exit_site', models.NullBooleanField(default=False)),
+                ('episode', models.ForeignKey(to='opal.Episode')),
+            ],
+            options={
+                'verbose_name': 'OPAT line assessment',
+            },
+            bases=(opal.models.mixins.UpdatesFromDictMixin, models.Model),
+        ),
+        migrations.CreateModel(
+            name='OPATMeta',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('consistency_token', models.CharField(max_length=8)),
+                ('review_date', models.DateField(null=True, blank=True)),
+                ('reason_for_stopping', models.CharField(max_length=200, null=True, blank=True)),
+                ('stopping_iv_details', models.CharField(max_length=200, null=True, blank=True)),
+                ('treatment_outcome', models.CharField(max_length=200, null=True, blank=True)),
+                ('deceased', models.NullBooleanField(default=False)),
+                ('death_category', models.CharField(max_length=200, null=True, blank=True)),
+                ('cause_of_death', models.CharField(max_length=200, null=True, blank=True)),
+                ('readmitted', models.NullBooleanField(default=False)),
+                ('readmission_cause', models.CharField(max_length=200, null=True, blank=True)),
+                ('notes', models.TextField(null=True, blank=True)),
+                ('unplanned_stop_reason_ft', models.CharField(default=b'', max_length=255, null=True, blank=True)),
+                ('episode', models.ForeignKey(to='opal.Episode')),
+            ],
+            options={
+                'verbose_name': 'OPAT meta',
+            },
+            bases=(opal.models.mixins.UpdatesFromDictMixin, models.Model),
+        ),
+        migrations.CreateModel(
+            name='OPATOutcome',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('consistency_token', models.CharField(max_length=8)),
+                ('treatment_outcome', models.CharField(max_length=200, null=True, blank=True)),
+                ('deceased', models.NullBooleanField(default=False)),
+                ('death_category', models.CharField(max_length=200, null=True, blank=True)),
+                ('cause_of_death', models.CharField(max_length=200, null=True, blank=True)),
+                ('readmitted', models.NullBooleanField(default=False)),
+                ('readmission_cause', models.CharField(max_length=200, null=True, blank=True)),
+                ('notes', models.TextField(null=True, blank=True)),
+                ('patient_feedback', models.NullBooleanField(default=False)),
+                ('episode', models.ForeignKey(to='opal.Episode')),
+            ],
+            options={
+                'verbose_name': 'OPAT outcome',
+            },
+            bases=(opal.models.mixins.UpdatesFromDictMixin, models.Model),
+        ),
+        migrations.CreateModel(
+            name='OPATOutstandingIssues',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('consistency_token', models.CharField(max_length=8)),
+                ('details', models.TextField(blank=True)),
+                ('episode', models.ForeignKey(to='opal.Episode')),
+            ],
+            options={
+                'verbose_name': 'OPAT outstanding issue',
+            },
+            bases=(opal.models.mixins.UpdatesFromDictMixin, models.Model),
+        ),
+        migrations.CreateModel(
+            name='OPATRejection',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('consistency_token', models.CharField(max_length=8)),
+                ('decided_by', models.CharField(max_length=255, null=True, blank=True)),
+                ('patient_choice', models.NullBooleanField(default=False)),
+                ('oral_available', models.NullBooleanField(default=False)),
+                ('not_needed', models.NullBooleanField(default=False)),
+                ('patient_suitability', models.NullBooleanField(default=False)),
+                ('not_fit_for_discharge', models.NullBooleanField(default=False)),
+                ('non_complex_infection', models.NullBooleanField(default=False)),
+                ('no_social_support', models.NullBooleanField(default=False)),
+                ('reason', models.CharField(max_length=255, null=True, blank=True)),
+                ('date', models.DateField(null=True, blank=True)),
+                ('episode', models.ForeignKey(to='opal.Episode')),
+            ],
+            options={
+                'verbose_name': 'OPAT rejection',
+            },
+            bases=(opal.models.mixins.UpdatesFromDictMixin, models.Model),
+        ),
+        migrations.CreateModel(
+            name='OPATReview',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('consistency_token', models.CharField(max_length=8)),
+                ('datetime', models.DateTimeField(null=True, blank=True)),
+                ('initials', models.CharField(max_length=255, blank=True)),
+                ('discussion', models.TextField(null=True, blank=True)),
+                ('opat_plan', models.TextField(blank=True)),
+                ('next_review', models.DateField(null=True, blank=True)),
+                ('dressing_changed', models.NullBooleanField(default=False)),
+                ('bung_changed', models.NullBooleanField(default=False)),
+                ('medication_administered', models.TextField(null=True, blank=True)),
+                ('rv_type_ft', models.CharField(default=b'', max_length=255, null=True, blank=True)),
+                ('adverse_events_ft', models.CharField(default=b'', max_length=255, null=True, blank=True)),
+                ('adverse_events_fk', models.ForeignKey(blank=True, to='opal.Antimicrobial_adverse_event', null=True)),
+                ('episode', models.ForeignKey(to='opal.Episode')),
+                ('rv_type_fk', models.ForeignKey(blank=True, to='elcid.Opat_rvt', null=True)),
+            ],
+            options={
+                'verbose_name': 'OPAT review',
+            },
+            bases=(opal.models.mixins.UpdatesFromDictMixin, models.Model),
+        ),
+        migrations.CreateModel(
+            name='Organism_details',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('name', models.CharField(unique=True, max_length=255)),
+            ],
+            options={
+                'verbose_name_plural': 'Organism details',
+            },
+        ),
+        migrations.CreateModel(
+            name='PastMedicalHistory',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('consistency_token', models.CharField(max_length=8)),
+                ('year', models.CharField(max_length=4, blank=True)),
+                ('details', models.CharField(max_length=255, blank=True)),
+                ('condition_ft', models.CharField(default=b'', max_length=255, null=True, blank=True)),
+                ('condition_fk', models.ForeignKey(blank=True, to='opal.Condition', null=True)),
+                ('episode', models.ForeignKey(to='opal.Episode')),
+            ],
+            options={
+                'verbose_name_plural': 'Past medical histories',
+            },
+            bases=(opal.models.mixins.UpdatesFromDictMixin, models.Model),
+        ),
+        migrations.CreateModel(
+            name='PresentingComplaint',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('consistency_token', models.CharField(max_length=8)),
+                ('duration', models.CharField(max_length=255, null=True, blank=True)),
+                ('details', models.CharField(max_length=255, null=True, blank=True)),
+                ('symptom_ft', models.CharField(default=b'', max_length=255, null=True, blank=True)),
+                ('episode', models.ForeignKey(to='opal.Episode')),
+                ('symptom_fk', models.ForeignKey(blank=True, to='opal.Symptom', null=True)),
+            ],
+            options={
+                'abstract': False,
+            },
+            bases=(opal.models.mixins.UpdatesFromDictMixin, models.Model),
+        ),
+        migrations.CreateModel(
+            name='PrimaryDiagnosis',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('consistency_token', models.CharField(max_length=8)),
+                ('confirmed', models.NullBooleanField(default=False)),
+                ('condition_ft', models.CharField(default=b'', max_length=255, null=True, blank=True)),
+                ('condition_fk', models.ForeignKey(blank=True, to='opal.Condition', null=True)),
+                ('episode', models.ForeignKey(to='opal.Episode')),
+            ],
+            options={
+                'verbose_name_plural': 'Primary diagnoses',
+            },
+            bases=(opal.models.mixins.UpdatesFromDictMixin, models.Model),
+        ),
+        migrations.CreateModel(
+            name='RidRTITest',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('consistency_token', models.CharField(max_length=8)),
+                ('test', models.CharField(max_length=200, null=True, blank=True)),
+                ('notes', models.TextField(null=True, blank=True)),
+                ('pseudomonas_aeruginosa', models.NullBooleanField(default=False)),
+                ('acinetobacter_baumannii', models.NullBooleanField(default=False)),
+                ('senotophomonas_maltophilia', models.NullBooleanField(default=False)),
+                ('klebsiella_spp', models.NullBooleanField(default=False)),
+                ('enterobacter_spp', models.NullBooleanField(default=False)),
+                ('staphylococcus_aureus', models.NullBooleanField(default=False)),
+                ('staphylococcus_mrsa', models.NullBooleanField(default=False)),
+                ('ctx_m', models.NullBooleanField(default=False)),
+                ('shv_esbl', models.NullBooleanField(default=False)),
+                ('tem_esbl', models.NullBooleanField(default=False)),
+                ('vim', models.NullBooleanField(default=False)),
+                ('imp', models.NullBooleanField(default=False)),
+                ('ndm', models.NullBooleanField(default=False)),
+                ('kpc', models.NullBooleanField(default=False)),
+                ('oxa_48', models.NullBooleanField(default=False)),
+                ('meca', models.NullBooleanField(default=False)),
+                ('mycoplasma_pneumoniae', models.NullBooleanField(default=False)),
+                ('chlamydophila_pneumoniae', models.NullBooleanField(default=False)),
+                ('legionella_pneumophila', models.NullBooleanField(default=False)),
+                ('mtc', models.NullBooleanField(default=False)),
+                ('haemophilus_influenzae', models.NullBooleanField(default=False)),
+                ('streptococcus_pneumoniae', models.NullBooleanField(default=False)),
+                ('rsva', models.NullBooleanField(default=False)),
+                ('rsvb', models.NullBooleanField(default=False)),
+                ('influenza_a', models.NullBooleanField(default=False)),
+                ('influenza_b', models.NullBooleanField(default=False)),
+                ('cap_coronavirus_oc43', models.NullBooleanField(default=False)),
+                ('cap_coronavirus_hku1', models.NullBooleanField(default=False)),
+                ('cap_coronavirus_nl63', models.NullBooleanField(default=False)),
+                ('cap_coronavirus_229e', models.NullBooleanField(default=False)),
+                ('nocardia_spp', models.NullBooleanField(default=False)),
+                ('rhodococcus_equi', models.NullBooleanField(default=False)),
+                ('aspergillus_spp', models.NullBooleanField(default=False)),
+                ('cryptococcus_neoformans', models.NullBooleanField(default=False)),
+                ('pneumocystis_jiroveci', models.NullBooleanField(default=False)),
+                ('orti_coronavirus_oc43', models.NullBooleanField(default=False)),
+                ('orti_coronavirus_hku1', models.NullBooleanField(default=False)),
+                ('orti_coronavirus_nl63', models.NullBooleanField(default=False)),
+                ('orti_coronavirus_229e', models.NullBooleanField(default=False)),
+                ('episode', models.ForeignKey(to='opal.Episode')),
+            ],
+            options={
+                'verbose_name': 'RiD-RTI',
+            },
+            bases=(opal.models.mixins.UpdatesFromDictMixin, models.Model),
+        ),
+        migrations.CreateModel(
+            name='SecondaryDiagnosis',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('consistency_token', models.CharField(max_length=8)),
+                ('co_primary', models.NullBooleanField(default=False)),
+                ('condition_ft', models.CharField(default=b'', max_length=255, null=True, blank=True)),
+                ('condition_fk', models.ForeignKey(blank=True, to='opal.Condition', null=True)),
+                ('episode', models.ForeignKey(to='opal.Episode')),
+            ],
+            options={
+                'verbose_name_plural': 'Secondary diagnoses',
+            },
+            bases=(opal.models.mixins.UpdatesFromDictMixin, models.Model),
+        ),
+        migrations.CreateModel(
+            name='Specimin',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('name', models.CharField(unique=True, max_length=255)),
+            ],
+            options={
+                'verbose_name': 'Specimen',
+            },
+        ),
+        migrations.CreateModel(
+            name='Specimin_appearance',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('name', models.CharField(unique=True, max_length=255)),
+            ],
+            options={
+                'verbose_name': 'Specimen appearance',
+            },
+        ),
+        migrations.CreateModel(
+            name='Todo',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('consistency_token', models.CharField(max_length=8)),
+                ('details', models.TextField(blank=True)),
+                ('episode', models.ForeignKey(to='opal.Episode')),
+            ],
+            options={
+                'abstract': False,
+            },
+            bases=(opal.models.mixins.UpdatesFromDictMixin, models.Model),
+        ),
+        migrations.CreateModel(
+            name='Travel',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('consistency_token', models.CharField(max_length=8)),
+                ('dates', models.CharField(max_length=255, blank=True)),
+                ('specific_exposures', models.CharField(max_length=255, blank=True)),
+                ('malaria_prophylaxis', models.NullBooleanField(default=False)),
+                ('malaria_compliance', models.CharField(max_length=200, null=True, blank=True)),
+                ('destination_ft', models.CharField(default=b'', max_length=255, null=True, blank=True)),
+                ('reason_for_travel_ft', models.CharField(default=b'', max_length=255, null=True, blank=True)),
+                ('malaria_drug_ft', models.CharField(default=b'', max_length=255, null=True, blank=True)),
+                ('destination_fk', models.ForeignKey(blank=True, to='opal.Destination', null=True)),
+                ('episode', models.ForeignKey(to='opal.Episode')),
+                ('malaria_drug_fk', models.ForeignKey(blank=True, to='opal.Antimicrobial', null=True)),
+                ('reason_for_travel_fk', models.ForeignKey(blank=True, to='opal.Travel_reason', null=True)),
+            ],
+            options={
+                'abstract': False,
+            },
+            bases=(opal.models.mixins.UpdatesFromDictMixin, models.Model),
+        ),
+        migrations.CreateModel(
+            name='Unplanned_stop',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('name', models.CharField(unique=True, max_length=255)),
+            ],
+            options={
+                'verbose_name': 'Unplanned stop',
+            },
+        ),
+        migrations.AddField(
+            model_name='opatmeta',
+            name='unplanned_stop_reason_fk',
+            field=models.ForeignKey(blank=True, to='elcid.Unplanned_stop', null=True),
+        ),
+        migrations.AddField(
+            model_name='labtest',
+            name='organism_details_fk',
+            field=models.ForeignKey(blank=True, to='elcid.Organism_details', null=True),
+        ),
+        migrations.AddField(
+            model_name='labspecimin',
+            name='appearance_fk',
+            field=models.ForeignKey(blank=True, to='elcid.Specimin_appearance', null=True),
+        ),
+        migrations.AddField(
+            model_name='labspecimin',
+            name='episode',
+            field=models.ForeignKey(to='opal.Episode'),
+        ),
+        migrations.AddField(
+            model_name='labspecimin',
+            name='specimin_type_fk',
+            field=models.ForeignKey(blank=True, to='elcid.Specimin', null=True),
+        ),
+        migrations.AddField(
+            model_name='antimicrobial',
+            name='delivered_by_fk',
+            field=models.ForeignKey(blank=True, to='elcid.Drug_delivered', null=True),
+        ),
+        migrations.AddField(
+            model_name='antimicrobial',
+            name='drug_fk',
+            field=models.ForeignKey(blank=True, to='opal.Antimicrobial', null=True),
+        ),
+        migrations.AddField(
+            model_name='antimicrobial',
+            name='episode',
+            field=models.ForeignKey(to='opal.Episode'),
+        ),
+        migrations.AddField(
+            model_name='antimicrobial',
+            name='frequency_fk',
+            field=models.ForeignKey(blank=True, to='opal.Antimicrobial_frequency', null=True),
+        ),
+        migrations.AddField(
+            model_name='antimicrobial',
+            name='reason_for_stopping_fk',
+            field=models.ForeignKey(blank=True, to='elcid.Iv_stop', null=True),
+        ),
+        migrations.AddField(
+            model_name='antimicrobial',
+            name='route_fk',
+            field=models.ForeignKey(blank=True, to='opal.Antimicrobial_route', null=True),
+        ),
+        migrations.AddField(
+            model_name='allergies',
+            name='drug_fk',
+            field=models.ForeignKey(blank=True, to='opal.Antimicrobial', null=True),
+        ),
+        migrations.AddField(
+            model_name='allergies',
+            name='patient',
+            field=models.ForeignKey(to='opal.Patient'),
+        ),
+    ]
