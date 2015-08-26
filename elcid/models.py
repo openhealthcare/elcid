@@ -340,6 +340,7 @@ class OPATOutcome(EpisodeSubrecord):
     differently.
     """
     _is_singleton     = True
+    _title            = "OPAT Outcome"
 
     treatment_outcome     = models.CharField(max_length=200, blank=True, null=True)
     deceased              = models.NullBooleanField(default=False)
