@@ -21,6 +21,8 @@ class Demographics(PatientSubrecord):
     ethnicity        = models.CharField(max_length=255, blank=True, null=True)
     gender           = models.CharField(max_length=255, blank=True, null=True)
 
+    pid_fields       = 'name', 'hospital_number', 'nhs_number'
+    
     class Meta:
         verbose_name_plural = "Demographics"
 
