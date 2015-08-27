@@ -29,6 +29,7 @@ class Demographics(PatientSubrecord):
 
 class ContactDetails(PatientSubrecord):
     _is_singleton = True
+    _advanced_searchable = False
     _icon = 'fa fa-phone'
 
     address_line1 = models.CharField("Address line 1", max_length = 45,
@@ -49,6 +50,7 @@ class ContactDetails(PatientSubrecord):
 
 class Carers(PatientSubrecord):
     _is_singleton = True
+    _advanced_searchable = False
 
     gp    = models.ForeignKey(GP, blank=True, null=True)
     nurse = models.ForeignKey(CommunityNurse, blank=True, null=True)
@@ -412,6 +414,7 @@ class OPATReview(EpisodeSubrecord):
 class OPATOutstandingIssues(EpisodeSubrecord):
     _title = 'Outstanding Issues'
     _icon = 'fa fa-th-list'
+    _advanced_searchable = False
 
     details = models.TextField(blank=True)
 
@@ -423,6 +426,7 @@ class Appointment(EpisodeSubrecord):
     _title = 'Upcoming Appointments'
     _sort = 'date'
     _icon = 'fa fa-calendar'
+    _advanced_searchable = False
 
     appointment_type = models.CharField(max_length=200, blank=True, null=True)
     appointment_with = models.CharField(max_length=200, blank=True, null=True)
@@ -455,33 +459,46 @@ Fields for UCLH - specific Research studies.
 
 """ RiD RTI (http://www.rid-rti.eu/ ) """
 class Specimin(lookuplists.LookupList):
+    _advanced_searchable = False
+
     class Meta:
         verbose_name = "Specimen"
 
 class Organism_details(lookuplists.LookupList):
+    _advanced_searchable = False
+
     class Meta:
         verbose_name_plural = "Organism details"
 
 
 class Checkpoints_assay(lookuplists.LookupList):
+    _advanced_searchable = False
+
     class Meta:
         verbose_name = "Checkpoints assay values"
         verbose_name_plural = "Checkpoints assay values"
 
 
 class Antimicrobial_susceptability(lookuplists.LookupList):
+    _advanced_searchable = False
 
     class Meta:
         verbose_name = "Antimicrobial susceptability"
         verbose_name_plural = "Antimicrobial susceptibilities"
 
+
 class Specimin_appearance(lookuplists.LookupList):
+    _advanced_searchable = False
+
     class Meta:
         verbose_name = "Specimen appearance"
 
+
 class LabSpecimin(EpisodeSubrecord):
+    _advanced_searchable = False
+
     class Meta:
-        verbose_name = "Lab specimen appearance"    
+        verbose_name = "Lab specimen appearance"
 
     _title = 'Lab Specimen'
     _sort = 'date_collected'
@@ -505,6 +522,7 @@ class LabSpecimin(EpisodeSubrecord):
 class LabTest(EpisodeSubrecord):
     _sort = 'date_ordered'
     _icon = 'fa fa-crosshairs'
+    _advanced_searchable = False
 
     test                         = models.CharField(max_length=255)
     date_ordered                 = models.DateField(null=True, blank=True)
@@ -531,6 +549,8 @@ class RidRTITest(EpisodeSubrecord):
     """
     Results of the actual RiD RTI test !
     """
+    _advanced_searchable = False
+
     test            = models.CharField(max_length=200, blank=True, null=True)
     notes           = models.TextField(blank=True, null=True)
     # HAP/VAP results
@@ -583,6 +603,7 @@ class RidRTITest(EpisodeSubrecord):
 
 class CheckpointsAssay(EpisodeSubrecord):
     _is_singleton = True
+    _advanced_searchable = False
 
     acc = models.NullBooleanField(default=False)
     act_mir = models.NullBooleanField(default=False)
