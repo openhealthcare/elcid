@@ -128,7 +128,7 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'elcid.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
-WSGI_APPLICATION = 'opal.wsgi.application'
+WSGI_APPLICATION = 'elcid.wsgi.application'
 
 TEMPLATE_DIRS = (
     os.path.join(PROJECT_PATH, 'templates'),
