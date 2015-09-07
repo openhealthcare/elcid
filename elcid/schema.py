@@ -73,7 +73,8 @@ list_columns_walkin = [
     models.Diagnosis,
     obsmodels.Observation,
     models.Antimicrobial,
-    wimodels.Management,
+#    wimodels.Management,
+    models.MicrobiologyInput
 ]
 
 list_columns_triage = [
