@@ -86,8 +86,8 @@ list_columns_walkin_review = [
     models.MicrobiologyTest,
     models.Diagnosis,
     models.Antimicrobial,
-    wimodels.Management,
-    models.MicrobiologyInput
+    models.MicrobiologyInput,
+    wimodels.Management
 ]
 
 list_columns_triage = [
