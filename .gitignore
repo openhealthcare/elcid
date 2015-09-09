@@ -10,3 +10,4 @@ libpeerconnection.log
 elcid/static
 opal.sqlite.*
 *.DS_Store
+.coveragerc
