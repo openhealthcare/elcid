@@ -1,9 +1,5 @@
 {% extends 'detail/opat.html' %}
 {% load panels %}
-{% block right_column %}
-  {% record_panel models.OPATOutcome %}
-  {{ block.super }}
-{% endblock %}
 {% block sidebar_panels %}
   <span ng-show="hide_discharge_action=true">
   {{ block.super }}

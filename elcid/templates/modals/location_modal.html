@@ -37,7 +37,7 @@
     </div>
 
     {% input model="editing.hospital" label="Hospital - Other" hide="episode.category == 'OPAT'" show="hospital_list.indexOf(editing.hospital) == -1" %}
-    {% input model="editing.ward" label="Ward" lookuplist="ward_list" hide="episode.category == 'OPAT'" %}
+    {% select model="editing.ward" label="Ward" lookuplist="ward_list" hide="episode.category == 'OPAT'" %}
     {% input model="editing.bed" label="Bed" hide="episode.category == 'OPAT'" %}
     {% datepicker model="episode.date_of_admission" label="Date of admission" %}
 
