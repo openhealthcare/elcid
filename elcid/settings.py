@@ -173,6 +173,7 @@ INSTALLED_APPS = (
 #    'opal.core.collaborative',
     'guidelines',
     'dischargesummary',
+    'travelalerts',
 )
 
 if 'test' in sys.argv:

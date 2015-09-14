@@ -21,10 +21,11 @@ list_columns_id_liaison = [
     models.Location,
     models.Diagnosis,
     models.PastMedicalHistory,
+    models.Travel,
     models.Antimicrobial,
     models.MicrobiologyTest,
     models.MicrobiologyInput,
-    models.GeneralNote,
+#    models.GeneralNote,
     models.Todo
 ]
 

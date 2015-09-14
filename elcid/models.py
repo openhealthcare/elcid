@@ -182,6 +182,17 @@ class Travel(EpisodeSubrecord):
     malaria_prophylaxis = models.NullBooleanField(default=False)
     malaria_drug        = ForeignKeyOrFreeText(omodels.Antimicrobial)
     malaria_compliance  = models.CharField(max_length=200, blank=True, null=True)
+    alert               = models.BooleanField(default=False)
+
+    def save(self):
+        import json
+        import requests
+        if self.destination:
+            resp = requests.get('http://localhost:5000/api/'+self.destination)
+            alerts = json.loads(resp.content)
+            if alerts != []:
+                self.alert = True
+        return super(Travel, self).save()
 
 
 class Iv_stop(lookuplists.LookupList):

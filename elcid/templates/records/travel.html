@@ -1,3 +1,5 @@
+
+{% load forms %}
 <span ng-show="item.did_not_travel">Did not travel</span>
 [[item.destination]]
 <span ng-show="item.dates">([[item.dates]])</span>
@@ -9,4 +11,11 @@
   Malaria Prohylaxis: [[ item.malaria_prophylaxis | boxed ]]
   <br />
   [[ item.malaria_drug ]] [[ item.malaria_compliance ]]
+</span>
+<span ng-show="item.alert">
+  <br />
+  <a href="" ng-click="open_modal('TravelAlertsCtrl', '/templates/modals/travel_alerts.html', 'lg', {destination: item.destination})">
+  {% icon 'fa-warning' %}
+  Alert
+  </a>
 </span>
