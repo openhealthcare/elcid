@@ -16,6 +16,8 @@ def add_created(apps, schema_editor):
 
 
 def reverse_created(apps, schema_editor):
+    MicrobiologyInput = apps.get_model("elcid", "MicrobiologyInput")
+
     for microbiology_input in MicrobiologyInput.objects.all():
         c = microbiology_input.created
 
