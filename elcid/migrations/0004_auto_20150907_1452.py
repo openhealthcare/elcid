@@ -15,6 +15,15 @@ def add_created(apps, schema_editor):
             microbiology_input.save()
 
 
+def reverse_created(apps, schema_editor):
+    for microbiology_input in MicrobiologyInput.objects.all():
+        c = microbiology_input.created
+
+        if c is not None:
+            microbiology_input.date = c.date()
+            microbiology_input.save()
+
+
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -22,5 +31,7 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunPython(add_created),
+        migrations.RunPython(
+            add_created, reverse_code=reverse_created
+        ),
     ]
