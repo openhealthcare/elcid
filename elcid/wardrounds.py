@@ -109,3 +109,10 @@ class OPATReviewList(WardRound):
     detail_template = 'wardrounds/opat_detail.html'
 
 
+class OPATCurrentList(WardRound):
+    name        = 'OPAT Current'
+    description = 'All patients on the OPAT current list'
+
+    @staticmethod
+    def episodes():
+        return Episode.objects.filter(active=True, tagging__team__name='opat_current')
