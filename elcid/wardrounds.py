@@ -41,7 +41,7 @@ class Discharged(HistoricTagsMixin, WardRound):
         today = datetime.date.today()
         two_weeks_ago = today - datetime.timedelta(days=7)
         episodes = Episode.objects.filter(
-            category__iexact='inpatient',
+            category__in=['inpatient', 'Walkin'],
             discharge_date__gte=two_weeks_ago)
         return episodes
 

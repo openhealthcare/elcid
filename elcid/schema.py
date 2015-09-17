@@ -73,7 +73,21 @@ list_columns_walkin = [
     models.Diagnosis,
     obsmodels.Observation,
     models.Antimicrobial,
-    wimodels.Management,
+#    wimodels.Management,
+    models.MicrobiologyInput
+]
+
+list_columns_walkin_review = [
+    models.Demographics,
+    models.Location,
+    models.Travel,
+    wimodels.Symptom,
+    wimodels.ClinicalFindings,
+    models.MicrobiologyTest,
+    models.Diagnosis,
+    models.Antimicrobial,
+    models.MicrobiologyInput,
+    wimodels.Management
 ]
 
 list_columns_triage = [
@@ -106,6 +120,7 @@ list_schemas = {
     },
     'walkin': {
         'walkin_triage': list_columns_triage,
+        'walkin_review': list_columns_walkin_review,
         'default': list_columns_walkin
     }
 }
