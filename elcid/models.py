@@ -155,7 +155,7 @@ class PastMedicalHistory(EpisodeSubrecord):
     _icon = 'fa fa-history'
 
     condition = ForeignKeyOrFreeText(omodels.Condition)
-    year      = models.CharField(max_length=4, blank=True)
+    year      = models.CharField(max_length=200, blank=True)
     details   = models.CharField(max_length=255, blank=True)
 
     class Meta:
