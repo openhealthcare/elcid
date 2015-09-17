@@ -23,6 +23,5 @@ class Application(application.OpalApplication):
     ]
 
     patient_view_forms = {
-        "Micro Haem Round Discussion": "inline_forms/micro_haem_discussion_form.html",
         "General Consultation": "inline_forms/microbiology_input.html",
     }
