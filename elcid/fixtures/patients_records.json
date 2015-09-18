@@ -47,6 +47,22 @@
     },
     {
         "pk": 1,
+        "model": "opal.team",
+        "fields": {
+            "name": "team 2",
+            "title": "Team 2"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "opal.team",
+        "fields": {
+            "name": "team 1",
+            "title": "Team 1"
+        }
+    },
+    {
+        "pk": 1,
         "model": "elcid.demographics",
         "fields": {
             "consistency_token": "12345678",

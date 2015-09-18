@@ -41,7 +41,7 @@ class Discharged(HistoricTagsMixin, WardRound):
         today = datetime.date.today()
         two_weeks_ago = today - datetime.timedelta(days=7)
         episodes = Episode.objects.filter(
-            category__iexact='inpatient',
+            category__in=['inpatient', 'Walkin'],
             discharge_date__gte=two_weeks_ago)
         return episodes
 
@@ -109,3 +109,10 @@ class OPATReviewList(WardRound):
     detail_template = 'wardrounds/opat_detail.html'
 
 
+class OPATCurrentList(WardRound):
+    name        = 'OPAT Current'
+    description = 'All patients on the OPAT current list'
+
+    @staticmethod
+    def episodes():
+        return Episode.objects.filter(active=True, tagging__team__name='opat_current')
