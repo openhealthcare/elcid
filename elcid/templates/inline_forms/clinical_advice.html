@@ -1,6 +1,6 @@
 {% load forms %}
 
-<div ng-controller="ClinicalDiscussionForm as clinicalDiscussionForm" class="panel panel-default">
+<div ng-controller="ClinicalAdviceForm as clinicalAdviceForm" class="panel panel-default">
     <div class="panel-heading"><h3>
         <i class="fa fa-comments"></i> General Consulation
     </div></h3>
@@ -12,26 +12,26 @@
                 <div class="form-group">
                   <label class="control-label col-sm-3">Date</label>
                   <div class="col-sm-9">
-            	    <input class="form-control" type="text" placeholder="Date" ng-model="clinicalDiscussionForm.editing.created__date" bs-datepicker>
+            	    <input class="form-control" type="text" placeholder="Date" ng-model="clinicalAdviceForm.editing.created__date" bs-datepicker>
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="control-label col-sm-3">Time</label>
                   <div class="col-sm-9">
-                  <input type="text" size="8" class="form-control" ng-model="clinicalDiscussionForm.editing.created__time"
+                  <input type="text" size="8" class="form-control" ng-model="clinicalAdviceForm.editing.created__time"
                          data-autoclose="1" placeholder="Time" bs-timepicker>
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="control-label col-sm-3">Advice given by</label>
                   <div class="col-sm-9">
-        	    <input class="form-control" type="text" ng-model="clinicalDiscussionForm.editing.initials" autofocus>
+        	    <input class="form-control" type="text" ng-model="clinicalAdviceForm.editing.initials" autofocus>
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="control-label col-sm-3">Reason for clinical interaction</label>
                   <div class="col-sm-9">
-                    <select class="form-control" ng-model="clinicalDiscussionForm.editing.reason_for_interaction">
+                    <select class="form-control" ng-model="clinicalAdviceForm.editing.reason_for_interaction">
                       <option ng-repeat="reason in clinical_advice_reason_for_interaction_list">[[reason]]</option>
                     </select>
                   </div>
@@ -41,7 +41,7 @@
                   <div class="col-sm-9">
         	    <textarea
                        class="form-control"
-                       ng-model="clinicalDiscussionForm.editing.clinical_discussion"
+                       ng-model="clinicalAdviceForm.editing.clinical_discussion"
                        rows="5"
                        {% include 'partials/_mentio_edit_item.html' %}
                        ></textarea>
@@ -51,34 +51,15 @@
                 <div class="form-group">
                   <label class="control-label col-sm-3">Discussed with</label>
                   <div class="col-sm-9">
-        	    <input class="form-control" type="text" ng-model="clinicalDiscussionForm.editing.discussed_with">
+        	    <input class="form-control" type="text" ng-model="clinicalAdviceForm.editing.discussed_with">
                   </div>
                 </div>
-
-                <table>
-                  <tr>
-        	    <td>
-                      {% checkbox label="Clinical advice given?" model="clinicalDiscussionForm.editing.clinical_advice_given" %}
-        	    </td>
-        	    <td>
-                      {% checkbox label="Change in antibiotic prescription?" model="clinicalDiscussionForm.editing.change_in_antibiotic_prescription" %}
-        	    </td>
-                  </tr>
-                  <tr>
-        	    <td>
-                      {% checkbox label="Infection control advice given?" model="clinicalDiscussionForm.editing.infection_control_advice_given" %}
-        	    </td>
-        	    <td>
-                      {% checkbox label="Referred to OPAT?" model="clinicalDiscussionForm.editing.referred_to_opat" %}
-        	    </td>
-                  </tr>
-                </table>
               </form>
             </div>
         </div>
       <div class="row">
           <div class="col-md-12 text-right">
-              <button class="btn btn-primary" ng-click="clinicalDiscussionForm.save('save')">
+              <button class="btn btn-primary" ng-click="clinicalAdviceForm.save('save')">
               <i class="fa fa-save"></i>
               Save
               </button>

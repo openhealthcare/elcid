@@ -15,7 +15,7 @@ class Application(application.OpalApplication):
         'js/elcid/controllers/diagnosis_add_episode.js',
         'js/elcid/controllers/diagnosis_discharge.js',
         'js/elcid/controllers/micro_haem_discussion_form.js',
-        'js/elcid/controllers/clinical_discussion_form.js',
+        'js/elcid/controllers/clinical_advice_form.js',
     ]
 
     actions = [
@@ -23,5 +23,5 @@ class Application(application.OpalApplication):
     ]
 
     patient_view_forms = {
-        "General Consultation": "inline_forms/microbiology_input.html",
+        "General Consultation": "inline_forms/clinical_advice.html",
     }

@@ -11,8 +11,8 @@ angular.module('opal.controllers').controller(
         function getCopy(item){
             var copy = item.makeCopy();
             defaults = _.clone({
-                created__date: new moment().format('DD/MM/YYYY'),
-                created__time: new moment().toDate(),
+                when__date: new moment().format('DD/MM/YYYY'),
+                when__time: new moment().toDate(),
                 initials: $window.initials,
                 reason_for_interaction: $cookieStore.get(REASON_FOR_INTERACTION_COOKIE),
                 discussed_with: $cookieStore.get(DISCUSSED_WITH_COOKIE)

@@ -4,7 +4,8 @@ elCID implementation specific models!
 from django.db import models
 
 import opal.models as omodels
-from opal.models import EpisodeSubrecord, PatientSubrecord, GP, CommunityNurse
+from opal.models import (Subrecord,
+                         EpisodeSubrecord, PatientSubrecord, GP, CommunityNurse)
 from opal.core.fields import ForeignKeyOrFreeText
 from opal.core import lookuplists
 
@@ -228,7 +229,7 @@ class MicrobiologyInput(EpisodeSubrecord):
     _modal = 'lg'
     _list_limit = 3
 
-    created                           = models.DateTimeField(null=True, blank=True)
+    when                              = models.DateTimeField(null=True, blank=True)
     initials                          = models.CharField(max_length=255, blank=True)
     reason_for_interaction            = ForeignKeyOrFreeText(
         omodels.Clinical_advice_reason_for_interaction)
@@ -239,9 +240,6 @@ class MicrobiologyInput(EpisodeSubrecord):
     infection_control_advice_given    = models.NullBooleanField()
     change_in_antibiotic_prescription = models.NullBooleanField()
     referred_to_opat                  = models.NullBooleanField()
-    neutropenic                       = models.NullBooleanField()
-    started_antibiotics               = models.NullBooleanField()
-    stopped_antibiotics               = models.NullBooleanField()
 
 
 class Todo(EpisodeSubrecord):
