@@ -5,7 +5,6 @@ import sys
 
 PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
 
-
 try:
     import dj_database_url
 
@@ -159,7 +158,6 @@ INSTALLED_APPS = (
     'rest_framework',
     'compressor',
     'opal.core.search',
-    'analytics',
     'elcid',
     'obs',
     'django.contrib.admin',
