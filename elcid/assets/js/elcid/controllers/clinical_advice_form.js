@@ -1,5 +1,5 @@
 angular.module('opal.controllers').controller(
-    'ClinicalDiscussionForm', function($rootScope, $scope, $window,
+    'ClinicalAdviceForm', function($rootScope, $scope, $window,
                                  recordLoader, ngProgressLite, $q,
                                  $cookieStore
                                     ){

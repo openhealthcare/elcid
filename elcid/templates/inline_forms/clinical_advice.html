@@ -12,13 +12,13 @@
                 <div class="form-group">
                   <label class="control-label col-sm-3">Date</label>
                   <div class="col-sm-9">
-            	    <input class="form-control" type="text" placeholder="Date" ng-model="clinicalAdviceForm.editing.created__date" bs-datepicker>
+            	    <input class="form-control" type="text" placeholder="Date" ng-model="clinicalAdviceForm.editing.when__date" bs-datepicker>
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="control-label col-sm-3">Time</label>
                   <div class="col-sm-9">
-                  <input type="text" size="8" class="form-control" ng-model="clinicalAdviceForm.editing.created__time"
+                  <input type="text" size="8" class="form-control" ng-model="clinicalAdviceForm.editing.when__time"
                          data-autoclose="1" placeholder="Time" bs-timepicker>
                   </div>
                 </div>
@@ -32,7 +32,7 @@
                   <label class="control-label col-sm-3">Reason for clinical interaction</label>
                   <div class="col-sm-9">
                     <select class="form-control" ng-model="clinicalAdviceForm.editing.reason_for_interaction">
-                      <option ng-repeat="reason in clinical_advice_reason_for_interaction_list">[[reason]]</option>
+                      <option ng-repeat="reason in options.clinical_advice_reason_for_interaction">[[reason]]</option>
                     </select>
                   </div>
                 </div>

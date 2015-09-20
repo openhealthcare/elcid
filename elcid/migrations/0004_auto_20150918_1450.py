@@ -25,7 +25,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='allergies',
-            name='update',
+            name='updated',
             field=models.DateTimeField(null=True, blank=True),
         ),
         migrations.AddField(
@@ -45,7 +45,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='antimicrobial',
-            name='update',
+            name='updated',
             field=models.DateTimeField(null=True, blank=True),
         ),
         migrations.AddField(
@@ -65,7 +65,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='appointment',
-            name='update',
+            name='updated',
             field=models.DateTimeField(null=True, blank=True),
         ),
         migrations.AddField(
@@ -85,7 +85,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='carers',
-            name='update',
+            name='updated',
             field=models.DateTimeField(null=True, blank=True),
         ),
         migrations.AddField(
@@ -105,7 +105,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='checkpointsassay',
-            name='update',
+            name='updated',
             field=models.DateTimeField(null=True, blank=True),
         ),
         migrations.AddField(
@@ -125,7 +125,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='contactdetails',
-            name='update',
+            name='updated',
             field=models.DateTimeField(null=True, blank=True),
         ),
         migrations.AddField(
@@ -145,7 +145,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='demographics',
-            name='update',
+            name='updated',
             field=models.DateTimeField(null=True, blank=True),
         ),
         migrations.AddField(
@@ -165,7 +165,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='diagnosis',
-            name='update',
+            name='updated',
             field=models.DateTimeField(null=True, blank=True),
         ),
         migrations.AddField(
@@ -185,7 +185,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='generalnote',
-            name='update',
+            name='updated',
             field=models.DateTimeField(null=True, blank=True),
         ),
         migrations.AddField(
@@ -205,7 +205,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='labspecimin',
-            name='update',
+            name='updated',
             field=models.DateTimeField(null=True, blank=True),
         ),
         migrations.AddField(
@@ -225,7 +225,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='labtest',
-            name='update',
+            name='updated',
             field=models.DateTimeField(null=True, blank=True),
         ),
         migrations.AddField(
@@ -245,7 +245,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='line',
-            name='update',
+            name='updated',
             field=models.DateTimeField(null=True, blank=True),
         ),
         migrations.AddField(
@@ -265,7 +265,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='location',
-            name='update',
+            name='updated',
             field=models.DateTimeField(null=True, blank=True),
         ),
         migrations.AddField(
@@ -285,7 +285,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='microbiologyinput',
-            name='update',
+            name='updated',
             field=models.DateTimeField(null=True, blank=True),
         ),
         migrations.AddField(
@@ -305,7 +305,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='microbiologytest',
-            name='update',
+            name='updated',
             field=models.DateTimeField(null=True, blank=True),
         ),
         migrations.AddField(
@@ -325,7 +325,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='opatlineassessment',
-            name='update',
+            name='updated',
             field=models.DateTimeField(null=True, blank=True),
         ),
         migrations.AddField(
@@ -345,7 +345,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='opatmeta',
-            name='update',
+            name='updated',
             field=models.DateTimeField(null=True, blank=True),
         ),
         migrations.AddField(
@@ -365,7 +365,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='opatoutcome',
-            name='update',
+            name='updated',
             field=models.DateTimeField(null=True, blank=True),
         ),
         migrations.AddField(
@@ -385,7 +385,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='opatoutstandingissues',
-            name='update',
+            name='updated',
             field=models.DateTimeField(null=True, blank=True),
         ),
         migrations.AddField(
@@ -405,7 +405,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='opatrejection',
-            name='update',
+            name='updated',
             field=models.DateTimeField(null=True, blank=True),
         ),
         migrations.AddField(
@@ -425,7 +425,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='opatreview',
-            name='update',
+            name='updated',
             field=models.DateTimeField(null=True, blank=True),
         ),
         migrations.AddField(
@@ -445,7 +445,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='pastmedicalhistory',
-            name='update',
+            name='updated',
             field=models.DateTimeField(null=True, blank=True),
         ),
         migrations.AddField(
@@ -465,7 +465,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='presentingcomplaint',
-            name='update',
+            name='updated',
             field=models.DateTimeField(null=True, blank=True),
         ),
         migrations.AddField(
@@ -485,7 +485,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='primarydiagnosis',
-            name='update',
+            name='updated',
             field=models.DateTimeField(null=True, blank=True),
         ),
         migrations.AddField(
@@ -505,7 +505,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='ridrtitest',
-            name='update',
+            name='updated',
             field=models.DateTimeField(null=True, blank=True),
         ),
         migrations.AddField(
@@ -525,7 +525,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='secondarydiagnosis',
-            name='update',
+            name='updated',
             field=models.DateTimeField(null=True, blank=True),
         ),
         migrations.AddField(
@@ -545,7 +545,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='todo',
-            name='update',
+            name='updated',
             field=models.DateTimeField(null=True, blank=True),
         ),
         migrations.AddField(
@@ -565,7 +565,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='travel',
-            name='update',
+            name='updated',
             field=models.DateTimeField(null=True, blank=True),
         ),
         migrations.AddField(
