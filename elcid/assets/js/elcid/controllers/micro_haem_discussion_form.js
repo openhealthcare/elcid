@@ -15,8 +15,8 @@ angular.module('opal.controllers').controller(
                     ngProgressLite.set(0);
                     ngProgressLite.start();
                     defaults ={
-                        created__date: new moment(),
-                        created__time: new moment(),
+                        when__date: new moment(),
+                        when__time: new moment(),
                         initials: $window.initials,
                         reason_for_interaction: "Microbiology meeting"
                     };
