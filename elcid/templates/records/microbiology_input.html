@@ -1,5 +1,6 @@
 <b>
   [[item.created | shortDate]]
+  <b ng-show="item.initials && item.initials.trim().length">
   ([[item.initials]]<span ng-show="item.discussed_with"> with [[item.discussed_with]]</span>)
   [[item.reason_for_interaction]]
 </b>
