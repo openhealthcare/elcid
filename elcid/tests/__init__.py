@@ -223,11 +223,14 @@ class ViewsTest(OpalTestCase):
         response = self.put_json('/api/v0.1/demographics/1234/', {})
         self.assertEqual(404, response.status_code)
 
-    def test_patient_list_template_view(self):
+    def test_episode_list_template_view(self):
         self.assertStatusCode('/templates/episode_list.html/', 200)
 
-    def test_patient_detail_template_view(self):
+    def test_episode_detail_template_view(self):
         self.assertStatusCode('/templates/episode_detail.html/1', 200)
+
+    def test_patient_notes_template_view(self):
+        self.assertStatusCode('/templates/patient.html/1', 200)
 
     def test_add_patient_template_view(self):
         self.assertStatusCode('/templates/modals/add_episode.html/', 200)

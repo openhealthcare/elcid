@@ -8,20 +8,26 @@ from django import forms
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.http import HttpResponse
+from opal.core.subrecords import subrecords
 from django.views.generic import TemplateView, FormView, View
 import letter
 from letter.contrib.contact import EmailForm, EmailView
+from opal.core.views import _build_json_response
+from opal import models as opal_models
+from opal.core import application
 
 from elcid.forms import BulkCreateUsersForm
-from elcid import reports
 
+app = application.get_app()
 u = unicode
 POSTIE = letter.DjangoPostman()
+
 
 def temp_password():
     num = random.randint(1, 100)
     word = random.choice(['womble', 'bananas', 'flabbergasted', 'kerfuffle'])
     return '{0}{1}'.format(num, word)
+
 
 class FeedbackForm(EmailForm):
     """
@@ -36,8 +42,11 @@ class FeedbackForm(EmailForm):
                 u(self.cleaned_data.get('email', ''))),
             u(self.cleaned_data.get('message', '')))
 
-    def subject(self): return u'eLCID - Feedback Form'
-    def reply_to(self): return u(self.cleaned_data.get('email', ''))
+    def subject(self):
+        return u'eLCID - Feedback Form'
+
+    def reply_to(self):
+        return u(self.cleaned_data.get('email', ''))
 
 
 class FeedbackView(EmailView):
@@ -120,6 +129,30 @@ class BulkCreateUserView(FormView):
             Message.send()
 
         return super(BulkCreateUserView, self).form_valid(form)
+
+
+class PatientDetailDataView(View):
+    """
+    Return a serialised view of the patient.
+    """
+    def get(self, *args, **kwargs):
+        hospital_number = kwargs.get("hospital_number")
+        filter_kwargs = dict(
+            patient__demographics__hospital_number=hospital_number
+        )
+        serialised = opal_models.Episode.objects.serialised_active(
+            self.request.user, **filter_kwargs)
+        return _build_json_response(serialised)
+
+
+class PatientDetailView(TemplateView):
+    template_name = 'patient_notes.html'
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(PatientDetailView, self).get_context_data(*args, **kwargs)
+        context['models'] = {m.__name__: m for m in subrecords()}
+        context['inline_forms'] = getattr(app, "patient_view_forms", [])
+        return context
 
 
 class ElcidTemplateView(TemplateView):

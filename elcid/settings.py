@@ -5,7 +5,6 @@ import sys
 
 PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
 
-
 try:
     import dj_database_url
 
@@ -159,7 +158,6 @@ INSTALLED_APPS = (
     'rest_framework',
     'compressor',
     'opal.core.search',
-    'analytics',
     'elcid',
     'obs',
     'django.contrib.admin',
@@ -255,7 +253,7 @@ else:
     EMAIL_HOST = 'localhost'
 
 
-VERSION_NUMBER = '0.4.3'
+VERSION_NUMBER = '0.5.0'
 #TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 #TEST_RUNNER = 'django_test_coverage.runner.CoverageTestSuiteRunner'
 

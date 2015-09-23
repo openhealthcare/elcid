@@ -22,7 +22,7 @@ class Demographics(PatientSubrecord):
     gender           = models.CharField(max_length=255, blank=True, null=True)
 
     pid_fields       = 'name', 'hospital_number', 'nhs_number'
-    
+
     class Meta:
         verbose_name_plural = "Demographics"
 
@@ -224,12 +224,12 @@ class Allergies(PatientSubrecord):
 
 class MicrobiologyInput(EpisodeSubrecord):
     _title = 'Clinical Advice'
-    _sort = 'date'
+    _sort = 'when'
     _icon = 'fa fa-comments'
     _modal = 'lg'
     _list_limit = 3
 
-    date                              = models.DateField(null=True, blank=True)
+    when                              = models.DateTimeField(null=True, blank=True)
     initials                          = models.CharField(max_length=255, blank=True)
     reason_for_interaction            = ForeignKeyOrFreeText(
         omodels.Clinical_advice_reason_for_interaction)

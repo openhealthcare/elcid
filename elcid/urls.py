@@ -17,6 +17,8 @@ urlpatterns = patterns(
     url(r'^feedback/sent/??$', views.FeedbackSentView.as_view(), name='feedback-sent'),
     url(r'^test/500$', views.Error500View.as_view(), name='test-500'),
     url(r'^templates/elcid/modals/(?P<name>[a-z_]+.html)$', views.ElcidTemplateView.as_view()),
+    url(r'^patient/(?P<hospital_number>\w+)', views.PatientDetailDataView.as_view()),
+    url(r'^templates/patient_notes.html$', views.PatientDetailView.as_view()),
 )
 
 urlpatterns += opatterns
