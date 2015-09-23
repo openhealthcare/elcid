@@ -224,7 +224,7 @@ class Allergies(PatientSubrecord):
 
 class MicrobiologyInput(EpisodeSubrecord):
     _title = 'Clinical Advice'
-    _sort = 'created'
+    _sort = 'when'
     _icon = 'fa fa-comments'
     _modal = 'lg'
     _list_limit = 3
