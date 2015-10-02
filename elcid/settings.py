@@ -28,6 +28,7 @@ TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
     ('David Miller', 'david@openhealthcare.org.uk'),
+    ('Fred Kingham', 'fred.kingham@openhealthcare.org.uk'),
 )
 
 MANAGERS = ADMINS
@@ -37,7 +38,7 @@ MANAGERS = ADMINS
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = [
     'localhost',
-    '.herokuapp.com'
+    'ec2-52-16-175-249.eu-west-1.compute.amazonaws.com',
     ]
 
 # Local time zone for this installation. Choices can be found here:
