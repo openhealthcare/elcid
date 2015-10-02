@@ -140,8 +140,12 @@ class PatientDetailDataView(View):
         filter_kwargs = dict(
             patient__demographics__hospital_number=hospital_number
         )
-        serialised = opal_models.Episode.objects.serialised_active(
-            self.request.user, **filter_kwargs)
+        episodes = opal_models.Episode.objects.filter(**filter_kwargs)
+        serialised = opal_models.Episode.objects.serialised(
+            self.request.user,
+            episodes
+        )
+
         return _build_json_response(serialised)
 
 
