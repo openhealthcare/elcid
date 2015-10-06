@@ -12,13 +12,13 @@ from obs import models as obsmodels
 from elcid import models
 
 class HistoricTagsMixin(object):
-    
+
     @classmethod
     def to_dict(klass, user):
         """
         We're overriding this so that we can set the extra flag on historic Tags.
         """
-        return dict(name=klass.name, 
+        return dict(name=klass.name,
                     description=klass.description,
                     episodes=Episode.objects.serialised(user, klass.episodes(),
                                                         episode_history=True,
@@ -35,7 +35,7 @@ class Discharged(HistoricTagsMixin, WardRound):
     filters = {
         'team': 'episode.tagging[0][value]'
     }
-    
+
     @staticmethod
     def episodes():
         today = datetime.date.today()
@@ -45,27 +45,18 @@ class Discharged(HistoricTagsMixin, WardRound):
             discharge_date__gte=two_weeks_ago)
         return episodes
 
-    
-class MicroHaem(WardRound):
-    name        = 'Micro Haem'
-    description = 'All patients on the Micro haem list in ward location order'
-
-    @staticmethod
-    def episodes():
-        return Episode.objects.filter(active=True, tagging__team__name='micro_haem')
-
 
 # class FinalDiagnosisReview(HistoricTagsMixin, WardRound):
 #     name        = 'Final Diagnosis Review'
 #     description = 'Discharged Patients with a final diagnosis for consultant review.'
-    
+
 #     filter_template = 'wardrounds/final_diagnosis_filter.html'
 #     filters    = {
 #         'discharge_from': 'episode.discharge_date >= moment(value, "DD-MM-YYYY")',
 #         'discharge_to'  : 'episode.discharge_date <= moment(value, "DD-MM-YYYY")',
 #         'team'          : 'episode.tagging[0][value]'
 #     }
-    
+
 #     @staticmethod
 #     def episodes():
 #         unconfirmed = models.PrimaryDiagnosis.objects.filter(confirmed=False).filter(Q())
@@ -76,11 +67,11 @@ class MicroHaem(WardRound):
 #             """
 #             if not episode.is_discharged:
 #                 return False
-#             interesting_teams = set(['id_inpatients', 
+#             interesting_teams = set(['id_inpatients',
 #                                      'tropical_diseases',
 #                                      'immune_inpatients'])
 #             return bool(interesting_teams.intersection(episode.get_tag_names(None, historic=True)))
-            
+
 #         return set([d.episode for d in unconfirmed if interesting(d.episode)])
 
 #     @staticmethod
