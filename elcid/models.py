@@ -51,9 +51,10 @@ class ContactDetails(PatientSubrecord):
 class Carers(PatientSubrecord):
     _is_singleton = True
     _advanced_searchable = False
+    _icon = 'fa fa-users'
 
-    gp    = models.ForeignKey(GP, blank=True, null=True)
-    nurse = models.ForeignKey(CommunityNurse, blank=True, null=True)
+    gp    = models.TextField(blank=True, null=True)
+    nurse = models.TextField(blank=True, null=True)
 
     class Meta:
         verbose_name_plural = "Carers"
@@ -155,7 +156,7 @@ class PastMedicalHistory(EpisodeSubrecord):
     _icon = 'fa fa-history'
 
     condition = ForeignKeyOrFreeText(omodels.Condition)
-    year      = models.CharField(max_length=4, blank=True)
+    year      = models.CharField(max_length=200, blank=True)
     details   = models.CharField(max_length=255, blank=True)
 
     class Meta:
@@ -341,10 +342,12 @@ class OPATOutcome(EpisodeSubrecord):
     same as OPAT meta data, but captured on the ward round and interrogated
     differently.
     """
-    _is_singleton     = True
     _title            = "OPAT Outcome"
 
+    outcome_stage         = models.CharField(max_length=200, blank=True, null=True)
     treatment_outcome     = models.CharField(max_length=200, blank=True, null=True)
+    patient_outcome       = models.CharField(max_length=200, blank=True, null=True)
+    opat_outcome          = models.CharField(max_length=200, blank=True, null=True)
     deceased              = models.NullBooleanField(default=False)
     death_category        = models.CharField(max_length=200, blank=True, null=True)
     cause_of_death        = models.CharField(max_length=200, blank=True, null=True)
