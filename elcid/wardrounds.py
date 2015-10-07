@@ -119,4 +119,3 @@ class OPATCurrentList(WardRound):
     @staticmethod
     def episodes():
         return Episode.objects.filter(active=True, tagging__team__name='opat_current')
-
