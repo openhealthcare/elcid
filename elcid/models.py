@@ -304,6 +304,12 @@ class MicrobiologyTest(EpisodeSubrecord):
     entamoeba_histolytica = models.CharField(max_length=20, blank=True)
     cryptosporidium       = models.CharField(max_length=20, blank=True)
     hiv_declined          = ForeignKeyOrFreeText(Hiv_no)
+    spotted_fever_igm     = models.CharField(max_length=20, blank=True)
+    spotted_fever_igg     = models.CharField(max_length=20, blank=True)
+    typhus_group_igm      = models.CharField(max_length=20, blank=True)
+    typhus_group_igg      = models.CharField(max_length=20, blank=True)
+    scrub_typhus_igm      = models.CharField(max_length=20, blank=True)
+    scrub_typhus_igg      = models.CharField(max_length=20, blank=True)
 
 """
 Begin OPAT specific fields.

@@ -86,5 +86,12 @@
 	<li ng-show="item.giardia && item.giardia != 'pending'">Giardia: [[item.giardia | microresult]]</li>
 	<li ng-show="item.entamoeba_histolytica && item.entamoeba_histolytica != 'pending'">Entamoeba Histolytica: [[item.entamoeba_histolytica | microresult]]</li>
 	<li ng-show="item.cryptosporidium && item.cryptosporidium != 'pending'">Cryptosporidium: [[item.cryptosporidium | microresult]]</li>
+
+        <li ng-show="item.test == 'Rickettsia Serology' && item.spotted_fever_igm">Spotted Fever Group IgM: [[ item.spotted_fever_igm | microresult ]]</li>
+        <li ng-show="item.test == 'Rickettsia Serology' && item.spotted_fever_igg">Spotted Fever Group IgG: [[ item.spotted_fever_igg | microresult ]]</li>
+        <li ng-show="item.test == 'Rickettsia Serology' && item.typhus_group_igm">Typhus Group IgM: [[ item.typhus_group_igm | microresult ]]</li>
+        <li ng-show="item.test == 'Rickettsia Serology' && item.typhus_group_igg">Typhus Group IgG: [[ item.typhus_group_igg | microresult ]]</li>
+        <li ng-show="item.test == 'Rickettsia Serology' && item.scrub_typhus_igm">Scrub Typhus IgM: [[ item.scrub_typhus_igm | microresult ]]</li>
+        <li ng-show="item.test == 'Rickettsia Serology' && item.scrub_typhus_igg">Scrub Typhus IgG: [[ item.scrub_typhus_igg | microresult ]]</li>
 </ul>
 </div>
