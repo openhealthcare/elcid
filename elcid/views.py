@@ -139,11 +139,8 @@ class PatientDetailDataView(View):
     Return a serialised view of the patient.
     """
     def get(self, *args, **kwargs):
-        hospital_number = kwargs.get("hospital_number")
-        filter_kwargs = dict(
-            patient__demographics__hospital_number=hospital_number
-        )
-        episode = get_object_or_404(opal_models.Episode, **filter_kwargs)
+        patient_id = kwargs.get("patient_id")
+        episode = get_object_or_404(opal_models.Episode, id=patient_id)
 
         serialised = opal_models.Episode.objects.serialised(
             self.request.user,

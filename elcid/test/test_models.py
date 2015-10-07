@@ -135,6 +135,7 @@ class LocationTest(OpalTestCase, AbstractEpisodeTestCase):
         self.assertEqual('HH', self.location.hospital)
 
 
+
 class DiagnosisTest(OpalTestCase, AbstractEpisodeTestCase):
 
     def setUp(self):

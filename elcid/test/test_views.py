@@ -4,10 +4,11 @@ Unittests for the UCLH eLCID OPAL implementation.
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 import ffs
-import random
 
 from opal.core.test import OpalTestCase
 from opal.models import Patient
+
+from elcid.test.test_models import AbstractEpisodeTestCase
 
 HERE = ffs.Path.here()
 TEST_DATA = HERE/'test_data'
@@ -22,14 +23,15 @@ class ViewsTest(OpalTestCase):
         self.patient = Patient.objects.get(pk=1)
 
     def test_try_to_get_patient_detail_for_nonexistent_patient(self):
-        while True:
-            rand_int = str(random.randint(0, 2342343))
-            if not Patient.objects.filter(hospital_number=rand_int):
-                break
+        last_patient = Patient.objects.last()
 
-        Patient.objects.last().values_list("id")
-        url = reverse("patint_detail_data_view", kwargs={
-            "hospital_number": rand_int
+        if last_patient:
+            nonexistent_id = last_patient.id + 1
+        else:
+            nonexistent_id = 1
+
+        url = reverse("patient_detail_data_view", kwargs={
+            "patient_id": nonexistent_id
         })
         self.assertStatusCode(url, 404)
 
@@ -154,3 +156,25 @@ class ExtractSchemaViewTest(OpalTestCase):
     def assertStatusCode(self, path, expected_status_code):
         response = self.client.get(path)
         self.assertEqual(expected_status_code, response.status_code)
+
+
+class MicrobiologyInputViewTest(OpalTestCase, AbstractEpisodeTestCase):
+    def setUp(self):
+        super(MicrobiologyInputViewTest, self).setUp()
+        self.url = reverse(
+            "patient_detail_data_view", kwargs={"patient_id": self.patient.id}
+        )
+        self.args = {
+            "clinical_discussion": "something interesting",
+            "discussed_with": "Jane",
+            "episode_id": 1,
+            "initials": "Jane Doe",
+            "reason_for_interaction": "Haematology telephone consult",
+            "when": "2015-10-07 23:30+01:00"
+        }
+
+    def test_add_microbiology_input(self):
+        pass
+
+    def test_microbiology_input_once(self):
+        pass
