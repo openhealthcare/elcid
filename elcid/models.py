@@ -4,10 +4,15 @@ elCID implementation specific models!
 from django.db import models
 
 import opal.models as omodels
-from opal.models import (Subrecord,
-                         EpisodeSubrecord, PatientSubrecord, GP, CommunityNurse)
+
+from opal.models import (
+    EpisodeSubrecord, PatientSubrecord, GP, CommunityNurse, Episode, Team,
+    Tagging
+)
 from opal.core.fields import ForeignKeyOrFreeText
 from opal.core import lookuplists
+from constants import MICROHAEM_CONSULTATIONS, MICROHAEM_TEAM_NAME
+
 
 class Demographics(PatientSubrecord):
     _is_singleton = True
@@ -229,17 +234,27 @@ class MicrobiologyInput(EpisodeSubrecord):
     _modal = 'lg'
     _list_limit = 3
 
-    when                              = models.DateTimeField(null=True, blank=True)
-    initials                          = models.CharField(max_length=255, blank=True)
-    reason_for_interaction            = ForeignKeyOrFreeText(
-        omodels.Clinical_advice_reason_for_interaction)
-    clinical_discussion               = models.TextField(blank=True)
-    agreed_plan                       = models.TextField(blank=True)
-    discussed_with                    = models.CharField(max_length=255, blank=True)
-    clinical_advice_given             = models.NullBooleanField()
-    infection_control_advice_given    = models.NullBooleanField()
+    when = models.DateTimeField(null=True, blank=True)
+    initials = models.CharField(max_length=255, blank=True)
+    reason_for_interaction = ForeignKeyOrFreeText(
+        omodels.Clinical_advice_reason_for_interaction
+    )
+    clinical_discussion = models.TextField(blank=True)
+    agreed_plan = models.TextField(blank=True)
+    discussed_with = models.CharField(max_length=255, blank=True)
+    clinical_advice_given = models.NullBooleanField()
+    infection_control_advice_given = models.NullBooleanField()
     change_in_antibiotic_prescription = models.NullBooleanField()
-    referred_to_opat                  = models.NullBooleanField()
+    referred_to_opat = models.NullBooleanField()
+
+    def set_reason_for_interaction(self, incoming_value, user, data):
+        if(incoming_value in MICROHAEM_CONSULTATIONS):
+            episode = Episode.objects.get(data["episode_id"])
+            Tagging.objects.create(
+                episode=episode,
+                team=Team.objects.get(name=MICROHAEM_TEAM_NAME)
+            )
+        self.reason_for_interaction = incoming_value
 
 
 class Todo(EpisodeSubrecord):
@@ -260,6 +275,7 @@ class MicrobiologyTest(EpisodeSubrecord):
     _modal = 'lg'
 
     test                  = models.CharField(max_length=255)
+    alert_investigation   = models.BooleanField(default=False)
     date_ordered          = models.DateField(null=True, blank=True)
     details               = models.CharField(max_length=255, blank=True)
     microscopy            = models.CharField(max_length=255, blank=True)

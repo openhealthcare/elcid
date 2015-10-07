@@ -8,10 +8,13 @@ from django import forms
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.http import HttpResponse
-from opal.core.subrecords import subrecords
+from django.shortcuts import get_object_or_404
 from django.views.generic import TemplateView, FormView, View
+
 import letter
 from letter.contrib.contact import EmailForm, EmailView
+
+from opal.core.subrecords import subrecords
 from opal.core.views import _build_json_response
 from opal import models as opal_models
 from opal.core import application
@@ -140,20 +143,21 @@ class PatientDetailDataView(View):
         filter_kwargs = dict(
             patient__demographics__hospital_number=hospital_number
         )
-        episodes = opal_models.Episode.objects.filter(**filter_kwargs)
+        episode = get_object_or_404(opal_models.Episode, **filter_kwargs)
+
         serialised = opal_models.Episode.objects.serialised(
             self.request.user,
-            episodes
+            [episode]
         )
 
         return _build_json_response(serialised)
 
 
-class PatientDetailView(TemplateView):
+class PatientDetailTemplateView(TemplateView):
     template_name = 'patient_notes.html'
 
     def get_context_data(self, *args, **kwargs):
-        context = super(PatientDetailView, self).get_context_data(*args, **kwargs)
+        context = super(PatientDetailTemplateView, self).get_context_data(*args, **kwargs)
         context['models'] = {m.__name__: m for m in subrecords()}
         context['inline_forms'] = getattr(app, "patient_view_forms", [])
         return context
