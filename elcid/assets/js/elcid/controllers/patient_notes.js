@@ -69,6 +69,29 @@ angular.module('opal.controllers').controller(
                }, []);
            };
 
+           $scope.isRecentHaemInformation = function(haemInformationRow){
+              var haemInformation = _.reduce($scope.episodes, function(hi, e){
+                  var episodeHaemInfo = e.haem_information || [];
+                  hi = hi.concat(episodeHaemInfo)
+                  return hi;
+              }, []);
+
+              haemInformation = _.sortBy(haemInformation, "patient_type");
+
+              haemInformation = _.sortBy(haemInformation, function(hi){
+                  var significantDate = hi.count_recovery || hi.created;
+                  return new Date(significantDate);
+              });
+
+              result = {};
+
+              _.forEach(haemInformation, function(hi){
+                  result[hi.patient_type] = hi.id;
+              });
+
+              return _.contains(_.values(result), haemInformationRow.id);
+           };
+
            EpisodeDetailMixin($scope);
            if($scope.episodes.length &&
                _.last($scope.episodes).microbiology_input &&

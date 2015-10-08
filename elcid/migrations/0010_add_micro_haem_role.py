@@ -7,7 +7,7 @@ from elcid.constants import MICROHAEM_ROLE
 
 def add(apps, schema_editor):
     Role = apps.get_model("opal", "Role")
-    Role.objects.create(
+    Role.objects.get_or_create(
         name=MICROHAEM_ROLE
     )
 
@@ -17,6 +17,7 @@ def remove(apps, schema_editor):
     Role.objects.filter(
         name=MICROHAEM_ROLE
     ).delete()
+
 
 
 class Migration(migrations.Migration):
