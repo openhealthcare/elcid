@@ -8,6 +8,7 @@ from opal.models import (Subrecord,
                          EpisodeSubrecord, PatientSubrecord, GP, CommunityNurse)
 from opal.core.fields import ForeignKeyOrFreeText
 from opal.core import lookuplists
+from opat import models as opatmodels
 
 class Demographics(PatientSubrecord):
     _is_singleton = True
@@ -361,6 +362,7 @@ class OPATOutcome(EpisodeSubrecord):
     readmission_cause     = models.CharField(max_length=200, blank=True, null=True)
     notes                 = models.TextField(blank=True, null=True)
     patient_feedback      = models.NullBooleanField(default=False)
+    infective_diagnosis   = ForeignKeyOrFreeText(opatmodels.OPATInfectiveDiagnosis)
 
     class Meta:
         verbose_name = "OPAT outcome"
