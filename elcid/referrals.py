@@ -2,6 +2,7 @@
 Referral routes for elCID
 """
 import datetime
+from constants import MICROHAEM_TEAM_NAME
 
 from referral import ReferralRoute
 from walkin.models import Management
@@ -31,3 +32,9 @@ class OPATRoute(ReferralRoute):
     target_teams = ['opat', 'opat_referrals']
     target_category = 'OPAT'
     success_link = '/#/list/opat'
+
+class MicroHaematology(ReferralRoute):
+    name = 'MicroHaematology'
+    description = 'The MicroHaematology service at UCLH'
+    target_teams = [MICROHAEM_TEAM_NAME]
+    success_link = '/#/list/microbiology/micro_haem'

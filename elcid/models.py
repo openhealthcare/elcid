@@ -350,6 +350,7 @@ class HaemInformation(PatientSubrecord):
     patient_type = ForeignKeyOrFreeText(HaemInformationType)
     date_of_transplant = models.DateField(blank=True, null=True)
     neutropenia_onset = models.DateField(blank=True, null=True)
+    type_of_transplant = ForeignKeyOrFreeText(HaemTransplantType)
     type_of_chemotherapy = ForeignKeyOrFreeText(HaemChemotherapyType)
     date_of_chemotherapy = models.DateField(blank=True, null=True)
     count_recovery = models.DateField(blank=True, null=True)
