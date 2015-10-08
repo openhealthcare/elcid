@@ -6,9 +6,10 @@ from django.core.urlresolvers import reverse
 import ffs
 
 from opal.core.test import OpalTestCase
-from opal.models import Patient
+from opal.models import Patient, Team
 
 from elcid.test.test_models import AbstractEpisodeTestCase
+from elcid import constants
 
 HERE = ffs.Path.here()
 TEST_DATA = HERE/'test_data'
@@ -23,7 +24,7 @@ class ViewsTest(OpalTestCase):
         self.patient = Patient.objects.get(pk=1)
 
     def test_try_to_get_patient_detail_for_nonexistent_patient(self):
-        last_patient = Patient.objects.last()
+        last_patient = Patient.objects.order_by("-id").first()
 
         if last_patient:
             nonexistent_id = last_patient.id + 1
@@ -161,20 +162,31 @@ class ExtractSchemaViewTest(OpalTestCase):
 class MicrobiologyInputViewTest(OpalTestCase, AbstractEpisodeTestCase):
     def setUp(self):
         super(MicrobiologyInputViewTest, self).setUp()
-        self.url = reverse(
-            "patient_detail_data_view", kwargs={"patient_id": self.patient.id}
+        Team.objects.create(
+            name=constants.MICROHAEM_TEAM_NAME,
+            title=constants.MICROHAEM_TEAM_NAME.title()
         )
+        self.url = "/api/v0.1/microbiology_input/"
+        self.assertTrue(self.client.login(username=self.user.username,
+                                          password=self.PASSWORD))
+
         self.args = {
             "clinical_discussion": "something interesting",
             "discussed_with": "Jane",
-            "episode_id": 1,
+            "episode_id": self.episode.id,
             "initials": "Jane Doe",
-            "reason_for_interaction": "Haematology telephone consult",
+            "reason_for_interaction": constants.MICROHAEM_CONSULTATIONS[0],
             "when": "2015-10-07 23:30+01:00"
         }
 
     def test_add_microbiology_input(self):
-        pass
+        tags = self.episode.get_tag_names(self.user)
+        self.assertEqual(len(tags), 0)
+        self.post_json(self.url, self.args)
+        updated_tags = self.episode.get_tag_names(self.user)
+        self.assertEqual(updated_tags, [constants.MICROHAEM_TEAM_NAME])
+        self.post_json(self.url, self.args)
 
-    def test_microbiology_input_once(self):
-        pass
+        # make sure tags don't get applied twice if run twice
+        updated_tags = self.episode.get_tag_names(self.user)
+        self.assertEqual(updated_tags, [constants.MICROHAEM_TEAM_NAME])

@@ -140,11 +140,11 @@ class PatientDetailDataView(View):
     """
     def get(self, *args, **kwargs):
         patient_id = kwargs.get("patient_id")
-        episode = get_object_or_404(opal_models.Episode, id=patient_id)
+        patient = get_object_or_404(opal_models.Patient, id=patient_id)
 
         serialised = opal_models.Episode.objects.serialised(
             self.request.user,
-            [episode]
+            patient.episode_set.all()
         )
 
         return _build_json_response(serialised)

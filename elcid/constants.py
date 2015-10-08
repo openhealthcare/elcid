@@ -4,3 +4,4 @@ MICROHAEM_CONSULTATIONS = [
 ]
 
 MICROHAEM_TEAM_NAME = "micro_haem"
+MICROHAEM_ROLE = "micro_haem"
