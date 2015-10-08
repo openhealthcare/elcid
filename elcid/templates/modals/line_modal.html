@@ -28,7 +28,7 @@
                />
       </div>
     </div>
-    {% select label="Complications" model="editing.complications" lookuplist="line_complication_list" %}
+    {% select label="Complications" model="editing.complications" lookuplist="line_complication_list" other=True %}
     {% select label="Removal Reason" model="editing.removal_reason" lookuplist="line_removal_reason_list" %}
     {% textarea label="Special Instructions" model="editing.special_instructions" %}
   </form>
