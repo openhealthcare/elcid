@@ -459,11 +459,13 @@ class OPATLineAssessment(EpisodeSubrecord):
     dressing_type          = models.CharField(max_length=200, blank=True, null=True)
     dressing_change_date   = models.DateField(blank=True, null=True)
     dressing_change_reason = models.CharField(max_length=200, blank=True, null=True)
+    next_bionector_date    = models.DateField(blank=True, null=True)
     bionector_change_date  = models.DateField(blank=True, null=True)
+    comments               = models.TextField(blank=True, null=True)
     dressing_intact        = models.NullBooleanField(default=False)
     lumen_flush_ok         = models.NullBooleanField(default=False)
     blood_drawback_seen    = models.NullBooleanField(default=False)
-    cm_from_exit_site      = models.NullBooleanField(default=False)
+    cm_from_exit_site      = models.FloatField(default=False)
 
     class Meta:
         verbose_name = "OPAT line assessment"
