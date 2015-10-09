@@ -77,6 +77,7 @@ class Location(EpisodeSubrecord):
                                                   null=True)
     opat_referral_team_address = models.TextField(blank=True, null=True)
     opat_referral              = models.DateField(blank=True, null=True)
+    opat_acceptance            = models.DateField(blank=True, null=True)
     opat_discharge             = models.DateField(blank=True, null=True)
 
     def __unicode__(self):
@@ -338,6 +339,7 @@ class OPATMeta(EpisodeSubrecord):
     readmitted            = models.NullBooleanField(default=False)
     readmission_cause     = models.CharField(max_length=200, blank=True, null=True)
     notes                 = models.TextField(blank=True, null=True)
+    
 
     class Meta:
         verbose_name = "OPAT meta"
