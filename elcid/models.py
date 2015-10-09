@@ -69,6 +69,9 @@ class Location(EpisodeSubrecord):
     hospital                   = models.CharField(max_length=255, blank=True)
     ward                       = models.CharField(max_length=255, blank=True)
     bed                        = models.CharField(max_length=255, blank=True)
+    # This is completely the wrong place for these - they need to go in their
+    # own OPATReferral model. The ticket for that work is currently
+    # opal-ideas#21
     opat_referral_route        = models.CharField(max_length=255, blank=True,
                                                   null=True)
     opat_referral_team         = models.CharField(max_length=255, blank=True,
