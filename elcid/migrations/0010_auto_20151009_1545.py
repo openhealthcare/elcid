@@ -11,6 +11,10 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
+        migrations.RemoveField(
+            model_name='opatlineassessment',
+            name='cm_from_exit_site',
+        ),
         migrations.AddField(
             model_name='opatlineassessment',
             name='comments',
@@ -20,10 +24,5 @@ class Migration(migrations.Migration):
             model_name='opatlineassessment',
             name='next_bionector_date',
             field=models.DateField(null=True, blank=True),
-        ),
-        migrations.AlterField(
-            model_name='opatlineassessment',
-            name='cm_from_exit_site',
-            field=models.FloatField(default=False),
         ),
     ]
