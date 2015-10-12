@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
-import opal.models.mixins
+import opal.models
 
 
 class Migration(migrations.Migration):
@@ -24,7 +24,7 @@ class Migration(migrations.Migration):
             options={
                 'verbose_name_plural': 'Allergies',
             },
-            bases=(opal.models.mixins.UpdatesFromDictMixin, models.Model),
+            bases=(opal.models.UpdatesFromDictMixin, models.Model),
         ),
         migrations.CreateModel(
             name='Antimicrobial',
@@ -46,7 +46,7 @@ class Migration(migrations.Migration):
             options={
                 'abstract': False,
             },
-            bases=(opal.models.mixins.UpdatesFromDictMixin, models.Model),
+            bases=(opal.models.UpdatesFromDictMixin, models.Model),
         ),
         migrations.CreateModel(
             name='Antimicrobial_susceptability',
@@ -72,7 +72,7 @@ class Migration(migrations.Migration):
             options={
                 'abstract': False,
             },
-            bases=(opal.models.mixins.UpdatesFromDictMixin, models.Model),
+            bases=(opal.models.UpdatesFromDictMixin, models.Model),
         ),
         migrations.CreateModel(
             name='Carers',
@@ -86,7 +86,7 @@ class Migration(migrations.Migration):
             options={
                 'verbose_name_plural': 'Carers',
             },
-            bases=(opal.models.mixins.UpdatesFromDictMixin, models.Model),
+            bases=(opal.models.UpdatesFromDictMixin, models.Model),
         ),
         migrations.CreateModel(
             name='Checkpoints_assay',
@@ -149,7 +149,7 @@ class Migration(migrations.Migration):
             options={
                 'verbose_name': 'Checkpoints assay',
             },
-            bases=(opal.models.mixins.UpdatesFromDictMixin, models.Model),
+            bases=(opal.models.UpdatesFromDictMixin, models.Model),
         ),
         migrations.CreateModel(
             name='ContactDetails',
@@ -168,7 +168,7 @@ class Migration(migrations.Migration):
             options={
                 'verbose_name_plural': 'Contact details',
             },
-            bases=(opal.models.mixins.UpdatesFromDictMixin, models.Model),
+            bases=(opal.models.UpdatesFromDictMixin, models.Model),
         ),
         migrations.CreateModel(
             name='Demographics',
@@ -188,7 +188,7 @@ class Migration(migrations.Migration):
             options={
                 'verbose_name_plural': 'Demographics',
             },
-            bases=(opal.models.mixins.UpdatesFromDictMixin, models.Model),
+            bases=(opal.models.UpdatesFromDictMixin, models.Model),
         ),
         migrations.CreateModel(
             name='Diagnosis',
@@ -205,7 +205,7 @@ class Migration(migrations.Migration):
             options={
                 'verbose_name_plural': 'Diagnoses',
             },
-            bases=(opal.models.mixins.UpdatesFromDictMixin, models.Model),
+            bases=(opal.models.UpdatesFromDictMixin, models.Model),
         ),
         migrations.CreateModel(
             name='Drug_delivered',
@@ -229,7 +229,7 @@ class Migration(migrations.Migration):
             options={
                 'abstract': False,
             },
-            bases=(opal.models.mixins.UpdatesFromDictMixin, models.Model),
+            bases=(opal.models.UpdatesFromDictMixin, models.Model),
         ),
         migrations.CreateModel(
             name='Hiv_no',
@@ -272,7 +272,7 @@ class Migration(migrations.Migration):
             options={
                 'verbose_name': 'Lab specimen appearance',
             },
-            bases=(opal.models.mixins.UpdatesFromDictMixin, models.Model),
+            bases=(opal.models.UpdatesFromDictMixin, models.Model),
         ),
         migrations.CreateModel(
             name='LabTest',
@@ -303,7 +303,7 @@ class Migration(migrations.Migration):
             options={
                 'abstract': False,
             },
-            bases=(opal.models.mixins.UpdatesFromDictMixin, models.Model),
+            bases=(opal.models.UpdatesFromDictMixin, models.Model),
         ),
         migrations.CreateModel(
             name='Line',
@@ -328,7 +328,7 @@ class Migration(migrations.Migration):
             options={
                 'abstract': False,
             },
-            bases=(opal.models.mixins.UpdatesFromDictMixin, models.Model),
+            bases=(opal.models.UpdatesFromDictMixin, models.Model),
         ),
         migrations.CreateModel(
             name='Location',
@@ -350,7 +350,7 @@ class Migration(migrations.Migration):
             options={
                 'abstract': False,
             },
-            bases=(opal.models.mixins.UpdatesFromDictMixin, models.Model),
+            bases=(opal.models.UpdatesFromDictMixin, models.Model),
         ),
         migrations.CreateModel(
             name='MicrobiologyInput',
@@ -373,7 +373,7 @@ class Migration(migrations.Migration):
             options={
                 'abstract': False,
             },
-            bases=(opal.models.mixins.UpdatesFromDictMixin, models.Model),
+            bases=(opal.models.UpdatesFromDictMixin, models.Model),
         ),
         migrations.CreateModel(
             name='MicrobiologyTest',
@@ -430,7 +430,7 @@ class Migration(migrations.Migration):
             options={
                 'abstract': False,
             },
-            bases=(opal.models.mixins.UpdatesFromDictMixin, models.Model),
+            bases=(opal.models.UpdatesFromDictMixin, models.Model),
         ),
         migrations.CreateModel(
             name='Opat_rvt',
@@ -463,7 +463,7 @@ class Migration(migrations.Migration):
             options={
                 'verbose_name': 'OPAT line assessment',
             },
-            bases=(opal.models.mixins.UpdatesFromDictMixin, models.Model),
+            bases=(opal.models.UpdatesFromDictMixin, models.Model),
         ),
         migrations.CreateModel(
             name='OPATMeta',
@@ -486,7 +486,7 @@ class Migration(migrations.Migration):
             options={
                 'verbose_name': 'OPAT meta',
             },
-            bases=(opal.models.mixins.UpdatesFromDictMixin, models.Model),
+            bases=(opal.models.UpdatesFromDictMixin, models.Model),
         ),
         migrations.CreateModel(
             name='OPATOutcome',
@@ -506,7 +506,7 @@ class Migration(migrations.Migration):
             options={
                 'verbose_name': 'OPAT outcome',
             },
-            bases=(opal.models.mixins.UpdatesFromDictMixin, models.Model),
+            bases=(opal.models.UpdatesFromDictMixin, models.Model),
         ),
         migrations.CreateModel(
             name='OPATOutstandingIssues',
@@ -519,7 +519,7 @@ class Migration(migrations.Migration):
             options={
                 'verbose_name': 'OPAT outstanding issue',
             },
-            bases=(opal.models.mixins.UpdatesFromDictMixin, models.Model),
+            bases=(opal.models.UpdatesFromDictMixin, models.Model),
         ),
         migrations.CreateModel(
             name='OPATRejection',
@@ -541,7 +541,7 @@ class Migration(migrations.Migration):
             options={
                 'verbose_name': 'OPAT rejection',
             },
-            bases=(opal.models.mixins.UpdatesFromDictMixin, models.Model),
+            bases=(opal.models.UpdatesFromDictMixin, models.Model),
         ),
         migrations.CreateModel(
             name='OPATReview',
@@ -565,7 +565,7 @@ class Migration(migrations.Migration):
             options={
                 'verbose_name': 'OPAT review',
             },
-            bases=(opal.models.mixins.UpdatesFromDictMixin, models.Model),
+            bases=(opal.models.UpdatesFromDictMixin, models.Model),
         ),
         migrations.CreateModel(
             name='Organism_details',
@@ -591,7 +591,7 @@ class Migration(migrations.Migration):
             options={
                 'verbose_name_plural': 'Past medical histories',
             },
-            bases=(opal.models.mixins.UpdatesFromDictMixin, models.Model),
+            bases=(opal.models.UpdatesFromDictMixin, models.Model),
         ),
         migrations.CreateModel(
             name='PresentingComplaint',
@@ -607,7 +607,7 @@ class Migration(migrations.Migration):
             options={
                 'abstract': False,
             },
-            bases=(opal.models.mixins.UpdatesFromDictMixin, models.Model),
+            bases=(opal.models.UpdatesFromDictMixin, models.Model),
         ),
         migrations.CreateModel(
             name='PrimaryDiagnosis',
@@ -622,7 +622,7 @@ class Migration(migrations.Migration):
             options={
                 'verbose_name_plural': 'Primary diagnoses',
             },
-            bases=(opal.models.mixins.UpdatesFromDictMixin, models.Model),
+            bases=(opal.models.UpdatesFromDictMixin, models.Model),
         ),
         migrations.CreateModel(
             name='RidRTITest',
@@ -675,7 +675,7 @@ class Migration(migrations.Migration):
             options={
                 'verbose_name': 'RiD-RTI',
             },
-            bases=(opal.models.mixins.UpdatesFromDictMixin, models.Model),
+            bases=(opal.models.UpdatesFromDictMixin, models.Model),
         ),
         migrations.CreateModel(
             name='SecondaryDiagnosis',
@@ -690,7 +690,7 @@ class Migration(migrations.Migration):
             options={
                 'verbose_name_plural': 'Secondary diagnoses',
             },
-            bases=(opal.models.mixins.UpdatesFromDictMixin, models.Model),
+            bases=(opal.models.UpdatesFromDictMixin, models.Model),
         ),
         migrations.CreateModel(
             name='Specimin',
@@ -723,7 +723,7 @@ class Migration(migrations.Migration):
             options={
                 'abstract': False,
             },
-            bases=(opal.models.mixins.UpdatesFromDictMixin, models.Model),
+            bases=(opal.models.UpdatesFromDictMixin, models.Model),
         ),
         migrations.CreateModel(
             name='Travel',
@@ -745,7 +745,7 @@ class Migration(migrations.Migration):
             options={
                 'abstract': False,
             },
-            bases=(opal.models.mixins.UpdatesFromDictMixin, models.Model),
+            bases=(opal.models.UpdatesFromDictMixin, models.Model),
         ),
         migrations.CreateModel(
             name='Unplanned_stop',

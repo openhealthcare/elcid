@@ -1,7 +1,10 @@
 {% extends 'modal_base.html' %}
-{% block modal_body %}
-<form name="demographicsForm" class="form-horizontal">
-  THIS IS A FORM
-</form>
 
+{% load forms %}
+{% block icon_name %}fa fa-users{% endblock %}
+{% block modal_body %}
+<form class="form-horizontal">
+  {% textarea label="GP" model="editing.gp" %}
+  {% textarea label="Nurse" model="editing.nurse" %}
+</form>
 {% endblock %}

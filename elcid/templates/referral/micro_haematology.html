@@ -1,5 +1,9 @@
 {% extends "referral/referral.html" %}
 {% load forms %}
+{% block additional_models_header %}
+<i class="fa fa-user"></i>
+  [[ nextStep.display_name ]]
+{% endblock %}
 {% block additional_models %}
 <div ng-show="state=='Diagnosis'">
   <form class="form-horizontal">
@@ -9,15 +13,15 @@
     {% datepicker label="Date of diagnosis" model="additionalModelsData.Diagnosis.date_of_diagnosis" %}
   </form>
 
-  <button class="btn btn-lg btn-primary pull-right" ng-click="nextStep()">
+  <button class="btn btn-lg btn-primary pull-right" ng-click="goToNextStep()">
     <i class="fa fa-arrow-right"></i>
-    <span ng-show="!getNextStep()">
+    <span ng-show="!nextStep">
       [[ route.verb ]] to [[ route.name ]]
     </span>
-    <span ng-show="getNextStep()">
-      [[ getNextStep()|title ]]
+    <span ng-show="nextStep">
+      [[ nextStep.display_name ]]
     </span>
-  </button
+  </button>
 </div>
 
 {% endblock %}

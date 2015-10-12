@@ -12,6 +12,7 @@ from opal.models import (
 from opal.core.fields import ForeignKeyOrFreeText
 from opal.core import lookuplists
 from constants import MICROHAEM_CONSULTATIONS, MICROHAEM_TEAM_NAME
+from opat import models as opatmodels
 
 
 class Demographics(PatientSubrecord):
@@ -56,9 +57,10 @@ class ContactDetails(PatientSubrecord):
 class Carers(PatientSubrecord):
     _is_singleton = True
     _advanced_searchable = False
+    _icon = 'fa fa-users'
 
-    gp    = models.ForeignKey(GP, blank=True, null=True)
-    nurse = models.ForeignKey(CommunityNurse, blank=True, null=True)
+    gp    = models.TextField(blank=True, null=True)
+    nurse = models.TextField(blank=True, null=True)
 
     class Meta:
         verbose_name_plural = "Carers"
@@ -72,6 +74,9 @@ class Location(EpisodeSubrecord):
     hospital                   = models.CharField(max_length=255, blank=True)
     ward                       = models.CharField(max_length=255, blank=True)
     bed                        = models.CharField(max_length=255, blank=True)
+    # This is completely the wrong place for these - they need to go in their
+    # own OPATReferral model. The ticket for that work is currently
+    # opal-ideas#21
     opat_referral_route        = models.CharField(max_length=255, blank=True,
                                                   null=True)
     opat_referral_team         = models.CharField(max_length=255, blank=True,
@@ -80,6 +85,7 @@ class Location(EpisodeSubrecord):
                                                   null=True)
     opat_referral_team_address = models.TextField(blank=True, null=True)
     opat_referral              = models.DateField(blank=True, null=True)
+    opat_acceptance            = models.DateField(blank=True, null=True)
     opat_discharge             = models.DateField(blank=True, null=True)
 
     def __unicode__(self):
@@ -324,6 +330,12 @@ class MicrobiologyTest(EpisodeSubrecord):
     entamoeba_histolytica = models.CharField(max_length=20, blank=True)
     cryptosporidium       = models.CharField(max_length=20, blank=True)
     hiv_declined          = ForeignKeyOrFreeText(Hiv_no)
+    spotted_fever_igm     = models.CharField(max_length=20, blank=True)
+    spotted_fever_igg     = models.CharField(max_length=20, blank=True)
+    typhus_group_igm      = models.CharField(max_length=20, blank=True)
+    typhus_group_igg      = models.CharField(max_length=20, blank=True)
+    scrub_typhus_igm      = models.CharField(max_length=20, blank=True)
+    scrub_typhus_igg      = models.CharField(max_length=20, blank=True)
 
 """
 Begin OPAT specific fields.
@@ -384,6 +396,7 @@ class OPATMeta(EpisodeSubrecord):
     readmission_cause     = models.CharField(max_length=200, blank=True, null=True)
     notes                 = models.TextField(blank=True, null=True)
 
+
     class Meta:
         verbose_name = "OPAT meta"
 
@@ -394,10 +407,12 @@ class OPATOutcome(EpisodeSubrecord):
     same as OPAT meta data, but captured on the ward round and interrogated
     differently.
     """
-    _is_singleton     = True
     _title            = "OPAT Outcome"
 
+    outcome_stage         = models.CharField(max_length=200, blank=True, null=True)
     treatment_outcome     = models.CharField(max_length=200, blank=True, null=True)
+    patient_outcome       = models.CharField(max_length=200, blank=True, null=True)
+    opat_outcome          = models.CharField(max_length=200, blank=True, null=True)
     deceased              = models.NullBooleanField(default=False)
     death_category        = models.CharField(max_length=200, blank=True, null=True)
     cause_of_death        = models.CharField(max_length=200, blank=True, null=True)
@@ -405,6 +420,7 @@ class OPATOutcome(EpisodeSubrecord):
     readmission_cause     = models.CharField(max_length=200, blank=True, null=True)
     notes                 = models.TextField(blank=True, null=True)
     patient_feedback      = models.NullBooleanField(default=False)
+    infective_diagnosis   = ForeignKeyOrFreeText(opatmodels.OPATInfectiveDiagnosis)
 
     class Meta:
         verbose_name = "OPAT outcome"
@@ -496,11 +512,13 @@ class OPATLineAssessment(EpisodeSubrecord):
     dressing_type          = models.CharField(max_length=200, blank=True, null=True)
     dressing_change_date   = models.DateField(blank=True, null=True)
     dressing_change_reason = models.CharField(max_length=200, blank=True, null=True)
+    next_bionector_date    = models.DateField(blank=True, null=True)
     bionector_change_date  = models.DateField(blank=True, null=True)
+    comments               = models.TextField(blank=True, null=True)
     dressing_intact        = models.NullBooleanField(default=False)
     lumen_flush_ok         = models.NullBooleanField(default=False)
     blood_drawback_seen    = models.NullBooleanField(default=False)
-    cm_from_exit_site      = models.NullBooleanField(default=False)
+    cm_from_exit_site      = models.FloatField(default=False)
 
     class Meta:
         verbose_name = "OPAT line assessment"
