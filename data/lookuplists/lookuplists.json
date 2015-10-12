@@ -768,27 +768,47 @@
   "line_complication": [
     {
       "synonyms": [], 
-      "name": "Bleeding"
+      "name": "Allergy to dressing"
     }, 
     {
       "synonyms": [], 
-      "name": "Blockage"
+      "name": "Fractured Line"
     }, 
     {
       "synonyms": [], 
-      "name": "Fell Out"
+      "name": "Infection - Bacteraemia"
     }, 
     {
       "synonyms": [], 
-      "name": "Infection (Systemic / bacteraemia)"
+      "name": "Infection - Line"
     }, 
     {
       "synonyms": [], 
-      "name": "Infection (local)"
+      "name": "Infection - Phelbitis"
     }, 
     {
       "synonyms": [], 
-      "name": "Migrated"
+      "name": "Line Migration"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Line Occlusion"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Line Tampered with by Patient"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Other"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Pneumothorax"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Sterile Phlebitis"
     }, 
     {
       "synonyms": [], 
@@ -3340,12 +3360,17 @@
     }, 
     {
       "synonyms": [
-        "Community Acquired Pneumonia", 
-        "LRTI", 
-        "Lower Respiratory Tract Infection"
+        "Community Acquired Pneumonia"
       ], 
       "name": "CAP"
-    }, 
+    },
+    {
+      "synonyms": [
+        "Lower Respiratory Tract Infection"
+      ], 
+      "name": "LRTI"
+    },
+ 
     {
       "synonyms": [
         "Crimean-congo Haemorrhagic fever"
@@ -5220,23 +5245,63 @@
     }, 
     {
       "synonyms": [], 
-      "name": "Blood dyscrasia"
+      "name": "Diarrhoea (antibiotic induced)"
     }, 
     {
       "synonyms": [], 
-      "name": "Diarrhoea (C diff negative)"
+      "name": "Diarrhoea (C Difficille)"
     }, 
     {
       "synonyms": [], 
-      "name": "Diarrhoea (C diff positive)"
+      "name": "Drug Induced Fever"
     }, 
     {
       "synonyms": [], 
-      "name": "Intolerance"
+      "name": "Esosinophilia"
     }, 
     {
       "synonyms": [], 
-      "name": "Rash"
+      "name": "Hepatitis"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Leukopenia"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Nausea / Vomiting"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Nephrotoxicitiy"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Neutropenia"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Other"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Pancytopenia"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Rash - Generalised"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Rash - local"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Thrombocytopenia"
+    }, 
+    {
+      "synonyms": [], 
+      "name": "Urticaria"
     }
   ], 
   "micro_test_hepititis_b_serology": [

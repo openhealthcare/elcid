@@ -103,8 +103,11 @@ class OPATReviewList(WardRound):
     @staticmethod
     def episodes():
         review_ready = models.OPATMeta.objects.filter(review_date__lte=datetime.date.today())
-        return set([om.episode for om in review_ready
-                    if om.episode.opatoutcome_set.get().treatment_outcome is None])
+        in_round = set()
+        for om in review_ready:
+            if om.episode.opatoutcome_set.filter(outcome_stage='Review').count() == 0:
+                in_round.add(om.episode)
+        return in_round
 
     detail_template = 'wardrounds/opat_detail.html'
 
