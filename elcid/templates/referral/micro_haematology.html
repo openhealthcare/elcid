@@ -1,0 +1,23 @@
+{% extends "referral/referral.html" %}
+{% load forms %}
+{% block additional_models %}
+<div ng-show="state=='Diagnosis'">
+  <form class="form-horizontal">
+    {% input label="Condition" model="additionalModelsData.Diagnosis.condition" lookuplist="condition_list" %}
+    {% checkbox label="Provisional?" model="additionalModelsData.Diagnosis.provisional" %}
+    {% input label="Details" model="additionalModelsData.Diagnosis.details" %}
+    {% datepicker label="Date of diagnosis" model="additionalModelsData.Diagnosis.date_of_diagnosis" %}
+  </form>
+
+  <button class="btn btn-lg btn-primary pull-right" ng-click="nextStep()">
+    <i class="fa fa-arrow-right"></i>
+    <span ng-show="!getNextStep()">
+      [[ route.verb ]] to [[ route.name ]]
+    </span>
+    <span ng-show="getNextStep()">
+      [[ getNextStep()|title ]]
+    </span>
+  </button
+</div>
+
+{% endblock %}

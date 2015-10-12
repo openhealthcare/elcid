@@ -7,7 +7,8 @@ from constants import MICROHAEM_TEAM_NAME
 from referral import ReferralRoute
 from walkin.models import Management
 
-from elcid.models import MicrobiologyTest
+from elcid.models import MicrobiologyTest, Diagnosis
+
 
 class HTDWalkInRoute(ReferralRoute):
     name = 'HTD Walk In Clinic'
@@ -26,6 +27,7 @@ class HTDWalkInRoute(ReferralRoute):
         episode.save()
         return
 
+
 class OPATRoute(ReferralRoute):
     name = 'OPAT'
     description = 'The Outpatient Parenteral Antibiotic Therapy (OPAT) service at UCLH'
@@ -33,8 +35,12 @@ class OPATRoute(ReferralRoute):
     target_category = 'OPAT'
     success_link = '/#/list/opat'
 
+
 class MicroHaematology(ReferralRoute):
     name = 'MicroHaematology'
     description = 'The MicroHaematology service at UCLH'
     target_teams = [MICROHAEM_TEAM_NAME]
     success_link = '/#/list/microbiology/micro_haem'
+    additional_models = [
+        Diagnosis
+    ]
