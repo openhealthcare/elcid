@@ -113,6 +113,7 @@ class LocationTest(OpalTestCase, AbstractEpisodeTestCase):
             'updated': None,
             'updated_by_id': None,
             'created_by_id': None,
+            'opat_acceptance': None,
             'opat_discharge': None,
             'opat_referral': None,
             'opat_referral_route': None,
