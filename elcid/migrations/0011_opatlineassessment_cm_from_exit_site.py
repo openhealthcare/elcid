@@ -7,13 +7,13 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('elcid', '0011_opatlineassessment_cm_from_exit_site'),
+        ('elcid', '0010_auto_20151009_1545'),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='microbiologyinput',
-            name='when',
-            field=models.DateTimeField(null=True, blank=True),
+            model_name='opatlineassessment',
+            name='cm_from_exit_site',
+            field=models.FloatField(default=False),
         ),
     ]
