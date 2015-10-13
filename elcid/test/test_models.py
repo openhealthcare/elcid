@@ -41,7 +41,6 @@ class DemographicsTest(OpalTestCase, AbstractPatientTestCase):
 
     def test_to_dict(self):
         expected_data = {
-            'opat_acceptance': None,
             'consistency_token': '12345678',
             'patient_id': self.patient.id,
             'id': self.demographics.id,
