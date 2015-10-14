@@ -11,8 +11,8 @@ from opal.models import (
 )
 from opal.core.fields import ForeignKeyOrFreeText
 from opal.core import lookuplists
-from opat import models as opatmodels
 from constants import MICROHAEM_CONSULTATIONS, MICROHAEM_TEAM_NAME
+from opat import models as opatmodels
 
 
 class Demographics(PatientSubrecord):

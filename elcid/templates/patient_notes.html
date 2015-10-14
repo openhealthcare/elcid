@@ -102,9 +102,11 @@
                                 <div class="patient-timeline-discussion">
                                     <b ng-show="microbiology_input.initials && microbiology_input.initials.trim().length">
                                       ([[microbiology_input.initials]]<span ng-show="microbiology_input.discussed_with"> with [[microbiology_input.discussed_with]]</span>)
-                                      [[microbiology_input.reason_for_interaction]]
-                                    <br />
                                     </b>
+                                    <b>
+                                      [[microbiology_input.reason_for_interaction]]
+                                    </b>
+                                    <br />
                                     [[ microbiology_input.clinical_discussion]]
                                 </div>
                             </div>
@@ -112,9 +114,9 @@
                     </div>
                     <div class="col-md-6">
                         {% record_panel models.HaemInformation title="Recent Haem Information" angular_filter="isRecentHaemInformation" %}
-                        {% record_panel models.Diagnosis editable="e.id === episode.id" %}
-                        {% record_panel models.MicrobiologyTest editable="e.id === episode.id" %}
                         {% record_panel models.Antimicrobial editable="e.id === episode.id" %}
+                        {% record_panel models.MicrobiologyTest editable="e.id === episode.id" %}
+                        {% record_panel models.Diagnosis editable="e.id === episode.id" %}
                     </div>
                 </div>
             </section>

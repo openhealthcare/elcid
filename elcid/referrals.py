@@ -38,9 +38,8 @@ class OPATRoute(ReferralRoute):
 
 class MicroHaematology(ReferralRoute):
     name = 'MicroHaematology'
-    description = 'The MicroHaematology service at UCLH'
+    description = 'The Micro - Haematology service at UCLH'
     target_teams = [MICROHAEM_TEAM_NAME]
-    success_link = '/#/list/microbiology/micro_haem'
     additional_models = [
         Diagnosis
     ]

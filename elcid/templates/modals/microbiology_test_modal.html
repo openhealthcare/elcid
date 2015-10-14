@@ -35,14 +35,10 @@
     {% radio label="Result" model="editing.result" show="testType == 'micro_test_single_test_pos_neg_equiv'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
 
     {% radio label="IgG" model="editing.igg" show="testType == 'micro_test_single_igg_test'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
-<<<<<<< HEAD
 
-=======
-    
     {% input label="Viral load" model="editing.viral_load" show="testType == 'micro_test_viral_load'" %}
-    
+
     {% input label="Parasitaemia" model="editing.parasitaemia" show="testType == 'micro_test_parasitaemia'" %}
->>>>>>> v0.5.0
 
     {% radio label="HSV" model="editing.hsv" show="testType == 'micro_test_swab_pcr'" lookuplist="['pending', 'positive', 'negative']" %}
     {% radio label="VZV" model="editing.vzv" show="testType == 'micro_test_swab_pcr'" lookuplist="['pending', 'positive', 'negative']" %}
