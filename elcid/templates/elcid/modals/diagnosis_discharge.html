@@ -1,55 +1,73 @@
 {% extends 'modal_base.html' %}
 {% load forms %}
 {% block icon_name %}fa fa-home{% endblock %}
-{% block title %}Discharge Diagnosis{% endblock %}
+{% block title %}[[ step ]]{% endblock %}
 {% block modal_body_extra %}ng-show="discharged"{% endblock %}
 {% block modal_body %}
-    <form class="form-horizontal" name="dischargeDiagnosisForm">
-    {% select autofocus placeholder="Primary Diagnosis" label="Primary Diagnosis" search_select=True model="editing.primary_diagnosis.condition" lookuplist="condition_list" required="Primary Diagnosis is required." formname="dischargeDiagnosisForm" %}
-    <div ng-repeat="secondary in editing.secondary_diagnosis track by $index">
-      <div class="form-group">
-        <label class="control-label col-sm-3">Secondary Diagnosis [[$index + 1]]</label>
-        <div class="col-sm-8">
-          <input class="form-control" type="text"
-                 ng-model="secondary.condition"
-                 ng-options="s for s in condition_list"
-                 bs-typeahead
-                 >
+    <span ng-show="step === 'Discharge Diagnosis'">
+      <form class="form-horizontal" name="dischargeDiagnosisForm">
+      {% select autofocus placeholder="Primary Diagnosis" label="Primary Diagnosis" search_select=True model="editing.primary_diagnosis.condition" lookuplist="condition_list" required="Primary Diagnosis is required." formname="dischargeDiagnosisForm" %}
+      <div ng-repeat="secondary in editing.secondary_diagnosis track by $index">
+        <div class="form-group">
+          <label class="control-label col-sm-3">Secondary Diagnosis [[$index + 1]]</label>
+          <div class="col-sm-8">
+            <input class="form-control" type="text"
+                   ng-model="secondary.condition"
+                   ng-options="s for s in condition_list"
+                   bs-typeahead
+                   >
+          </div>
         </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label col-sm-3">Co-primary?</label>
-        <div class="col-sm-8">
-	  <input class="" type="checkbox" ng-model="secondary.co_primary">
+        <div class="form-group">
+          <label class="control-label col-sm-3">Co-primary?</label>
+          <div class="col-sm-8">
+  	  <input class="" type="checkbox" ng-model="secondary.co_primary">
+          </div>
         </div>
+        <hr />
       </div>
-      <hr />
-    </div>
-    <button type="button" class="btn btn-primary"
-            ng-click="addSecondary()"
-            >
-      <span class="glyphicon glyphicon-plus"></span>
-      Add Secondary Diagnosis
-    </button>
-  </form>
+      <button type="button" class="btn btn-primary"
+              ng-click="addSecondary()"
+              >
+        <span class="glyphicon glyphicon-plus"></span>
+        Add Secondary Diagnosis
+      </button>
+    </form>
+  </span>
+  <span ng-show="step === 'Travel'">
+    {% include "elcid/_includes/travel_form.html" %}
+  </span>
+  <span ng-show="step === 'Antimicrobials'">
+    {% include "elcid/_includes/antimicrobial_form.html" %}
+  </span>
+  <span ng-show="step === 'Consultant At Discharge'">
+    <form class="form-horizontal">
+      {% select autofocus placeholder="Consultant At Discharge" label="Consultant At Discharge" search_select=True model="editing.consultant_at_discharge.consultant" lookuplist="consultant_list" required="Consultant at discharge is required." formname="dischargeDiagnosisForm" %}
+    </form>
+  </span>
 
 {% endblock %}
 {% block modal_save %}
-  <button class="btn btn-primary"
-          ng-click="save()"
-          ng-hide="confirming"
-          ng-disabled="!dischargeDiagnosisForm.$valid"
-          >
-    <i class="fa fa-save"></i>
-    Save
-  </button>
+  <span ng-show="!lastStep()">
+    <button class="btn btn-primary" ng-click="goToNextStep()">[[ nextStep() ]]</button>
+  </span>
+  <span ng-show="lastStep()">
     <button class="btn btn-primary"
-          ng-click="save()"
-          ng-show="confirming"
-          ng-disabled="!dischargeDiagnosisForm.$valid"
-          >
-    <i class="fa fa-save"></i>
-    Confirm
-  </button>
+            ng-click="save()"
+            ng-hide="confirming"
+            ng-disabled="!dischargeDiagnosisForm.$valid"
+            >
+      <i class="fa fa-save"></i>
+      Save
+    </button>
+      <button class="btn btn-primary"
+            ng-click="save()"
+            ng-show="confirming"
+            ng-disabled="!dischargeDiagnosisForm.$valid"
+            >
+      <i class="fa fa-save"></i>
+      Confirm
+    </button>
+  </span>
 {% endblock %}
 {% block modal_another %}{% endblock %}

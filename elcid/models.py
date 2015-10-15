@@ -116,13 +116,21 @@ class PrimaryDiagnosis(EpisodeSubrecord):
     """
     This is the confirmed primary diagnosisa
     """
-    _is_singleton= True
+    _is_singleton = True
 
     condition = ForeignKeyOrFreeText(omodels.Condition)
     confirmed = models.NullBooleanField(default=False)
 
     class Meta:
         verbose_name_plural = "Primary diagnoses"
+
+
+class Consultant(lookuplists.LookupList):
+    pass
+
+class ConsultantAtDischarge(EpisodeSubrecord):
+    _is_singleton = True
+    consultant = ForeignKeyOrFreeText(Consultant)
 
 
 class SecondaryDiagnosis(EpisodeSubrecord):
@@ -221,6 +229,8 @@ class Antimicrobial(EpisodeSubrecord):
     adverse_event = ForeignKeyOrFreeText(omodels.Antimicrobial_adverse_event)
     comments      = models.TextField(blank=True, null=True)
     frequency     = ForeignKeyOrFreeText(omodels.Antimicrobial_frequency)
+    no_antimicriobials = models.NullBooleanField(default=False)
+
 
 class Allergies(PatientSubrecord):
     _icon = 'fa fa-warning'
