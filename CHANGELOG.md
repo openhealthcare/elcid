@@ -12,3 +12,7 @@ opal-opat -> 0.2
 ## 0.4.2 Release
 
 Upgrades to Django 1.8.3 
+
+## 0.4 Release
+
+Major release - incorporates complete redesign as part of OPAL 0.4
