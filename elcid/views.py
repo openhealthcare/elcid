@@ -5,13 +5,17 @@ import csv
 import random
 
 from django import forms
+from django.apps import apps
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.http import HttpResponse
-from opal.core.subrecords import subrecords
+from django.shortcuts import get_object_or_404
 from django.views.generic import TemplateView, FormView, View
+
 import letter
 from letter.contrib.contact import EmailForm, EmailView
+
+from opal.core.subrecords import subrecords
 from opal.core.views import _build_json_response
 from opal import models as opal_models
 from opal.core import application
@@ -136,24 +140,22 @@ class PatientDetailDataView(View):
     Return a serialised view of the patient.
     """
     def get(self, *args, **kwargs):
-        hospital_number = kwargs.get("hospital_number")
-        filter_kwargs = dict(
-            patient__demographics__hospital_number=hospital_number
-        )
-        episodes = opal_models.Episode.objects.filter(**filter_kwargs)
+        patient_id = kwargs.get("patient_id")
+        patient = get_object_or_404(opal_models.Patient, id=patient_id)
+
         serialised = opal_models.Episode.objects.serialised(
             self.request.user,
-            episodes
+            patient.episode_set.all()
         )
 
         return _build_json_response(serialised)
 
 
-class PatientDetailView(TemplateView):
+class PatientDetailTemplateView(TemplateView):
     template_name = 'patient_notes.html'
 
     def get_context_data(self, *args, **kwargs):
-        context = super(PatientDetailView, self).get_context_data(*args, **kwargs)
+        context = super(PatientDetailTemplateView, self).get_context_data(*args, **kwargs)
         context['models'] = {m.__name__: m for m in subrecords()}
         context['inline_forms'] = getattr(app, "patient_view_forms", [])
         return context
@@ -166,3 +168,13 @@ class ElcidTemplateView(TemplateView):
 
     def get_template_names(self, *args, **kwargs):
         return ['elcid/modals/'+self.name]
+
+    def get_context_data(self, *args, **kwargs):
+        ctd = super(ElcidTemplateView, self).get_context_data(*args, **kwargs)
+
+        try:
+            ctd["model"] = apps.get_model(app_label='elcid', model_name=self.name)
+        except LookupError:
+            pass
+
+        return ctd

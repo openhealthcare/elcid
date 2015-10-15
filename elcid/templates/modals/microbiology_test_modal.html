@@ -15,11 +15,11 @@
 
     {% radio label="IgM" model="editing.igm" show="testType == 'micro_test_serology'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
     {% radio label="IgG" model="editing.igg" show="testType == 'micro_test_serology'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
-    
+
     {% radio label="IgM" model="editing.vca_igm" show="testType == 'micro_test_ebv_serology'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
     {% radio label="IgG" model="editing.vca_igg" show="testType == 'micro_test_ebv_serology'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
     {% radio label="EBNA IgG" model="editing.ebna_igg" show="testType == 'micro_test_ebv_serology'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
-    
+
     {% radio label="Result" model="editing.result" show="testType == 'micro_test_hiv'" lookuplist="['pending', 'antibody positive', 'p24 antigen only', 'negative']" %}
 
     {% radio label="HBsAg" model="editing.hbsag" show="testType == 'micro_test_hepititis_b_serology'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
@@ -35,9 +35,9 @@
     {% radio label="Result" model="editing.result" show="testType == 'micro_test_single_test_pos_neg_equiv'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
 
     {% radio label="IgG" model="editing.igg" show="testType == 'micro_test_single_igg_test'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
-    
+
     {% input label="Viral load" model="editing.viral_load" show="testType == 'micro_test_viral_load'" %}
-    
+
     {% input label="Parasitaemia" model="editing.parasitaemia" show="testType == 'micro_test_parasitaemia'" %}
 
     {% radio label="HSV" model="editing.hsv" show="testType == 'micro_test_swab_pcr'" lookuplist="['pending', 'positive', 'negative']" %}
@@ -549,6 +549,7 @@
     </span>
 
     {% select label="Reason not done" model="editing.hiv_declined" show="editing.test == 'HIV Point of Care' && editing.result == 'not done'" lookuplist="hiv_no_list" %}
+    {% checkbox label="Alert Investigation" model="editing.alert_investigation" %}
 
     {% radio label="Spotted Fever Group IgM" model="editing.spotted_fever_igm" show="editing.test == 'Rickettsia Serology'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
     {% radio label="Spotted Fever Group IgG" model="editing.spotted_fever_igg" show="editing.test == 'Rickettsia Serology'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}

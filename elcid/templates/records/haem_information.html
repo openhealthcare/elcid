@@ -1,0 +1,24 @@
+<b>[[ item.patient_type ]]</b>:
+<div>
+  <div ng-show="item.date_of_transplant">
+    date of transplant: [[ item.date_of_transplant | shortDate ]]
+  </div>
+  <div ng-show="item.date_of_chemotherapy">
+    date of chemotherapy: [[ item.date_of_chemotherapy | shortDate ]]
+  </div>
+  <div ng-show="item.neutropenia_onset">
+    neutropenia onset: [[ item.neutropenia_onset | shortDate ]]
+  </div>
+  <div ng-show="item.type_of_transplant">
+    type of transplant: [[ item.type_of_transplant ]]
+  </div>
+  <div ng-show="item.type_of_chemotherapy">
+    type of chemotherapy: [[ item.type_of_chemotherapy ]]
+  </div>
+  <div ng-show="item.count_recovery">
+    count recovery: [[ item.count_recovery | shortDate ]]
+  </div>
+  <div ng-show="item.details">
+    details: [[ item.details ]]
+  </div>
+</div>

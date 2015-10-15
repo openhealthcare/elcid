@@ -4,11 +4,16 @@ elCID implementation specific models!
 from django.db import models
 
 import opal.models as omodels
-from opal.models import (Subrecord,
-                         EpisodeSubrecord, PatientSubrecord, GP, CommunityNurse)
+
+from opal.models import (
+    EpisodeSubrecord, PatientSubrecord, GP, CommunityNurse, Episode, Team,
+    Tagging
+)
 from opal.core.fields import ForeignKeyOrFreeText
 from opal.core import lookuplists
+from constants import MICROHAEM_CONSULTATIONS, MICROHAEM_TEAM_NAME
 from opat import models as opatmodels
+
 
 class Demographics(PatientSubrecord):
     _is_singleton = True
@@ -235,17 +240,32 @@ class MicrobiologyInput(EpisodeSubrecord):
     _modal = 'lg'
     _list_limit = 3
 
-    when                              = models.DateTimeField(null=True, blank=True)
-    initials                          = models.CharField(max_length=255, blank=True)
-    reason_for_interaction            = ForeignKeyOrFreeText(
-        omodels.Clinical_advice_reason_for_interaction)
-    clinical_discussion               = models.TextField(blank=True)
-    agreed_plan                       = models.TextField(blank=True)
-    discussed_with                    = models.CharField(max_length=255, blank=True)
-    clinical_advice_given             = models.NullBooleanField()
-    infection_control_advice_given    = models.NullBooleanField()
+    when = models.DateTimeField(null=True, blank=True)
+    initials = models.CharField(max_length=255, blank=True)
+    reason_for_interaction = ForeignKeyOrFreeText(
+        omodels.Clinical_advice_reason_for_interaction
+    )
+    clinical_discussion = models.TextField(blank=True)
+    agreed_plan = models.TextField(blank=True)
+    discussed_with = models.CharField(max_length=255, blank=True)
+    clinical_advice_given = models.NullBooleanField()
+    infection_control_advice_given = models.NullBooleanField()
     change_in_antibiotic_prescription = models.NullBooleanField()
-    referred_to_opat                  = models.NullBooleanField()
+    referred_to_opat = models.NullBooleanField()
+
+    def set_reason_for_interaction(self, incoming_value, user, data):
+        if(incoming_value in MICROHAEM_CONSULTATIONS):
+            episode = Episode.objects.get(pk=data["episode_id"])
+            exists = Tagging.objects.filter(
+                episode=episode, team__name=MICROHAEM_TEAM_NAME
+            )
+            exists = exists.exists()
+            if not exists:
+                Tagging.objects.create(
+                    episode=episode,
+                    team=Team.objects.get(name=MICROHAEM_TEAM_NAME)
+                )
+        self.reason_for_interaction = incoming_value
 
 
 class Todo(EpisodeSubrecord):
@@ -266,6 +286,7 @@ class MicrobiologyTest(EpisodeSubrecord):
     _modal = 'lg'
 
     test                  = models.CharField(max_length=255)
+    alert_investigation   = models.BooleanField(default=False)
     date_ordered          = models.DateField(null=True, blank=True)
     details               = models.CharField(max_length=255, blank=True)
     microscopy            = models.CharField(max_length=255, blank=True)
@@ -320,6 +341,38 @@ class MicrobiologyTest(EpisodeSubrecord):
 Begin OPAT specific fields.
 """
 
+
+class HaemChemotherapyType(lookuplists.LookupList):
+    class Meta:
+        verbose_name = "Chemotherapy type"
+
+
+class HaemTransplantType(lookuplists.LookupList):
+    class Meta:
+        verbose_name = "Transplant Type"
+
+
+class HaemInformationType(lookuplists.LookupList):
+    pass
+
+
+class HaemInformation(PatientSubrecord):
+    _icon = 'fa fa-info-circle'
+
+    patient_type = ForeignKeyOrFreeText(HaemInformationType)
+    date_of_transplant = models.DateField(blank=True, null=True)
+    neutropenia_onset = models.DateField(blank=True, null=True)
+    type_of_transplant = ForeignKeyOrFreeText(HaemTransplantType)
+    type_of_chemotherapy = ForeignKeyOrFreeText(HaemChemotherapyType)
+    date_of_chemotherapy = models.DateField(blank=True, null=True)
+    count_recovery = models.DateField(blank=True, null=True)
+    details = models.TextField(blank=True, null=True)
+
+    @property
+    def icon(self):
+        return self._icon
+
+
 class Unplanned_stop(lookuplists.LookupList):
     class Meta:
         verbose_name = "Unplanned stop"
@@ -342,7 +395,7 @@ class OPATMeta(EpisodeSubrecord):
     readmitted            = models.NullBooleanField(default=False)
     readmission_cause     = models.CharField(max_length=200, blank=True, null=True)
     notes                 = models.TextField(blank=True, null=True)
-    
+
 
     class Meta:
         verbose_name = "OPAT meta"
