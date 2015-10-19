@@ -75,8 +75,6 @@ controllers.controller(
 
         $scope.editing.primary_diagnosis = $scope.episode.primary_diagnosis[0].makeCopy();
 
-        window.scope = $scope;
-
         if($scope.is_list_view || !episode.isDischarged()){
             steps.unshift("discharge");
         }
@@ -132,8 +130,10 @@ controllers.controller(
             steps.push("travel");
         }
 
-        steps.push("consultant_at_discharge");
-        $scope.editing.consultant_at_discharge = $scope.episode.consultant_at_discharge[0].makeCopy();
+        if(!$scope.episode.consultant_at_discharge[0].consultant){
+            steps.push("consultant_at_discharge");
+            $scope.editing.consultant_at_discharge = $scope.episode.consultant_at_discharge[0].makeCopy();
+        }
 
         $scope.errors = _.reduce(steps, function(mem, y){
             mem[y] = undefined;
@@ -169,7 +169,7 @@ controllers.controller(
 
         // validates each step, and if we're at the last one
         // does validation and then saves
-        scope.travelWarning = false;
+        $scope.travelWarning = false;
 
         $scope.goToNextStep = function(form){
             var require_all, nextStep;

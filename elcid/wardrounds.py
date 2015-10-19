@@ -28,6 +28,7 @@ class ConsultantReview(WardRound):
     name = "Consultant review"
     description = "Patients diagnosis review"
     filter_template = "wardrounds/consultant_review_filter.html"
+    detail_template = 'wardrounds/discharged_detail.html'
     filters = {
         'consultant_at_discharge': 'episode.consultant_at_discharge[0].consultant === value'
     }
