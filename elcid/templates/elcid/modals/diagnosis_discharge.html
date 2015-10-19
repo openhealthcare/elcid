@@ -1,19 +1,26 @@
 {% extends 'modal_base.html' %}
 {% load forms %}
-{% block icon_name %}fa fa-home{% endblock %}
-{% block title %}[[ step ]]{% endblock %}
-{% block modal_body_extra %}ng-show="discharged"{% endblock %}
+{% block icon_name %}[[ steps_details[step].icon ]]{% endblock %}
+{% block title %}
+[[ steps_details[step].title ]]
+{% endblock %}
 {% block modal_body %}
-    <span ng-show="step === 'Discharge Diagnosis'">
-      <form class="form-horizontal" name="dischargeDiagnosisForm">
-      {% select autofocus placeholder="Primary Diagnosis" label="Primary Diagnosis" search_select=True model="editing.primary_diagnosis.condition" lookuplist="condition_list" required="Primary Diagnosis is required." formname="dischargeDiagnosisForm" %}
+<p class="lead text-center" ng-bind-html="steps_details[step].subtitle"></p>
+
+<form class="form-horizontal" name="dischargeDiagnosis">
+    <span ng-show="step === 'discharge'">
+      {% include "_includes/discharge_form.html" %}
+    </span>
+
+    <span ng-show="step === 'diagnosis'">
+      {% select autofocus name="primary_diagnosis" label="Primary Diagnosis" search_select=True model="editing.primary_diagnosis.condition" lookuplist="condition_list" required="Primary Diagnosis is required." formname="dischargeDiagnosis" %}
       <div ng-repeat="secondary in editing.secondary_diagnosis track by $index">
         <div class="form-group">
           <label class="control-label col-sm-3">Secondary Diagnosis [[$index + 1]]</label>
           <div class="col-sm-8">
             <input class="form-control" type="text"
                    ng-model="secondary.condition"
-                   ng-options="s for s in condition_list"
+                   bs-options="s for s in condition_list"
                    bs-typeahead
                    >
           </div>
@@ -32,42 +39,72 @@
         <span class="glyphicon glyphicon-plus"></span>
         Add Secondary Diagnosis
       </button>
+  </span>
+  <span ng-show="step === 'travel'">
+    <div class="slide-close" ng-class="{'slide-closeda': editing.travel.did_not_travel}">
+      <span ng-class="{'warning-state': travelWarning}">
+        {% input "autofocus" label="Destination" disabled="editing.travel.did_not_travel" model="editing.travel.destination" lookuplist="destination_list" %}
+        {% input label="Dates" disabled="editing.travel.did_not_travel" model="editing.travel.dates" %}
+      </span>
+      {% select label="Reason for travel" model="editing.travel.reason_for_travel" lookuplist="travel_reason_list" disabled="editing.travel.did_not_travel" %}
+      {% input disabled="editing.travel.did_not_travel" label="Specific exposures" model="editing.travel.specific_exposures" %}
+    </div>
+    <span ng-class="{'warning-state': travelWarning}">
+      {% checkbox label="Did not travel" model="editing.travel.did_not_travel" %}
+    </span>
+  </span>
+  <span ng-show="step === 'antimicrobial'">
+    <div class="slide-close" ng-class="{'slide-closeda': editing.antimicrobial.no_antimicriobials}">
+      <span ng-class="{'warning-state': antimicrobialWarning}">
+        {% input "autofocus" disabled="editing.antimicrobial.no_antimicriobials" label="Drug" model="editing.antimicrobial.drug" lookuplist="antimicrobial_list" %}
+        {% datepicker disabled="editing.antimicrobial.no_antimicriobials" label="Start date" model="editing.antimicrobial.start_date" %}
+        {% datepicker disabled="editing.antimicrobial.no_antimicriobials" label="End date" model="editing.antimicrobial.end_date" %}
+      </span>
+      {% input label="Dose" disabled="editing.antimicrobial.no_antimicriobials" model="editing.antimicrobial.dose" %}
+      {% input label="Route" disabled="editing.antimicrobial.no_antimicriobials" model="editing.antimicrobial.route" lookuplist="antimicrobial_route_list" %}
+      {% select label="Frequency" disabled="editing.antimicrobial.no_antimicriobials" model="editing.antimicrobial.frequency" lookuplist="antimicrobial_frequency_list" %}
+    </div>
+    <span ng-class="{'warning-state': antimicrobialWarning}">
+      {% checkbox label="Not on Antimicrobials" model="editing.antimicrobial.no_antimicriobials" %}
+    </span>
+  </span>
+  <span ng-show="step === 'consultant_at_discharge'">
+      {% select autofocus placeholder="Consultant At Discharge" label="Consultant At Discharge" search_select=True model="editing.consultant_at_discharge.consultant" lookuplist="consultant_list" required="Consultant at discharge is required." formname="dischargeDiagnosis" %}
     </form>
   </span>
-  <span ng-show="step === 'Travel'">
-    {% include "elcid/_includes/travel_form.html" %}
-  </span>
-  <span ng-show="step === 'Antimicrobials'">
-    {% include "elcid/_includes/antimicrobial_form.html" %}
-  </span>
-  <span ng-show="step === 'Consultant At Discharge'">
-    <form class="form-horizontal">
-      {% select autofocus placeholder="Consultant At Discharge" label="Consultant At Discharge" search_select=True model="editing.consultant_at_discharge.consultant" lookuplist="consultant_list" required="Consultant at discharge is required." formname="dischargeDiagnosisForm" %}
-    </form>
-  </span>
+</form>
 
 {% endblock %}
+
 {% block modal_save %}
-  <span ng-show="!lastStep()">
-    <button class="btn btn-primary" ng-click="goToNextStep()">[[ nextStep() ]]</button>
+  <span class="float-left" ng-show="previousStep()">
+      <button class="btn btn-secondary" ng-click="goToPreviousStep()">
+        <i class="fa fa-arrow-left"></i>
+        Back
+       </button>
+   </span>
+  <span ng-show="nextStep()">
+    <button
+        class="btn btn-primary"
+        ng-click="goToNextStep(dischargeDiagnosis)">
+        Next
+        <i class="fa fa-arrow-right"></i>
+    </button>
   </span>
-  <span ng-show="lastStep()">
+  <span ng-show="!nextStep()">
     <button class="btn btn-primary"
-            ng-click="save()"
+            ng-click="goToNextStep(dischargeDiagnosis)"
             ng-hide="confirming"
-            ng-disabled="!dischargeDiagnosisForm.$valid"
             >
       <i class="fa fa-save"></i>
-      Save
+      Discharge
     </button>
       <button class="btn btn-primary"
-            ng-click="save()"
+            ng-click="goToNextStep(dischargeDiagnosis)"
             ng-show="confirming"
-            ng-disabled="!dischargeDiagnosisForm.$valid"
             >
       <i class="fa fa-save"></i>
       Confirm
     </button>
   </span>
 {% endblock %}
-{% block modal_another %}{% endblock %}

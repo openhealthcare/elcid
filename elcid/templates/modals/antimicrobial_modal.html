@@ -3,7 +3,9 @@
 {% block modal_body %}
   <div class="row">
     <div class="col-md-8">
-      {% include "elcid/_includes/antimicrobial_form.html" %}
+      <form class="form-horizontal">
+        {% include "elcid/_includes/antimicrobial_form.html" %}
+      </form>
     </div>
     <div class="col-md-4">
       {% include 'modals/_allergies_sidebar.html' %}
