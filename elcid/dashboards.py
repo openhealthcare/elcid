@@ -79,18 +79,6 @@ class ConfirmedDiagnosisByConsultant(widgets.Table):
         return sorted(rows, key=lambda x: x[self.UNCONFIRMED_DIAGNOSIS])
 
 
-class ConfirmedDiagnosis(Dashboard):
-    """
-    Dashboard relaying stats about the number of patients discharged
-    by named consultants
-    """
-    name = "Consultant Review Dashboard"
-    description = "Statistics about the number of discharged patients with confirmed diagnoses"
-
-    def get_widgets(user):
-        return [ConfirmedDiagnosisByConsultant]
-
-
 class UsageDashboard(Dashboard):
     """
     Dashboard relaying core usage statistics for elCID
@@ -106,3 +94,15 @@ class UsageDashboard(Dashboard):
             NumberOfDiagnoses,
             CurrentPatients,
         ]
+
+
+class ConfirmedDiagnosis(Dashboard):
+    """
+    Dashboard relaying stats about the number of patients discharged
+    by named consultants
+    """
+    name = "Consultant Review Dashboard"
+    description = "Statistics about the number of discharged patients with confirmed diagnoses"
+
+    def get_widgets(user):
+        return [ConfirmedDiagnosisByConsultant]
