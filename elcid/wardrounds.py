@@ -96,7 +96,7 @@ class OPATReviewList(WardRound):
         review_ready = models.OPATMeta.objects.filter(review_date__lte=datetime.date.today())
         in_round = set()
         for om in review_ready:
-            if om.episode.opatoutcome_set.filter(outcome_stage='Review').count() == 0:
+            if om.episode.opatoutcome_set.filter(outcome_stage='OPAT Review').count() == 0:
                 in_round.add(om.episode)
         return in_round
 
