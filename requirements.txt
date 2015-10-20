@@ -26,7 +26,7 @@ django-compressor==1.5
 -e git+https://github.com/openhealthcare/opal-wardround.git@771-league-table#egg=opal_wardround
 -e git+https://github.com/openhealthcare/opal-referral.git@773-delete-micro-haem-ward-round#egg=opal_referral
 -e git+https://github.com/openhealthcare/opal-opat.git@master#egg=opal_opat
--e git+https://github.com/openhealthcare/opal-dashboard.git@#egg=opal_dashboard
+-e git+https://github.com/openhealthcare/opal-dashboard.git@771-league-table#egg=opal_dashboard
 -e git+https://github.com/openhealthcare/opal-dischargesummary.git@v0.1#egg=opal_dischargesummary
 -e git+https://github.com/openhealthcare/opal-guidelines.git@#egg=opal_guidelines
 -e git+https://github.com/openhealthcare/opal-iframe-api.git@#egg=opal-iframe-api
