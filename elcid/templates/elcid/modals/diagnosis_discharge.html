@@ -50,20 +50,18 @@
       {% input disabled="editing.travel.did_not_travel" label="Specific exposures" model="editing.travel.specific_exposures" %}
     </div>
     <span ng-class="{'warning-state': travelWarning}">
-      {% checkbox label="Did not travel" model="editing.travel.did_not_travel" %}
+      {% checkbox label="No travel in the last 12 months" model="editing.travel.did_not_travel" %}
     </span>
   </span>
   <span ng-show="step === 'antimicrobial'">
-    <div class="slide-close" ng-class="{'slide-closeda': editing.antimicrobial.no_antimicriobials}">
-      <span ng-class="{'warning-state': antimicrobialWarning}">
-        {% input "autofocus" disabled="editing.antimicrobial.no_antimicriobials" label="Drug" model="editing.antimicrobial.drug" lookuplist="antimicrobial_list" %}
-        {% datepicker disabled="editing.antimicrobial.no_antimicriobials" label="Start date" model="editing.antimicrobial.start_date" %}
-        {% datepicker disabled="editing.antimicrobial.no_antimicriobials" label="End date" model="editing.antimicrobial.end_date" %}
-      </span>
-      {% input label="Dose" disabled="editing.antimicrobial.no_antimicriobials" model="editing.antimicrobial.dose" %}
-      {% input label="Route" disabled="editing.antimicrobial.no_antimicriobials" model="editing.antimicrobial.route" lookuplist="antimicrobial_route_list" %}
-      {% select label="Frequency" disabled="editing.antimicrobial.no_antimicriobials" model="editing.antimicrobial.frequency" lookuplist="antimicrobial_frequency_list" %}
-    </div>
+    <span ng-class="{'warning-state': antimicrobialWarning}">
+      {% input "autofocus" disabled="editing.antimicrobial.no_antimicriobials" label="Drug" model="editing.antimicrobial.drug" lookuplist="antimicrobial_list" %}
+      {% datepicker disabled="editing.antimicrobial.no_antimicriobials" label="Start date" model="editing.antimicrobial.start_date" %}
+      {% datepicker disabled="editing.antimicrobial.no_antimicriobials" label="End date" model="editing.antimicrobial.end_date" %}
+    </span>
+    {% input label="Dose" disabled="editing.antimicrobial.no_antimicriobials" model="editing.antimicrobial.dose" %}
+    {% input label="Route" disabled="editing.antimicrobial.no_antimicriobials" model="editing.antimicrobial.route" lookuplist="antimicrobial_route_list" %}
+    {% select label="Frequency" disabled="editing.antimicrobial.no_antimicriobials" model="editing.antimicrobial.frequency" lookuplist="antimicrobial_frequency_list" %}
     <span ng-class="{'warning-state': antimicrobialWarning}">
       {% checkbox label="Not on Antimicrobials" model="editing.antimicrobial.no_antimicriobials" %}
     </span>

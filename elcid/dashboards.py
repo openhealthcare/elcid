@@ -46,9 +46,9 @@ class Admissions(widgets.LineChart):
 class ConfirmedDiagnosisByConsultant(widgets.Table):
     tagline = "Confirmed Diagnosis by Consultant"
     TOTAL_NUMBER = "Total Number of Patients"
-    UNCONFIRMED_DIAGNOSIS = "% Unconfirmed Diagnosis"
+    CONFIRMED_DIAGNOSIS = "% Confirmed Diagnosis"
     CONSULTANT = "consultant"
-    table_headers = [CONSULTANT, TOTAL_NUMBER, UNCONFIRMED_DIAGNOSIS]
+    table_headers = [CONSULTANT, TOTAL_NUMBER, CONFIRMED_DIAGNOSIS]
     include_index=True
 
     @cached_property
@@ -70,13 +70,13 @@ class ConfirmedDiagnosisByConsultant(widgets.Table):
             with_confirmed = episodes.filter(primarydiagnosis__confirmed=True)
             confirmed_diagnosis = with_confirmed.distinct().count()
             if row[self.TOTAL_NUMBER] == 0:
-                row[self.UNCONFIRMED_DIAGNOSIS] = 0
+                row[self.CONFIRMED_DIAGNOSIS] = 0
             else:
                 completed = float(confirmed_diagnosis)/float(row[self.TOTAL_NUMBER])
-                row[self.UNCONFIRMED_DIAGNOSIS] = int(100 * completed)
+                row[self.CONFIRMED_DIAGNOSIS] = int(100 * completed)
             rows.append(row)
 
-        return sorted(rows, key=lambda x: x[self.UNCONFIRMED_DIAGNOSIS])
+        return sorted(rows, key=lambda x: x[self.CONFIRMED_DIAGNOSIS])
 
 
 class UsageDashboard(Dashboard):
