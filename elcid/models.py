@@ -119,7 +119,7 @@ class PrimaryDiagnosis(EpisodeSubrecord):
     _is_singleton= True
 
     condition = ForeignKeyOrFreeText(omodels.Condition)
-    confirmed = models.NullBooleanField(default=False)
+    confirmed = models.BooleanField(default=False)
 
     class Meta:
         verbose_name_plural = "Primary diagnoses"
