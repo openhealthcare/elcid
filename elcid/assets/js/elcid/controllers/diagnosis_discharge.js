@@ -50,23 +50,98 @@ controllers.controller(
 
         var dischargePatientService = new DischargePatientService();
 
-        var validateTravel = function(travel){
-            required_all = [
-                travel.destination,
-                travel.dates,
-            ];
+        /*
+        * a multi step model that acts a bit like a form controller for travel,
+        * antimicrobial and symptoms
+        */
+        var MultiStep = function(requiredFields, negationField, editing, episode, columnName){
+            this.none = false;
+            this.warning = false;
 
-            return _.every(required_all) || travel.did_not_travel;
-        };
+            this.remove = function(index){
+              editing[columnName].splice(index, 1);
+              episode[columnName].splice(index, 1);
+            };
 
-        var validateAntimicrobial = function(antimicrobial){
-          required_all = [
-              antimicrobial.drug,
-              antimicrobial.start_date,
-              antimicrobial.end_date,
-          ];
+            this.getRequiredFields = function(antimicrobial){
+                return _.map(requiredFields, function(r){
+                    return antimicrobial[r];
+                });
+            };
 
-          return _.every(required_all) || antimicrobial.no_antimicriobials;
+            this.pristine = function(antimicrobial){
+              return !_.some(this.getRequiredFields(antimicrobial));
+            };
+
+            this.clear = function(){
+              if(this.none){
+                newAntimicrobial = episode.newItem(columnName);
+                episode[columnName] = [newAntimicrobial];
+                editing[columnName] = [newAntimicrobial.makeCopy()];
+                editing[columnName][0][negationField] = true;
+              }
+              this.warning = false;
+            };
+
+            this.validate = function(antimicrobial){
+              var requiredAll = this.getRequiredFields(antimicrobial);
+              return _.every(requiredAll) || this.none;
+            };
+
+            // validates a whole step, e.g. all of the antimicrobial
+            this.validateStep = function(){
+              var toReview = $scope.editing[columnName];
+
+              // if there's just an empty form at the end, lets ignore that
+              if(toReview > 1){
+                  if(this.pristine(toReview)){
+                      toReview = _.first(toReview, toReview.length-1);
+                  }
+              }
+
+              var invalidModels = _.filter(toReview, function(a){
+                  return !this.validate(a);
+              }, this);
+
+              if(invalidModels.length){
+                this.warning = true;
+                return false;
+              }
+
+              return true;
+            };
+
+            this.addAnother = function(model){
+                if(!this.validate(model)){
+                    this.warning=true;
+                }
+                else{
+                    if(!this.none){
+                        model.submitted=true;
+                        var newModel = episode.newItem(columnName);
+                        episode[columnName].push(newModel);
+                        editing[columnName].push(newModel.makeCopy());
+                    }
+                }
+            };
+
+            this.reset = function(){
+                this.warning = false;
+            };
+
+            this.save = function(){
+              saves = [];
+              _.each($scope.editing[columnName], function(a, i){
+                  var to_save = episode[columnName][i];
+                  var editingItem = $scope.editing[columnName][i];
+                  delete editingItem.submitted;
+                  if(!this.pristine(a) || editingItem[negationField]){
+                    saves.push(to_save.save($scope.editing[columnName][i]));
+                  }
+              }, this);
+
+              return saves;
+            };
         };
 
         $scope.currentCategory = episode.location[0].category;
@@ -74,6 +149,23 @@ controllers.controller(
         $scope.editing = dischargePatientService.getEditing(episode);
 
         $scope.editing.primary_diagnosis = $scope.episode.primary_diagnosis[0].makeCopy();
+
+        $scope.antimicrobialStep = new MultiStep(
+            ["drug", "start_date", "end_date"],
+            "no_antimicriobials",
+            $scope.editing,
+            $scope.episode,
+            "antimicrobial"
+        );
+
+        $scope.travelStep = new MultiStep(
+            ["dates", "destination"],
+            "did_not_travel",
+            $scope.editing,
+            $scope.episode,
+            "travel"
+        );
+
 
         if($scope.is_list_view || !episode.isDischarged()){
             steps.unshift("discharge");
@@ -84,49 +176,27 @@ controllers.controller(
             $scope.episode.primary_diagnosis[0] = primary;
         }
 
-        if(!$scope.episode.antimicrobial.length || _.all($scope.episode.antimicrobial, function(a){
-            return !validateAntimicrobial(a);
-        })){
-            var antimicrobial;
+        if(!$scope.episode.antimicrobial.length){
+            var antimicrobials = [$scope.episode.newItem('antimicrobial')];
+            $scope.episode.antimicrobial = antimicrobials;
 
-            if($scope.episode.antimicrobial.length){
-                antimicrobial = _.last($scope.episode.antimicrobial);
-            }
-            else{
-                antimicrobial = $scope.episode.newItem('antimicrobial');
-                $scope.episode.antimicrobial[0] = antimicrobial;
-            }
-
-            $scope.editing.antimicrobial = antimicrobial.makeCopy();
-            $scope.$watch("editing.antimicrobial.no_antimicriobials", function(newValue){
-                _.each(["drug", "start_date", "end_date"], function(k){
-                    $scope.editing.antimicrobial[k] = undefined;
-                });
+            $scope.editing.antimicrobial = _.map($scope.episode.antimicrobial, function(a){
+                 var copy = a.makeCopy();
+                 return copy;
             });
+
             steps.push("antimicrobial");
         }
 
-        if(!$scope.episode.travel.length || _.all($scope.episode.travel, function(t){
-            return !validateTravel(t);
-        })){
-            var travel;
+        if(!$scope.episode.travel.length){
+            var travel = [$scope.episode.newItem('travel')];
+            $scope.episode.travel = travel;
 
-            if($scope.episode.travel.length){
-                travel = _.last($scope.episode.travel);
-            }
-            else{
-                travel = $scope.episode.newItem('travel');
-                $scope.episode.travel[0] = travel;
-            }
-            $scope.$watch("editing.travel.did_not_travel", function(newValue){
-                _.each(["destination", "dates"], function(k){
-                    if(newValue){
-                        $scope.editing.travel[k] = undefined;
-                    }
-                });
+            $scope.editing.travel = _.map($scope.episode.travel, function(a){
+                 var copy = a.makeCopy();
+                 return copy;
             });
 
-            $scope.editing.travel = travel.makeCopy();
             steps.push("travel");
         }
 
@@ -149,10 +219,6 @@ controllers.controller(
             return steps[currentIndex + 1];
         };
 
-        $scope.getCurrentForm = function(){
-            return "dischargeDiagnosis";
-        };
-
         $scope.previousStep = function(){
             var currentIndex = _.indexOf(steps, $scope.step);
 
@@ -167,11 +233,12 @@ controllers.controller(
             $scope.step = $scope.previousStep();
         };
 
-        // validates each step, and if we're at the last one
-        // does validation and then saves
-        $scope.travelWarning = false;
+        $scope.resetFormValidation = function(someForm){
+            someForm.warning = false;
+        };
 
-        $scope.goToNextStep = function(form){
+
+        $scope.goToNextStep = function(form, model){
             var require_all, nextStep;
             if($scope.step === "diagnosis"){
                 if(!form.editing_primary_diagnosis_condition.$valid){
@@ -180,36 +247,12 @@ controllers.controller(
                 }
             }
             if($scope.step === "travel"){
-                if(!validateTravel($scope.editing.travel)){
-                    $scope.$watchGroup([
-                      'editing.travel.destination',
-                      'editing.travel.dates',
-                      'editing.travel.did_not_travel'
-                    ], function(){
-                        if(validateTravel($scope.editing.travel)){
-                            $scope.travelWarning = false;
-                        }
-                    });
-
-                    $scope.travelWarning = true;
+                if(!$scope.travelStep.validateStep()){
                     return;
                 }
             }
             if($scope.step === "antimicrobial"){
-                if(!validateAntimicrobial($scope.editing.antimicrobial)){
-                    $scope.$watchGroup([
-                      'editing.antimicrobial.drug',
-                      'editing.antimicrobial.start_date',
-                      'editing.antimicrobial.end_date',
-                      'editing.antimicrobial.no_antimicriobials'
-                    ], function(){
-                        if(validateAntimicrobial($scope.editing.antimicrobial)){
-                            $scope.antimicrobialWarning = false;
-                        }
-
-                    });
-
-                    $scope.antimicrobialWarning = true;
+                if(!$scope.antimicrobialStep.validateStep()){
                     return;
                 }
             }
@@ -234,12 +277,13 @@ controllers.controller(
         }
 
         if($scope.episode.secondary_diagnosis.length === 0){
-            $scope.editing.secondary_diagnosis =  [{condition: null, co_primary: false, id: 1},
-                                                   {condition: null, co_primary: false, id: 2}];
+            $scope.editing.secondary_diagnosis =  [{condition: null, co_primary: false, id: 1}];
         }else{
             $scope.editing.secondary_diagnosis = _.map(
                 $scope.episode.secondary_diagnosis, function(sd){
-                    return sd.makeCopy();
+                    var copy = sd.makeCopy();
+                    copy.submitted = true;
+                    return copy;
                 });
         }
 
@@ -270,14 +314,31 @@ controllers.controller(
         //
         // Add an extra Secondary diagnosis option to the list
         //
+        var secondaryDiagnosisWarning = false;
+
         $scope.addSecondary = function(){
-            var d = {
-                condition: null,
-                co_primary: false,
-                id: $scope.editing.secondary_diagnosis.length + 1
-            };
-            $scope.editing.secondary_diagnosis.push(d);
+            secondaryDiagnosisWarning = !_.every($scope.editing.secondary_diagnosis, function(x){
+                return x.condition;
+            });
+
+            if(secondaryDiagnosisWarning){
+                _.each($scope.editing.secondary_diagnosis, function(e){
+                    e.submitted = true;
+                });
+
+                var d = {
+                    condition: null,
+                    co_primary: false,
+                    id: $scope.editing.secondary_diagnosis.length + 1
+                };
+
+                $scope.editing.secondary_diagnosis.push(d);
+            }
         };
+
+        $scope.removeSecondary = function($index){
+            $scope.editing.secondary_diagnosis.splice(index, 1);
+        }
 
         // Let's have a nice way to kill the modal.
         $scope.cancel = function() {
@@ -305,10 +366,20 @@ controllers.controller(
             var saves = [];
             saves.push(primary.save($scope.editing.primary_diagnosis));
 
-            _.each(["travel", "antimicrobial", "consultant_at_discharge"], function(s){
-                if(_.contains(steps, s)){
-                    var to_save = episode[s][0];
-                    saves.push(to_save.save($scope.editing[s]));
+            if(_.contains(steps, "consultant_at_discharge")){
+                var to_save = $scope.episode.consultant_at_discharge[0];
+                saves.push(to_save.save($scope.editing.consultant_at_discharge));
+            }
+
+            saves.concat($scope.antimicrobialStep.save());
+            saves.concat($scope.travelStep.save());
+
+            // if they've removed an already existing diagnosis, let them delete it
+            _.each($scope.episode.secondary_diagnosis, function(sd){
+                if(sd.consistency_token){
+                    if(!_.find($scope.editing.secondary_diagnosis)){
+                        sd.destroy();
+                    }
                 }
             });
 
@@ -317,6 +388,7 @@ controllers.controller(
                    function(sd, index){
                        var save;
                        var secondary;
+                       delete sd.submitted;
 
                        if(sd.consistency_token){
                            var consistency_token = sd.consistency_token;
@@ -334,7 +406,8 @@ controllers.controller(
                        }
                        saves.push(save);
                    }
-                  );
+              );
+
 
             dischargePatientService.discharge(episode, $scope.editing, tags).then(function(){
                 $q.all(saves).then(function(){
@@ -349,4 +422,6 @@ controllers.controller(
             });
 
         };
+
+        window.scope = $scope;
     });
