@@ -13,25 +13,16 @@
   </span>
 
   <div ng-show="step === 'diagnosis'">
-    {% select autofocus name="primary_diagnosis" label="Primary Diagnosis" search_select=True model="editing.primary_diagnosis.condition" lookuplist="condition_list" required="Primary Diagnosis is required." formname="dischargeDiagnosis" %}
+    {% select autofocus name="primary_diagnosis" label="Primary Diagnosis" model="editing.primary_diagnosis.condition" lookuplist="condition_list" required="Primary Diagnosis is required." formname="dischargeDiagnosis" %}
     <div ng-repeat="secondary in editing.secondary_diagnosis track by $index">
       <span ng-show="!secondary.submitted">
-        <div class="form-group">
-          <label class="control-label col-sm-3">Secondary Diagnosis [[ $index ]]</label>
-          <div class="col-sm-8">
-            <span ng-class="{'warning-state': secondaryDiagnosisWarning}">
-              <input class="form-control" type="text"
-                     ng-model="secondary.condition"
-                     bs-options="s for s in condition_list"
-                     bs-typeahead
-                     >
-            </span>
-          </div>
-        </div>
+        <span ng-class="{'warning-state': secondaryDiagnosisWarning}">
+          {% select name="secondary_diagnosis" label="Secondary Diagnosis [[ secondary.id ]]" model="secondary.condition" lookuplist="condition_list" formname="dischargeDiagnosis" %}
+        </span>
         <div class="form-group">
           <label class="control-label col-sm-3">Co-primary?</label>
           <div class="col-sm-8">
-        	  <input class="" type="checkbox" ng-model="secondary.co_primary">
+             <input type="checkbox" ng-model="secondary.co_primary">
           </div>
         </div>
       </span>
@@ -42,7 +33,7 @@
               [[ secondary.condition ]] <span ng-show="secondary.co_primary">(Co-primary)</span>
             </div>
             <div class="col-md-2">
-              <btn class=" pointer" type="button" ng-click="travelStep.remove($index)"><i class="fa fa-minus"></i></btn>
+              <btn class=" pointer" type="button" ng-click="removeSecondary.remove($index)"><i class="fa fa-minus"></i></btn>
             </div
             </div>
           </div>

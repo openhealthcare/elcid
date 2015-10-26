@@ -107,9 +107,9 @@ class PresentingComplaint(EpisodeSubrecord):
     _title = 'Presenting Complaint'
     _icon = 'fa fa-stethoscope'
 
-    symptom  = ForeignKeyOrFreeText(omodels.Symptom)
+    symptom = ForeignKeyOrFreeText(omodels.Symptom)
     duration = models.CharField(max_length=255, blank=True, null=True)
-    details  = models.CharField(max_length=255, blank=True, null=True)
+    details = models.TextField(blank=True, null=True)
 
 
 class PrimaryDiagnosis(EpisodeSubrecord):
@@ -229,7 +229,7 @@ class Antimicrobial(EpisodeSubrecord):
     adverse_event = ForeignKeyOrFreeText(omodels.Antimicrobial_adverse_event)
     comments      = models.TextField(blank=True, null=True)
     frequency     = ForeignKeyOrFreeText(omodels.Antimicrobial_frequency)
-    no_antimicriobials = models.NullBooleanField(default=False)
+    no_antimicrobials = models.NullBooleanField(default=False)
 
 
 class Allergies(PatientSubrecord):
