@@ -265,7 +265,11 @@ class MicrobiologyInput(EpisodeSubrecord):
 
     def set_reason_for_interaction(self, incoming_value, user, data):
         if(incoming_value in MICROHAEM_CONSULTATIONS):
-            episode = Episode.objects.get(pk=data["episode_id"])
+            if self.id:
+                episode = self.episode
+            else:
+                episode = Episode.objects.get(pk=data["episode_id"])
+
             exists = Tagging.objects.filter(
                 episode=episode, team__name=MICROHAEM_TEAM_NAME
             )

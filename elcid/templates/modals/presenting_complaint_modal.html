@@ -6,7 +6,7 @@
   <form class="form-horizontal">
     {% select autofocus search_select=True label="Symptoms" model="editing.symptom" lookuplist="symptom_list" %}
     {% select label="Duration" model="editing.duration" lookuplist="['---------', '3 days or less','4-10 days','11-21 days','22 days to 3 months','over 3 months']" %}
-    {% input label="Details" model="editing.details" %}
+    {% textarea label="Details" model="editing.details" %}
   </form>
 {% endblock %}
 {% block modal_save %}
