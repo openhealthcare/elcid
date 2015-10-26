@@ -13,7 +13,7 @@
   </span>
 
   <div ng-show="step === 'diagnosis'">
-    {% select autofocus name="primary_diagnosis" label="Primary Diagnosis" model="editing.primary_diagnosis.condition" lookuplist="condition_list" required="Primary Diagnosis is required." formname="dischargeDiagnosis" %}
+    {% select "autofocus" name="primary_diagnosis" label="Primary Diagnosis" model="editing.primary_diagnosis.condition" lookuplist="condition_list" required="Primary Diagnosis is required." formname="dischargeDiagnosis" %}
     <div ng-repeat="secondary in editing.secondary_diagnosis track by $index">
       <span ng-show="!secondary.submitted">
         <span ng-class="{'warning-state': secondaryDiagnosisWarning}">
@@ -48,6 +48,12 @@
       Add Secondary Diagnosis
     </button>
   </div>
+  <span ng-show="step === 'presenting_complaint'">
+    {% select "autofocus" change="resetRequired(dischargeDiagnosis.editing_presenting_complaint_symptom)" multiple=True required="At least one symptom is required." tagging=False search_select=True label="Symptoms" model="editing.presenting_complaint.symptom" lookuplist="symptom_list" formname="dischargeDiagnosis" %}
+    {% select tagging=False label="Duration" model="editing.presenting_complaint.duration" lookuplist="['---------', '3 days or less','4-10 days','11-21 days','22 days to 3 months','over 3 months']" formname="dischargeDiagnosis" %}
+    {% textarea label="Details" model="editing.presenting_complaint.details" formname="dischargeDiagnosis" %}
+  </span>
+
   <span ng-show="step === 'travel'">
     {% include "elcid/_includes/travel_multi_form.html" %}
   </span>
@@ -55,7 +61,7 @@
     {% include "elcid/_includes/antimicrobial_multi_form.html" %}
   </span>
   <span ng-show="step === 'consultant_at_discharge'">
-      {% select autofocus placeholder="Consultant At Discharge" label="Consultant At Discharge" search_select=True model="editing.consultant_at_discharge.consultant" lookuplist="consultant_list" required="Consultant at discharge is required." formname="dischargeDiagnosis" %}
+      {% select "autofocus" placeholder="Consultant At Discharge" label="Consultant At Discharge" search_select=True model="editing.consultant_at_discharge.consultant" lookuplist="consultant_list" required="Consultant at discharge is required." formname="dischargeDiagnosis" %}
     </form>
   </span>
 </form>

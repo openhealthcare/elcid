@@ -31,9 +31,9 @@ controllers.controller(
                 title: "Diagnosis",
                 subtitle: undefined
             },
-            symptoms: {
+            presenting_complaint: {
                 icon: "fa fa-heartbeat",
-                title: "Symptoms",
+                title: "Presenting Complaint",
                 subtitle: "Please enter one or more symptoms"
             },
             antimicrobial: {
@@ -52,6 +52,7 @@ controllers.controller(
                 subtitle: "Please record the <strong>consultant</strong> at discharge."
             }
         };
+
 
         var dischargePatientService = new DischargePatientService();
 
@@ -168,6 +169,14 @@ controllers.controller(
             $scope.episode.primary_diagnosis[0] = primary;
         }
 
+        if(!$scope.episode.presenting_complaint.length || !$scope.episode.presenting_complaint[0].symptom.length){
+            var presenting_complaint = $scope.episode.newItem('presenting_complaint');
+            $scope.episode.presenting_complaint = [presenting_complaint];
+            $scope.editing.presenting_complaint = presenting_complaint.makeCopy();
+            $scope.editing.presenting_complaint.symptom =[];
+            steps.unshift("presenting_complaint");
+        }
+
         if(!$scope.episode.antimicrobial.length){
             $scope.antimicrobialStep = new MultiStep(
                 ["drug", "start_date", "end_date"],
@@ -231,6 +240,9 @@ controllers.controller(
             someForm.warning = false;
         };
 
+        $scope.resetRequired = function(someFormField){
+            someFormField.$setValidity("required", true);
+        };
 
         $scope.goToNextStep = function(form, model){
             var require_all, nextStep;
@@ -247,6 +259,17 @@ controllers.controller(
             }
             if($scope.step === "antimicrobial"){
                 if(!$scope.antimicrobialStep.validateStep()){
+                    return;
+                }
+            }
+            if($scope.step === "presenting_complaint"){
+                /*
+                this is a work around as multiple angular ui select does not play nicely
+                with ngRequired. It might be better to set each model as a different form
+                */
+                if(!model.presenting_complaint.symptom.length){
+                    form.editing_presenting_complaint_symptom.$setValidity("required", false);
+                    form.editing_presenting_complaint_symptom.$setDirty();
                     return;
                 }
             }
@@ -301,7 +324,7 @@ controllers.controller(
         //
       	for (var name in options) {
       	    if (name.indexOf('micro_test') !== 0) {
-            		$scope[name + '_list'] = options[name];
+            		$scope[name + '_list'] = _.uniq(options[name]);
       	    }
       	}
 
@@ -376,6 +399,8 @@ controllers.controller(
                     }
                 }
             });
+
+            $scope.episode.presenting_complaint[0].save($scope.editing.presenting_complaint);
 
             _.each(_.filter($scope.editing.secondary_diagnosis,
                             function(sd){ return sd.condition!== null; }),
