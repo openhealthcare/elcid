@@ -108,6 +108,7 @@ class PresentingComplaint(EpisodeSubrecord):
     _icon = 'fa fa-stethoscope'
 
     symptom = ForeignKeyOrFreeText(omodels.Symptom)
+    symptoms = models.ManyToManyField(omodels.Symptom, related_name="presenting_complaints")
     duration = models.CharField(max_length=255, blank=True, null=True)
     details = models.TextField(blank=True, null=True)
 
