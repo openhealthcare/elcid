@@ -158,16 +158,7 @@ controllers.controller(
 
         $scope.editing = dischargePatientService.getEditing(episode);
 
-        $scope.editing.primary_diagnosis = $scope.episode.primary_diagnosis[0].makeCopy();
 
-        if($scope.is_list_view || !episode.isDischarged()){
-            steps.unshift("discharge");
-        }
-
-        if($scope.episode.primary_diagnosis.length === 0){
-            var primary = $scope.episode.newItem('primary_diagnosis');
-            $scope.episode.primary_diagnosis[0] = primary;
-        }
 
         if(!$scope.episode.presenting_complaint.length || !$scope.episode.presenting_complaint[0].symptom.length){
             var presenting_complaint = $scope.episode.newItem('presenting_complaint');
@@ -201,6 +192,17 @@ controllers.controller(
             $scope.editing.travel = [$scope.travelStep.newItem()];
 
             steps.push("travel");
+        }
+
+        $scope.editing.primary_diagnosis = $scope.episode.primary_diagnosis[0].makeCopy();
+
+        if($scope.is_list_view || !episode.isDischarged()){
+            steps.push("discharge");
+        }
+
+        if($scope.episode.primary_diagnosis.length === 0){
+            var primary = $scope.episode.newItem('primary_diagnosis');
+            $scope.episode.primary_diagnosis[0] = primary;
         }
 
         if(!$scope.episode.consultant_at_discharge[0].consultant){
