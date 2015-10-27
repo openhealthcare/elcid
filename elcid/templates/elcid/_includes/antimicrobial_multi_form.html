@@ -3,7 +3,7 @@
   <div ng-repeat="antimicrobial in editing.antimicrobial">
     <span ng-show="!antimicrobial.submitted">
       <span ng-class="{'warning-state': antimicrobialStep.warning}">
-        {% input "autofocus" disabled="antimicrobialStep.none" label="Drug" model="antimicrobial.drug" lookuplist="antimicrobial_list" change="antimicrobialStep.reset()" %}
+        {% select "autofocus" disabled="antimicrobialStep.none" label="Drug" model="antimicrobial.drug" lookuplist="antimicrobial_list" change="antimicrobialStep.reset()" %}
         {% datepicker disabled="antimicrobialStep.none" label="Start date" model="antimicrobial.start_date" change="antimicrobialStep.reset()" %}
         {% datepicker disabled="antimicrobialStep.none" label="End date" model="antimicrobial.end_date" change="antimicrobialStep.reset()" %}
       </span>
