@@ -118,6 +118,7 @@ class PrimaryDiagnosis(EpisodeSubrecord):
     This is the confirmed primary diagnosisa
     """
     _is_singleton = True
+    _title = 'Primary Diagnosis'
 
     condition = ForeignKeyOrFreeText(omodels.Condition)
     confirmed = models.BooleanField(default=False)
@@ -130,6 +131,7 @@ class Consultant(lookuplists.LookupList):
     pass
 
 class ConsultantAtDischarge(EpisodeSubrecord):
+    _title = 'Consultant At Discharge'
     _is_singleton = True
     consultant = ForeignKeyOrFreeText(Consultant)
 
@@ -138,6 +140,7 @@ class SecondaryDiagnosis(EpisodeSubrecord):
     """
     This is a confirmed diagnosis at discharge time.
     """
+    _title = 'Secondary Diagnosis'
     condition   = ForeignKeyOrFreeText(omodels.Condition)
     co_primary = models.NullBooleanField(default=False)
 
@@ -373,6 +376,7 @@ class HaemInformationType(lookuplists.LookupList):
 
 class HaemInformation(PatientSubrecord):
     _icon = 'fa fa-info-circle'
+    _title = 'Haem Information'
 
     patient_type = ForeignKeyOrFreeText(HaemInformationType)
     date_of_transplant = models.DateField(blank=True, null=True)
