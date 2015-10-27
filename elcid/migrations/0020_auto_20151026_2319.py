@@ -7,7 +7,6 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('opal', '0005_delete_speciality'),
         ('elcid', '0019_auto_20151026_1206'),
     ]
 
