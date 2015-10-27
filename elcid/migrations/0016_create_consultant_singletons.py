@@ -11,6 +11,10 @@ def create(apps, schema_editor):
     consultants = [ConsultantAtDischarge(episode=episode) for episode in episodes]
     ConsultantAtDischarge.objects.bulk_create(consultants)
 
+def remove(apps, schema_editor):
+    ConsultantAtDischarge = apps.get_model("elcid", "ConsultantAtDischarge")
+    ConsultantAtDischarge.objects.all().delete()
+
 
 class Migration(migrations.Migration):
 
@@ -19,5 +23,5 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunPython(create)
+        migrations.RunPython(create, reverse_code=remove)
     ]

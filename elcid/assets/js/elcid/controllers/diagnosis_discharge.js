@@ -57,8 +57,8 @@ controllers.controller(
         var dischargePatientService = new DischargePatientService();
 
         /*
-        * a multi step model that acts a bit like a form controller for travel,
-        * antimicrobial and symptoms
+        * a multi step model that acts a bit like a form controller for travel and
+        * antimicrobial
         */
         var MultiStep = function(requiredFields, negationField, editing, episode, columnName){
             this.none = false;
@@ -441,6 +441,4 @@ controllers.controller(
             });
 
         };
-
-        window.scope = $scope;
     });
