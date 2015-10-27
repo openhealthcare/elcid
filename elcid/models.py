@@ -107,22 +107,31 @@ class PresentingComplaint(EpisodeSubrecord):
     _title = 'Presenting Complaint'
     _icon = 'fa fa-stethoscope'
 
-    symptom  = ForeignKeyOrFreeText(omodels.Symptom)
+    symptom = ForeignKeyOrFreeText(omodels.Symptom)
+    symptoms = models.ManyToManyField(omodels.Symptom, related_name="presenting_complaints")
     duration = models.CharField(max_length=255, blank=True, null=True)
-    details  = models.CharField(max_length=255, blank=True, null=True)
+    details = models.TextField(blank=True, null=True)
 
 
 class PrimaryDiagnosis(EpisodeSubrecord):
     """
     This is the confirmed primary diagnosisa
     """
-    _is_singleton= True
+    _is_singleton = True
 
     condition = ForeignKeyOrFreeText(omodels.Condition)
     confirmed = models.BooleanField(default=False)
 
     class Meta:
         verbose_name_plural = "Primary diagnoses"
+
+
+class Consultant(lookuplists.LookupList):
+    pass
+
+class ConsultantAtDischarge(EpisodeSubrecord):
+    _is_singleton = True
+    consultant = ForeignKeyOrFreeText(Consultant)
 
 
 class SecondaryDiagnosis(EpisodeSubrecord):
@@ -221,6 +230,8 @@ class Antimicrobial(EpisodeSubrecord):
     adverse_event = ForeignKeyOrFreeText(omodels.Antimicrobial_adverse_event)
     comments      = models.TextField(blank=True, null=True)
     frequency     = ForeignKeyOrFreeText(omodels.Antimicrobial_frequency)
+    no_antimicrobials = models.NullBooleanField(default=False)
+
 
 class Allergies(PatientSubrecord):
     _icon = 'fa fa-warning'
@@ -255,7 +266,11 @@ class MicrobiologyInput(EpisodeSubrecord):
 
     def set_reason_for_interaction(self, incoming_value, user, data):
         if(incoming_value in MICROHAEM_CONSULTATIONS):
-            episode = Episode.objects.get(pk=data["episode_id"])
+            if self.id:
+                episode = self.episode
+            else:
+                episode = Episode.objects.get(pk=data["episode_id"])
+
             exists = Tagging.objects.filter(
                 episode=episode, team__name=MICROHAEM_TEAM_NAME
             )

@@ -3,13 +3,11 @@
 """
 import datetime
 
-from django.db.models import Q
-
-from opal.models import Episode, Tagging
+from opal.models import Episode
 from wardround import WardRound
-from obs import models as obsmodels
 
 from elcid import models
+
 
 class HistoricTagsMixin(object):
 
@@ -24,6 +22,23 @@ class HistoricTagsMixin(object):
                                                         episode_history=True,
                                                         historic_tags=True),
                     filters=klass.filters)
+
+
+class ConsultantReview(WardRound):
+    name = "Consultant review"
+    description = "Patients diagnosis review"
+    filter_template = "wardrounds/consultant_review_filter.html"
+    detail_template = 'wardrounds/discharged_detail.html'
+    filters = {
+        'consultant_at_discharge': 'episode.consultant_at_discharge[0].consultant === value'
+    }
+
+    @staticmethod
+    def episodes():
+        episodes = Episode.objects.exclude(discharge_date=None)
+        episodes = episodes.exclude(consultantatdischarge=None)
+        episodes = episodes.filter(primarydiagnosis__confirmed=False)
+        return episodes.order_by("-discharge_date")
 
 
 class Discharged(HistoricTagsMixin, WardRound):

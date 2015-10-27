@@ -1,41 +1,17 @@
-<div class="modal-header">
-  <button type="button" class="close" ng-click="cancel()">×</button>
-  <h3><i class="fa fa-stethoscope"></i> Presenting Complaint</h3>
-</div>
-<div class="modal-body">
+{% extends 'modal_base.html' %}
+{% load forms %}
+  {% block icon_name %}fa fa-stethoscope{% endblock %}
+  {% block title %}Presenting Complaint{% endblock %}
+{% block modal_body %}
   <form class="form-horizontal">
-    <div class="form-group">
-      <label class="control-label col-sm-3">Symptoms</label>
-      <div class="col-sm-8">
-        <input class="form-control" type="text"
-               ng-model="editing.symptom"
-               ng-options="s for s in symptom_list"
-               bs-typeahead
-               autofocus>
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="control-label col-sm-3">Duration</label>
-      <div class="col-sm-8">
-        <select class="form-control" ng-model="editing.duration">
-          <option value="">---------</option>
-          <option value="3 days or less">3 days or less</option>
-          <option value="4-10 days">4-10 days</option>
-          <option value="11-21 days">11-21 days</option>
-          <option value="22 days to 3 months">22 days to 3 months</option>
-          <option value="over 3 months">over 3 months</option>
-        </select>
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="control-label col-sm-3">Details</label>
-      <div class="col-sm-8">
-        <input type="text" class="form-control" ng-model="editing.details">
-      </div>
-    </div>
+    {% select autofocus multiple=True tagging=False search_select=True label="Symptoms" model="editing.symptom" lookuplist="symptom_list" %}
+    {% select label="Duration" model="editing.duration" lookuplist="['---------', '3 days or less','4-10 days','11-21 days','22 days to 3 months','over 3 months']" %}
+    {% textarea label="Details" model="editing.details" %}
   </form>
-</div>
-<div class="modal-footer">
+{% endblock %}
+{% block modal_save %}
   <button class="btn btn-primary" ng-click="save()">Save</button>
+{% endblock %}
+{% block modal_cancel %}
   <button class="btn" ng-click="cancel()">Cancel</button>
-</div>
+{% endblock %}

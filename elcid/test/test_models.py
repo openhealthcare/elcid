@@ -1,6 +1,3 @@
-"""
-Unittests for the UCLH eLCID OPAL implementation.
-"""
 import datetime
 import ffs
 

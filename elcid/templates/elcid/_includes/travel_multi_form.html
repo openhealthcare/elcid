@@ -1,0 +1,40 @@
+{% load forms %}
+<div>
+  <div ng-repeat="travel in editing.travel">
+    <span ng-show="!travel.submitted">
+      <span ng-class="{'warning-state': travelStep.warning}">
+        {% input "autofocus" change="travelStep.reset()"  label="Destination" disabled="travelStep.none" model="travel.destination" lookuplist="destination_list" %}
+        {% input label="Dates" change="travelStep.reset()" disabled="travelStep.none" model="travel.dates" %}
+      </span>
+      {% select label="Reason for travel" model="travel.reason_for_travel" lookuplist="travel_reason_list" disabled="travelStep.none" %}
+      {% input disabled="travelStep.none" label="Specific exposures" model="travel.specific_exposures" change="travelStep.reset()" %}
+      <btn type="button" ng-disabled="travelStep.none" ng-click="travelStep.addAnother(travel)" class="btn btn-primary"><i class="fa fa-plus"></i> Add Another</btn>
+    </span>
+
+    <span ng-show="travel.submitted">
+      <div class="well">
+        <div class="row">
+          <div class="col-md-10">
+            [[travel.destination]]
+            <span ng-show="travel.dates">([[travel.dates]])</span>
+            [[travel.reason_for_travel]]
+            <span ng-show="travel.reason && travel.specific_exposures">/</span>
+            [[travel.specific_exposures]]
+            <span ng-show="travel.malaria_prophylaxis">
+              <br />
+              Malaria Prohylaxis: [[ travel.malaria_prophylaxis | boxed ]]
+              <br />
+              [[ travel.malaria_drug ]] [[ travel.malaria_compliance ]]
+            </span>
+          </div>
+          <div class="col-md-2">
+            <btn class=" pointer" type="button" ng-click="travelStep.remove($index)"><i class="fa fa-minus"></i></btn>
+          </div>
+        </div>
+      </div>
+    </span>
+  </div>
+  <span ng-class="{'warning-state': travelStep.warning}">
+    {% checkbox change="travelStep.clear()" label="No travel in the last 12 months" model="travelStep.none" %}
+  </span>
+</div>
