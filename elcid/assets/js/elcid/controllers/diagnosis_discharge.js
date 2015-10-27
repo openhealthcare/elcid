@@ -400,7 +400,7 @@ controllers.controller(
                 }
             });
 
-            $scope.episode.presenting_complaint[0].save($scope.editing.presenting_complaint);
+            // $scope.episode.presenting_complaint[0].save($scope.editing.presenting_complaint);
 
             _.each(_.filter($scope.editing.secondary_diagnosis,
                             function(sd){ return sd.condition!== null; }),
