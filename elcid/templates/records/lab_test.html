@@ -1,5 +1,6 @@
-
-<div class="[[item.date_ordered == null && 'italic']]">
+<div class="[[item.date_ordered == null && 'italic']]"
+     ng-hide="profile.has_role('scientist') && !(item.esbl || item.carbapenemase)"
+     >
   <span ng-hide="profile.has_role('scientist')">
     [[item.date_ordered | shortDate]]
     [[item.test]]
