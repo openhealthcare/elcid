@@ -3,6 +3,7 @@
   <span ng-hide="profile.has_role('scientist')">
     [[item.date_ordered | shortDate]]
     [[item.test]]
+    <span ng-show="item.details">[[ item.details]]<br /></span>
     <span ng-show="item.result && item.result != 'pending'" class="break-word">
       ([[item.result | microresult]])
     </span>
