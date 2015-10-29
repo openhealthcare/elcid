@@ -381,6 +381,13 @@ class HaemInformationType(lookuplists.LookupList):
     pass
 
 
+class NeutropeniaInformation(PatientSubrecord):
+    _is_singleton = True
+
+    start = models.DateField(blank=True, null=True)
+    stop = models.DateField(blank=True, null=True)
+
+
 class HaemInformation(PatientSubrecord):
     _icon = 'fa fa-info-circle'
 
