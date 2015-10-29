@@ -6,14 +6,15 @@ Inserted [[item.insertion_datetime| shortDate]]
   External Length [[item.external_length]] cm <br />
 </span>
 <span ng-hide="item.removal_datetime">
-  [[ item.insertion_date | daysSince:1 ]] days 
+  [[ item.insertion_date | daysSince:1 ]] days
   since insertion
 </span>
+hello
 <span ng-show="item.removal_datetime" >
   Removed [[item.removal_datetime | shortDate]] ([[item.removal_reason]])
   <br />
   In place for [[ item.insertion_datetime |daysTo:item.removal_datetime ]] days
-</span> 
+</span>
 <br />
 [[item.vip_score]]<br />
 [[item.special_instructions ]]
