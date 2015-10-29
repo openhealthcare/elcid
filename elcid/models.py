@@ -112,6 +112,16 @@ class PresentingComplaint(EpisodeSubrecord):
     duration = models.CharField(max_length=255, blank=True, null=True)
     details = models.TextField(blank=True, null=True)
 
+    def set_symptom(self, *args, **kwargs):
+        # ignore symptom for the time being
+        pass
+
+    def to_dict(self, user):
+        return dict(
+            symptoms=[i.name for i in self.symptoms.all()],
+            duration=self.duration,
+            details=self.details
+        )
 
 class PrimaryDiagnosis(EpisodeSubrecord):
     """
