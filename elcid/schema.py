@@ -142,7 +142,6 @@ list_columns_research_practitioner = [
 
 list_columns_scientist = [
     models.Demographics,
-    models.LabSpecimin,
     models.LabTest,
     models.CheckpointsAssay,
     models.RidRTITest
