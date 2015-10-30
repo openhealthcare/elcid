@@ -1,7 +1,7 @@
 {% load forms %}
 
 <div class="form-group">
-    {% input "autofocus" label="Drug" model="editing.drug" lookuplist="antimicrobial_list" %}
+    {% select "autofocus" label="Drug" model="editing.drug" lookuplist="antimicrobial_list" %}
     {% datepicker label="Start date" model="editing.start_date" %}
     {% datepicker label="End date" model="editing.end_date" %}
     {% input label="Dose" model="editing.dose" %}

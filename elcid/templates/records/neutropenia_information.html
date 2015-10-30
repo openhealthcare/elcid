@@ -1,6 +1,9 @@
-<div ng-show="item.start">
-    Start date: [[ item.start | shortDate ]]
-</div>
-<div ng-show="item.stop">
-    Stop date: [[ item.stop | shortDate ]]
-</div>
+<span ng-show="item.start">
+    [[ item.start | shortDate ]]
+</span>
+<span ng-show="item.stop">
+    - [[ item.stop | shortDate ]]
+</span>
+<span ng-show="!item.stop">
+    - ongoing
+</span>

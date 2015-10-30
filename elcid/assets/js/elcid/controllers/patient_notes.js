@@ -4,7 +4,8 @@
 angular.module('opal.controllers').controller(
    'PatientDetailCtrl', function($rootScope, $scope, $cookieStore,
                                 episodes, options, profile, recordLoader,
-                                EpisodeDetailMixin, ngProgressLite, $q
+                                EpisodeDetailMixin, ngProgressLite, $q,
+                                growl
                                    ){
 
         COOKIE_NAME = "patientNotes-inlineForm";
@@ -44,6 +45,17 @@ angular.module('opal.controllers').controller(
            alertInvestigations: []
        };
 
+       $scope.markAsDuplicate = function(){
+           var item = $scope.episode.newItem(name, {column: $rootScope.fields.duplicate_patient});
+           $scope.isDuplicate = true;
+           item.save({}).then(function(){
+             growl.success("Thanks, we'll take a look");
+           },
+           function(){
+              $scope.isDuplcate = false;
+           });
+       };
+
        function getAlertInvestigations(episode){
            if(episode.microbiology_test){
              return _.filter(episode.microbiology_test, function(mt){
@@ -57,6 +69,7 @@ angular.module('opal.controllers').controller(
 
        if($scope.episodes.length){
            $scope.episode = $scope.episodes[0];
+           $scope.isDuplicate = $scope.episode.duplicate_patient && $scope.episode.duplicate_patient.length;
 
            $scope.episode.alertInvestigations = function(){
                    return _.reduce(episodes, function(r, e){
