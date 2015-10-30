@@ -13,7 +13,7 @@
   </span>
 
   <div ng-show="step === 'diagnosis'">
-    {% select "autofocus" name="primary_diagnosis" label="Primary Diagnosis" model="editing.primary_diagnosis.condition" lookuplist="condition_list" required="Primary Diagnosis is required." formname="dischargeDiagnosis" %}
+    {% select "autofocus" tagging=True name="primary_diagnosis" label="Primary Diagnosis" model="editing.primary_diagnosis.condition" lookuplist="condition_list" required="Primary Diagnosis is required." formname="dischargeDiagnosis" %}
     <div ng-repeat="secondary in editing.secondary_diagnosis track by $index">
       <span ng-show="!secondary.submitted">
         <span ng-class="{'warning-state': secondaryDiagnosisWarning}">
@@ -49,7 +49,15 @@
     </button>
   </div>
   <span ng-show="step === 'presenting_complaint'">
-    {% select "autofocus" change="resetRequired(dischargeDiagnosis.editing_presenting_complaint_symptoms)" multiple=True required="At least one symptom is required." tagging=False search_select=True label="Symptoms" model="editing.presenting_complaint.symptoms" lookuplist="symptom_list" formname="dischargeDiagnosis" %}
+    <span ng-if="!confirming">
+      {% select "autofocus" change="resetRequired(dischargeDiagnosis.editing_presenting_complaint_symptoms)" multiple=True required="At least one symptom is required." tagging=False search_select=True label="Symptoms" model="editing.presenting_complaint.symptoms" lookuplist="symptom_list" formname="dischargeDiagnosis" %}
+    </span>
+    <span ng-if="confirming">
+      <span ng-show="validDiagnosis">
+        [[ oldDiagnosis ]] is not a valid condition, please choose a condition from the list below
+      </span>
+      {% select "autofocus" change="resetRequired(dischargeDiagnosis.editing_presenting_complaint_symptoms)" multiple=True required="At least one symptom is required." search_select=True label="Symptoms" model="editing.presenting_complaint.symptoms" lookuplist="symptom_list" formname="dischargeDiagnosis" %}
+    </span>
     {% select tagging=False label="Duration" model="editing.presenting_complaint.duration" lookuplist="['---------', '3 days or less','4-10 days','11-21 days','22 days to 3 months','over 3 months']" formname="dischargeDiagnosis" %}
     {% textarea label="Details" model="editing.presenting_complaint.details" formname="dischargeDiagnosis" %}
   </span>

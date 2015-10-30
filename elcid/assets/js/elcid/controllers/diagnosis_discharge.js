@@ -22,7 +22,7 @@ controllers.controller(
 
         $scope.steps_details = {
             discharge: {
-                icon: "fa fa-street-view",
+                icon: "fa fa-home",
                 title: "Discharge",
                 subtitle: undefined
             },
@@ -157,8 +157,6 @@ controllers.controller(
         $scope.currentCategory = episode.location[0].category;
 
         $scope.editing = dischargePatientService.getEditing(episode);
-
-
 
         if(!$scope.episode.presenting_complaint.length || !$scope.episode.presenting_complaint[0].symptoms.length){
             var presenting_complaint = $scope.episode.newItem('presenting_complaint');
@@ -307,6 +305,7 @@ controllers.controller(
         }
 
         $scope.confirming = false;
+        $scope.validDiagnosis = false;
         $scope.is_list_view = $location.path().indexOf('/list/') === 0;
         //
         // This flag sets the visibility of the modal body
@@ -318,6 +317,9 @@ controllers.controller(
         //
         if(!$scope.is_list_view){
             $scope.confirming = true;
+            $scope.validDiagnosis = _.contains($scope.condition_list, $scope.episode.primary_diagnosis[0].condition);
+            $scope.oldDiagnosis = $scope.episode.primary_diagnosis[0].condition;
+            $scope.episode.primary_diagnosis[0].condition = undefined;
         }
 
         //
@@ -396,8 +398,12 @@ controllers.controller(
                 saves.push(to_save.save($scope.editing.presenting_complaint));
             }
 
-            saves.concat($scope.antimicrobialStep.save());
-            saves.concat($scope.travelStep.save());
+            if($scope.antimicrobialStep){
+                saves.concat($scope.antimicrobialStep.save());
+            }
+            if($scope.travelStep){
+                saves.concat($scope.travelStep.save());
+            }
 
             // if they've removed an already existing diagnosis, let them delete it
             _.each($scope.episode.secondary_diagnosis, function(sd){
