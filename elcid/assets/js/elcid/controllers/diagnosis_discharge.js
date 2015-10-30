@@ -160,11 +160,11 @@ controllers.controller(
 
 
 
-        if(!$scope.episode.presenting_complaint.length || !$scope.episode.presenting_complaint[0].symptom.length){
+        if(!$scope.episode.presenting_complaint.length || !$scope.episode.presenting_complaint[0].symptoms.length){
             var presenting_complaint = $scope.episode.newItem('presenting_complaint');
             $scope.episode.presenting_complaint = [presenting_complaint];
             $scope.editing.presenting_complaint = presenting_complaint.makeCopy();
-            $scope.editing.presenting_complaint.symptom =[];
+            $scope.editing.presenting_complaint.symptoms =[];
             steps.unshift("presenting_complaint");
         }
 
@@ -269,9 +269,9 @@ controllers.controller(
                 this is a work around as multiple angular ui select does not play nicely
                 with ngRequired. It might be better to set each model as a different form
                 */
-                if(!model.presenting_complaint.symptom.length){
-                    form.editing_presenting_complaint_symptom.$setValidity("required", false);
-                    form.editing_presenting_complaint_symptom.$setDirty();
+                if(!model.presenting_complaint.symptoms.length){
+                    form.editing_presenting_complaint_symptoms.$setValidity("required", false);
+                    form.editing_presenting_complaint_symptoms.$setDirty();
                     return;
                 }
             }
