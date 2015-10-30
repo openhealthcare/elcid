@@ -376,6 +376,7 @@ controllers.controller(
         // the modal.
         //
         $scope.save = function() {
+            var to_save;
             var primary = episode.primary_diagnosis[0];
 
             if($scope.confirming){
@@ -386,8 +387,13 @@ controllers.controller(
             saves.push(primary.save($scope.editing.primary_diagnosis));
 
             if(_.contains(steps, "consultant_at_discharge")){
-                var to_save = $scope.episode.consultant_at_discharge[0];
+                to_save = $scope.episode.consultant_at_discharge[0];
                 saves.push(to_save.save($scope.editing.consultant_at_discharge));
+            }
+
+            if(_.contains(steps, "presenting_complaint")){
+                to_save = $scope.episode.presenting_complaint[0];
+                saves.push(to_save.save($scope.editing.presenting_complaint));
             }
 
             saves.concat($scope.antimicrobialStep.save());
