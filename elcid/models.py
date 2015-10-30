@@ -66,6 +66,16 @@ class Carers(PatientSubrecord):
         verbose_name_plural = "Carers"
 
 
+class DuplicatePatient(PatientSubrecord):
+    _no_admin = True
+    _icon = 'fa fa-clone'
+    reviewed = models.BooleanField(default=False)
+    merged = models.BooleanField(default=False)
+
+    def icon(self):
+        return self._icon
+
+
 class Location(EpisodeSubrecord):
     _is_singleton = True
     _icon = 'fa fa-map-marker'
@@ -112,6 +122,16 @@ class PresentingComplaint(EpisodeSubrecord):
     duration = models.CharField(max_length=255, blank=True, null=True)
     details = models.TextField(blank=True, null=True)
 
+    def set_symptom(self, *args, **kwargs):
+        # ignore symptom for the time being
+        pass
+
+    def to_dict(self, user):
+        return dict(
+            symptoms=[i.name for i in self.symptoms.all()],
+            duration=self.duration,
+            details=self.details
+        )
 
 class PrimaryDiagnosis(EpisodeSubrecord):
     """
@@ -372,6 +392,20 @@ class HaemTransplantType(lookuplists.LookupList):
 
 class HaemInformationType(lookuplists.LookupList):
     pass
+
+
+class NeutropeniaInformation(PatientSubrecord):
+    _icon = 'fa fa-info-circle'
+    start = models.DateField(blank=True, null=True)
+    stop = models.DateField(blank=True, null=True)
+
+    class Meta:
+        ordering = ['-start']
+
+    @property
+    def icon(self):
+        return self._icon
+
 
 
 class HaemInformation(PatientSubrecord):

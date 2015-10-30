@@ -17,6 +17,12 @@
               ([[patient.date_of_birth | shortDate]])
           </span>
         </small>
+        <div class="float-right">
+          <div class="col-md-2">
+              <button class="btn btn-secondary" ng-show="!isDuplicate" ng-click="markAsDuplicate()">Mark as Duplicate</button>
+              <button disabled class="btn" ng-show="isDuplicate">Marked as Duplicate</button>
+          </div>
+        </div>
       </h2>
     </div>
     <div class="panel-body">
@@ -115,6 +121,7 @@
                     <div class="col-md-6">
                         <span ng-if="$first">
                           {% record_panel models.HaemInformation title="Recent Haem Information" angular_filter="isRecentHaemInformation" %}
+                          {% record_panel models.NeutropeniaInformation title="Neutropenia Information"  %}
                         </span>
                         {% record_panel models.Antimicrobial editable="e.id === episode.id" %}
                         {% record_panel models.MicrobiologyTest editable="e.id === episode.id" %}
