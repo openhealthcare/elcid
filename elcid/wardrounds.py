@@ -29,15 +29,15 @@ class ConsultantReview(WardRound):
     description = "Patients diagnosis review"
     filter_template = "wardrounds/consultant_review_filter.html"
     detail_template = 'wardrounds/discharged_detail.html'
-    filters = {
-        'consultant_at_discharge': 'episode.consultant_at_discharge[0].consultant === value'
-    }
 
-    @staticmethod
-    def episodes():
+    def episodes(self):
         episodes = Episode.objects.exclude(discharge_date=None)
         episodes = episodes.exclude(consultantatdischarge=None)
         episodes = episodes.filter(primarydiagnosis__confirmed=False)
+
+        if self.filter_arg:
+            consultant = models.Consultant.objects.get(name=self.filter_arg)
+            episodes = episodes.filter(consultantatdischarge__consultant_fk=consultant.id)
         return episodes.order_by("-discharge_date")
 
 
@@ -51,8 +51,7 @@ class Discharged(HistoricTagsMixin, WardRound):
         'team': 'episode.tagging[0][value]'
     }
 
-    @staticmethod
-    def episodes():
+    def episodes(self):
         today = datetime.date.today()
         two_weeks_ago = today - datetime.timedelta(days=7)
         episodes = Episode.objects.filter(
@@ -61,53 +60,11 @@ class Discharged(HistoricTagsMixin, WardRound):
         return episodes
 
 
-# class FinalDiagnosisReview(HistoricTagsMixin, WardRound):
-#     name        = 'Final Diagnosis Review'
-#     description = 'Discharged Patients with a final diagnosis for consultant review.'
-
-#     filter_template = 'wardrounds/final_diagnosis_filter.html'
-#     filters    = {
-#         'discharge_from': 'episode.discharge_date >= moment(value, "DD-MM-YYYY")',
-#         'discharge_to'  : 'episode.discharge_date <= moment(value, "DD-MM-YYYY")',
-#         'team'          : 'episode.tagging[0][value]'
-#     }
-
-#     @staticmethod
-#     def episodes():
-#         unconfirmed = models.PrimaryDiagnosis.objects.filter(confirmed=False).filter(Q())
-
-#         def interesting(episode):
-#             """
-#             Is episode interesting for the FDR?
-#             """
-#             if not episode.is_discharged:
-#                 return False
-#             interesting_teams = set(['id_inpatients',
-#                                      'tropical_diseases',
-#                                      'immune_inpatients'])
-#             return bool(interesting_teams.intersection(episode.get_tag_names(None, historic=True)))
-
-#         return set([d.episode for d in unconfirmed if interesting(d.episode)])
-
-#     @staticmethod
-#     def schema():
-#         return [
-#             models.Demographics,
-#             models.Location,
-#             models.Diagnosis,
-#             models.MicrobiologyTest,
-#             models.Antimicrobial,
-#             models.PrimaryDiagnosis,
-#             models.SecondaryDiagnosis
-#         ]
-
-
 class OPATReviewList(WardRound):
     name = 'OPAT Review'
     description = 'Final review of OPAT patients post end-of-treatment'
 
-    @staticmethod
-    def episodes():
+    def episodes(self):
         review_ready = models.OPATMeta.objects.filter(review_date__lte=datetime.date.today())
         in_round = set()
         for om in review_ready:
@@ -122,6 +79,5 @@ class OPATCurrentList(WardRound):
     name        = 'OPAT Current'
     description = 'All patients on the OPAT current list'
 
-    @staticmethod
-    def episodes():
+    def episodes(self):
         return Episode.objects.filter(active=True, tagging__team__name='opat_current')
