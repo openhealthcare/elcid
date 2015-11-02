@@ -313,16 +313,6 @@ controllers.controller(
         $scope.discharged = false;
 
         //
-        // We should deal with the case where we're confirming discharge
-        //
-        if(!$scope.is_list_view){
-            $scope.confirming = true;
-            $scope.validDiagnosis = _.contains($scope.condition_list, $scope.episode.primary_diagnosis[0].condition);
-            $scope.oldDiagnosis = $scope.episode.primary_diagnosis[0].condition;
-            $scope.episode.primary_diagnosis[0].condition = undefined;
-        }
-
-        //
         // We only really need one lookuplist.
         // TODO: put these into a nicer service.
         //
@@ -331,6 +321,18 @@ controllers.controller(
             		$scope[name + '_list'] = _.uniq(options[name]);
       	    }
       	}
+
+        //
+        // We should deal with the case where we're confirming discharge
+        //
+        if(!$scope.is_list_view){
+            $scope.confirming = true;
+            $scope.validDiagnosis = _.contains($scope.condition_list, $scope.episode.primary_diagnosis[0].condition);
+            if(!$scope.validDiagnosis){
+                $scope.oldDiagnosis = $scope.episode.primary_diagnosis[0].condition;
+                $scope.editing.primary_diagnosis.condition = undefined;
+            }
+        }
 
         //
         // Add an extra Secondary diagnosis option to the list
