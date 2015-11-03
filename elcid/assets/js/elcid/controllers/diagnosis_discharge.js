@@ -16,7 +16,7 @@ controllers.controller(
         $scope.tags = tags;
         $scope.episode = episode;
 
-        var steps = [
+        $scope.steps = [
           "diagnosis"
         ];
 
@@ -24,32 +24,39 @@ controllers.controller(
             discharge: {
                 icon: "fa fa-home",
                 title: "Discharge",
-                subtitle: undefined
+                subtitle: undefined,
+                done: false
             },
             diagnosis: {
                 icon: "fa fa-stethoscope",
                 title: "Diagnosis",
-                subtitle: undefined
+                subtitle: undefined,
+                status: 'disabled',
+                done: false
             },
             presenting_complaint: {
                 icon: "fa fa-heartbeat",
                 title: "Presenting Complaint",
-                subtitle: "Please enter one or more symptoms"
+                subtitle: "Please enter one or more symptoms",
+                done: false
             },
             antimicrobial: {
                 icon: "fa fa-flask",
                 title: "Antimicrobial",
-                subtitle: "Please enter the <strong>drug name</strong> and the <strong>start and end dates</strong> or state that the patient was <strong>not on antimicrobials</strong>."
+                subtitle: "Please enter the <strong>drug name</strong> and the <strong>start and end dates</strong> or state that the patient was <strong>not on antimicrobials</strong>.",
+                done: false
             },
             travel: {
                 icon: "fa fa-plane",
                 title: "Travel",
-                subtitle: "Please enter a <strong>travel destination</strong> and <strong>dates</strong>, or state that the patient <strong>did not travel</strong>."
+                subtitle: "Please enter a <strong>travel destination</strong> and <strong>dates</strong>, or state that the patient <strong>did not travel</strong>.",
+                done: false
             },
             consultant_at_discharge: {
                 icon: "fa fa-user-md",
                 title: "Consultant At Discharge",
-                subtitle: "Please record the <strong>consultant</strong> at discharge."
+                subtitle: "Please record the <strong>consultant</strong> at discharge.",
+                done: false
             }
         };
 
@@ -163,7 +170,7 @@ controllers.controller(
             $scope.episode.presenting_complaint = [presenting_complaint];
             $scope.editing.presenting_complaint = presenting_complaint.makeCopy();
             $scope.editing.presenting_complaint.symptoms =[];
-            steps.unshift("presenting_complaint");
+            $scope.steps.unshift("presenting_complaint");
         }
 
         if(!$scope.episode.antimicrobial.length){
@@ -175,7 +182,7 @@ controllers.controller(
                 "antimicrobial"
             );
             $scope.editing.antimicrobial = [$scope.antimicrobialStep.newItem()];
-            steps.push("antimicrobial");
+            $scope.steps.push("antimicrobial");
         }
 
         if(!$scope.episode.travel.length){
@@ -189,13 +196,13 @@ controllers.controller(
 
             $scope.editing.travel = [$scope.travelStep.newItem()];
 
-            steps.push("travel");
+            $scope.steps.push("travel");
         }
 
         $scope.editing.primary_diagnosis = $scope.episode.primary_diagnosis[0].makeCopy();
 
         if($scope.is_list_view || !episode.isDischarged()){
-            steps.push("discharge");
+            $scope.steps.push("discharge");
         }
 
         if($scope.episode.primary_diagnosis.length === 0){
@@ -205,34 +212,46 @@ controllers.controller(
 
         if(!$scope.episode.consultant_at_discharge[0].consultant){
             $scope.editing.consultant_at_discharge = $scope.episode.consultant_at_discharge[0].makeCopy();
-            steps.push("consultant_at_discharge");
+            $scope.steps.push("consultant_at_discharge");
         }
 
-        $scope.errors = _.reduce(steps, function(mem, y){
+        $scope.errors = _.reduce($scope.steps, function(mem, y){
             mem[y] = undefined;
             return mem;
         }, {});
 
-        $scope.nextStep = function(){
-            var currentIndex = _.indexOf(steps, $scope.step);
+        $scope.processSteps = [];
 
-            if(currentIndex + 1 === steps.length){
+        _.each($scope.steps, function(step){
+            var processStep = $scope.steps_details[step];
+            processStep.name = step;
+            $scope.processSteps.push(processStep);
+        });
+
+        $scope.nextStep = function(){
+            var currentIndex = _.indexOf($scope.steps, $scope.step);
+
+            if(currentIndex + 1 === $scope.steps.length){
                 return null;
             }
-            return steps[currentIndex + 1];
+            return $scope.steps[currentIndex + 1];
         };
 
         $scope.previousStep = function(){
-            var currentIndex = _.indexOf(steps, $scope.step);
+            var currentIndex = _.indexOf($scope.steps, $scope.step);
 
             if(!currentIndex){
                 return null;
             }
 
-            return steps[currentIndex - 1];
+            return $scope.steps[currentIndex - 1];
         };
 
         $scope.goToPreviousStep = function(){
+            var processStep = _.find($scope.processSteps, function(processStep){
+                return processStep.name === $scope.step;
+            });
+            processStep.done = false;
             $scope.step = $scope.previousStep();
         };
 
@@ -251,6 +270,7 @@ controllers.controller(
                     form.editing_primary_diagnosis_condition.$setDirty();
                     return;
                 }
+
             }
             if($scope.step === "travel"){
                 if(!$scope.travelStep.validateStep()){
@@ -281,6 +301,12 @@ controllers.controller(
             }
 
             nextStep = $scope.nextStep();
+            var processStep = _.find($scope.processSteps, function(processStep){
+                return processStep.name === $scope.step;
+            });
+
+            processStep.done = true;
+
             if(nextStep){
                 $scope.step = nextStep;
             }
@@ -290,7 +316,7 @@ controllers.controller(
         };
 
         if(!$scope.step){
-            $scope.step = _.first(steps);
+            $scope.step = _.first($scope.steps);
         }
 
         if($scope.episode.secondary_diagnosis.length === 0){
@@ -390,12 +416,12 @@ controllers.controller(
             var saves = [];
             saves.push(primary.save($scope.editing.primary_diagnosis));
 
-            if(_.contains(steps, "consultant_at_discharge")){
+            if(_.contains($scope.steps, "consultant_at_discharge")){
                 to_save = $scope.episode.consultant_at_discharge[0];
                 saves.push(to_save.save($scope.editing.consultant_at_discharge));
             }
 
-            if(_.contains(steps, "presenting_complaint")){
+            if(_.contains($scope.steps, "presenting_complaint")){
                 to_save = $scope.episode.presenting_complaint[0];
                 saves.push(to_save.save($scope.editing.presenting_complaint));
             }

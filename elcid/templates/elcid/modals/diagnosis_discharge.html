@@ -5,6 +5,8 @@
 [[ steps_details[step].title ]]
 {% endblock %}
 {% block modal_body %}
+{% process_steps process_steps="processSteps" active="progress_step.name === step" complete="progress_step.done || !progress_step.name == step" disabled="!progress_step.done && progress_step.name !== step" %}
+<hr />
 <p class="lead text-center" ng-bind-html="steps_details[step].subtitle"></p>
 
 <form class="form-horizontal" name="dischargeDiagnosis">
@@ -62,11 +64,8 @@
     </button>
   </div>
   <span ng-show="step === 'presenting_complaint'">
-    <span ng-if="confirming">
-      <span ng-show="validDiagnosis">
-        [[ oldDiagnosis ]] is not a valid condition, please choose a condition from the list below
-      </span>
-      {% select "autofocus" change="resetRequired(dischargeDiagnosis.editing_presenting_complaint_symptoms)" multiple=True required="At least one symptom is required." search_select=True label="Symptoms" model="editing.presenting_complaint.symptoms" lookuplist="symptom_list" formname="dischargeDiagnosis" %}
+    <span ng-if="!confirming">
+      {% select "autofocus" change="resetRequired(dischargeDiagnosis.editing_presenting_complaint_symptoms)" multiple=True required="At least one symptom is required." tagging=False search_select=True label="Symptoms" model="editing.presenting_complaint.symptoms" lookuplist="symptom_list" formname="dischargeDiagnosis" %}
     </span>
     {% select tagging=False label="Duration" model="editing.presenting_complaint.duration" lookuplist="['---------', '3 days or less','4-10 days','11-21 days','22 days to 3 months','over 3 months']" formname="dischargeDiagnosis" %}
     {% textarea label="Details" model="editing.presenting_complaint.details" formname="dischargeDiagnosis" %}
@@ -83,6 +82,7 @@
     </form>
   </span>
 </form>
+
 
 {% endblock %}
 
