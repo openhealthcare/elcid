@@ -24,7 +24,7 @@ django-compressor==1.5
 
 -e git+https://github.com/openhealthcare/opal-research.git@v0.1.2#egg=opal_research
 -e git+https://github.com/openhealthcare/opal-wardround.git@master#egg=opal_wardround
--e git+https://github.com/openhealthcare/opal-referral.git@v0.1.1#egg=opal_referral
+-e git+https://github.com/openhealthcare/opal-referral.git@771-league-table#egg=opal_referral
 -e git+https://github.com/openhealthcare/opal-opat.git@master#egg=opal_opat
 -e git+https://github.com/openhealthcare/opal-dashboard.git@v0.1.1#egg=opal_dashboard
 

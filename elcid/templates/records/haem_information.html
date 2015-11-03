@@ -1,10 +1,10 @@
 <b>[[ item.patient_type ]]</b>:
 <div>
   <div ng-show="item.date_of_transplant">
-    Date of transplant: [[ item.date_of_transplant | shortDate ]]
+    Date of transplant: [[ item.date_of_transplant | shortDate ]] ([[ item.date_of_transplant | daysSince:false:true ]])
   </div>
   <div ng-show="item.date_of_chemotherapy">
-    Date of chemotherapy: [[ item.date_of_chemotherapy | shortDate ]]
+    Date of chemotherapy: [[ item.date_of_chemotherapy | shortDate ]] ([[ item.date_of_transplant | daysSince:false:true ]])
   </div>
   <div ng-show="item.neutropenia_onset">
     Neutropenia onset: [[ item.neutropenia_onset | shortDate ]]

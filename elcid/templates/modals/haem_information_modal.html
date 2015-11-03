@@ -6,7 +6,7 @@
     {% select "autofocus" label="Type" model="editing.patient_type" lookuplist="haeminformationtype_list" %}
     <span ng-show="editing.patient_type == 'Transplant'">
         {% datepicker label="Date of transplant" model="editing.date_of_transplant" %}
-        {% input "autofocus" label="Transplant type" model="editing.type_of_transplant" lookuplist="haemtransplanttype_list" %}
+        {% input label="Transplant type" model="editing.type_of_transplant" lookuplist="haemtransplanttype_list" %}
         {% datepicker label="Date of chemotherapy" model="editing.date_of_transplant" %}
         {% datepicker label="count recovery" model="editing.count_recovery" %}
     </span>
