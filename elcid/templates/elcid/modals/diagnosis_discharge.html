@@ -4,16 +4,18 @@
 {% block title %}
 [[ steps_details[step].title ]]
 {% endblock %}
+{% block process_steps %}
+<div class="discharge-process-steps" style="width: [[ 100 - (10 * (6 - processSteps.length)) ]]%">
+  {% process_steps process_steps="processSteps" show_titles=False active="progress_step.name === step" complete="progress_step.done || !progress_step.name == step" disabled="!progress_step.done && progress_step.name !== step" %}
+</div>
+{% endblock %}
 {% block modal_body %}
-{% process_steps process_steps="processSteps" active="progress_step.name === step" complete="progress_step.done || !progress_step.name == step" disabled="!progress_step.done && progress_step.name !== step" %}
-<hr />
-<p class="lead text-center" ng-bind-html="steps_details[step].subtitle"></p>
+<p class="lead text-center content-offset-25" ng-bind-html="steps_details[step].subtitle"></p>
 
 <form class="form-horizontal" name="dischargeDiagnosis">
   <span ng-show="step === 'discharge'">
     {% include "_includes/discharge_form.html" %}
   </span>
-
   <div ng-show="step === 'diagnosis'">
     <span ng-if="confirming">
       <span ng-show="!validDiagnosis">

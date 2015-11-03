@@ -165,7 +165,10 @@ controllers.controller(
 
         $scope.editing = dischargePatientService.getEditing(episode);
 
-        if(!$scope.episode.presenting_complaint.length || !$scope.episode.presenting_complaint[0].symptoms.length){
+        if(!$scope.episode.presenting_complaint.length ||
+           !$scope.episode.presenting_complaint[0].symptoms ||
+           !$scope.episode.presenting_complaint[0].symptoms.length
+         ){
             var presenting_complaint = $scope.episode.newItem('presenting_complaint');
             $scope.episode.presenting_complaint = [presenting_complaint];
             $scope.editing.presenting_complaint = presenting_complaint.makeCopy();
