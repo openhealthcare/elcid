@@ -391,7 +391,7 @@ class HaemInformationType(lookuplists.LookupList):
     pass
 
 
-class PeriodOfNeutropenia(PatientSubrecord):
+class EpisodeOfNeutropenia(PatientSubrecord):
     _icon = 'fa fa-info-circle'
     _sort = 'start'
     start = models.DateField(blank=True, null=True)

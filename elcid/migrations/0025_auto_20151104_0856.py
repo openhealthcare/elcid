@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='PeriodOfNeutropenia',
+            name='EpisodeOfNeutropenia',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('created', models.DateTimeField(null=True, blank=True)),
@@ -24,9 +24,9 @@ class Migration(migrations.Migration):
                 ('consistency_token', models.CharField(max_length=8)),
                 ('start', models.DateField(null=True, blank=True)),
                 ('stop', models.DateField(null=True, blank=True)),
-                ('created_by', models.ForeignKey(related_name='created_elcid_periodofneutropenia_subrecords', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
+                ('created_by', models.ForeignKey(related_name='created_elcid_episodeofneutropenia_subrecords', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
                 ('patient', models.ForeignKey(to='opal.Patient')),
-                ('updated_by', models.ForeignKey(related_name='updated_elcid_periodofneutropenia_subrecords', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
+                ('updated_by', models.ForeignKey(related_name='updated_elcid_episodeofneutropenia_subrecords', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
             ],
             options={
                 'ordering': ['-start'],
