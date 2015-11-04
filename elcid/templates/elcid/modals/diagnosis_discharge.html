@@ -26,7 +26,7 @@
         Alternatively email us at <a target="_blank" href="mailto:elcid@openhealthcare.org.uk?Subject=New%20Condition%20For%20[[ episode.demographics[0].hospital_number ]]">elcid@openhealthcare.org.uk</a> with the correct diagnosis
         </p>
       </span>
-      {% select "autofocus" tagging=False name="primary_diagnosis" label="Primary Diagnosis" model="editing.primary_diagnosis.condition" lookuplist="condition_list" required="Primary Diagnosis is required." formname="dischargeDiagnosis" %}
+      {% select "autofocus" name="primary_diagnosis" label="Primary Diagnosis" model="editing.primary_diagnosis.condition" lookuplist="condition_list" required="Primary Diagnosis is required." formname="dischargeDiagnosis" %}
     </span>
     <span ng-if="!confirming">
       {% select "autofocus" tagging=True name="primary_diagnosis" label="Primary Diagnosis" model="editing.primary_diagnosis.condition" lookuplist="condition_list" required="Primary Diagnosis is required." formname="dischargeDiagnosis" %}
@@ -69,7 +69,7 @@
     <span ng-if="!confirming">
       {% select "autofocus" change="resetRequired(dischargeDiagnosis.editing_presenting_complaint_symptoms)" multiple=True required="At least one symptom is required." tagging=False label="Symptoms" model="editing.presenting_complaint.symptoms" lookuplist="symptom_list" formname="dischargeDiagnosis" %}
     </span>
-    {% select tagging=False label="Duration" model="editing.presenting_complaint.duration" lookuplist="['---------', '3 days or less','4-10 days','11-21 days','22 days to 3 months','over 3 months']" formname="dischargeDiagnosis" %}
+    {% select label="Duration" model="editing.presenting_complaint.duration" lookuplist="['---------', '3 days or less','4-10 days','11-21 days','22 days to 3 months','over 3 months']" formname="dischargeDiagnosis" %}
     {% textarea label="Details" model="editing.presenting_complaint.details" formname="dischargeDiagnosis" %}
   </span>
 
