@@ -5,7 +5,7 @@
 [[ steps_details[step].title ]]
 {% endblock %}
 {% block process_steps %}
-<div class="discharge-process-steps" style="width: [[ 100 - (10 * (6 - processSteps.length)) ]]%">
+<div ng-show="processSteps.length > 1" class="discharge-process-steps" style="width: [[ 100 - (10 * (6 - processSteps.length)) ]]%">
   {% process_steps process_steps="processSteps" show_titles=False active="progress_step.name === step" complete="progress_step.done || !progress_step.name == step" disabled="!progress_step.done && progress_step.name !== step" %}
 </div>
 {% endblock %}
@@ -26,7 +26,7 @@
         Alternatively email us at <a target="_blank" href="mailto:elcid@openhealthcare.org.uk?Subject=New%20Condition%20For%20[[ episode.demographics[0].hospital_number ]]">elcid@openhealthcare.org.uk</a> with the correct diagnosis
         </p>
       </span>
-      {% select "autofocus" name="primary_diagnosis" label="Primary Diagnosis" model="editing.primary_diagnosis.condition" lookuplist="condition_list" required="Primary Diagnosis is required." formname="dischargeDiagnosis" %}
+      {% input "autofocus" name="primary_diagnosis" label="Primary Diagnosis" model="editing.primary_diagnosis.condition" lookuplist="condition_list" required="Primary Diagnosis is required." formname="dischargeDiagnosis" %}
     </span>
     <span ng-if="!confirming">
       {% select "autofocus" tagging=True name="primary_diagnosis" label="Primary Diagnosis" model="editing.primary_diagnosis.condition" lookuplist="condition_list" required="Primary Diagnosis is required." formname="dischargeDiagnosis" %}

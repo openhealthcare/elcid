@@ -170,7 +170,15 @@ controllers.controller(
            !$scope.episode.presenting_complaint[0].symptoms ||
            !$scope.episode.presenting_complaint[0].symptoms.length
          ){
-            var presenting_complaint = $scope.episode.newItem('presenting_complaint');
+           var presenting_complaint;
+
+           if(!$scope.episode.presenting_complaint.length){
+              presenting_complaint = $scope.episode.newItem('presenting_complaint');
+           }
+           else{
+              presenting_complaint = $scope.episode.presenting_complaint[0];
+           }
+
             $scope.episode.presenting_complaint = [presenting_complaint];
             $scope.editing.presenting_complaint = presenting_complaint.makeCopy();
             $scope.editing.presenting_complaint.symptoms =[];
