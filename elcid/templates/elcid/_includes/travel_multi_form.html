@@ -3,7 +3,7 @@
   <div ng-repeat="travel in editing.travel">
     <span ng-show="!travel.submitted">
       <span ng-class="{'warning-state': travelStep.warning}">
-        {% select "autofocus" change="travelStep.reset()"  label="Destination" disabled="travelStep.none" model="travel.destination" lookuplist="destination_list" %}
+        {% input "autofocus" change="travelStep.reset()"  label="Destination" disabled="travelStep.none" model="travel.destination" lookuplist="destination_list" %}
         {% input label="Dates" change="travelStep.reset()" disabled="travelStep.none" model="travel.dates" %}
       </span>
       {% select label="Reason for travel" model="travel.reason_for_travel" lookuplist="travel_reason_list" disabled="travelStep.none" %}
