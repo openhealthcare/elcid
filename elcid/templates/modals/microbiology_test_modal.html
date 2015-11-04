@@ -4,7 +4,7 @@
 {% block modal_body %}
   <form class="form-horizontal">
 
-    {% select "autofocus" label="Test" model="editing.test" lookuplist="microbiology_test_list" %}
+    {% input "autofocus" label="Test" model="editing.test" lookuplist="microbiology_test_list" %}
     {% datepicker label="Date ordered" model="editing.date_ordered" %}
     {% input label="Details" model="editing.details" %}
 
