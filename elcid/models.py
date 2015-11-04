@@ -391,8 +391,9 @@ class HaemInformationType(lookuplists.LookupList):
     pass
 
 
-class NeutropeniaInformation(PatientSubrecord):
+class PeriodOfNeutropenia(PatientSubrecord):
     _icon = 'fa fa-info-circle'
+    _sort = '-start'
     start = models.DateField(blank=True, null=True)
     stop = models.DateField(blank=True, null=True)
 
@@ -402,7 +403,6 @@ class NeutropeniaInformation(PatientSubrecord):
     @property
     def icon(self):
         return self._icon
-
 
 
 class HaemInformation(PatientSubrecord):

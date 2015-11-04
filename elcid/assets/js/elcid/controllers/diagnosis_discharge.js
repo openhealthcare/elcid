@@ -15,6 +15,7 @@ controllers.controller(
 
         $scope.tags = tags;
         $scope.episode = episode;
+        $scope.saving = false;
 
         $scope.steps = [
           "diagnosis"
@@ -411,6 +412,7 @@ controllers.controller(
         $scope.save = function() {
             var to_save;
             var primary = episode.primary_diagnosis[0];
+            $scope.saving = true;
 
             if($scope.confirming){
                 $scope.editing.primary_diagnosis.confirmed = true;
@@ -475,6 +477,7 @@ controllers.controller(
 
             dischargePatientService.discharge(episode, $scope.editing, tags).then(function(){
                 $q.all(saves).then(function(){
+                    $scope.saving = false;
                     if($scope.confirming){
                         growl.success('Final Diagnosis approved.');
                     }else{

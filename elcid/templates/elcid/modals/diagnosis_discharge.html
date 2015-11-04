@@ -107,9 +107,10 @@
     <button class="btn btn-primary"
             ng-click="goToNextStep(dischargeDiagnosis, editing)"
             ng-hide="confirming"
+            ng-disabled="saving"
             >
-      <i class="fa fa-save"></i>
       Discharge
+      <i class="fa fa-save"></i>
     </button>
       <button class="btn btn-primary"
             ng-click="goToNextStep(dischargeDiagnosis)"
