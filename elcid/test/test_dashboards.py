@@ -71,19 +71,19 @@ class ConfirmedDiagnosisTestCase(OpalTestCase):
 
         expected = [
             {
-                '% Unconfirmed Diagnosis': 0,
+                '% Confirmed Diagnosis': 0,
                 'consultant': u'No Episodes',
                 'Total Number of Patients': 0,
                 'consultant__link': u'/wardround/#/consultantreview?consultant_at_discharge=No+Episodes'
             },
             {
-                '% Unconfirmed Diagnosis': 50,
+                '% Confirmed Diagnosis': 50,
                 'consultant': u'Jane',
                 'Total Number of Patients': 2,
                 'consultant__link': u'/wardround/#/consultantreview?consultant_at_discharge=Jane'
             },
             {
-                '% Unconfirmed Diagnosis': 100,
+                '% Confirmed Diagnosis': 100,
                 'consultant': u'Ben',
                 'Total Number of Patients': 1,
                 'consultant__link': u'/wardround/#/consultantreview?consultant_at_discharge=Ben'
