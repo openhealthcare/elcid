@@ -393,7 +393,7 @@ class HaemInformationType(lookuplists.LookupList):
 
 class PeriodOfNeutropenia(PatientSubrecord):
     _icon = 'fa fa-info-circle'
-    _sort = '-start'
+    _sort = 'start'
     start = models.DateField(blank=True, null=True)
     stop = models.DateField(blank=True, null=True)
 
