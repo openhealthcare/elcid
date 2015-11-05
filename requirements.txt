@@ -15,6 +15,8 @@ mock==1.0.1
 requests==2.7.0
 python-dateutil==2.4.2
 djangorestframework==3.2.2
+celery==3.1.19
+django-celery==3.1.17
 
 django-compressor==1.5
 
@@ -32,3 +34,5 @@ django-compressor==1.5
 -e git+https://github.com/openhealthcare/opal-guidelines.git@#egg=opal_guidelines
 -e git+https://github.com/openhealthcare/opal-iframe-api.git@#egg=opal-iframe-api
 -e git+https://github.com/srosro/django-test-coverage#egg=django-test-coverage
+
+-e git+https://github.com/openhealthcare/opal-testrunner.git@#egg=opal_testrunner
