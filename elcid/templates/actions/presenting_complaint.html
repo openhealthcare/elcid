@@ -11,9 +11,9 @@
 </p>
 
 <p ng-hide="!ward_round || episode.primary_diagnosis[0].confirmed || episode.category != 'inpatient' ">
-  <button class="screen-only btn btn-primary btn-sm"
+  <button class="screen-only btn btn-primary multiline-btn"
           ng-click="named_controller('/templates/elcid/modals/diagnosis_discharge.html', 'DiagnosisDischargeCtrl')">
     <i class="glyphicon glyphicon-ok"></i>
-    Confirm Final Diagnosis
+    <div class="multiline-btn-text">Confirm <br />Final Diagnosis</div>
   </button>
 </span>
