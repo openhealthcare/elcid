@@ -6,10 +6,10 @@
     <div class="form-group">
       <label class="control-label col-sm-3">Category</label>
       <div class="col-sm-8" ng-show="editing.category == 'Discharged'">
-        <p>
-          [[ editing.category ]] &nbsp; 
+        <label class="readonly">
+          [[ editing.category | title]] &nbsp; 
           <button class="btn" ng-click="undischarge()">Undischarge</button>
-        </p>
+        </label>
       </div>
       <div class="col-sm-8" ng-hide="editing.category && editing.category == 'Discharged' || episode_category_list.indexOf(editing.category) == -1">
         <select class="form-control" ng-model="editing.category" autofocus>

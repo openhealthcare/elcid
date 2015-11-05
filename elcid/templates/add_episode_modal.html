@@ -6,7 +6,7 @@
   <form class="form-horizontal" name="newEpisodeForm">
     <div class="form-group">
       <label class="control-label col-sm-3">Hospital number</label>
-      <div class="col-sm-8"><label>[[editing.demographics.hospital_number]]</label></div>
+      <div class="col-sm-8"><label class="readonly">[[editing.demographics.hospital_number]]</label></div>
     </div>
 
     {% input "autofocus" label="Name" model="editing.demographics.name" enter="save()"%}
@@ -49,12 +49,12 @@
 {% endblock %}
 
 <div class="modal-footer">
-  <button class="btn btn-primary"
+  <button class="btn btn-lg btn-primary"
           ng-click="save()"
           ng-disabled="newEpisodeForm.date_of_birth.$invalid"
           >
     <i class="fa fa-save"></i>
     Save record
   </button>
-  <button class="btn" ng-click="cancel()">Cancel</button>
+  <button class="btn btn-lg" ng-click="cancel()">Cancel</button>
 </div>

@@ -40,6 +40,8 @@ angular.module('opal.controllers').controller(
             // Show user the form for creating a new episode,
             // with the hospital number pre-populated
             modal = $modal.open({
+                backdrop: 'static',
+                size: 'lg',
                 templateUrl: '/templates/modals/add_episode.html/',
                 controller: 'DiagnosisAddEpisodeCtrl',
                 resolve: {
