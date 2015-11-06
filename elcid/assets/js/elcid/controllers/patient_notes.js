@@ -11,11 +11,17 @@ angular.module('opal.controllers').controller(
         COOKIE_NAME = "patientNotes-inlineForm";
 
        $scope.episodes = _.sortBy(episodes, function(e){
-           var significantDate = e.date_of_discharge || e.date_of_episode || e.date_of_admission;
+           var significantDate = e.discharge_date || e.date_of_episode || e.date_of_admission;
+
            if(significantDate){
-               return significantDate.unix * -1;
+              significantDate = moment(significantDate).toDate();
            }
-       });
+            else{
+                significantDate = new Date(1900, 1, 1);
+            }
+
+           return significantDate;
+       }).reverse();
 
        _.each($scope.episodes, function(e){
            if(e.microbiology_input){
@@ -69,6 +75,7 @@ angular.module('opal.controllers').controller(
 
        if($scope.episodes.length){
            $scope.episode = $scope.episodes[0];
+           $scope.firstEpisode = $scope.episode;
            $scope.isDuplicate = $scope.episode.duplicate_patient && $scope.episode.duplicate_patient.length;
 
            $scope.episode.alertInvestigations = function(){

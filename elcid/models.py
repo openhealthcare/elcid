@@ -69,6 +69,7 @@ class Carers(PatientSubrecord):
 class DuplicatePatient(PatientSubrecord):
     _no_admin = True
     _icon = 'fa fa-clone'
+    _advanced_searchable = False
     reviewed = models.BooleanField(default=False)
     merged = models.BooleanField(default=False)
 
@@ -397,6 +398,7 @@ class HaemInformationType(lookuplists.LookupList):
 class EpisodeOfNeutropenia(PatientSubrecord):
     _icon = 'fa fa-info-circle'
     _sort = 'start'
+    _title = 'Episode of Neutropenia'
     start = models.DateField(blank=True, null=True)
     stop = models.DateField(blank=True, null=True)
 
@@ -410,7 +412,7 @@ class EpisodeOfNeutropenia(PatientSubrecord):
 
 class HaemInformation(PatientSubrecord):
     _icon = 'fa fa-info-circle'
-    _title = 'Haem Information'
+    _title = 'Haematology Background Information'
 
     patient_type = ForeignKeyOrFreeText(HaemInformationType)
     date_of_transplant = models.DateField(blank=True, null=True)
