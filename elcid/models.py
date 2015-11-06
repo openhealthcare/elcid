@@ -134,6 +134,14 @@ class PresentingComplaint(EpisodeSubrecord):
             details=self.details
         )
 
+    @classmethod
+    def _get_fieldnames_to_serialize(cls):
+        field_names = super(PresentingComplaint, cls)._get_fieldnames_to_serialize()
+        removed_fields = {u'symptom_fk_id', 'symptom_ft', 'symptom'}
+        field_names = [i for i in field_names if i not in removed_fields]
+        return field_names
+
+
 class PrimaryDiagnosis(EpisodeSubrecord):
     """
     This is the confirmed primary diagnosisa
