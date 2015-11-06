@@ -76,7 +76,7 @@ class ConfirmedDiagnosisByConsultant(widgets.Table):
                 row[self.CONFIRMED_DIAGNOSIS] = int(100 * completed)
             rows.append(row)
 
-        return sorted(rows, key=lambda x: x[self.CONFIRMED_DIAGNOSIS])
+        return sorted(rows, key=lambda x: -x[self.CONFIRMED_DIAGNOSIS])
 
 
 class UsageDashboard(Dashboard):
