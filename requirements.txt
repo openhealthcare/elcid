@@ -35,4 +35,4 @@ django-compressor==1.5
 -e git+https://github.com/openhealthcare/opal-iframe-api.git@#egg=opal-iframe-api
 -e git+https://github.com/srosro/django-test-coverage#egg=django-test-coverage
 
--e git+https://github.com/openhealthcare/opal-testrunner.git@#egg=opal_testrunner
+-e git+https://github.com/openhealthcare/opal-taskrunner.git@#egg=opal_taskrunner
