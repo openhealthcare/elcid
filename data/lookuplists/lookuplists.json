@@ -1657,6 +1657,10 @@
       "synonyms": []
     },
     {
+      "name": "Anti-phospholipid Syndrome",
+      "synonyms": []
+    },
+    {
       "name": "Aortic Dissection",
       "synonyms": []
     },
@@ -1823,6 +1827,10 @@
       "synonyms": [
         "Clostridium Difficile"
       ]
+    },
+    {
+      "name": "CADASIL",
+      "synonyms": []
     },
     {
       "name": "Cadasil",
@@ -2013,6 +2021,10 @@
       "synonyms": []
     },
     {
+      "name": "Cryptococcal IRIS",
+      "synonyms": []
+    },
+    {
       "name": "Cryptococcal Iris",
       "synonyms": []
     },
@@ -2040,6 +2052,10 @@
     },
     {
       "name": "Cystic Fibrosis",
+      "synonyms": []
+    },
+    {
+      "name": "DVT",
       "synonyms": []
     },
     {
@@ -2385,6 +2401,14 @@
       ]
     },
     {
+      "name": "HIV Encephalitis",
+      "synonyms": []
+    },
+    {
+      "name": "HIV Seroconversion",
+      "synonyms": []
+    },
+    {
       "name": "Haematuria",
       "synonyms": []
     },
@@ -2534,6 +2558,10 @@
       "synonyms": []
     },
     {
+      "name": "Hyper-reactive Malarial Splenomegaly",
+      "synonyms": []
+    },
+    {
       "name": "Hypercalcaemia",
       "synonyms": []
     },
@@ -2587,6 +2615,10 @@
     },
     {
       "name": "Impetigo",
+      "synonyms": []
+    },
+    {
+      "name": "Infected IVC Filter",
       "synonyms": []
     },
     {
@@ -2651,6 +2683,10 @@
     },
     {
       "name": "Kikuchi'S Disease",
+      "synonyms": []
+    },
+    {
+      "name": "Kikuchi's Disease",
       "synonyms": []
     },
     {
@@ -2942,6 +2978,10 @@
       "synonyms": []
     },
     {
+      "name": "Non-tuberculosis Mycobacterial Infection",
+      "synonyms": []
+    },
+    {
       "name": "Normal Pressure Hydrocephalus",
       "synonyms": []
     },
@@ -3031,6 +3071,10 @@
     },
     {
       "name": "Ovarian Cancer",
+      "synonyms": []
+    },
+    {
+      "name": "PCP IRIS",
       "synonyms": []
     },
     {
@@ -3478,7 +3522,15 @@
       "synonyms": []
     },
     {
+      "name": "Sweets's Syndrome",
+      "synonyms": []
+    },
+    {
       "name": "Syndrome Of Inappropriate Antidiuretic Hormone",
+      "synonyms": []
+    },
+    {
+      "name": "Syndrome of Inappropriate Antidiuretic Hormone",
       "synonyms": []
     },
     {
@@ -3507,6 +3559,10 @@
     },
     {
       "name": "Takayasu'S Arteritis",
+      "synonyms": []
+    },
+    {
+      "name": "Takayasu's Arteritis",
       "synonyms": []
     },
     {
@@ -3576,6 +3632,10 @@
     },
     {
       "name": "Toxoplasma",
+      "synonyms": []
+    },
+    {
+      "name": "Toxoplasma IRIS",
       "synonyms": []
     },
     {
@@ -3736,6 +3796,10 @@
     },
     {
       "name": "Wilson'S Disease",
+      "synonyms": []
+    },
+    {
+      "name": "Wilson's Disease",
       "synonyms": []
     },
     {
@@ -6025,6 +6089,10 @@
       "synonyms": []
     },
     {
+      "name": "Abnormal blood tests",
+      "synonyms": []
+    },
+    {
       "name": "Altered Sensation",
       "synonyms": []
     },
@@ -6057,6 +6125,10 @@
       "synonyms": []
     },
     {
+      "name": "Change in Behaviour",
+      "synonyms": []
+    },
+    {
       "name": "Chest Pain",
       "synonyms": []
     },
@@ -6085,11 +6157,19 @@
       "synonyms": []
     },
     {
+      "name": "Deliberate self-harm",
+      "synonyms": []
+    },
+    {
       "name": "Diarrhoea",
       "synonyms": []
     },
     {
       "name": "Difficulty Passing Urine",
+      "synonyms": []
+    },
+    {
+      "name": "Difficulty passing urine",
       "synonyms": []
     },
     {
@@ -6113,7 +6193,15 @@
       "synonyms": []
     },
     {
+      "name": "Ear pain",
+      "synonyms": []
+    },
+    {
       "name": "Epidemiological Exposure",
+      "synonyms": []
+    },
+    {
+      "name": "Epidemiological exposure",
       "synonyms": []
     },
     {
@@ -6141,11 +6229,23 @@
       "synonyms": []
     },
     {
+      "name": "Gait abnormality",
+      "synonyms": []
+    },
+    {
       "name": "Genital Discharge",
       "synonyms": []
     },
     {
       "name": "Genital Ulceration",
+      "synonyms": []
+    },
+    {
+      "name": "Genital discharge",
+      "synonyms": []
+    },
+    {
+      "name": "Genital ulceration",
       "synonyms": []
     },
     {
@@ -6165,11 +6265,19 @@
       "synonyms": []
     },
     {
+      "name": "Head injury",
+      "synonyms": []
+    },
+    {
       "name": "Headache",
       "synonyms": []
     },
     {
       "name": "Hearing Loss",
+      "synonyms": []
+    },
+    {
+      "name": "Hearing loss",
       "synonyms": []
     },
     {
@@ -6181,7 +6289,15 @@
       "synonyms": []
     },
     {
+      "name": "Insect bite",
+      "synonyms": []
+    },
+    {
       "name": "Involuntary Movements",
+      "synonyms": []
+    },
+    {
+      "name": "Involuntary movements",
       "synonyms": []
     },
     {
@@ -6202,6 +6318,10 @@
     },
     {
       "name": "Limb Weakness",
+      "synonyms": []
+    },
+    {
+      "name": "Limb weakness",
       "synonyms": []
     },
     {
@@ -6238,6 +6358,10 @@
     },
     {
       "name": "Neck Stiffness",
+      "synonyms": []
+    },
+    {
+      "name": "Neck pain",
       "synonyms": []
     },
     {
@@ -6305,7 +6429,15 @@
       "synonyms": []
     },
     {
+      "name": "Shortness of Breath",
+      "synonyms": []
+    },
+    {
       "name": "Sore Throat",
+      "synonyms": []
+    },
+    {
+      "name": "Sore throat",
       "synonyms": []
     },
     {
@@ -6338,6 +6470,10 @@
     },
     {
       "name": "Visual Disturbance",
+      "synonyms": []
+    },
+    {
+      "name": "Visual disturbance",
       "synonyms": []
     },
     {
