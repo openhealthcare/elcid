@@ -34,7 +34,7 @@
     <div ng-repeat="secondary in editing.secondary_diagnosis track by $index">
       <span ng-show="!secondary.submitted">
         <span ng-class="{'warning-state': secondaryDiagnosisWarning}">
-          {% select name="secondary_diagnosis" label="Secondary Diagnosis [[ secondary.id ]]" model="secondary.condition" lookuplist="condition_list" formname="dischargeDiagnosis" %}
+          {% input name="secondary_diagnosis" label="Secondary Diagnosis [[ secondary.id ]]" model="secondary.condition" lookuplist="condition_list" formname="dischargeDiagnosis" %}
         </span>
         <div class="form-group">
           <label class="control-label col-sm-3">Co-primary?</label>
