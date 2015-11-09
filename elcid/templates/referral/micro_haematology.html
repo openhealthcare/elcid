@@ -41,5 +41,10 @@
 {% block has_demographics_buttons %}
   <span ng-show="state == 'has_demographics'">
     {% include "referral/_includes/back_button.html" %}
+    <button class="btn btn-lg btn-primary pull-right"
+            ng-click="refer()">
+        <i class="fa fa-arrow-right"></i>
+        [[ route.verb ]] to [[ route.name ]]
+    </button>
   </span>
 {% endblock has_demographics_buttons %}
