@@ -75,8 +75,9 @@ class ConfirmedDiagnosisByConsultant(widgets.Table):
                 completed = float(confirmed_diagnosis)/float(row[self.TOTAL_NUMBER])
                 row[self.CONFIRMED_DIAGNOSIS] = int(100 * completed)
 
-            if row[self.CONFIRMED_DIAGNOSIS] < 50:
-                row[self.row_class] = "diagnosis-table-issue"
+            if row[self.TOTAL_NUMBER] > 0:
+                if row[self.CONFIRMED_DIAGNOSIS] < 50:
+                    row[self.row_class] = "diagnosis-table-issue"
 
             rows.append(row)
 
