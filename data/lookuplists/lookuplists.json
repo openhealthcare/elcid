@@ -1,21 +1,13 @@
 {
   "antimicrobial": [
     {
-      "name": "AMBISOME",
-      "synonyms": []
-    },
-    {
-      "name": "ATRIPLA",
-      "synonyms": []
-    },
-    {
       "name": "Abacavir",
       "synonyms": []
     },
     {
       "name": "Aciclovir",
       "synonyms": [
-        "ACV"
+        "Acv"
       ]
     },
     {
@@ -39,7 +31,7 @@
     {
       "name": "Amikacin",
       "synonyms": [
-        "AK"
+        "Ak"
       ]
     },
     {
@@ -49,7 +41,7 @@
     {
       "name": "Amoxicilin",
       "synonyms": [
-        "AML"
+        "Aml"
       ]
     },
     {
@@ -131,8 +123,8 @@
     {
       "name": "Benzylpenicillin",
       "synonyms": [
-        "BZP",
-        "Ben-Pen"
+        "Ben-Pen",
+        "Bzp"
       ]
     },
     {
@@ -148,23 +140,11 @@
       "synonyms": []
     },
     {
-      "name": "CANESTEN",
-      "synonyms": []
-    },
-    {
-      "name": "CEFACLOR",
-      "synonyms": []
-    },
-    {
-      "name": "COLOMYCIN",
-      "synonyms": []
-    },
-    {
-      "name": "CYCLOSERINE",
-      "synonyms": []
-    },
-    {
       "name": "Calcium",
+      "synonyms": []
+    },
+    {
+      "name": "Canesten",
       "synonyms": []
     },
     {
@@ -181,6 +161,10 @@
     },
     {
       "name": "Caspofungin",
+      "synonyms": []
+    },
+    {
+      "name": "Cefaclor",
       "synonyms": []
     },
     {
@@ -250,7 +234,7 @@
     {
       "name": "Ceftazidime",
       "synonyms": [
-        "CAZ"
+        "Caz"
       ]
     },
     {
@@ -264,13 +248,13 @@
     {
       "name": "Ceftriaxone",
       "synonyms": [
-        "CRO"
+        "Cro"
       ]
     },
     {
       "name": "Cefuroxime",
       "synonyms": [
-        "CXM"
+        "Cxm"
       ]
     },
     {
@@ -336,7 +320,7 @@
     {
       "name": "Co-Amoxiclav",
       "synonyms": [
-        "AMC",
+        "Amc",
         "Augmentin"
       ]
     },
@@ -347,8 +331,8 @@
     {
       "name": "Co-Trimoxazole",
       "synonyms": [
-        "SXT",
-        "Septrin"
+        "Septrin",
+        "Sxt"
       ]
     },
     {
@@ -364,11 +348,15 @@
       "synonyms": []
     },
     {
+      "name": "Colomycin",
+      "synonyms": []
+    },
+    {
       "name": "Combivir",
       "synonyms": []
     },
     {
-      "name": "DAKTARIN",
+      "name": "Cycloserine",
       "synonyms": []
     },
     {
@@ -377,6 +365,10 @@
     },
     {
       "name": "Daktacort",
+      "synonyms": []
+    },
+    {
+      "name": "Daktarin",
       "synonyms": []
     },
     {
@@ -466,7 +458,7 @@
     {
       "name": "Ertapenem",
       "synonyms": [
-        "ETP"
+        "Etp"
       ]
     },
     {
@@ -483,22 +475,6 @@
     },
     {
       "name": "Etravirine",
-      "synonyms": []
-    },
-    {
-      "name": "FANSIDAR",
-      "synonyms": []
-    },
-    {
-      "name": "FOSCAVIR",
-      "synonyms": []
-    },
-    {
-      "name": "FUCIDIN",
-      "synonyms": []
-    },
-    {
-      "name": "FUNGIZONE",
       "synonyms": []
     },
     {
@@ -534,11 +510,23 @@
       "synonyms": []
     },
     {
+      "name": "Foscavir",
+      "synonyms": []
+    },
+    {
       "name": "Fosfomycin",
       "synonyms": []
     },
     {
       "name": "Framycetin",
+      "synonyms": []
+    },
+    {
+      "name": "Fucidin",
+      "synonyms": []
+    },
+    {
+      "name": "Fungizone",
       "synonyms": []
     },
     {
@@ -558,7 +546,7 @@
     {
       "name": "Gentamicin",
       "synonyms": [
-        "CN"
+        "Cn"
       ]
     },
     {
@@ -570,11 +558,11 @@
       "synonyms": []
     },
     {
-      "name": "HEPSERA",
+      "name": "Halofantrine",
       "synonyms": []
     },
     {
-      "name": "Halofantrine",
+      "name": "Hepsera",
       "synonyms": []
     },
     {
@@ -596,7 +584,7 @@
     {
       "name": "Isoniazid",
       "synonyms": [
-        "INH"
+        "Inh"
       ]
     },
     {
@@ -605,18 +593,6 @@
     },
     {
       "name": "Ivermectin",
-      "synonyms": []
-    },
-    {
-      "name": "KALETRA",
-      "synonyms": []
-    },
-    {
-      "name": "KETOCONAZOLE",
-      "synonyms": []
-    },
-    {
-      "name": "KIVEXA",
       "synonyms": []
     },
     {
@@ -629,6 +605,10 @@
     },
     {
       "name": "Ketoconazole",
+      "synonyms": []
+    },
+    {
+      "name": "Kivexa",
       "synonyms": []
     },
     {
@@ -680,10 +660,6 @@
       "synonyms": []
     },
     {
-      "name": "MALARONE",
-      "synonyms": []
-    },
-    {
       "name": "Malarone",
       "synonyms": []
     },
@@ -710,7 +686,7 @@
     {
       "name": "Meropenem",
       "synonyms": [
-        "MEM"
+        "Mem"
       ]
     },
     {
@@ -728,7 +704,7 @@
     {
       "name": "Metronidazole",
       "synonyms": [
-        "MTZ"
+        "Mtz"
       ]
     },
     {
@@ -798,7 +774,7 @@
     {
       "name": "Nitrofurantoin",
       "synonyms": [
-        "NFU"
+        "Nfu"
       ]
     },
     {
@@ -884,8 +860,8 @@
     {
       "name": "Piperacillin Tazobactam",
       "synonyms": [
-        "TZP",
-        "Tazocin"
+        "Tazocin",
+        "Tzp"
       ]
     },
     {
@@ -965,14 +941,6 @@
       "synonyms": []
     },
     {
-      "name": "RIFATER",
-      "synonyms": []
-    },
-    {
-      "name": "RIFINAH",
-      "synonyms": []
-    },
-    {
       "name": "Raltegravir",
       "synonyms": []
     },
@@ -997,6 +965,10 @@
     },
     {
       "name": "Rifampicin",
+      "synonyms": []
+    },
+    {
+      "name": "Rifater",
       "synonyms": []
     },
     {
@@ -1025,10 +997,6 @@
     },
     {
       "name": "Rosoxacin",
-      "synonyms": []
-    },
-    {
-      "name": "SYNERCID",
       "synonyms": []
     },
     {
@@ -1116,7 +1084,7 @@
       "synonyms": []
     },
     {
-      "name": "TRUVADA",
+      "name": "Synercid",
       "synonyms": []
     },
     {
@@ -1553,36 +1521,6 @@
   ],
   "condition": [
     {
-      "name": "AF",
-      "synonyms": [
-        "Atrial Fibrillation"
-      ]
-    },
-    {
-      "name": "AKI",
-      "synonyms": [
-        "Acute Kidney Injury"
-      ]
-    },
-    {
-      "name": "ALL",
-      "synonyms": [
-        "Acute Lymphocytic Leukaemia"
-      ]
-    },
-    {
-      "name": "AML",
-      "synonyms": [
-        "Acute Myeloid Leukaemia"
-      ]
-    },
-    {
-      "name": "ARDS",
-      "synonyms": [
-        "Acute Respiratory Distress Syndrome"
-      ]
-    },
-    {
       "name": "Abscess",
       "synonyms": []
     },
@@ -1639,12 +1577,30 @@
       "synonyms": []
     },
     {
+      "name": "Af",
+      "synonyms": [
+        "Atrial Fibrillation"
+      ]
+    },
+    {
       "name": "African Tick Bite Fever",
       "synonyms": []
     },
     {
+      "name": "Aki",
+      "synonyms": [
+        "Acute Kidney Injury"
+      ]
+    },
+    {
       "name": "Alcohol Dependence",
       "synonyms": []
+    },
+    {
+      "name": "All",
+      "synonyms": [
+        "Acute Lymphocytic Leukaemia"
+      ]
     },
     {
       "name": "Alopecia",
@@ -1653,6 +1609,12 @@
     {
       "name": "Alzheimer'S",
       "synonyms": []
+    },
+    {
+      "name": "Aml",
+      "synonyms": [
+        "Acute Myeloid Leukaemia"
+      ]
     },
     {
       "name": "Amoebic Dysentry",
@@ -1695,6 +1657,10 @@
       "synonyms": []
     },
     {
+      "name": "Anti-phospholipid Syndrome",
+      "synonyms": []
+    },
+    {
       "name": "Aortic Dissection",
       "synonyms": []
     },
@@ -1709,6 +1675,12 @@
     {
       "name": "Appendicitis",
       "synonyms": []
+    },
+    {
+      "name": "Ards",
+      "synonyms": [
+        "Acute Respiratory Distress Syndrome"
+      ]
     },
     {
       "name": "Asbestosis",
@@ -1733,12 +1705,6 @@
     {
       "name": "Avascular Necrosis",
       "synonyms": []
-    },
-    {
-      "name": "BMT",
-      "synonyms": [
-        "Bone Marrow Transplant"
-      ]
     },
     {
       "name": "Babesiosis",
@@ -1813,6 +1779,12 @@
       "synonyms": []
     },
     {
+      "name": "Bmt",
+      "synonyms": [
+        "Bone Marrow Transplant"
+      ]
+    },
+    {
       "name": "Boil",
       "synonyms": []
     },
@@ -1861,50 +1833,8 @@
       "synonyms": []
     },
     {
-      "name": "CAP",
-      "synonyms": [
-        "Community Acquired Pneumonia"
-      ]
-    },
-    {
-      "name": "CCHF",
-      "synonyms": [
-        "Crimean-Congo Haemorrhagic Fever"
-      ]
-    },
-    {
-      "name": "CJD",
+      "name": "Cadasil",
       "synonyms": []
-    },
-    {
-      "name": "CKD",
-      "synonyms": [
-        "Chronic Kidney Disease"
-      ]
-    },
-    {
-      "name": "CLL",
-      "synonyms": [
-        "Chronic Lymphocytic Leukaemia"
-      ]
-    },
-    {
-      "name": "CML",
-      "synonyms": [
-        "Chronic Myeloid Leukaema"
-      ]
-    },
-    {
-      "name": "COPD",
-      "synonyms": [
-        "Chronic Obstructive Pulmonary Disease"
-      ]
-    },
-    {
-      "name": "CVID",
-      "synonyms": [
-        "Common Variable Immunodeficiency"
-      ]
     },
     {
       "name": "Candidaemia",
@@ -1913,6 +1843,12 @@
     {
       "name": "Candidiaemia",
       "synonyms": []
+    },
+    {
+      "name": "Cap",
+      "synonyms": [
+        "Community Acquired Pneumonia"
+      ]
     },
     {
       "name": "Carcinoid",
@@ -1925,6 +1861,12 @@
     {
       "name": "Cauda Equina",
       "synonyms": []
+    },
+    {
+      "name": "Cchf",
+      "synonyms": [
+        "Crimean-Congo Haemorrhagic Fever"
+      ]
     },
     {
       "name": "Cellulitis",
@@ -2007,6 +1949,28 @@
       "synonyms": []
     },
     {
+      "name": "Cjd",
+      "synonyms": []
+    },
+    {
+      "name": "Ckd",
+      "synonyms": [
+        "Chronic Kidney Disease"
+      ]
+    },
+    {
+      "name": "Cll",
+      "synonyms": [
+        "Chronic Lymphocytic Leukaemia"
+      ]
+    },
+    {
+      "name": "Cml",
+      "synonyms": [
+        "Chronic Myeloid Leukaema"
+      ]
+    },
+    {
       "name": "Coccidioidomycosis",
       "synonyms": []
     },
@@ -2035,6 +1999,12 @@
       "synonyms": []
     },
     {
+      "name": "Copd",
+      "synonyms": [
+        "Chronic Obstructive Pulmonary Disease"
+      ]
+    },
+    {
       "name": "Cord Compression",
       "synonyms": []
     },
@@ -2048,6 +2018,10 @@
     },
     {
       "name": "Crohn'S Disease",
+      "synonyms": []
+    },
+    {
+      "name": "Cryptococcal IRIS",
       "synonyms": []
     },
     {
@@ -2071,14 +2045,14 @@
       "synonyms": []
     },
     {
-      "name": "Cystic Fibrosis",
-      "synonyms": []
+      "name": "Cvid",
+      "synonyms": [
+        "Common Variable Immunodeficiency"
+      ]
     },
     {
-      "name": "DKA",
-      "synonyms": [
-        "Diabetic Ketoacidosis"
-      ]
+      "name": "Cystic Fibrosis",
+      "synonyms": []
     },
     {
       "name": "DVT",
@@ -2165,6 +2139,12 @@
       "synonyms": []
     },
     {
+      "name": "Dka",
+      "synonyms": [
+        "Diabetic Ketoacidosis"
+      ]
+    },
+    {
       "name": "Drug Induced Psychosis",
       "synonyms": []
     },
@@ -2174,6 +2154,10 @@
     },
     {
       "name": "Duodenal Ulcer",
+      "synonyms": []
+    },
+    {
+      "name": "Dvt",
       "synonyms": []
     },
     {
@@ -2299,12 +2283,6 @@
       "synonyms": []
     },
     {
-      "name": "FMF",
-      "synonyms": [
-        "Familial Meiterranean Fever"
-      ]
-    },
-    {
       "name": "Facial Cellulitis",
       "synonyms": []
     },
@@ -2317,24 +2295,18 @@
       "synonyms": []
     },
     {
+      "name": "Fmf",
+      "synonyms": [
+        "Familial Meiterranean Fever"
+      ]
+    },
+    {
       "name": "Folate Deficiency",
       "synonyms": []
     },
     {
       "name": "G6Pd Deficiency",
       "synonyms": []
-    },
-    {
-      "name": "GORD",
-      "synonyms": [
-        "Gastro-Oesophageal Reflux"
-      ]
-    },
-    {
-      "name": "GVHD",
-      "synonyms": [
-        "Graft-Versus Host Disease"
-      ]
     },
     {
       "name": "Gallbladder Cancer",
@@ -2401,6 +2373,12 @@
       "synonyms": []
     },
     {
+      "name": "Gord",
+      "synonyms": [
+        "Gastro-Oesophageal Reflux"
+      ]
+    },
+    {
       "name": "Gout",
       "synonyms": []
     },
@@ -2417,27 +2395,18 @@
       "synonyms": []
     },
     {
-      "name": "HAP",
+      "name": "Gvhd",
       "synonyms": [
-        "Hospital Acquired Pneumonia"
+        "Graft-Versus Host Disease"
       ]
     },
     {
-      "name": "HHT",
-      "synonyms": [
-        "Hereditary Haemorrhagic Telangiectasia",
-        "Hereditary Hemorrhagic Telangiectasia"
-      ]
-    },
-    {
-      "name": "HIV",
+      "name": "HIV Encephalitis",
       "synonyms": []
     },
     {
-      "name": "HONK",
-      "synonyms": [
-        "Hyperosmolar Non-Ketotic Coma"
-      ]
+      "name": "HIV Seroconversion",
+      "synonyms": []
     },
     {
       "name": "Haematuria",
@@ -2460,6 +2429,12 @@
       "synonyms": []
     },
     {
+      "name": "Hap",
+      "synonyms": [
+        "Hospital Acquired Pneumonia"
+      ]
+    },
+    {
       "name": "Henoch-Sch\u00f6nlein Purpura",
       "synonyms": []
     },
@@ -2474,13 +2449,13 @@
     {
       "name": "Hepatitis B",
       "synonyms": [
-        "HBV"
+        "Hbv"
       ]
     },
     {
       "name": "Hepatitis C",
       "synonyms": [
-        "HCV"
+        "Hcv"
       ]
     },
     {
@@ -2524,11 +2499,22 @@
       "synonyms": []
     },
     {
+      "name": "Hht",
+      "synonyms": [
+        "Hereditary Haemorrhagic Telangiectasia",
+        "Hereditary Hemorrhagic Telangiectasia"
+      ]
+    },
+    {
       "name": "Hidranitits Suppurative",
       "synonyms": []
     },
     {
       "name": "Histoplasmosis",
+      "synonyms": []
+    },
+    {
+      "name": "Hiv",
       "synonyms": []
     },
     {
@@ -2542,6 +2528,12 @@
     {
       "name": "Hodgkins Lymphoma",
       "synonyms": []
+    },
+    {
+      "name": "Honk",
+      "synonyms": [
+        "Hyperosmolar Non-Ketotic Coma"
+      ]
     },
     {
       "name": "Hsv Encephalitis",
@@ -2563,6 +2555,10 @@
     },
     {
       "name": "Hyper-Reactive Malarial Splenomegaly",
+      "synonyms": []
+    },
+    {
+      "name": "Hyper-reactive Malarial Splenomegaly",
       "synonyms": []
     },
     {
@@ -2602,27 +2598,15 @@
       "synonyms": []
     },
     {
-      "name": "IBD",
+      "name": "Ibd",
       "synonyms": [
         "Inflammatory Bowel Disease"
       ]
     },
     {
-      "name": "IHD",
+      "name": "Ihd",
       "synonyms": [
         "Ischaemic Heart Disease"
-      ]
-    },
-    {
-      "name": "ITP",
-      "synonyms": [
-        "Immune Thrombocytopenic Purpura"
-      ]
-    },
-    {
-      "name": "IVDU",
-      "synonyms": [
-        "Injecting Drug User"
       ]
     },
     {
@@ -2631,6 +2615,10 @@
     },
     {
       "name": "Impetigo",
+      "synonyms": []
+    },
+    {
+      "name": "Infected IVC Filter",
       "synonyms": []
     },
     {
@@ -2674,6 +2662,18 @@
       "synonyms": []
     },
     {
+      "name": "Itp",
+      "synonyms": [
+        "Immune Thrombocytopenic Purpura"
+      ]
+    },
+    {
+      "name": "Ivdu",
+      "synonyms": [
+        "Injecting Drug User"
+      ]
+    },
+    {
       "name": "Kaposi'S Sarcoma",
       "synonyms": []
     },
@@ -2686,20 +2686,12 @@
       "synonyms": []
     },
     {
-      "name": "Knowlesi Malaria",
+      "name": "Kikuchi's Disease",
       "synonyms": []
     },
     {
-      "name": "LGV",
-      "synonyms": [
-        "Lymphogranuloma Venereum"
-      ]
-    },
-    {
-      "name": "LRTI",
-      "synonyms": [
-        "Lower Respiratory Tract Infection"
-      ]
+      "name": "Knowlesi Malaria",
+      "synonyms": []
     },
     {
       "name": "Lambert Eaton Syndrome",
@@ -2738,6 +2730,12 @@
     {
       "name": "Leucopenia",
       "synonyms": []
+    },
+    {
+      "name": "Lgv",
+      "synonyms": [
+        "Lymphogranuloma Venereum"
+      ]
     },
     {
       "name": "Lichen Planus",
@@ -2780,6 +2778,12 @@
     {
       "name": "Lower Gi Bleed",
       "synonyms": []
+    },
+    {
+      "name": "Lrti",
+      "synonyms": [
+        "Lower Respiratory Tract Infection"
+      ]
     },
     {
       "name": "Lung Absces",
@@ -2974,6 +2978,10 @@
       "synonyms": []
     },
     {
+      "name": "Non-tuberculosis Mycobacterial Infection",
+      "synonyms": []
+    },
+    {
       "name": "Normal Pressure Hydrocephalus",
       "synonyms": []
     },
@@ -3066,35 +3074,8 @@
       "synonyms": []
     },
     {
-      "name": "PCP",
-      "synonyms": [
-        "PJP",
-        "Pneumocystis Jirovecii Pneumonia"
-      ]
-    },
-    {
       "name": "PCP IRIS",
       "synonyms": []
-    },
-    {
-      "name": "PML",
-      "synonyms": [
-        "Progressive Multifocal Leukoencephalopathy"
-      ]
-    },
-    {
-      "name": "PUO",
-      "synonyms": [
-        "FUO",
-        "Fever Of Unknown Origin",
-        "Pyrexia Of Unknown Origin"
-      ]
-    },
-    {
-      "name": "PVD",
-      "synonyms": [
-        "Peripheral Vascular Disease"
-      ]
     },
     {
       "name": "Pancreatic Cancer",
@@ -3114,6 +3095,17 @@
     },
     {
       "name": "Parkinson'S Disease",
+      "synonyms": []
+    },
+    {
+      "name": "Pcp",
+      "synonyms": [
+        "Pjp",
+        "Pneumocystis Jirovecii Pneumonia"
+      ]
+    },
+    {
+      "name": "Pcp Iris",
       "synonyms": []
     },
     {
@@ -3173,6 +3165,12 @@
       "synonyms": []
     },
     {
+      "name": "Pml",
+      "synonyms": [
+        "Progressive Multifocal Leukoencephalopathy"
+      ]
+    },
+    {
       "name": "Pneumothorax",
       "synonyms": []
     },
@@ -3219,7 +3217,7 @@
     {
       "name": "Primary Biliary Cirrhosis",
       "synonyms": [
-        "PBC"
+        "Pbc"
       ]
     },
     {
@@ -3273,6 +3271,20 @@
     {
       "name": "Pulmonary Odema",
       "synonyms": []
+    },
+    {
+      "name": "Puo",
+      "synonyms": [
+        "Fever Of Unknown Origin",
+        "Fuo",
+        "Pyrexia Of Unknown Origin"
+      ]
+    },
+    {
+      "name": "Pvd",
+      "synonyms": [
+        "Peripheral Vascular Disease"
+      ]
     },
     {
       "name": "Pyelonephritis",
@@ -3355,20 +3367,6 @@
       "synonyms": []
     },
     {
-      "name": "SARS",
-      "synonyms": []
-    },
-    {
-      "name": "SBP",
-      "synonyms": [
-        "Spontaneous Bacterial Peritonitis"
-      ]
-    },
-    {
-      "name": "SIADH",
-      "synonyms": []
-    },
-    {
       "name": "Sacroiliitis",
       "synonyms": []
     },
@@ -3379,6 +3377,16 @@
     {
       "name": "Sarcoma",
       "synonyms": []
+    },
+    {
+      "name": "Sars",
+      "synonyms": []
+    },
+    {
+      "name": "Sbp",
+      "synonyms": [
+        "Spontaneous Bacterial Peritonitis"
+      ]
     },
     {
       "name": "Scabies",
@@ -3445,6 +3453,10 @@
       "synonyms": []
     },
     {
+      "name": "Siadh",
+      "synonyms": []
+    },
+    {
       "name": "Sickle-Cell Anemia",
       "synonyms": []
     },
@@ -3493,8 +3505,8 @@
     {
       "name": "Stroke",
       "synonyms": [
-        "CVA",
-        "Cerebrovascular Accident"
+        "Cerebrovascular Accident",
+        "Cva"
       ]
     },
     {
@@ -3510,7 +3522,15 @@
       "synonyms": []
     },
     {
+      "name": "Sweets's Syndrome",
+      "synonyms": []
+    },
+    {
       "name": "Syndrome Of Inappropriate Antidiuretic Hormone",
+      "synonyms": []
+    },
+    {
+      "name": "Syndrome of Inappropriate Antidiuretic Hormone",
       "synonyms": []
     },
     {
@@ -3522,31 +3542,35 @@
       "synonyms": []
     },
     {
-      "name": "T1DM",
+      "name": "T1Dm",
       "synonyms": [
-        "DM1",
-        "DMI",
+        "Dm1",
+        "Dmi",
         "Type 1 Diabetes"
       ]
     },
     {
-      "name": "T2DM",
+      "name": "T2Dm",
       "synonyms": [
-        "DM2",
-        "DMII",
+        "Dm2",
+        "Dmii",
         "Type 2 Diabetes"
-      ]
-    },
-    {
-      "name": "TB",
-      "synonyms": [
-        "MTB",
-        "Mycobacterium Tuberculosis"
       ]
     },
     {
       "name": "Takayasu'S Arteritis",
       "synonyms": []
+    },
+    {
+      "name": "Takayasu's Arteritis",
+      "synonyms": []
+    },
+    {
+      "name": "Tb",
+      "synonyms": [
+        "Mtb",
+        "Mycobacterium Tuberculosis"
+      ]
     },
     {
       "name": "Temporal Arteritis",
@@ -3591,7 +3615,7 @@
     {
       "name": "Tick-Borne Encephalitis",
       "synonyms": [
-        "TBE"
+        "Tbe"
       ]
     },
     {
@@ -3608,6 +3632,10 @@
     },
     {
       "name": "Toxoplasma",
+      "synonyms": []
+    },
+    {
+      "name": "Toxoplasma IRIS",
       "synonyms": []
     },
     {
@@ -3647,18 +3675,6 @@
       "synonyms": []
     },
     {
-      "name": "URTI",
-      "synonyms": [
-        "Upper Respiratory Tract Infection"
-      ]
-    },
-    {
-      "name": "UTI",
-      "synonyms": [
-        "Urinary Tract Infection"
-      ]
-    },
-    {
       "name": "Ulcerative Colitis",
       "synonyms": []
     },
@@ -3671,23 +3687,29 @@
       "synonyms": []
     },
     {
+      "name": "Urti",
+      "synonyms": [
+        "Upper Respiratory Tract Infection"
+      ]
+    },
+    {
       "name": "Urticaria",
       "synonyms": []
+    },
+    {
+      "name": "Uti",
+      "synonyms": [
+        "Urinary Tract Infection"
+      ]
     },
     {
       "name": "Uveitis",
       "synonyms": []
     },
     {
-      "name": "VAP",
+      "name": "Vap",
       "synonyms": [
         "Ventilator Associated Pneumonia"
-      ]
-    },
-    {
-      "name": "VHF",
-      "synonyms": [
-        "Viral Haemorrhagic Fever"
       ]
     },
     {
@@ -3701,6 +3723,12 @@
     {
       "name": "Venous Sinus Thrombosis",
       "synonyms": []
+    },
+    {
+      "name": "Vhf",
+      "synonyms": [
+        "Viral Haemorrhagic Fever"
+      ]
     },
     {
       "name": "Vincent'S Angina",
@@ -3768,6 +3796,10 @@
     },
     {
       "name": "Wilson'S Disease",
+      "synonyms": []
+    },
+    {
+      "name": "Wilson's Disease",
       "synonyms": []
     },
     {
@@ -6057,6 +6089,10 @@
       "synonyms": []
     },
     {
+      "name": "Abnormal blood tests",
+      "synonyms": []
+    },
+    {
       "name": "Altered Sensation",
       "synonyms": []
     },
@@ -6089,6 +6125,10 @@
       "synonyms": []
     },
     {
+      "name": "Change in Behaviour",
+      "synonyms": []
+    },
+    {
       "name": "Chest Pain",
       "synonyms": []
     },
@@ -6117,11 +6157,19 @@
       "synonyms": []
     },
     {
+      "name": "Deliberate self-harm",
+      "synonyms": []
+    },
+    {
       "name": "Diarrhoea",
       "synonyms": []
     },
     {
       "name": "Difficulty Passing Urine",
+      "synonyms": []
+    },
+    {
+      "name": "Difficulty passing urine",
       "synonyms": []
     },
     {
@@ -6145,7 +6193,15 @@
       "synonyms": []
     },
     {
+      "name": "Ear pain",
+      "synonyms": []
+    },
+    {
       "name": "Epidemiological Exposure",
+      "synonyms": []
+    },
+    {
+      "name": "Epidemiological exposure",
       "synonyms": []
     },
     {
@@ -6173,11 +6229,23 @@
       "synonyms": []
     },
     {
+      "name": "Gait abnormality",
+      "synonyms": []
+    },
+    {
       "name": "Genital Discharge",
       "synonyms": []
     },
     {
       "name": "Genital Ulceration",
+      "synonyms": []
+    },
+    {
+      "name": "Genital discharge",
+      "synonyms": []
+    },
+    {
+      "name": "Genital ulceration",
       "synonyms": []
     },
     {
@@ -6197,11 +6265,19 @@
       "synonyms": []
     },
     {
+      "name": "Head injury",
+      "synonyms": []
+    },
+    {
       "name": "Headache",
       "synonyms": []
     },
     {
       "name": "Hearing Loss",
+      "synonyms": []
+    },
+    {
+      "name": "Hearing loss",
       "synonyms": []
     },
     {
@@ -6213,7 +6289,15 @@
       "synonyms": []
     },
     {
+      "name": "Insect bite",
+      "synonyms": []
+    },
+    {
       "name": "Involuntary Movements",
+      "synonyms": []
+    },
+    {
+      "name": "Involuntary movements",
       "synonyms": []
     },
     {
@@ -6234,6 +6318,10 @@
     },
     {
       "name": "Limb Weakness",
+      "synonyms": []
+    },
+    {
+      "name": "Limb weakness",
       "synonyms": []
     },
     {
@@ -6270,6 +6358,10 @@
     },
     {
       "name": "Neck Stiffness",
+      "synonyms": []
+    },
+    {
+      "name": "Neck pain",
       "synonyms": []
     },
     {
@@ -6337,11 +6429,31 @@
       "synonyms": []
     },
     {
+      "name": "Shortness of Breath",
+      "synonyms": []
+    },
+    {
       "name": "Sore Throat",
       "synonyms": []
     },
     {
+      "name": "Sore throat",
+      "synonyms": []
+    },
+    {
       "name": "Stridor",
+      "synonyms": []
+    },
+    {
+      "name": "Symptom 1",
+      "synonyms": []
+    },
+    {
+      "name": "Symptom 2",
+      "synonyms": []
+    },
+    {
+      "name": "Symptom 3",
       "synonyms": []
     },
     {
@@ -6358,6 +6470,10 @@
     },
     {
       "name": "Visual Disturbance",
+      "synonyms": []
+    },
+    {
+      "name": "Visual disturbance",
       "synonyms": []
     },
     {
