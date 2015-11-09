@@ -47,7 +47,7 @@ class ConfirmedDiagnosisByConsultant(widgets.Table):
     tagline = "Confirmed Diagnosis by Consultant"
     TOTAL_NUMBER = "Total Number of Patients"
     CONFIRMED_DIAGNOSIS = "% Confirmed Diagnosis"
-    CONSULTANT = "consultant"
+    CONSULTANT = "Consultant"
     table_headers = [CONSULTANT, TOTAL_NUMBER, CONFIRMED_DIAGNOSIS]
     include_index=True
 
