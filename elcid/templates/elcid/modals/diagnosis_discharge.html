@@ -26,10 +26,10 @@
         Alternatively email us at <a target="_blank" href="mailto:elcid@openhealthcare.org.uk?Subject=New%20Condition%20For%20[[ episode.demographics[0].hospital_number ]]">elcid@openhealthcare.org.uk</a> with the correct diagnosis
         </p>
       </span>
-      {% input "autofocus" name="primary_diagnosis" label="Primary Diagnosis" model="editing.primary_diagnosis.condition" lookuplist="condition_list" required="Primary Diagnosis is required." formname="dischargeDiagnosis" %}
+      {% select "autofocus" name="primary_diagnosis" label="Primary Diagnosis" model="editing.primary_diagnosis.condition" lookuplist="condition_list" required="Primary Diagnosis is required." formname="dischargeDiagnosis" %}
     </span>
     <span ng-if="!confirming">
-      {% select "autofocus" tagging=True name="primary_diagnosis" label="Primary Diagnosis" model="editing.primary_diagnosis.condition" lookuplist="condition_list" required="Primary Diagnosis is required." formname="dischargeDiagnosis" %}
+      {% input "autofocus" tagging=True name="primary_diagnosis" label="Primary Diagnosis" model="editing.primary_diagnosis.condition" lookuplist="condition_list" required="Primary Diagnosis is required." formname="dischargeDiagnosis" %}
     </span>
     <div ng-repeat="secondary in editing.secondary_diagnosis track by $index">
       <span ng-show="!secondary.submitted">
