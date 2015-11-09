@@ -1829,10 +1829,6 @@
       ]
     },
     {
-      "name": "CADASIL",
-      "synonyms": []
-    },
-    {
       "name": "Cadasil",
       "synonyms": []
     },
@@ -2269,7 +2265,7 @@
       "synonyms": []
     },
     {
-      "name": "Etoh Withdrawal",
+      "name": "EtOH Withdrawal",
       "synonyms": [
         "Alcohol Withdrawal"
       ]
@@ -2399,14 +2395,6 @@
       "synonyms": [
         "Graft-Versus Host Disease"
       ]
-    },
-    {
-      "name": "HIV Encephalitis",
-      "synonyms": []
-    },
-    {
-      "name": "HIV Seroconversion",
-      "synonyms": []
     },
     {
       "name": "Haematuria",
