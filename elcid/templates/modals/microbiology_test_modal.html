@@ -10,8 +10,8 @@
 
     {% input label="Microscopy" model="editing.microscopy" show="testType == 'micro_test_mcs'" %}
     {% select label="Organism" model="editing.organism" lookuplist="microbiology_organism_list" show="testType == 'micro_test_mcs'" %}
-    {% select label="Sensitive antibiotics" model="editing.sensitive_antibiotics" lookuplist="antimicrobial_list" show="testType == 'micro_test_mcs'" %}
-    {% select label="Resistant antibiotics" model="editing.resistant_antibiotics" lookuplist="antimicrobial_list" show="testType == 'micro_test_mcs'" %}
+    {% input label="Sensitive antibiotics" model="editing.sensitive_antibiotics" lookuplist="antimicrobial_list" show="testType == 'micro_test_mcs'" %}
+    {% input label="Resistant antibiotics" model="editing.resistant_antibiotics" lookuplist="antimicrobial_list" show="testType == 'micro_test_mcs'" %}
 
     {% radio label="IgM" model="editing.igm" show="testType == 'micro_test_serology'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
     {% radio label="IgG" model="editing.igg" show="testType == 'micro_test_serology'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
