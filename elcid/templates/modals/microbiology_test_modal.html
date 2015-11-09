@@ -9,7 +9,7 @@
     {% input label="Details" model="editing.details" %}
 
     {% input label="Microscopy" model="editing.microscopy" show="testType == 'micro_test_mcs'" %}
-    {% select label="Organism" model="editing.organism" lookuplist="microbiology_organism_list" show="testType == 'micro_test_mcs'" %}
+    {% input label="Organism" model="editing.organism" lookuplist="microbiology_organism_list" show="testType == 'micro_test_mcs'" %}
     {% input label="Sensitive antibiotics" model="editing.sensitive_antibiotics" lookuplist="antimicrobial_list" show="testType == 'micro_test_mcs'" %}
     {% input label="Resistant antibiotics" model="editing.resistant_antibiotics" lookuplist="antimicrobial_list" show="testType == 'micro_test_mcs'" %}
 
