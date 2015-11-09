@@ -1597,7 +1597,7 @@
       "synonyms": []
     },
     {
-      "name": "All",
+      "name": "ALL",
       "synonyms": [
         "Acute Lymphocytic Leukaemia"
       ]
@@ -1611,7 +1611,7 @@
       "synonyms": []
     },
     {
-      "name": "Aml",
+      "name": "AML",
       "synonyms": [
         "Acute Myeloid Leukaemia"
       ]
@@ -1673,7 +1673,7 @@
       "synonyms": []
     },
     {
-      "name": "Ards",
+      "name": "ARDS",
       "synonyms": [
         "Acute Respiratory Distress Syndrome"
       ]
@@ -1837,7 +1837,7 @@
       "synonyms": []
     },
     {
-      "name": "Cap",
+      "name": "CAP",
       "synonyms": [
         "Community Acquired Pneumonia"
       ]
@@ -1853,12 +1853,6 @@
     {
       "name": "Cauda Equina",
       "synonyms": []
-    },
-    {
-      "name": "Cchf",
-      "synonyms": [
-        "Crimean-Congo Haemorrhagic Fever"
-      ]
     },
     {
       "name": "Cellulitis",
@@ -1941,23 +1935,23 @@
       "synonyms": []
     },
     {
-      "name": "Cjd",
+      "name": "CJD",
       "synonyms": []
     },
     {
-      "name": "Ckd",
+      "name": "CKD",
       "synonyms": [
         "Chronic Kidney Disease"
       ]
     },
     {
-      "name": "Cll",
+      "name": "CLL",
       "synonyms": [
         "Chronic Lymphocytic Leukaemia"
       ]
     },
     {
-      "name": "Cml",
+      "name": "CML",
       "synonyms": [
         "Chronic Myeloid Leukaema"
       ]
@@ -1991,7 +1985,7 @@
       "synonyms": []
     },
     {
-      "name": "Copd",
+      "name": "COPD",
       "synonyms": [
         "Chronic Obstructive Pulmonary Disease"
       ]
@@ -2013,7 +2007,7 @@
       "synonyms": []
     },
     {
-      "name": "Cryptococcal Iris",
+      "name": "Cryptococcal IRIS",
       "synonyms": []
     },
     {
@@ -2033,7 +2027,7 @@
       "synonyms": []
     },
     {
-      "name": "Cvid",
+      "name": "CVID",
       "synonyms": [
         "Common Variable Immunodeficiency"
       ]
@@ -2123,7 +2117,7 @@
       "synonyms": []
     },
     {
-      "name": "Dka",
+      "name": "DKA",
       "synonyms": [
         "Diabetic Ketoacidosis"
       ]
@@ -2279,7 +2273,7 @@
       "synonyms": []
     },
     {
-      "name": "Fmf",
+      "name": "FMF",
       "synonyms": [
         "Familial Meiterranean Fever"
       ]
@@ -2357,7 +2351,7 @@
       "synonyms": []
     },
     {
-      "name": "Gord",
+      "name": "GORD",
       "synonyms": [
         "Gastro-Oesophageal Reflux"
       ]
@@ -2379,7 +2373,7 @@
       "synonyms": []
     },
     {
-      "name": "Gvhd",
+      "name": "GVHD",
       "synonyms": [
         "Graft-Versus Host Disease"
       ]
@@ -2405,7 +2399,7 @@
       "synonyms": []
     },
     {
-      "name": "Hap",
+      "name": "HAP",
       "synonyms": [
         "Hospital Acquired Pneumonia"
       ]
@@ -2425,13 +2419,13 @@
     {
       "name": "Hepatitis B",
       "synonyms": [
-        "Hbv"
+        "HBV"
       ]
     },
     {
       "name": "Hepatitis C",
       "synonyms": [
-        "Hcv"
+        "HCV"
       ]
     },
     {
@@ -2475,7 +2469,7 @@
       "synonyms": []
     },
     {
-      "name": "Hht",
+      "name": "HHT",
       "synonyms": [
         "Hereditary Haemorrhagic Telangiectasia",
         "Hereditary Hemorrhagic Telangiectasia"
@@ -2570,13 +2564,13 @@
       "synonyms": []
     },
     {
-      "name": "Ibd",
+      "name": "IBD",
       "synonyms": [
         "Inflammatory Bowel Disease"
       ]
     },
     {
-      "name": "Ihd",
+      "name": "IHD",
       "synonyms": [
         "Ischaemic Heart Disease"
       ]
@@ -2630,13 +2624,13 @@
       "synonyms": []
     },
     {
-      "name": "Itp",
+      "name": "ITP",
       "synonyms": [
         "Immune Thrombocytopenic Purpura"
       ]
     },
     {
-      "name": "Ivdu",
+      "name": "IVDU",
       "synonyms": [
         "Injecting Drug User"
       ]
@@ -2696,7 +2690,7 @@
       "synonyms": []
     },
     {
-      "name": "Lgv",
+      "name": "LGV",
       "synonyms": [
         "Lymphogranuloma Venereum"
       ]
@@ -2744,7 +2738,7 @@
       "synonyms": []
     },
     {
-      "name": "Lrti",
+      "name": "LRTI",
       "synonyms": [
         "Lower Respiratory Tract Infection"
       ]
@@ -3054,14 +3048,14 @@
       "synonyms": []
     },
     {
-      "name": "Pcp",
+      "name": "PCP",
       "synonyms": [
-        "Pjp",
+        "PJP",
         "Pneumocystis Jirovecii Pneumonia"
       ]
     },
     {
-      "name": "Pcp Iris",
+      "name": "PCP IRIS",
       "synonyms": []
     },
     {
@@ -3121,7 +3115,7 @@
       "synonyms": []
     },
     {
-      "name": "Pml",
+      "name": "PML",
       "synonyms": [
         "Progressive Multifocal Leukoencephalopathy"
       ]
@@ -3173,11 +3167,11 @@
     {
       "name": "Primary Biliary Cirrhosis",
       "synonyms": [
-        "Pbc"
+        "PBC"
       ]
     },
     {
-      "name": "Primary Cns Lymphoma",
+      "name": "Primary CNS Lymphoma",
       "synonyms": []
     },
     {
@@ -3229,15 +3223,15 @@
       "synonyms": []
     },
     {
-      "name": "Puo",
+      "name": "PUO",
       "synonyms": [
         "Fever Of Unknown Origin",
-        "Fuo",
+        "FUO",
         "Pyrexia Of Unknown Origin"
       ]
     },
     {
-      "name": "Pvd",
+      "name": "PVD",
       "synonyms": [
         "Peripheral Vascular Disease"
       ]
@@ -3335,11 +3329,11 @@
       "synonyms": []
     },
     {
-      "name": "Sars",
+      "name": "SARS",
       "synonyms": []
     },
     {
-      "name": "Sbp",
+      "name": "SBP",
       "synonyms": [
         "Spontaneous Bacterial Peritonitis"
       ]
@@ -3492,16 +3486,16 @@
     {
       "name": "T1Dm",
       "synonyms": [
-        "Dm1",
-        "Dmi",
+        "DM1",
+        "DMI",
         "Type 1 Diabetes"
       ]
     },
     {
       "name": "T2Dm",
       "synonyms": [
-        "Dm2",
-        "Dmii",
+        "DM2",
+        "DMII",
         "Type 2 Diabetes"
       ]
     },
@@ -3510,9 +3504,9 @@
       "synonyms": []
     },
     {
-      "name": "Tb",
+      "name": "TB",
       "synonyms": [
-        "Mtb",
+        "MTB",
         "Mycobacterium Tuberculosis"
       ]
     },
@@ -3559,7 +3553,7 @@
     {
       "name": "Tick-Borne Encephalitis",
       "synonyms": [
-        "Tbe"
+        "TBE"
       ]
     },
     {
@@ -3579,7 +3573,7 @@
       "synonyms": []
     },
     {
-      "name": "Toxoplasma Iris",
+      "name": "Toxoplasma IRIS",
       "synonyms": []
     },
     {
@@ -3637,7 +3631,7 @@
       "synonyms": []
     },
     {
-      "name": "Uti",
+      "name": "UTI",
       "synonyms": [
         "Urinary Tract Infection"
       ]
@@ -3647,7 +3641,7 @@
       "synonyms": []
     },
     {
-      "name": "Vap",
+      "name": "VAP",
       "synonyms": [
         "Ventilator Associated Pneumonia"
       ]
@@ -3665,7 +3659,7 @@
       "synonyms": []
     },
     {
-      "name": "Vhf",
+      "name": "VHF",
       "synonyms": [
         "Viral Haemorrhagic Fever"
       ]
