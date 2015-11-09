@@ -1,10 +1,5 @@
 {% extends "referral/referral.html" %}
 {% load forms %}
-{% block has_demographics_title %}
-<p class="lead" ng-show="state == 'has_demographics'">
-  <i class="glyphicon glyphicon-ok"></i>Thanks - <strong>[[ patient.demographics[0].name ]]</strong> added successfully.
-</p>
-{% endblock %}
 {% block additional_models_title %}
 <p class="lead" ng-show="state=='diagnosis'">
   Please enter [[ patient.demographics[0].name ]]'s diagnosis
