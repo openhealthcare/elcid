@@ -66,10 +66,8 @@
     </button>
   </div>
   <span ng-show="step === 'presenting_complaint'">
-    <span ng-if="!confirming">
-      {% select "autofocus" change="resetRequired(dischargeDiagnosis.editing_presenting_complaint_symptoms)" multiple=True required="At least one symptom is required." tagging=False label="Symptoms" model="editing.presenting_complaint.symptoms" lookuplist="symptom_list" formname="dischargeDiagnosis" %}
-    </span>
-    {% select label="Duration" model="editing.presenting_complaint.duration" lookuplist="['---------', '3 days or less','4-10 days','11-21 days','22 days to 3 months','over 3 months']" formname="dischargeDiagnosis" %}
+    {% select "autofocus" change="resetRequired(dischargeDiagnosis.editing_presenting_complaint_symptoms)" multiple=True required="At least one symptom is required." tagging=False label="Symptoms" model="editing.presenting_complaint.symptoms" lookuplist="symptom_list" formname="dischargeDiagnosis" %}
+    {% select label="Duration" model="editing.presenting_complaint.duration" lookuplist="['3 days or less','4-10 days','11-21 days','22 days to 3 months','over 3 months']" formname="dischargeDiagnosis" %}
     {% textarea label="Details" model="editing.presenting_complaint.details" formname="dischargeDiagnosis" %}
   </span>
 
