@@ -1,13 +1,13 @@
 [[item.line_type]] [[item.site]] <span ng-show="item.external_length" >([[item.external_length]]cm)</span><br />
 
 <span ng-hide="item.removal_datetime">
-  [[ item.insertion_datetime | daysSince:1 ]] days
+  [[ item.insertion_datetime | daysSince:1 ]]
   since insertion
 </span>
 <span ng-show="item.removal_datetime" >
   Removed [[item.removal_datetime | shortDate]] ([[item.removal_reason]])
   <br />
-  In place for [[ item.insertion_datetime |daysTo:item.removal_datetime ]] days
+  In place for [[ item.insertion_datetime |daysTo:item.removal_datetime ]]
 </span>
 
 <span ng-show="item.complications">[[item.complications]]<br /></span>

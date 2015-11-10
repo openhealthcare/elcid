@@ -4,13 +4,13 @@
 <span ng-show="item.line_type === 'Peripheral cannula'"> [[item.insertion_datetime| hhmm]]</span></span>
 <br />
 <span ng-hide="item.removal_datetime">
-  ([[ item.insertion_datetime | daysSince:1 ]] days since insertion)
+  ([[ item.insertion_datetime | daysSince:1 ]] since insertion)
 </span>
 <span ng-show="item.removal_datetime" >
   Removed [[item.removal_datetime | shortDate]]
   <span ng-show="item.removal_reason">due to [[item.removal_reason]]</span>
   <br />
-  (in place for [[ item.insertion_datetime |daysTo:item.removal_datetime ]] days)
+  (in place for [[ item.insertion_datetime |daysTo:item.removal_datetime ]])
 </span>
 <br />
 

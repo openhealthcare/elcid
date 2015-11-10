@@ -40,7 +40,7 @@ class MicroHaematology(ReferralRoute):
     name = 'MicroHaematology'
     description = 'The Micro - Haematology service at UCLH'
     target_teams = [MICROHAEM_TEAM_NAME]
-    success_link = '/#/list/walkin'
+    create_new_episode = False
     additional_models = [
         Diagnosis
     ]
