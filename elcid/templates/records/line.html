@@ -1,15 +1,16 @@
 [[item.line_type]] [[item.site]] <span ng-show="item.external_length" >([[item.external_length]]cm)</span><br />
 
-<span ng-show="item.insertion_datetime" >Inserted <span class="nowrap">[[item.insertion_datetime| shortDate]] [[item.insertion_datetime| hhmm]]</span>
+<span ng-show="item.insertion_datetime"  >Inserted <span class="nowrap">[[item.insertion_datetime| shortDate]]
+<span ng-show="item.line_type === 'Peripheral cannula'"> [[item.insertion_datetime| hhmm]]</span></span>
 <br />
 <span ng-hide="item.removal_datetime">
-  ([[ item.insertion_datetime | daysSince:1 ]] days since insertion)
+  ([[ item.insertion_datetime | daysSince:1 ]] since insertion)
 </span>
 <span ng-show="item.removal_datetime" >
   Removed [[item.removal_datetime | shortDate]]
   <span ng-show="item.removal_reason">due to [[item.removal_reason]]</span>
   <br />
-  ([[ item.insertion_datetime |daysTo:item.removal_datetime ]] days since removal)
+  (in place for [[ item.insertion_datetime |daysTo:item.removal_datetime ]])
 </span>
 <br />
 

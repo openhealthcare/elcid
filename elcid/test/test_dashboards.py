@@ -71,7 +71,7 @@ class ConfirmedDiagnosisTestCase(OpalTestCase):
 
         expected = [
             {
-                '% Confirmed Diagnosis': 0,
+                '% Confirmed Diagnosis': 100,
                 'consultant': u'No Episodes',
                 'Total Number of Patients': 0,
                 'consultant__link': u'/wardround/#/consultantreview?consultant_at_discharge=No+Episodes'

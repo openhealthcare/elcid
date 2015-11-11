@@ -1,5 +1,5 @@
 <p
-  ng-hide="(episode.presenting_complaint[0].symptoms || episode.presenting_complaint[0].duration || episode.presenting_complaint[0].details) || (!episode.tagging[0].tropical_diseases && !episode.tagging[0].id_inpatients && !episode.tagging[0].immune_inpatients)"
+  ng-hide="!listView || (episode.presenting_complaint[0].symptoms || episode.presenting_complaint[0].duration || episode.presenting_complaint[0].details) || (!episode.tagging[0].tropical_diseases && !episode.tagging[0].id_inpatients && !episode.tagging[0].immune_inpatients)"
   ng-show=""
   ng-click="editNamedItem(episode, 'presenting_complaint', 0)"
   ng-dblclick=""

@@ -5,7 +5,7 @@
 {% block modal_body %}
   <form class="form-horizontal">
     {% select autofocus multiple=True tagging=False label="Symptoms" model="editing.symptoms" lookuplist="symptom_list" %}
-    {% select label="Duration" model="editing.duration" lookuplist="['---------', '3 days or less','4-10 days','11-21 days','22 days to 3 months','over 3 months']" %}
+    {% select label="Duration" model="editing.duration" lookuplist="['3 days or less','4-10 days','11-21 days','22 days to 3 months','over 3 months']" %}
     {% textarea label="Details" model="editing.details" %}
   </form>
 {% endblock %}
