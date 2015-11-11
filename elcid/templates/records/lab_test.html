@@ -8,18 +8,15 @@
     <span ng-show="item.result && item.result != 'pending'" class="break-word">
       ([[item.result | microresult]])
     </span>
-
-    <span ng-show="item.significant_organism">
-      Significant Organism: [[ item.organism_details ]]
-      <br />
-      Antimicrobials
-      Susceptible: [[ item.antimicrobials_susceptible ]]
-      <br />
-      Intermediate: [[ item.antimicrobials_intermediate ]]
-      <br />
-      Resistant: [[ item.antimicrobials_resistant ]]
-      <br />
-    </span>
+    Significant Organism: [[ item.organism_details ]]
+    <br />
+    Antimicrobials
+    Susceptible: [[ item.antimicrobials_susceptible ]]
+    <br />
+    Intermediate: [[ item.antimicrobials_intermediate ]]
+    <br />
+    Resistant: [[ item.antimicrobials_resistant ]]
+    <br />
     <span ng-show="item.retrieved">
       Retrieved: [[ item.date_retrieved | shortDate ]]
       <br />
