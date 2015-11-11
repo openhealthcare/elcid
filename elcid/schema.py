@@ -132,6 +132,7 @@ from research import models as researchmodels
 list_columns_research_practitioner = [
     models.Demographics,
     models.Location,
+    models.RidRTIStudyDiagnosis,
     models.Diagnosis,
     models.Antimicrobial,
     models.MicrobiologyTest,
@@ -142,6 +143,7 @@ list_columns_research_practitioner = [
 
 list_columns_scientist = [
     models.Demographics,
+    models.RidRTIStudyDiagnosis,
     models.LabTest,
     models.CheckpointsAssay,
     models.RidRTITest
