@@ -19,6 +19,8 @@ urlpatterns = patterns(
     url(r'^templates/elcid/modals/(?P<name>[a-z_]+.html)$', views.ElcidTemplateView.as_view()),
     url(r'^patient/(?P<patient_id>\d+)', views.PatientDetailDataView.as_view(), name="patient_detail_data_view"),
     url(r'^templates/patient_notes.html$', views.PatientDetailTemplateView.as_view(), name="patient_detail_template_view"),
+    url(r'stories/$', views.TemplateView.as_view(template_name='stories.html')),
+
 )
 
 urlpatterns += opatterns
