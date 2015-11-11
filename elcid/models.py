@@ -598,6 +598,9 @@ class Specimin(lookuplists.LookupList):
     class Meta:
         verbose_name = "Specimen"
 
+class LabtestDetails(lookuplists.LookupList):
+    _advanced_searchable = False
+
 class Organism_details(lookuplists.LookupList):
     _advanced_searchable = False
 
