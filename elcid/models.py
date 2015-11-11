@@ -682,6 +682,13 @@ class LabTest(EpisodeSubrecord):
     carbapenemase                = models.NullBooleanField(default=False)
 
 
+class RidRTIStudyDiagnosis(EpisodeSubrecord):
+    """
+    The RidRTI study Diagnosis.
+    """
+    diagnosis = models.CharField(max_length=255)
+
+
 class RidRTITest(EpisodeSubrecord):
     """
     Results of the actual RiD RTI test !
