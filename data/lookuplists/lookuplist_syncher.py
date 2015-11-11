@@ -163,9 +163,9 @@ class Differ(object):
                 json.dump(all_existing_json, data_file, sort_keys=True, indent=2, separators=(',', ': '))
 
 
-def run(lookuplist_type, to_load_csv):
-    differ = Differ(lookuplist_type, to_load_csv)
+def run(lookuplist_type, to_load_csv, lookuplist_file):
+    differ = Differ(lookuplist_type, to_load_csv, lookuplist_file=lookuplist_file)
     differ.sync()
 
 if __name__ == "__main__":
-    run(*sys.argv[1:3])
+    run(*sys.argv[1:4])
