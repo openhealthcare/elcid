@@ -78,16 +78,16 @@ class ConfirmedDiagnosisTestCase(OpalTestCase):
             },
             {
                 '% Confirmed Diagnosis': 100,
+                'Consultant': u'Ben',
+                'Total Number of Patients': 1,
+                'Consultant__link': u'/wardround/#/consultantreview?consultant_at_discharge=Ben'
+            },
+            {
+                '% Confirmed Diagnosis': 100,
                 'Consultant': u'No Episodes',
                 'Total Number of Patients': 0,
                 'Consultant__link': u'/wardround/#/consultantreview?consultant_at_discharge=No+Episodes'
             },
-            {
-                '% Confirmed Diagnosis': 100,
-                'Consultant': u'Ben',
-                'Total Number of Patients': 1,
-                'Consultant__link': u'/wardround/#/consultantreview?consultant_at_discharge=Ben'
-            }
         ]
 
         self.assertEqual(result, expected)
