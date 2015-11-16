@@ -2,7 +2,7 @@
 // Editing/detail page for ward round episodes
 //
 angular.module('opal.controllers').controller(
-   'PatientDetailCtrl', function($rootScope, $scope, $cookieStore,
+   'PatientNotesCtrl', function($rootScope, $scope, $cookieStore,
                                 episodes, options, profile, recordLoader,
                                 EpisodeDetailMixin, ngProgressLite, $q,
                                 growl

@@ -135,7 +135,7 @@ class BulkCreateUserView(FormView):
         return super(BulkCreateUserView, self).form_valid(form)
 
 
-class PatientDetailDataView(View):
+class PatientNotesDataView(View):
     """
     Return a serialised view of the patient.
     """
@@ -151,11 +151,11 @@ class PatientDetailDataView(View):
         return _build_json_response(serialised)
 
 
-class PatientDetailTemplateView(TemplateView):
+class PatientNotesTemplateView(TemplateView):
     template_name = 'patient_notes.html'
 
     def get_context_data(self, *args, **kwargs):
-        context = super(PatientDetailTemplateView, self).get_context_data(*args, **kwargs)
+        context = super(PatientNotesTemplateView, self).get_context_data(*args, **kwargs)
         context['models'] = {m.__name__: m for m in subrecords()}
         context['inline_forms'] = getattr(app, "patient_view_forms", [])
         return context
