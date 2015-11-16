@@ -8,6 +8,16 @@
       </h3>
     </div>
     <div class="panel-body">
+      <center>
+        <button 
+           ng-hide="profile.readonly"
+           ng-click="dischargeEpisode(episode)"
+           class="btn btn-secondary btn-lg">
+          <i class="fa fa-home"></i>
+          <span ng-show="episode.discharge_date">Confirm</span>
+          Discharge
+        </button>
+      </center>
     </div>
   </div>
 </div>
@@ -82,7 +92,7 @@
   {% record_panel models.Allergies noentries="No known allergies"%}
   {% record_panel models.PastMedicalHistory %}
   {% record_panel models.Travel %}
-  {% record_panel models.MicrobiologyInput %}
+  {% record_timeline models.MicrobiologyInput "when" %}
 </div>                 <!-- Ends Detail panels col 1 -->
 <div class="col-md-6"> <!-- Detail panels col 2 -->
   {% record_panel models.PresentingComplaint %}
