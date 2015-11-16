@@ -17,6 +17,12 @@
               ([[patient.date_of_birth | shortDate]])
           </span>
         </small>
+        <div class="float-right">
+          <div class="col-md-2">
+              <button class="btn btn-secondary" ng-show="!isDuplicate" ng-click="markAsDuplicate()">Mark as Duplicate</button>
+              <button disabled class="btn black-text" ng-show="isDuplicate">Marked as Duplicate</button>
+          </div>
+        </div>
       </h2>
     </div>
     <div class="panel-body">
@@ -29,19 +35,19 @@
                     {% record_panel models.MicrobiologyTest editable="false" title="Alert Investigation Results" name="alertInvestigations()" %}
                 </div>
             </div>
-            <section ng-repeat="e in episodes">
+            <section ng-repeat="episode in episodes">
                 <div class="row">
                     <div class="col-md-12 text-center">
-                        <a class="orange-link" ng-href="[[ getEpisodeLink(e) ]]">
-                            <span ng-show="e.active">Current </span>
-                            <span ng-show="e.category === 'inpatient'">Inpatient Admission</span>
-                            <span ng-show="e.category !== 'inpatient'">[[ e.category | title ]] Episode</span>
-                            <span ng-show="e.date_of_admission">
-                                [[ e.date_of_admission | shortDate ]]
-                                <span ng-show="e.date_of_discharge"> - [[ e.date_of_discharge | shortDate ]]</span
+                        <a class="orange-link" ng-href="[[ getEpisodeLink(episode) ]]">
+                            <span ng-show="episode.active">Current </span>
+                            <span ng-show="episode.category === 'inpatient'">Inpatient Admission</span>
+                            <span ng-show="episode.category !== 'inpatient'">[[ episode.category | title ]] Episode</span>
+                            <span ng-show="episode.date_of_admission">
+                                [[ episode.date_of_admission | shortDate ]]
+                                <span ng-show="episode.date_of_admission"> - [[ episode.discharge_date | shortDate ]]</span>
                             </span>
-                            <span ng-show="!e.date_of_admission">
-                                [[ e.date_of_episode | shortDate ]]
+                            <span ng-show="!episode.date_of_admission">
+                                [[ episode.date_of_episode | shortDate ]]
                             </span>
                         </a>
                     </div>
@@ -86,7 +92,7 @@
                              <line class="speech-bubble-timeline hidden-sm hidden-xs" x1="12.5%" y1="0" x2="12.5%" y2="500%" />
                              <line class="speech-bubble-timeline hidden-md hidden-lg" x1="50%" y1="0" x2="50%" y2="500%" />
                         </svg>
-                        <div ng-repeat="microbiology_input in e.microbiology_input  | orderBy:'-when'" class="row content-offset-20">
+                        <div ng-repeat="microbiology_input in episode.microbiology_input  | orderBy:'-when'" class="row content-offset-20">
 
                             <div class="col-md-3 patient-timeline">
                                 <div class="patient-timeline-speech-bubble">
@@ -94,7 +100,7 @@
                                 </div>
                                 <div ng-show="microbiology_input.when">
                                     <div class="patient-timeline-date">
-                                          [[ microbiology_input.when | momentDateFormat:'DD MMM' ]]
+                                          [[ microbiology_input.when | momentDateFormat:'DD MMM YYYY' ]]
                                     </div>
                                 </div>
                             </div>
@@ -114,12 +120,12 @@
                     </div>
                     <div class="col-md-6">
                         <span ng-if="$first">
-                          {% record_panel models.HaemInformation title="Recent Haem Information" angular_filter="isRecentHaemInformation" %}
-                          {% record_panel models.NeutropeniaInformation title="Neutropenia Information"  %}
+                          {% record_panel models.HaemInformation title="Haematology Background Information" angular_filter="isRecentHaemInformation" %}
+                          {% record_panel models.EpisodeOfNeutropenia title="Episodes of Neutropenia"  %}
                         </span>
-                        {% record_panel models.Antimicrobial editable="e.id === episode.id" %}
-                        {% record_panel models.MicrobiologyTest editable="e.id === episode.id" %}
-                        {% record_panel models.Diagnosis editable="e.id === episode.id" %}
+                        {% record_panel models.Antimicrobial editable="firstEpisode.id === episode.id" %}
+                        {% record_panel models.MicrobiologyTest editable="firstEpisode.id === episode.id" %}
+                        {% record_panel models.Diagnosis editable="firstEpisode.id === episode.id" %}
                     </div>
                 </div>
             </section>

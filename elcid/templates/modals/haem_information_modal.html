@@ -5,17 +5,14 @@
   <form class="form-horizontal">
     {% select "autofocus" label="Type" model="editing.patient_type" lookuplist="haeminformationtype_list" %}
     <span ng-show="editing.patient_type == 'Transplant'">
+        {% input label="Transplant type" model="editing.type_of_transplant" lookuplist="haemtransplanttype_list" %}
         {% datepicker label="Date of transplant" model="editing.date_of_transplant" %}
-        {% input "autofocus" label="Transplant type" model="editing.type_of_transplant" lookuplist="haemtransplanttype_list" %}
-        {% datepicker label="Date of chemotherapy" model="editing.date_of_transplant" %}
         {% datepicker label="count recovery" model="editing.count_recovery" %}
     </span>
 
     <span ng-show="editing.patient_type == 'White cell'">
-        {% datepicker label="Date of transplant" model="editing.date_of_transplant" %}
         {% input "autofocus" label="Chemotherapy type" model="editing.type_of_chemotherapy" lookuplist="haemchemotherapytype_list" %}
         {% datepicker label="Date of chemotherapy" model="editing.date_of_chemotherapy" %}
-        {% datepicker label="count recovery" model="editing.count_recovery" %}
     </span>
 
     {% textarea show="editing.patient_type == 'Other'" label="details" model="editing.details" %}

@@ -15,41 +15,49 @@ controllers.controller(
 
         $scope.tags = tags;
         $scope.episode = episode;
+        $scope.saving = false;
 
-        var steps = [
+        $scope.steps = [
           "diagnosis"
         ];
 
         $scope.steps_details = {
             discharge: {
-                icon: "fa fa-street-view",
+                icon: "fa fa-home",
                 title: "Discharge",
-                subtitle: undefined
+                subtitle: undefined,
+                done: false
             },
             diagnosis: {
                 icon: "fa fa-stethoscope",
                 title: "Diagnosis",
-                subtitle: undefined
+                subtitle: undefined,
+                status: 'disabled',
+                done: false
             },
             presenting_complaint: {
                 icon: "fa fa-heartbeat",
                 title: "Presenting Complaint",
-                subtitle: "Please enter one or more symptoms"
+                subtitle: "Please enter one or more symptoms",
+                done: false
             },
             antimicrobial: {
                 icon: "fa fa-flask",
                 title: "Antimicrobial",
-                subtitle: "Please enter the <strong>drug name</strong> and the <strong>start and end dates</strong> or state that the patient was <strong>not on antimicrobials</strong>."
+                subtitle: "Please enter the <strong>drug name</strong> and the <strong>start and end dates</strong> or state that the patient was <strong>not on antimicrobials</strong>.",
+                done: false
             },
             travel: {
                 icon: "fa fa-plane",
                 title: "Travel",
-                subtitle: "Please enter a <strong>travel destination</strong> and <strong>dates</strong>, or state that the patient <strong>did not travel</strong>."
+                subtitle: "Please enter a <strong>travel destination</strong> and <strong>dates</strong>, or state that the patient <strong>did not travel</strong>.",
+                done: false
             },
             consultant_at_discharge: {
                 icon: "fa fa-user-md",
                 title: "Consultant At Discharge",
-                subtitle: "Please record the <strong>consultant</strong> at discharge."
+                subtitle: "Please record the <strong>consultant</strong> at discharge.",
+                done: false
             }
         };
 
@@ -158,14 +166,23 @@ controllers.controller(
 
         $scope.editing = dischargePatientService.getEditing(episode);
 
+        if(!$scope.episode.presenting_complaint.length ||
+           !$scope.episode.presenting_complaint[0].symptoms ||
+           !$scope.episode.presenting_complaint[0].symptoms.length
+         ){
+           var presenting_complaint;
 
+           if(!$scope.episode.presenting_complaint.length){
+              presenting_complaint = $scope.episode.newItem('presenting_complaint');
+           }
+           else{
+              presenting_complaint = $scope.episode.presenting_complaint[0];
+           }
 
-        if(!$scope.episode.presenting_complaint.length || !$scope.episode.presenting_complaint[0].symptom.length){
-            var presenting_complaint = $scope.episode.newItem('presenting_complaint');
             $scope.episode.presenting_complaint = [presenting_complaint];
             $scope.editing.presenting_complaint = presenting_complaint.makeCopy();
-            $scope.editing.presenting_complaint.symptom =[];
-            steps.unshift("presenting_complaint");
+            $scope.editing.presenting_complaint.symptoms =[];
+            $scope.steps.unshift("presenting_complaint");
         }
 
         if(!$scope.episode.antimicrobial.length){
@@ -177,7 +194,7 @@ controllers.controller(
                 "antimicrobial"
             );
             $scope.editing.antimicrobial = [$scope.antimicrobialStep.newItem()];
-            steps.push("antimicrobial");
+            $scope.steps.push("antimicrobial");
         }
 
         if(!$scope.episode.travel.length){
@@ -191,13 +208,13 @@ controllers.controller(
 
             $scope.editing.travel = [$scope.travelStep.newItem()];
 
-            steps.push("travel");
+            $scope.steps.push("travel");
         }
 
         $scope.editing.primary_diagnosis = $scope.episode.primary_diagnosis[0].makeCopy();
 
         if($scope.is_list_view || !episode.isDischarged()){
-            steps.push("discharge");
+            $scope.steps.push("discharge");
         }
 
         if($scope.episode.primary_diagnosis.length === 0){
@@ -207,34 +224,46 @@ controllers.controller(
 
         if(!$scope.episode.consultant_at_discharge[0].consultant){
             $scope.editing.consultant_at_discharge = $scope.episode.consultant_at_discharge[0].makeCopy();
-            steps.push("consultant_at_discharge");
+            $scope.steps.push("consultant_at_discharge");
         }
 
-        $scope.errors = _.reduce(steps, function(mem, y){
+        $scope.errors = _.reduce($scope.steps, function(mem, y){
             mem[y] = undefined;
             return mem;
         }, {});
 
-        $scope.nextStep = function(){
-            var currentIndex = _.indexOf(steps, $scope.step);
+        $scope.processSteps = [];
 
-            if(currentIndex + 1 === steps.length){
+        _.each($scope.steps, function(step){
+            var processStep = $scope.steps_details[step];
+            processStep.name = step;
+            $scope.processSteps.push(processStep);
+        });
+
+        $scope.nextStep = function(){
+            var currentIndex = _.indexOf($scope.steps, $scope.step);
+
+            if(currentIndex + 1 === $scope.steps.length){
                 return null;
             }
-            return steps[currentIndex + 1];
+            return $scope.steps[currentIndex + 1];
         };
 
         $scope.previousStep = function(){
-            var currentIndex = _.indexOf(steps, $scope.step);
+            var currentIndex = _.indexOf($scope.steps, $scope.step);
 
             if(!currentIndex){
                 return null;
             }
 
-            return steps[currentIndex - 1];
+            return $scope.steps[currentIndex - 1];
         };
 
         $scope.goToPreviousStep = function(){
+            var processStep = _.find($scope.processSteps, function(processStep){
+                return processStep.name === $scope.step;
+            });
+            processStep.done = false;
             $scope.step = $scope.previousStep();
         };
 
@@ -253,6 +282,7 @@ controllers.controller(
                     form.editing_primary_diagnosis_condition.$setDirty();
                     return;
                 }
+
             }
             if($scope.step === "travel"){
                 if(!$scope.travelStep.validateStep()){
@@ -269,9 +299,9 @@ controllers.controller(
                 this is a work around as multiple angular ui select does not play nicely
                 with ngRequired. It might be better to set each model as a different form
                 */
-                if(!model.presenting_complaint.symptom.length){
-                    form.editing_presenting_complaint_symptom.$setValidity("required", false);
-                    form.editing_presenting_complaint_symptom.$setDirty();
+                if(!model.presenting_complaint.symptoms.length){
+                    form.editing_presenting_complaint_symptoms.$setValidity("required", false);
+                    form.editing_presenting_complaint_symptoms.$setDirty();
                     return;
                 }
             }
@@ -283,6 +313,12 @@ controllers.controller(
             }
 
             nextStep = $scope.nextStep();
+            var processStep = _.find($scope.processSteps, function(processStep){
+                return processStep.name === $scope.step;
+            });
+
+            processStep.done = true;
+
             if(nextStep){
                 $scope.step = nextStep;
             }
@@ -292,7 +328,7 @@ controllers.controller(
         };
 
         if(!$scope.step){
-            $scope.step = _.first(steps);
+            $scope.step = _.first($scope.steps);
         }
 
         if($scope.episode.secondary_diagnosis.length === 0){
@@ -307,18 +343,12 @@ controllers.controller(
         }
 
         $scope.confirming = false;
+        $scope.validDiagnosis = false;
         $scope.is_list_view = $location.path().indexOf('/list/') === 0;
         //
         // This flag sets the visibility of the modal body
         //
         $scope.discharged = false;
-
-        //
-        // We should deal with the case where we're confirming discharge
-        //
-        if(!$scope.is_list_view){
-            $scope.confirming = true;
-        }
 
         //
         // We only really need one lookuplist.
@@ -329,6 +359,18 @@ controllers.controller(
             		$scope[name + '_list'] = _.uniq(options[name]);
       	    }
       	}
+
+        //
+        // We should deal with the case where we're confirming discharge
+        //
+        if(!$scope.is_list_view){
+            $scope.confirming = true;
+            $scope.validDiagnosis = _.contains($scope.condition_list, $scope.episode.primary_diagnosis[0].condition);
+            if(!$scope.validDiagnosis){
+                $scope.oldDiagnosis = $scope.episode.primary_diagnosis[0].condition;
+                $scope.editing.primary_diagnosis.condition = undefined;
+            }
+        }
 
         //
         // Add an extra Secondary diagnosis option to the list
@@ -376,7 +418,9 @@ controllers.controller(
         // the modal.
         //
         $scope.save = function() {
+            var to_save;
             var primary = episode.primary_diagnosis[0];
+            $scope.saving = true;
 
             if($scope.confirming){
                 $scope.editing.primary_diagnosis.confirmed = true;
@@ -385,13 +429,22 @@ controllers.controller(
             var saves = [];
             saves.push(primary.save($scope.editing.primary_diagnosis));
 
-            if(_.contains(steps, "consultant_at_discharge")){
-                var to_save = $scope.episode.consultant_at_discharge[0];
+            if(_.contains($scope.steps, "consultant_at_discharge")){
+                to_save = $scope.episode.consultant_at_discharge[0];
                 saves.push(to_save.save($scope.editing.consultant_at_discharge));
             }
 
-            saves.concat($scope.antimicrobialStep.save());
-            saves.concat($scope.travelStep.save());
+            if(_.contains($scope.steps, "presenting_complaint")){
+                to_save = $scope.episode.presenting_complaint[0];
+                saves.push(to_save.save($scope.editing.presenting_complaint));
+            }
+
+            if($scope.antimicrobialStep){
+                saves.concat($scope.antimicrobialStep.save());
+            }
+            if($scope.travelStep){
+                saves.concat($scope.travelStep.save());
+            }
 
             // if they've removed an already existing diagnosis, let them delete it
             _.each($scope.episode.secondary_diagnosis, function(sd){
@@ -432,6 +485,7 @@ controllers.controller(
 
             dischargePatientService.discharge(episode, $scope.editing, tags).then(function(){
                 $q.all(saves).then(function(){
+                    $scope.saving = false;
                     if($scope.confirming){
                         growl.success('Final Diagnosis approved.');
                     }else{

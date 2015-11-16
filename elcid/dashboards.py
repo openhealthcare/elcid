@@ -47,7 +47,7 @@ class ConfirmedDiagnosisByConsultant(widgets.Table):
     tagline = "Confirmed Diagnosis by Consultant"
     TOTAL_NUMBER = "Total Number of Patients"
     CONFIRMED_DIAGNOSIS = "% Confirmed Diagnosis"
-    CONSULTANT = "consultant"
+    CONSULTANT = "Consultant"
     table_headers = [CONSULTANT, TOTAL_NUMBER, CONFIRMED_DIAGNOSIS]
     include_index=True
 
@@ -70,10 +70,14 @@ class ConfirmedDiagnosisByConsultant(widgets.Table):
             with_confirmed = episodes.filter(primarydiagnosis__confirmed=True)
             confirmed_diagnosis = with_confirmed.distinct().count()
             if row[self.TOTAL_NUMBER] == 0:
-                row[self.CONFIRMED_DIAGNOSIS] = 0
+                row[self.CONFIRMED_DIAGNOSIS] = 100
             else:
                 completed = float(confirmed_diagnosis)/float(row[self.TOTAL_NUMBER])
                 row[self.CONFIRMED_DIAGNOSIS] = int(100 * completed)
+
+            if row[self.CONFIRMED_DIAGNOSIS] < 50:
+                row[self.row_class] = "diagnosis-table-issue"
+
             rows.append(row)
 
         return sorted(rows, key=lambda x: x[self.CONFIRMED_DIAGNOSIS])

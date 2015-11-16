@@ -36,7 +36,7 @@ class ConsultantReview(WardRound):
     @staticmethod
     def episodes():
         episodes = Episode.objects.exclude(discharge_date=None)
-        episodes = episodes.exclude(consultantatdischarge=None)
+        episodes = episodes.exclude(consultantatdischarge__consultant_fk=None)
         episodes = episodes.filter(primarydiagnosis__confirmed=False)
         return episodes.order_by("-discharge_date")
 

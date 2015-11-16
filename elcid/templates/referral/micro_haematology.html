@@ -1,9 +1,16 @@
 {% extends "referral/referral.html" %}
 {% load forms %}
+{% block additional_models_title %}
+<p class="lead" ng-show="state=='diagnosis'">
+  Please enter [[ patient.demographics[0].name ]]'s diagnosis
+</p>
+{% endblock %}
+
 {% block additional_models_header %}
 <i class="fa fa-stethoscope"></i>
   [[ currentAdditionalData().display_name ]]
 {% endblock %}
+
 {% block additional_models %}
 <div ng-show="state=='diagnosis'">
   <form class="form-horizontal">
@@ -25,3 +32,14 @@
 </div>
 
 {% endblock %}
+
+{% block has_demographics_buttons %}
+  <span ng-show="state == 'has_demographics'">
+    {% include "referral/_includes/back_button.html" %}
+    <button class="btn btn-lg btn-primary pull-right"
+            ng-click="refer()">
+        <i class="fa fa-arrow-right"></i>
+        [[ route.verb ]] to [[ route.name ]]
+    </button>
+  </span>
+{% endblock has_demographics_buttons %}

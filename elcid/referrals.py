@@ -28,18 +28,22 @@ class HTDWalkInRoute(ReferralRoute):
         return
 
 
-class OPATRoute(ReferralRoute):
-    name = 'OPAT'
-    description = 'The Outpatient Parenteral Antibiotic Therapy (OPAT) service at UCLH'
-    target_teams = ['opat', 'opat_referrals']
-    target_category = 'OPAT'
-    success_link = '/#/list/opat'
+#class OPATRoute(ReferralRoute):
+#    name = 'OPAT'
+#    description = 'The Outpatient Parenteral Antibiotic Therapy (OPAT) service at UCLH'
+#    target_teams = ['opat', 'opat_referrals']
+#    target_category = 'OPAT'
+#    success_link = '/#/list/opat'
 
 
 class MicroHaematology(ReferralRoute):
     name = 'MicroHaematology'
     description = 'The Micro - Haematology service at UCLH'
     target_teams = [MICROHAEM_TEAM_NAME]
+    create_new_episode = False
     additional_models = [
         Diagnosis
     ]
+
+    def get_success_link(self, episode):
+        return '/#/patient/%s' % episode.patient.id

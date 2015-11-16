@@ -66,6 +66,17 @@ class Carers(PatientSubrecord):
         verbose_name_plural = "Carers"
 
 
+class DuplicatePatient(PatientSubrecord):
+    _no_admin = True
+    _icon = 'fa fa-clone'
+    _advanced_searchable = False
+    reviewed = models.BooleanField(default=False)
+    merged = models.BooleanField(default=False)
+
+    def icon(self):
+        return self._icon
+
+
 class Location(EpisodeSubrecord):
     _is_singleton = True
     _icon = 'fa fa-map-marker'
@@ -123,11 +134,20 @@ class PresentingComplaint(EpisodeSubrecord):
             details=self.details
         )
 
+    @classmethod
+    def _get_fieldnames_to_serialize(cls):
+        field_names = super(PresentingComplaint, cls)._get_fieldnames_to_serialize()
+        removed_fields = {u'symptom_fk_id', 'symptom_ft', 'symptom'}
+        field_names = [i for i in field_names if i not in removed_fields]
+        return field_names
+
+
 class PrimaryDiagnosis(EpisodeSubrecord):
     """
     This is the confirmed primary diagnosisa
     """
     _is_singleton = True
+    _title = 'Primary Diagnosis'
 
     condition = ForeignKeyOrFreeText(omodels.Condition)
     confirmed = models.BooleanField(default=False)
@@ -140,6 +160,7 @@ class Consultant(lookuplists.LookupList):
     pass
 
 class ConsultantAtDischarge(EpisodeSubrecord):
+    _title = 'Consultant At Discharge'
     _is_singleton = True
     consultant = ForeignKeyOrFreeText(Consultant)
 
@@ -148,6 +169,7 @@ class SecondaryDiagnosis(EpisodeSubrecord):
     """
     This is a confirmed diagnosis at discharge time.
     """
+    _title = 'Secondary Diagnosis'
     condition   = ForeignKeyOrFreeText(omodels.Condition)
     co_primary = models.NullBooleanField(default=False)
 
@@ -381,15 +403,24 @@ class HaemInformationType(lookuplists.LookupList):
     pass
 
 
-class NeutropeniaInformation(PatientSubrecord):
-    _is_singleton = True
-
+class EpisodeOfNeutropenia(PatientSubrecord):
+    _icon = 'fa fa-info-circle'
+    _sort = 'start'
+    _title = 'Episode of Neutropenia'
     start = models.DateField(blank=True, null=True)
     stop = models.DateField(blank=True, null=True)
+
+    class Meta:
+        ordering = ['-start']
+
+    @property
+    def icon(self):
+        return self._icon
 
 
 class HaemInformation(PatientSubrecord):
     _icon = 'fa fa-info-circle'
+    _title = 'Haematology Background Information'
 
     patient_type = ForeignKeyOrFreeText(HaemInformationType)
     date_of_transplant = models.DateField(blank=True, null=True)
@@ -567,6 +598,9 @@ class Specimin(lookuplists.LookupList):
     class Meta:
         verbose_name = "Specimen"
 
+class LabtestDetails(lookuplists.LookupList):
+    _advanced_searchable = False
+
 class Organism_details(lookuplists.LookupList):
     _advanced_searchable = False
 
@@ -646,6 +680,13 @@ class LabTest(EpisodeSubrecord):
     freezer_box_number           = models.CharField(max_length=200, blank=True, null=True)
     esbl                         = models.NullBooleanField(default=False)
     carbapenemase                = models.NullBooleanField(default=False)
+
+
+class RidRTIStudyDiagnosis(EpisodeSubrecord):
+    """
+    The RidRTI study Diagnosis.
+    """
+    diagnosis = models.CharField(max_length=255)
 
 
 class RidRTITest(EpisodeSubrecord):
