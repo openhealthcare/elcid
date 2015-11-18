@@ -15,11 +15,11 @@
 
     {% radio label="IgM" model="editing.igm" show="testType == 'micro_test_serology'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
     {% radio label="IgG" model="editing.igg" show="testType == 'micro_test_serology'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
-    
+
     {% radio label="IgM" model="editing.vca_igm" show="testType == 'micro_test_ebv_serology'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
     {% radio label="IgG" model="editing.vca_igg" show="testType == 'micro_test_ebv_serology'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
     {% radio label="EBNA IgG" model="editing.ebna_igg" show="testType == 'micro_test_ebv_serology'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
-    
+
     {% radio label="Result" model="editing.result" show="testType == 'micro_test_hiv'" lookuplist="['pending', 'antibody positive', 'p24 antigen only', 'negative']" %}
 
     {% radio label="HBsAg" model="editing.hbsag" show="testType == 'micro_test_hepititis_b_serology'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
@@ -35,99 +35,14 @@
     {% radio label="Result" model="editing.result" show="testType == 'micro_test_single_test_pos_neg_equiv'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
 
     {% radio label="IgG" model="editing.igg" show="testType == 'micro_test_single_igg_test'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
-    
 
-    <span ng-show="testType == 'micro_test_viral_load'">
+    {% input label="Viral load" model="editing.viral_load" show="testType == 'micro_test_viral_load'" %}
 
-      <div class="form-group">
-        <label class="control-label col-sm-3">Viral load</label>
-        <div class="col-sm-8">
-          <input class="form-control" type="text" ng-model="editing.viral_load">
-        </div>
-      </div>
+    {% input label="Parasitaemia" model="editing.parasitaemia" show="testType == 'micro_test_parasitaemia'" %}
 
-    </span>
-
-    <span ng-show="testType == 'micro_test_parasitaemia'">
-
-      <div class="form-group">
-        <label class="control-label col-sm-3">Parasitaemia</label>
-        <div class="col-sm-8">
-          <input class="form-control" type="text" ng-model="editing.parasitaemia">
-        </div>
-      </div>
-
-    </span>
-
-    <span ng-show="testType == 'micro_test_swab_pcr'">
-
-      <div class="form-group">
-        <label class="control-label col-sm-3">HSV</label>
-        <div class="col-sm-8">
-
-          <label class="radio-inline">
-            <input class="" type="radio" value="pending" ng-model="editing.hsv">
-            pending
-          </label>
-
-          <label class="radio-inline">
-            <input class="" type="radio" value="positive" ng-model="editing.hsv">
-            positive
-          </label>
-
-          <label class="radio-inline">
-            <input class="" type="radio" value="negative" ng-model="editing.hsv">
-            negative
-          </label>
-
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label class="control-label col-sm-3">VZV</label>
-        <div class="col-sm-8">
-
-          <label class="radio-inline">
-            <input class="" type="radio" value="pending" ng-model="editing.vzv">
-            pending
-          </label>
-
-          <label class="radio-inline">
-            <input class="" type="radio" value="positive" ng-model="editing.vzv">
-            positive
-          </label>
-
-          <label class="radio-inline">
-            <input class="" type="radio" value="negative" ng-model="editing.vzv">
-            negative
-          </label>
-
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label class="control-label col-sm-3">Syphilis</label>
-        <div class="col-sm-8">
-
-          <label class="radio-inline">
-            <input class="" type="radio" value="pending" ng-model="editing.syphilis">
-            pending
-          </label>
-
-          <label class="radio-inline">
-            <input class="" type="radio" value="positive" ng-model="editing.syphilis">
-            positive
-          </label>
-
-          <label class="radio-inline">
-            <input class="" type="radio" value="negative" ng-model="editing.syphilis">
-            negative
-          </label>
-
-        </div>
-      </div>
-
-    </span>
+    {% radio label="HSV" model="editing.hsv" show="testType == 'micro_test_swab_pcr'" lookuplist="['pending', 'positive', 'negative']" %}
+    {% radio label="VZV" model="editing.vzv" show="testType == 'micro_test_swab_pcr'" lookuplist="['pending', 'positive', 'negative']" %}
+    {% radio label="Syphilis" model="editing.syphilis" show="testType == 'micro_test_swab_pcr'" lookuplist="['pending', 'positive', 'negative']" %}
 
     <span ng-show="testType == 'micro_test_c_difficile'">
 
@@ -634,6 +549,15 @@
     </span>
 
     {% select label="Reason not done" model="editing.hiv_declined" show="editing.test == 'HIV Point of Care' && editing.result == 'not done'" lookuplist="hiv_no_list" %}
+    {% checkbox label="Alert Investigation" model="editing.alert_investigation" %}
+
+    {% radio label="Spotted Fever Group IgM" model="editing.spotted_fever_igm" show="editing.test == 'Rickettsia Serology'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
+    {% radio label="Spotted Fever Group IgG" model="editing.spotted_fever_igg" show="editing.test == 'Rickettsia Serology'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
+    {% radio label="Typhus Group IgM" model="editing.typhus_group_igm" show="editing.test == 'Rickettsia Serology'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
+    {% radio label="Typhus Group IgG" model="editing.typhus_group_igg" show="editing.test == 'Rickettsia Serology'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
+    {% radio label="Scrub Typhus IgM" model="editing.scrub_typhus_igm" show="editing.test == 'Rickettsia Serology'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
+    {% radio label="Scrub Typhus IgG" model="editing.scrub_typhus_igg" show="editing.test == 'Rickettsia Serology'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
+
 
   </form>
 {% endblock %}

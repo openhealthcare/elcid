@@ -1,23 +1,22 @@
-
-<div class="[[item.date_ordered == null && 'italic']]">
+<div class="[[item.date_ordered == null && 'italic']]"
+     ng-hide="profile.has_role('scientist') && !(item.esbl || item.carbapenemase)"
+     >
   <span ng-hide="profile.has_role('scientist')">
     [[item.date_ordered | shortDate]]
     [[item.test]]
+    <span ng-show="item.details">[[ item.details]]<br /></span>
     <span ng-show="item.result && item.result != 'pending'" class="break-word">
       ([[item.result | microresult]])
     </span>
-
-    <span ng-show="item.significant_organism">
-      Significant Organism: [[ item.organism_details ]]
-      <br />
-      Antimicrobials
-      Susceptible: [[ item.antimicrobials_susceptible ]]
-      <br />
-      Intermediate: [[ item.antimicrobials_intermediate ]]
-      <br />
-      Resistant: [[ item.antimicrobials_resistant ]]
-      <br />
-    </span>
+    Significant Organism: [[ item.organism_details ]]
+    <br />
+    Antimicrobials
+    Susceptible: [[ item.antimicrobials_susceptible ]]
+    <br />
+    Intermediate: [[ item.antimicrobials_intermediate ]]
+    <br />
+    Resistant: [[ item.antimicrobials_resistant ]]
+    <br />
     <span ng-show="item.retrieved">
       Retrieved: [[ item.date_retrieved | shortDate ]]
       <br />

@@ -7,7 +7,7 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('elcid', '0004_auto_20150918_1450'),
+        ('elcid', '0011_opatlineassessment_cm_from_exit_site'),
     ]
 
     operations = [

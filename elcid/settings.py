@@ -14,12 +14,12 @@ try:
 except ImportError:
     DATABASES = {
         'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(PROJECT_PATH, 'opal.sqlite'),
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': '',
-        'PORT': ''
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(PROJECT_PATH, 'opal.sqlite'),
+            'USER': '',
+            'PASSWORD': '',
+            'HOST': '',
+            'PORT': '',
         }
     }
 
@@ -173,6 +173,8 @@ INSTALLED_APPS = (
 #    'opal.core.collaborative',
     'guidelines',
     'dischargesummary',
+    'djcelery',
+    'taskrunner'
 )
 
 if 'test' in sys.argv:
@@ -282,3 +284,4 @@ except:
 # MIDDLEWARE_CLASSES = MIDDLEWARE_CLASSES + ('debug_toolbar.middleware.DebugToolbarMiddleware',)
 # INSTALLED_APPS = INSTALLED_APPS + ('debug_toolbar',)
 # #INTERNAL_IPS = ('127.0.0.1',)
+EXTRACT_ASYNC = True
