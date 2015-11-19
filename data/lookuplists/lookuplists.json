@@ -3742,10 +3742,6 @@
       "synonyms": []
     },
     {
-      "name": "Tinea Pedis",
-      "synonyms": []
-    },
-    {
       "name": "Oesophageal Candiasis",
       "synonyms": []
     },
@@ -5126,7 +5122,7 @@
     },
     {
       "name": "United Kingdom",
-      "synonyms": ["Britain"]
+      "synonyms": []
     },
     {
       "name": "United States",
