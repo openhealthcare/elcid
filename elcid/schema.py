@@ -60,44 +60,16 @@ list_columns_opat_review = [
     models.Antimicrobial,
 ]
 
-from obs import models as obsmodels
-from walkin import models as wimodels
-
-list_columns_walkin = [
-    models.Demographics,
-    models.Location,
-    models.Travel,
-    wimodels.Symptom,
-    wimodels.ClinicalFindings,
-    models.MicrobiologyTest,
-    models.Diagnosis,
-    obsmodels.Observation,
-    models.Antimicrobial,
-#    wimodels.Management,
-    models.MicrobiologyInput
-]
-
-list_columns_walkin_review = [
-    models.Demographics,
-    models.Location,
-    models.Travel,
-    wimodels.Symptom,
-    wimodels.ClinicalFindings,
-    models.MicrobiologyTest,
-    models.Diagnosis,
-    models.Antimicrobial,
-    models.MicrobiologyInput,
-    wimodels.Management
-]
-
-list_columns_triage = [
-    models.Demographics,
-    models.Location,
-    models.Travel,
-    wimodels.Symptom,
-    models.MicrobiologyTest,
-    obsmodels.Observation,
-]
+# from obs import models as obsmodels
+#
+# list_columns_triage = [
+#     models.Demographics,
+#     models.Location,
+#     models.Travel,
+#     wimodels.Symptom,
+#     models.MicrobiologyTest,
+#     obsmodels.Observation,
+# ]
 
 list_schemas = {
     'default': list_columns,
@@ -118,33 +90,28 @@ list_schemas = {
         # 'default': list_columns,
         'id_liaison': list_columns_id_liaison
     },
-    'walkin': {
-        'walkin_triage': list_columns_triage,
-        'walkin_review': list_columns_walkin_review,
-        'default': list_columns_walkin
-    }
 }
 
 # Research study schemas
-
-from research import models as researchmodels
-
-list_columns_research_practitioner = [
-    models.Demographics,
-    models.Location,
-    models.RidRTIStudyDiagnosis,
-    models.Diagnosis,
-    models.Antimicrobial,
-    models.MicrobiologyTest,
-    models.LabTest,
-    models.Travel,
-    models.LabSpecimin
-]
-
-list_columns_scientist = [
-    models.Demographics,
-    models.RidRTIStudyDiagnosis,
-    models.LabTest,
-    models.CheckpointsAssay,
-    models.RidRTITest
-]
+#
+# from research import models as researchmodels
+#
+# list_columns_research_practitioner = [
+#     models.Demographics,
+#     models.Location,
+#     models.RidRTIStudyDiagnosis,
+#     models.Diagnosis,
+#     models.Antimicrobial,
+#     models.MicrobiologyTest,
+#     models.LabTest,
+#     models.Travel,
+#     models.LabSpecimin
+# ]
+#
+# list_columns_scientist = [
+#     models.Demographics,
+#     models.RidRTIStudyDiagnosis,
+#     models.LabTest,
+#     models.CheckpointsAssay,
+#     models.RidRTITest
+# ]

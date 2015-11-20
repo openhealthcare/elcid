@@ -1,0 +1,11 @@
+{% load forms %}
+<div class="row">
+  <form class="form-horizontal">
+    {% input "autofocus" label="Drug" model="editing.drug" lookuplist="antimicrobial_list" %}
+    {% datepicker label="Start date" model="editing.start_date" %}
+    {% datepicker label="End date" model="editing.end_date" %}
+    {% input label="Dose" model="editing.dose" %}
+    {% input label="Route" model="editing.route" lookuplist="antimicrobial_route_list" %}
+    {% input label="Frequency" model="editing.frequency" lookuplist="antimicrobial_frequency_list" %}
+  </form>
+</div>

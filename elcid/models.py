@@ -793,3 +793,18 @@ class CheckpointsAssay(EpisodeSubrecord):
 
     class Meta:
         verbose_name = "Checkpoints assay"
+
+
+class BloodCulture(EpisodeSubrecord):
+    _icon = 'fa fa-crosshairs'
+    _title = 'Blood Culture'
+    date_ordered = models.DateField(null=True, blank=True)
+    details = models.CharField(max_length=255, blank=True)
+    microscopy = models.CharField(max_length=255, blank=True)
+    organisms = models.ManyToManyField(omodels.Microbiology_organism)
+    sensitive_antibiotics = models.ManyToManyField(
+        omodels.Antimicrobial, related_name="blood_culture_sensitive"
+    )
+    resistant_antibiotics = models.ManyToManyField(
+        omodels.Antimicrobial, related_name="blood_culture_resistant"
+    )

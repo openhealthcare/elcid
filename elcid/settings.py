@@ -171,6 +171,7 @@ INSTALLED_APPS = (
 #    'dashboard',
 #    'iframeapi',
 #    'opal.core.collaborative',
+    'pathway',
     'guidelines',
     'dischargesummary',
     'djcelery',
