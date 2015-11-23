@@ -9,7 +9,7 @@ class BloodCulturePathway(Pathway):
         Step(
             template_url="/pathway/templates/find_patient_form.html",
             controller_class="FindPatientCtrl",
-            title="find patient",
+            title="Find Patient",
             icon="fa fa-user"
         ),
         Diagnosis,
