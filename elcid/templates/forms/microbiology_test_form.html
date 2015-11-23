@@ -1,6 +1,6 @@
 {% load forms %}
 <form class="form-horizontal">
-  {% input "autofocus" label="Test" model="editing.test" lookuplist="microbiology_test_list" %}
+  {% input "autofocus" label="Test" model="editing.microbiology_test.test" lookuplist="microbiology_test_list" %}
   {% datepicker label="Date ordered" model="editing.date_ordered" %}
   {% input label="Details" model="editing.details" %}
 
@@ -16,16 +16,6 @@
   {% radio label="IgG" model="editing.vca_igg" show="testType == 'micro_test_ebv_serology'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
   {% radio label="EBNA IgG" model="editing.ebna_igg" show="testType == 'micro_test_ebv_serology'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
 
-  {% input label="RPR" model="editing.rpr" show="testType == 'micro_test_syphilis_serology'" %}
-  {% radio label="TPPA" model="editing.tppa" show="testType == 'micro_test_syphilis_serology'" lookuplist="['pending', 'positive', 'negative']" %}
-
-  {% radio label="Result" model="editing.result" show="testType == 'micro_test_single_test_pos_neg'" lookuplist="['pending', 'positive', 'negative']" %}
-
-  {% radio label="Result" model="editing.result" show="testType == 'micro_test_single_test_pos_neg_equiv'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
-
-  {% radio label="IgG" model="editing.igg" show="testType == 'micro_test_single_igg_test'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
-
-  {% input label="Viral load" model="editing.viral_load" show="testType == 'micro_test_viral_load'" %}
 
   {% input label="Parasitaemia" model="editing.parasitaemia" show="testType == 'micro_test_parasitaemia'" %}
 

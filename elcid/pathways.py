@@ -1,27 +1,48 @@
 from elcid.models import Diagnosis, Line, Antimicrobial, BloodCulture
-from pathway.pathways import Pathway
+from opal.models import Patient
+from pathway.pathways import Pathway, Step
+
 
 class BloodCulturePathway(Pathway):
     title = "Blood Culture"
     steps = (
-        Diagnosis,
-        Line,
-        Antimicrobial,
-        BloodCulture,
-    )
-
-    def get_steps_info(self):
-        steps_info = super(BloodCulturePathway, self).get_steps_info()
-        steps_info["steps"].insert(0, (dict(
+        Step(
             template_url="/pathway/templates/find_patient_form.html",
             controller_class="FindPatientCtrl",
             title="find patient",
             icon="fa fa-user"
-        )))
+        ),
+        Diagnosis,
+        Step(
+            model=Line,
+            template_url="/pathway/templates/optional_line.html",
+            controller_class="LineController"
+        ),
+        Antimicrobial,
+        BloodCulture,
+    )
 
-        # ths should be included in the step api
-        line_title = getattr(Line, "_title", Line.get_display_name())
-        line_step = next(i for i in steps_info["steps"] if i["title"] == line_title)
-        line_step["template_url"] = "/pathway/templates/optional_line.html"
-        line_step["controller_class"] = "LineController"
-        return steps_info
+    def save(self, data, user):
+        update_demographics = data["demographics"][0]
+        hospital_number = update_demographics["hospital_number"]
+        patient, created = Patient.objects.get_or_create(
+            demographics__hospital_number=hospital_number
+        )
+
+        if created:
+            demographics_model = patient.demographics_set.first()
+            for k, v in update_demographics.iteritems():
+                setattr(demographics_model, k, v)
+            demographics_model.save()
+
+        if not patient.episode_set.exists():
+            episode = patient.create_episode()
+        else:
+            episode = patient.episode_set.last()
+
+        episode.set_tag_names(["id_inpatients"], user)
+
+        for step in self.get_steps():
+            step.save(episode.id, data, user)
+
+        return episode

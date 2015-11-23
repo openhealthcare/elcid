@@ -1,9 +1,9 @@
 {% load forms %}
 <div class="form-group form-horizontal">
-  {% datepicker label="Date ordered" model="editing.date_ordered" %}
-  {% input label="Details" model="editing.details" %}
-  {% input label="Microscopy" model="editing.microscopy" %}
-  {% select label="Organisms" multiple=True model="editing.organisms" lookuplist="microbiology_organism_list" tagging=False %}
-  {% select label="Sensitive antibiotics" lookuplist="antimicrobial_list" multiple=True model="editing.sensitive_antibiotics" tagging=False %}
-  {% select label="Resistant antibiotics" lookuplist="antimicrobial_list" multiple=True model="editing.resistant_antibiotics" tagging=False %}
+  {% datepicker label="Date ordered" model="editing.blood_culture.date_ordered" %}
+  {% input label="Details" model="editing.blood_culture.details" %}
+  {% input label="Microscopy" model="editing.blood_culture.microscopy" %}
+  {% select label="Organisms" multiple=True model="editing.blood_culture.organisms" lookuplist="microbiology_organism_list" tagging=False %}
+  {% select label="Sensitive antibiotics" lookuplist="antimicrobial_list" multiple=True model="editing.blood_culture.sensitive_antibiotics" tagging=False %}
+  {% select label="Resistant antibiotics" lookuplist="antimicrobial_list" multiple=True model="editing.blood_culture.resistant_antibiotics" tagging=False %}
 </div>
