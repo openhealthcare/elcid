@@ -1,6 +1,9 @@
 {% load forms %}
 <div class="form-group form-horizontal">
   {% datepicker label="Date ordered" model="editing.blood_culture.date_ordered" %}
+  {% datepicker label="Date positive" model="editing.blood_culture.date_positive" %}
+  {% checkbox label="Anaerobic" %}
+  {% input label="Source" model="editing.blood_culture.source" %}
   {% input label="Details" model="editing.blood_culture.details" %}
   {% input label="Microscopy" model="editing.blood_culture.microscopy" %}
   {% select label="Organisms" multiple=True model="editing.blood_culture.organisms" lookuplist="microbiology_organism_list" tagging=False %}
