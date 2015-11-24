@@ -795,10 +795,17 @@ class CheckpointsAssay(EpisodeSubrecord):
         verbose_name = "Checkpoints assay"
 
 
+class BloodCultureSource(lookuplists.LookupList):
+    pass
+
+
 class BloodCulture(EpisodeSubrecord):
     _icon = 'fa fa-crosshairs'
     _title = 'Blood Culture'
+    source = ForeignKeyOrFreeText(BloodCultureSource)
     date_ordered = models.DateField(null=True, blank=True)
+    date_positive = models.DateField(null=True, blank=True)
+    anaerobic = models.CharField(max_length=255, blank=True)
     details = models.CharField(max_length=255, blank=True)
     microscopy = models.CharField(max_length=255, blank=True)
     organisms = models.ManyToManyField(omodels.Microbiology_organism)

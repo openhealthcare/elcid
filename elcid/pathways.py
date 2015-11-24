@@ -23,7 +23,7 @@ class BloodCulturePathway(Pathway):
     )
 
     def save(self, data, user):
-        update_demographics = data["demographics"][0]
+        update_demographics = data["demographics"]
         hospital_number = update_demographics["hospital_number"]
         patient, created = Patient.objects.get_or_create(
             demographics__hospital_number=hospital_number
