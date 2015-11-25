@@ -9,7 +9,10 @@
   {% record_panel models.MicrobiologyInput %}
 {% endblock %}
 {% block right_column %}
-  {% record_panel models.PresentingComplaint %}
+  {% record_panel models.PresentingComplaint only_display_if_exists=True %}
+  {% record_panel models.PrimaryDiagnosis only_display_if_exists=True %}
+  {% record_panel models.SecondaryDiagnosis only_display_if_exists=True %}
+  {% record_panel models.ConsultantAtDischarge only_display_if_exists=True %}
   {% record_panel models.Diagnosis %}
   {% record_panel models.Antimicrobial %}
   {% record_panel models.MicrobiologyTest %}
