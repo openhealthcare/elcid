@@ -1,5 +1,39 @@
 [
-
+    {
+        "pk": 1,
+        "model": "opal.antimicrobial_route",
+        "fields": {
+            "name": "route"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "opal.antimicrobial",
+        "fields": {
+            "name": "route"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "opal.travel_reason",
+        "fields": {
+            "name": "business"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "opal.condition",
+        "fields": {
+            "name": "sweats"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "opal.destination",
+        "fields": {
+            "name": "Swedon"
+        }
+    },
     {
         "pk": 1,
         "model": "opal.patient",

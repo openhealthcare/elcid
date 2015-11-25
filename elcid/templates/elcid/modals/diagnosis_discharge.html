@@ -1,57 +1,122 @@
 {% extends 'modal_base.html' %}
 {% load forms %}
-{% block icon_name %}fa fa-home{% endblock %}
-{% block title %}Discharge Diagnosis{% endblock %}
-{% block modal_body_extra %}ng-show="discharged"{% endblock %}
+{% block icon_name %}[[ steps_details[step].icon ]]{% endblock %}
+{% block title %}
+[[ steps_details[step].title ]]
+{% endblock %}
+{% block process_steps %}
+<div ng-show="processSteps.length > 1" class="discharge-process-steps" style="width: [[ 100 - (10 * (6 - processSteps.length)) ]]%">
+  {% process_steps process_steps="processSteps" show_titles=False active="progress_step.name === step" complete="progress_step.done || !progress_step.name == step" disabled="!progress_step.done && progress_step.name !== step" %}
+</div>
+{% endblock %}
 {% block modal_body %}
-    <form class="form-horizontal" name="dischargeDiagnosisForm">
+<p class="lead text-center content-offset-25" ng-bind-html="steps_details[step].subtitle"></p>
 
-    {% input autofocus label="Primary Diagnosis" model="editing.primary_diagnosis.condition" lookuplist="condition_list" required="Primary Diagnosis is required." formname="dischargeDiagnosisForm" %}
-    
+<form class="form-horizontal" name="dischargeDiagnosis">
+  <span ng-show="step === 'discharge'">
+    {% include "_includes/discharge_form.html" %}
+  </span>
+  <div ng-show="step === 'diagnosis'">
+    <span ng-if="confirming">
+      <span ng-show="!validDiagnosis">
+        <p class="lead text-center">
+        "[[ oldDiagnosis ]]" is not a valid condition, please choose a condition from the list below.
+        </p>
+        <p class="lead text-center">
+        Alternatively email us at <a target="_blank" href="mailto:elcid@openhealthcare.org.uk?Subject=New%20Condition%20For%20[[ episode.demographics[0].hospital_number ]]">elcid@openhealthcare.org.uk</a> with the correct diagnosis
+        </p>
+      </span>
+      {% select "autofocus" name="primary_diagnosis" label="Primary Diagnosis" model="editing.primary_diagnosis.condition" lookuplist="condition_list" required="Primary Diagnosis is required." formname="dischargeDiagnosis" %}
+    </span>
+    <span ng-if="!confirming">
+      {% input "autofocus" tagging=True name="primary_diagnosis" label="Primary Diagnosis" model="editing.primary_diagnosis.condition" lookuplist="condition_list" required="Primary Diagnosis is required." formname="dischargeDiagnosis" %}
+    </span>
     <div ng-repeat="secondary in editing.secondary_diagnosis track by $index">
-      <div class="form-group">
-        <label class="control-label col-sm-3">Secondary Diagnosis [[$index + 1]]</label>
-        <div class="col-sm-8">
-          <input class="form-control" type="text"
-                 ng-model="secondary.condition"
-                 ng-options="s for s in condition_list"
-                 bs-typeahead
-                 >
+      <span ng-show="!secondary.submitted">
+        <span ng-class="{'warning-state': secondaryDiagnosisWarning}">
+          {% input name="secondary_diagnosis" label="Secondary Diagnosis [[ secondary.id ]]" model="secondary.condition" lookuplist="condition_list" formname="dischargeDiagnosis" %}
+        </span>
+        <div class="form-group">
+          <label class="control-label col-sm-3">Co-primary?</label>
+          <div class="col-sm-8">
+             <input type="checkbox" ng-model="secondary.co_primary">
+          </div>
         </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label col-sm-3">Co-primary?</label>
-        <div class="col-sm-8">
-	  <input class="" type="checkbox" ng-model="secondary.co_primary">
+      </span>
+      <span ng-show="secondary.submitted">
+        <div class="well">
+          <div class="row">
+            <div class="col-md-10">
+              [[ secondary.condition ]] <span ng-show="secondary.co_primary">(Co-primary)</span>
+            </div>
+            <div class="col-md-2">
+              <btn class=" pointer" type="button" ng-click="removeSecondary.remove($index)"><i class="fa fa-minus"></i></btn>
+            </div
+            </div>
+          </div>
         </div>
-      </div>
-      <hr />
+      </span>
     </div>
+    <hr />
     <button type="button" class="btn btn-primary"
             ng-click="addSecondary()"
             >
       <span class="glyphicon glyphicon-plus"></span>
       Add Secondary Diagnosis
     </button>
-  </form>
+  </div>
+  <span ng-show="step === 'presenting_complaint'">
+    {% select "autofocus" change="resetRequired(dischargeDiagnosis.editing_presenting_complaint_symptoms)" multiple=True required="At least one symptom is required." tagging=False label="Symptoms" model="editing.presenting_complaint.symptoms" lookuplist="symptom_list" formname="dischargeDiagnosis" %}
+    {% select label="Duration" model="editing.presenting_complaint.duration" lookuplist="['3 days or less','4-10 days','11-21 days','22 days to 3 months','over 3 months']" formname="dischargeDiagnosis" %}
+    {% textarea label="Details" model="editing.presenting_complaint.details" formname="dischargeDiagnosis" %}
+  </span>
+
+  <span ng-show="step === 'travel'">
+    {% include "elcid/_includes/travel_multi_form.html" %}
+  </span>
+  <span ng-show="step === 'antimicrobial'">
+    {% include "elcid/_includes/antimicrobial_multi_form.html" %}
+  </span>
+  <span ng-show="step === 'consultant_at_discharge'">
+      {% select "autofocus" placeholder="Consultant At Discharge" label="Consultant At Discharge" model="editing.consultant_at_discharge.consultant" lookuplist="consultant_list" required="Consultant at discharge is required." formname="dischargeDiagnosis" %}
+    </form>
+  </span>
+</form>
+
 
 {% endblock %}
+
 {% block modal_save %}
-  <button class="btn btn-primary"
-          ng-click="save()"
-          ng-hide="confirming"
-          ng-disabled="!dischargeDiagnosisForm.$valid"
-          >
-    <i class="fa fa-save"></i>
-    Save
-  </button>
+  <span class="float-left" ng-show="previousStep()">
+      <button class="btn btn-secondary" ng-click="goToPreviousStep()">
+        <i class="fa fa-arrow-left"></i>
+        Back
+       </button>
+   </span>
+  <span ng-show="nextStep()">
+    <button
+        class="btn btn-primary"
+        ng-click="goToNextStep(dischargeDiagnosis, editing)">
+        Next
+        <i class="fa fa-arrow-right"></i>
+    </button>
+  </span>
+  <span ng-show="!nextStep()">
     <button class="btn btn-primary"
-          ng-click="save()"
-          ng-show="confirming"
-          ng-disabled="!dischargeDiagnosisForm.$valid"
-          >
-    <i class="fa fa-save"></i>      
-    Confirm
-  </button>  
+            ng-click="goToNextStep(dischargeDiagnosis, editing)"
+            ng-hide="confirming"
+            ng-disabled="saving"
+            >
+      Discharge
+      <i class="fa fa-save"></i>
+    </button>
+      <button class="btn btn-primary"
+            ng-click="goToNextStep(dischargeDiagnosis)"
+            ng-show="confirming"
+            ng-disabled="saving"
+            >
+      <i class="fa fa-save"></i>
+      Confirm
+    </button>
+  </span>
 {% endblock %}
-{% block modal_another %}{% endblock %}
