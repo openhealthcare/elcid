@@ -3,6 +3,7 @@ angular.module('opal.controllers').controller(
                                  recordLoader, ngProgressLite, $q,
                                  $cookieStore
                                     ){
+        "use strict";
         var REASON_FOR_INTERACTION_COOKIE = "patientNotes-reasonForInteraction";
         var DISCUSSED_WITH_COOKIE = "patientNotes-discussedWith";
         /*
@@ -10,7 +11,7 @@ angular.module('opal.controllers').controller(
         */
         function getCopy(item){
             var copy = item.makeCopy();
-            defaults = _.clone({
+            var defaults = _.clone({
                 when: new Date(),
                 initials: $window.initials,
                 reason_for_interaction: $cookieStore.get(REASON_FOR_INTERACTION_COOKIE),
@@ -30,7 +31,7 @@ angular.module('opal.controllers').controller(
                     ngProgressLite.start();
                     $cookieStore.put(REASON_FOR_INTERACTION_COOKIE, self.editing.reason_for_interaction || "");
                     $cookieStore.put(DISCUSSED_WITH_COOKIE, self.editing.discussed_with || "");
-                    to_save = [item.save(self.editing)];
+                    var to_save = [item.save(self.editing)];
                     $q.all(to_save).then(function() {
                         ngProgressLite.done();
                         item = $scope.episode.newItem('microbiology_input', {column: $rootScope.fields.microbiology_input});
