@@ -25,7 +25,7 @@ angular.module('opal.controllers').controller(
        }).reverse();
 
        $scope.orderByDate = function(x){
-          return -moment(x.when).unix();
+          return -moment(x.when, 'DD/MM/YYYY').unix();
        };
 
        $scope.inlineForm = {};

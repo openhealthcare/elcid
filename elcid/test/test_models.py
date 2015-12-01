@@ -63,7 +63,7 @@ class DemographicsTest(OpalTestCase, AbstractPatientTestCase):
             'consistency_token': '12345678',
             'id': self.demographics.id,
             'name': 'Johann Schmidt',
-            'date_of_birth': '1972-6-21',
+            'date_of_birth': '21/6/1972',
             'hospital_number': 'AA1112',
             }
         self.demographics.update_from_dict(data, self.user)

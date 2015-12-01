@@ -26,6 +26,7 @@ angular.module('opal.services').factory('DischargePatientService', function($q) 
             }
 
             if(episode.date_of_admission){
+                // is this a bug?
                 admission = moment(episode.date_of_admission).format('MM/DD/YY')
             }
 

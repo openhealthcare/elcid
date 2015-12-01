@@ -54,7 +54,7 @@ angular.module('opal.controllers').controller(
                 if(result.then){
                     result.then(function(r){ $modalInstance.close(r) });
                 }else{
-                    $modalInstance.close(result);                 
+                    $modalInstance.close(result);
                 }
             });
         };
@@ -100,11 +100,6 @@ angular.module('opal.controllers').controller(
 
         $scope.addForPatient = function(patient){
             demographics = patient.demographics[0];
-            if(demographics.date_of_birth){
-                var dob = moment(demographics.date_of_birth, 'YYYY-MM-DD')
-                    .format('DD/MM/YYYY');
-                demographics.date_of_birth = dob;
-            }
 
             modal = $modal.open({
                 templateUrl: '/templates/modals/add_episode.html/',
