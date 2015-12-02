@@ -80,6 +80,7 @@ class ConfirmedDiagnosisByConsultant(widgets.Table):
 
             rows.append(row)
 
+        rows = sorted(rows, key=lambda x: x[self.CONSULTANT])
         return sorted(rows, key=lambda x: x[self.CONFIRMED_DIAGNOSIS])
 
 

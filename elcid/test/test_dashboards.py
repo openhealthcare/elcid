@@ -71,23 +71,23 @@ class ConfirmedDiagnosisTestCase(OpalTestCase):
 
         expected = [
             {
-                '% Confirmed Diagnosis': 100,
-                'consultant': u'No Episodes',
-                'Total Number of Patients': 0,
-                'consultant__link': u'/wardround/#/consultantreview?consultant_at_discharge=No+Episodes'
-            },
-            {
                 '% Confirmed Diagnosis': 50,
-                'consultant': u'Jane',
+                'Consultant': u'Jane',
                 'Total Number of Patients': 2,
-                'consultant__link': u'/wardround/#/consultantreview?consultant_at_discharge=Jane'
+                'Consultant__link': u'/wardround/#/consultantreview?consultant_at_discharge=Jane'
             },
             {
                 '% Confirmed Diagnosis': 100,
-                'consultant': u'Ben',
+                'Consultant': u'Ben',
                 'Total Number of Patients': 1,
-                'consultant__link': u'/wardround/#/consultantreview?consultant_at_discharge=Ben'
-            }
+                'Consultant__link': u'/wardround/#/consultantreview?consultant_at_discharge=Ben'
+            },
+            {
+                '% Confirmed Diagnosis': 100,
+                'Consultant': u'No Episodes',
+                'Total Number of Patients': 0,
+                'Consultant__link': u'/wardround/#/consultantreview?consultant_at_discharge=No+Episodes'
+            },
         ]
 
         self.assertEqual(result, expected)
