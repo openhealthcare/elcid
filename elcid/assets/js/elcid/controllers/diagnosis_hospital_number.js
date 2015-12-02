@@ -7,7 +7,6 @@ angular.module('opal.controllers').controller(
              $http,
              $q,
              Episode,
-             schema,
              options,
              tags,
             hospital_number) {
@@ -45,7 +44,6 @@ angular.module('opal.controllers').controller(
                 templateUrl: '/templates/modals/add_episode.html/',
                 controller: 'DiagnosisAddEpisodeCtrl',
                 resolve: {
-                    schema: function() { return schema; },
                     options: function() { return options; },
                     demographics: function() {
                         return { hospital_number: result.hospitalNumber }
@@ -112,7 +110,6 @@ angular.module('opal.controllers').controller(
                 templateUrl: '/templates/modals/add_episode.html/',
                 controller: 'AddEpisodeCtrl',
                 resolve: {
-                    schema: function() { return schema; },
                     options: function() { return options; },
                     demographics: function() { return demographics; }
                 }

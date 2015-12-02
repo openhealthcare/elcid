@@ -11,7 +11,7 @@ controllers.controller(
         $location,
         growl,
         Flow,
-        tags, schema, options, episode, DischargePatientService){
+        tags, options, episode, DischargePatientService){
 
         $scope.tags = tags;
         $scope.episode = episode;

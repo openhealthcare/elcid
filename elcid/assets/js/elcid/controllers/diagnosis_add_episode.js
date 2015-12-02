@@ -1,7 +1,7 @@
 angular.module('opal.controllers')
     .controller('DiagnosisAddEpisodeCtrl', function($scope, $http, $cookieStore, $q,
                                                     $timeout, $modal,
-                                                    $modalInstance, Episode, schema,
+                                                    $modalInstance, Episode,
                                                     options,
                                                     demographics) {
         $scope.currentTag = $cookieStore.get('opal.currentTag') || 'mine';
@@ -64,7 +64,7 @@ angular.module('opal.controllers')
             }
 
             $http.post('episode/', $scope.editing).success(function(episode) {
-                $scope.episode = new Episode(episode, schema);
+                $scope.episode = new Episode(episode);
                 $scope.presenting_complaint();
             });
         };
