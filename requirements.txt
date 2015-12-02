@@ -20,7 +20,6 @@ django-celery==3.1.17
 
 django-compressor==1.5
 
-
 -e git+https://github.com/openhealthcare/opal.git@splash-modals#egg=opal
 -e git+https://github.com/openhealthcare/opal-walk-in.git@splash#egg=opal_walk_in
 -e git+https://github.com/openhealthcare/opal-opat.git@splash#egg=opal_opat
