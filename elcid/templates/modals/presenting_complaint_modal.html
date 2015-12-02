@@ -4,7 +4,7 @@
   {% block title %}Presenting Complaint{% endblock %}
 {% block modal_body %}
   <form class="form-horizontal">
-    {% select autofocus multiple=True tagging=False label="Symptoms" model="editing.symptoms" lookuplist="symptom_list" help_text="if your symptom isn't in the list add it to the details" %}
+    {% select autofocus multiple=True tagging=False label="Symptoms" model="editing.symptoms" lookuplist="symptom_list" help_text="If a symptom isn't in the list, add it in the details box" %}
     {% select label="Duration" model="editing.duration" lookuplist="['3 days or less','4-10 days','11-21 days','22 days to 3 months','over 3 months']" %}
     {% textarea label="Details" model="editing.details" %}
   </form>
