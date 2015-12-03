@@ -33,4 +33,4 @@ end
 
 task :devtest => [:pytest, :devjstest] do
   p "Run all development tests"
-end  
+end

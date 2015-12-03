@@ -115,6 +115,7 @@ class InfectionSource(lookuplists.LookupList):
 
 
 class Infection(EpisodeSubrecord):
+    _icon = 'fa fa-eyedropper'
     # this needs to be fixed
     source = ForeignKeyOrFreeText(InfectionSource)
     site = models.CharField(max_length=255, blank=True)
@@ -168,6 +169,7 @@ class PrimaryDiagnosis(EpisodeSubrecord):
     """
     _is_singleton = True
     _title = 'Primary Diagnosis'
+    _icon = 'fa fa-eye'
 
     condition = ForeignKeyOrFreeText(omodels.Condition)
     confirmed = models.BooleanField(default=False)
