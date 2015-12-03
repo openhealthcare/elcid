@@ -1,0 +1,67 @@
+{% load forms %}
+<div class="outer-container">
+  <div class="container content-offset">
+    <div class="full-height panel panel-primary">
+      <!-- Default panel contents -->
+      <div class="panel-heading">
+        <h2>
+          <i class="fa fa-home"></i>
+          Welcome to {{ OPAL_BRAND_NAME }} - an OPAL application.
+        </h2>
+      </div>
+
+      <div class="panel-body">
+        <div ng-controller="SearchCtrl">
+          <form ng-submit="search()" class="form form-horizontal">
+            <div class="row content-offset">
+                <div class="col-md-4 col-md-push-4">
+                  <input type="text" autofocus
+                         name="name"
+                         slash-key-focus="!state || state==='normal'"
+                         ng-blur="enableShortcuts()"
+                         ng-focus="disableShortcuts()"
+                         placeholder="Name or Hospital Number"
+                         ng-model="searchTerm"
+                         class="form-control"
+                         autocomplete="off"
+                         />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 col-md-push-4 text-center">
+                    <a ng-click="search()" class="btn btn-lg btn-primary content-offset-25">
+                        <i class="glyphicon glyphicon-search"></i>
+                        Search
+                    </a>
+                </div>
+            </div>
+          </form>
+        </div>
+        <div class="row content-offset-25">
+          <div class="col-md-6 col-md-push-3">
+            <hr />
+          </div>
+        </div>
+        <div class="row content-offset-25">
+          <div class="col-md-12 text-center">
+            <h3 class="no-margins">Lists</h3>
+          </div>
+        </div>
+        <div class="row content-offset-25">
+          <div class="col-md-12 text-center content-offset-below">
+            <div class="btn-group" dropdown is-open="status.isopen">
+              <button type="button" class="btn btn-lg btn-secondary dropdown-toggle" ng-disabled="disabled">
+                <i class="fa fa-user-md"></i>
+                Teams
+                <i class="fa fa-angle-down"></i>
+              </button>
+              <ul class="dropdown-menu slides" role="menu">
+                <li ng-repeat="i in welcome.tagList"><a href="/#list/[[ welcome.display_to_tag_list[i] ]]">[[ i ]]</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -20,7 +20,7 @@ django-celery==3.1.17
 
 django-compressor==1.5
 
--e git+https://github.com/openhealthcare/opal.git@initial-blood-cultures#egg=opal
+-e git+https://github.com/openhealthcare/opal.git@rfh-css-branch#egg=opal
 -e git+https://github.com/openhealthcare/opal-observations.git@master#egg=opal_observations
 
 -e git+https://github.com/openhealthcare/opal-opat.git@master#egg=opal_opat

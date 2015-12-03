@@ -17,7 +17,7 @@ class Application(application.OpalApplication):
         'js/elcid/controllers/patient_notes.js',
         'js/elcid/controllers/micro_haem_discussion_form.js',
         'js/elcid/controllers/clinical_advice_form.js',
-        'js/elcid/controllers/clinical_advice_form.js',
+        'js/elcid/controllers/welcome.js',
         'js/elcid/services/dicharge_patient.js',
     ]
 
