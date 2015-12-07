@@ -2,11 +2,77 @@
 {% load panels %}
 
 {% block content %}
-  {% include 'detail/_demographics_location_panels.html' %}
-  {% record_panel models.Procedure %}
-  {% record_panel models.PrimaryDiagnosis %}
-  {% record_panel models.Diagnosis %}
-  {% record_panel models.Infection %}
-  {% record_panel models.Line %}
-  {% record_panel models.Antimicrobial %}
+{% include 'detail/_demographics_location_panels.html' %}
+{% record_panel models.Procedure %}
+{% record_panel models.PrimaryDiagnosis %}
+{% record_panel models.Diagnosis %}
+{% record_panel models.Infection %}
+{% record_panel models.Line %}
+{% record_panel models.Antimicrobial %}
+
+<div class="panel panel-default">
+  <div class="panel-heading"><h3>
+    <i class="fa fa-comments"></i> Clinical Advice
+  </div></h3>
+  <div class="panel-body">
+    <div ng-controller="ClinicalAdviceForm as clinicalAdviceForm">
+      <div class="row">
+        <div class="col-md-12">
+          <form class="form-horizontal">
+            {% include models.MicrobiologyInput.get_form_template %}
+          </form>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 text-right">
+          <button class="btn btn-primary" ng-click="clinicalAdviceForm.save('save')">
+            <i class="fa fa-save"></i>
+            Save
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="patient-timeline-container">
+      <div class="row">
+        <div class="col-md-3 patient-timeline">
+          <div class="patient-timeline-now">
+            <div class="patient-timeline-now-text bg-secondary">
+              Now
+            </div>
+          </div>
+        </div>
+      </div>
+      <svg class="speech-bubble-timeline-container">
+        <line class="speech-bubble-timeline hidden-sm hidden-xs" x1="13%" y1="0" x2="13%" y2="500%" />
+        <line class="speech-bubble-timeline hidden-md hidden-lg" x1="50%" y1="0" x2="50%" y2="500%" />
+      </svg>
+      <div ng-repeat="microbiology_input in episode.microbiology_input | orderBy:orderByDate" class="row content-offset-20">
+
+        <div class="col-md-3 patient-timeline">
+          <div class="patient-timeline-speech-bubble">
+            <i class="fa fa-comments patient-timeline-speech-bubble-icon"></i>
+          </div>
+          <div ng-show="microbiology_input.when">
+            <div class="patient-timeline-date">
+              [[ microbiology_input.when | momentDateFormat:'DD MMM YYYY' ]]
+            </div>
+          </div>
+        </div>
+        <div class="col-md-9">
+          <div class="patient-timeline-discussion">
+            <b ng-show="microbiology_input.initials && microbiology_input.initials.trim().length">
+              ([[microbiology_input.initials]]<span ng-show="microbiology_input.discussed_with"> with [[microbiology_input.discussed_with]]</span>)
+            </b>
+            <b>
+              [[microbiology_input.reason_for_interaction]]
+            </b>
+            <br />
+            [[ microbiology_input.clinical_discussion]]
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 {% endblock %}
