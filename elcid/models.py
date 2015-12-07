@@ -130,7 +130,8 @@ class SurgicalProcedure(lookuplists.LookupList):
 
 
 class Procedure(EpisodeSubrecord):
-    date = models.DateField()
+    _icon = 'fa fa-sitemap'
+    date = models.DateField(blank=True, null=True)
     medical_procedure = ForeignKeyOrFreeText(MedicalProcedure)
     surgical_procedure = ForeignKeyOrFreeText(SurgicalProcedure)
 

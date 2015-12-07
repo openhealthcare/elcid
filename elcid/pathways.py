@@ -1,6 +1,6 @@
 from elcid.models import (
     Diagnosis, Line, Antimicrobial, BloodCulture, Location, PrimaryDiagnosis,
-    Infection
+    Infection, Procedure
 )
 from opal.models import Patient
 from pathway.pathways import Pathway, Step
@@ -8,6 +8,7 @@ from pathway.pathways import Pathway, Step
 
 class BloodCulturePathway(Pathway):
     title = "Blood Culture"
+
     steps = (
         Step(
             template_url="/pathway/templates/find_patient_form.html",
@@ -20,6 +21,7 @@ class BloodCulturePathway(Pathway):
             controller_class="BloodCultureLocationCtrl",
             template_url="/templates/pathway/blood_culture_location.html"
         ),
+        Procedure,
         PrimaryDiagnosis,
         Diagnosis,
         Infection,
