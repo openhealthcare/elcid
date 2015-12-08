@@ -7,7 +7,7 @@ from pathway.pathways import Pathway, Step
 
 
 class BloodCulturePathway(Pathway):
-    title = "Blood Culture"
+    title = "Add Patient"
 
     steps = (
         Step(

@@ -7,7 +7,10 @@ controllers.controller('BloodCultureLocationCtrl',
       vm.selectedTags = [];
 
       Options.then(function(options){
-        vm.tagging_display_list = _.values(options.tag_display);
+        var direct_add = _.filter(options.tag_display, function(v, k){
+            return _.contains(options.tag_direct_add, k);
+        });
+        vm.tagging_display_list = _.values(direct_add);
         vm.display_tag_to_name = _.invert(options.tag_display);
       });
 

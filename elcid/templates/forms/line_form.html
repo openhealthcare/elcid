@@ -11,7 +11,7 @@
 {% input label="Inserted By" model="editing.line.inserted_by" %}
 {% input label="External Length When Inserted" model="editing.line.external_length" show="editing.line.line_type != 'Peripheral cannula'" unit="cm" %}
 {% datepicker "data-date-type=\"date\"" label="Removal Date" model="editing.line.removal_datetime" %}
-{% checkbox label="Button Hole", model="editing.line.button_hole" %}
+{% checkbox label="Button Hole" model="editing.line.button_hole" %}
 
 <div class="form-group" ng-show="editing.line.line_type == 'Peripheral cannula'">
   <label class="control-label col-sm-3">Removal Time</label>
