@@ -1,0 +1,26 @@
+
+<div class="patient-list-container">
+  <div class="row">
+    <div class="col-md-8 col-md-push-2">
+      <div ng-repeat="row in rows">
+        <div class="panel panel-default content-offset">
+          <div class="panel-heading">
+            [[ row.demographics[0].name ]] [[ row.demographics[0].hospital_number ]]
+          </div>
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-md-10 col-md-push-1">
+                <div class="row">
+                  <div class="col-md-6">
+                    DOB: [[ row.demographics[0].date_of_birth|shortDate ]]([[ row.demographics[0].date_of_birth | age ]])
+                  </div>
+                  Gender: [[ row.demographics[0].gender ]]
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
