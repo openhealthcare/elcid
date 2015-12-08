@@ -1,9 +1,12 @@
-<b>[[item.hospital_number]]
-<span ng-show="item.nhs_number">([[item.nhs_number]])</span>
-<br />
+<div class="col-md-6">[[item.hospital_number]]</div>
+<div class="col-md-6">
+  <span ng-show="item.nhs_number">([[item.nhs_number]])</span>
+</div>
+<div class="col-md-6">
   <span ng-show="item.date_of_birth">
     [[item.date_of_birth | shortDate]] ([[ item.date_of_birth | age ]])<br />
   </span>
+</div>
+<div class="col-md-6">
 [[ item.country_of_birth ]] [[ item.ethnicity ]]
-<br />
-<span ng-show="item."></span>
+</div>

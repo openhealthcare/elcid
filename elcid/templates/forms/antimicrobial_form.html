@@ -1,11 +1,7 @@
 {% load forms %}
-<div class="row">
-  <form class="form-horizontal">
-    {% input "autofocus" label="Drug" model="editing.antimicrobial.drug" lookuplist="antimicrobial_list" %}
-    {% datepicker label="Start date" model="editing.antimicrobial.start_date" %}
-    {% datepicker label="End date" model="editing.antimicrobial.end_date" %}
-    {% input label="Dose" model="editing.antimicrobial.dose" %}
-    {% input label="Route" model="editing.antimicrobial.route" lookuplist="antimicrobial_route_list" %}
-    {% input label="Frequency" model="editing.antimicrobial.frequency" lookuplist="antimicrobial_frequency_list" %}
-  </form>
-</div>
+{% input "autofocus" label="Drug" model="editing.antimicrobial.drug" lookuplist="antimicrobial_list" %}
+{% datepicker label="Start date" model="editing.antimicrobial.start_date" %}
+{% datepicker label="End date" model="editing.antimicrobial.end_date" %}
+{% input label="Dose" model="editing.antimicrobial.dose" %}
+{% input label="Route" model="editing.antimicrobial.route" lookuplist="antimicrobial_route_list" %}
+{% input label="Frequency" model="editing.antimicrobial.frequency" lookuplist="antimicrobial_frequency_list" %}
