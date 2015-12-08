@@ -77,27 +77,23 @@ class DuplicatePatient(PatientSubrecord):
         return self._icon
 
 
+class LocationCategory(lookuplists.LookupList):
+    pass
+
+
+class Provenance(lookuplists.LookupList):
+    pass
+
+
 class Location(EpisodeSubrecord):
     _is_singleton = True
     _icon = 'fa fa-map-marker'
 
-    category                   = models.CharField(max_length=255, blank=True)
-    hospital                   = models.CharField(max_length=255, blank=True)
-    ward                       = models.CharField(max_length=255, blank=True)
-    bed                        = models.CharField(max_length=255, blank=True)
-    # This is completely the wrong place for these - they need to go in their
-    # own OPATReferral model. The ticket for that work is currently
-    # opal-ideas#21
-    opat_referral_route        = models.CharField(max_length=255, blank=True,
-                                                  null=True)
-    opat_referral_team         = models.CharField(max_length=255, blank=True,
-                                                  null=True)
-    opat_referral_consultant   = models.CharField(max_length=255, blank=True,
-                                                  null=True)
-    opat_referral_team_address = models.TextField(blank=True, null=True)
-    opat_referral              = models.DateField(blank=True, null=True)
-    opat_acceptance            = models.DateField(blank=True, null=True)
-    opat_discharge             = models.DateField(blank=True, null=True)
+    category = ForeignKeyOrFreeText(LocationCategory)
+    provenance = ForeignKeyOrFreeText(Provenance)
+    hospital = models.CharField(max_length=255, blank=True)
+    ward = models.CharField(max_length=255, blank=True)
+    bed = models.CharField(max_length=255, blank=True)
 
     def __unicode__(self):
         try:
@@ -112,6 +108,32 @@ class Location(EpisodeSubrecord):
             )
         except:
             return 'demographics'
+
+
+class InfectionSource(lookuplists.LookupList):
+    pass
+
+
+class Infection(EpisodeSubrecord):
+    _icon = 'fa fa-eyedropper'
+    # this needs to be fixed
+    source = ForeignKeyOrFreeText(InfectionSource)
+    site = models.CharField(max_length=255, blank=True)
+
+
+class MedicalProcedure(lookuplists.LookupList):
+    pass
+
+
+class SurgicalProcedure(lookuplists.LookupList):
+    pass
+
+
+class Procedure(EpisodeSubrecord):
+    _icon = 'fa fa-sitemap'
+    date = models.DateField(blank=True, null=True)
+    medical_procedure = ForeignKeyOrFreeText(MedicalProcedure)
+    surgical_procedure = ForeignKeyOrFreeText(SurgicalProcedure)
 
 
 class PresentingComplaint(EpisodeSubrecord):
@@ -148,6 +170,7 @@ class PrimaryDiagnosis(EpisodeSubrecord):
     """
     _is_singleton = True
     _title = 'Primary Diagnosis'
+    _icon = 'fa fa-eye'
 
     condition = ForeignKeyOrFreeText(omodels.Condition)
     confirmed = models.BooleanField(default=False)
@@ -276,6 +299,14 @@ class Allergies(PatientSubrecord):
         verbose_name_plural = "Allergies"
 
 
+class RenalFunction(lookuplists.LookupList):
+    pass
+
+
+class LiverFunction(lookuplists.LookupList):
+    pass
+
+
 class MicrobiologyInput(EpisodeSubrecord):
     _title = 'Clinical Advice'
     _sort = 'when'
@@ -295,6 +326,11 @@ class MicrobiologyInput(EpisodeSubrecord):
     infection_control_advice_given = models.NullBooleanField()
     change_in_antibiotic_prescription = models.NullBooleanField()
     referred_to_opat = models.NullBooleanField()
+    white_cell_count = models.IntegerField(null=True, blank=True)
+    c_reactive_protein = models.CharField(max_length=255, blank=True)
+    maximum_temperature = models.IntegerField(null=True, blank=True)
+    renal_function = ForeignKeyOrFreeText(RenalFunction)
+    liver_function = ForeignKeyOrFreeText(LiverFunction)
 
     def set_reason_for_interaction(self, incoming_value, user, data):
         if(incoming_value in MICROHAEM_CONSULTATIONS):
@@ -510,15 +546,16 @@ class Line(EpisodeSubrecord):
     _sort = 'insertion_datetime'
     _icon = 'fa fa-bolt'
 
-    line_type            = ForeignKeyOrFreeText(omodels.Line_type)
-    site                 = ForeignKeyOrFreeText(omodels.Line_site)
-    insertion_datetime   = models.DateTimeField(blank=True, null=True)
-    inserted_by          = models.CharField(max_length=255, blank=True, null=True)
-    external_length      = models.CharField(max_length=255, blank=True, null=True)
-    removal_datetime     = models.DateTimeField(blank=True, null=True)
-    complications        = ForeignKeyOrFreeText(omodels.Line_complication)
-    removal_reason       = ForeignKeyOrFreeText(omodels.Line_removal_reason)
+    line_type = ForeignKeyOrFreeText(omodels.Line_type)
+    site = ForeignKeyOrFreeText(omodels.Line_site)
+    insertion_datetime = models.DateTimeField(blank=True, null=True)
+    inserted_by = models.CharField(max_length=255, blank=True, null=True)
+    external_length = models.CharField(max_length=255, blank=True, null=True)
+    removal_datetime = models.DateTimeField(blank=True, null=True)
+    complications = ForeignKeyOrFreeText(omodels.Line_complication)
+    removal_reason = ForeignKeyOrFreeText(omodels.Line_removal_reason)
     special_instructions = models.TextField()
+    button_hole = models.NullBooleanField()
 
 
 class OPATReview(EpisodeSubrecord):

@@ -1,0 +1,23 @@
+<div class="heading">
+  <div class="spaced bg-primary">
+    <div class="box">
+      <h1>
+        {% block heading %}[[ episode.demographics[0].name ]]{% endblock %}
+        <small>
+          {% block subheading %}
+          [[ episode.demographics[0].hospital_number ]]
+          [[ episode.demographics[0].date_of_birth | shortDate ]]
+          {% endblock %}
+        </small>
+      </h1>
+    </div>
+  </div>
+</div>
+<div class="container headed-content-offset detail">
+  <div class="row">
+    <div class="col-md-8 col-md-push-2" style="font-size: 18px;">
+        {% block content %}
+        {% endblock content %}
+    </div>
+  </div>
+</div>

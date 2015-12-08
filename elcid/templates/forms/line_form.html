@@ -1,28 +1,27 @@
 {% load forms %}
-<form name="lineForm" class="form-horizontal">
-  {% select "autofocus" label="Line Type" model="editing.line.line_type" lookuplist="line_type_list" %}
-  {% input label="Site" model="editing.line.site" lookuplist="line_site_list" %}
-  {% datepicker "data-date-type=\"date\"" label="Insertion Date" model="editing.line.insertion_datetime" %}
-  <div class="form-group" ng-show="editing.line_type == 'Peripheral cannula'">
-    <label class="control-label col-sm-3">Insertion Time</label>
-    <div class="col-sm-3">
-    <input class="form-control" type="text" ng-model="editing.line.insertion_datetime" bs-timepicker />
-    </div>
+{% select "autofocus" label="Line Type" model="editing.line.line_type" lookuplist="line_type_list" %}
+{% input label="Site" model="editing.line.site" lookuplist="line_site_list" %}
+{% datepicker "data-date-type=\"date\"" label="Insertion Date" model="editing.line.insertion_datetime" %}
+<div class="form-group" ng-show="editing.line.line_type == 'Peripheral cannula'">
+  <label class="control-label col-sm-3">Insertion Time</label>
+  <div class="col-sm-3">
+  <input class="form-control" type="text" ng-model="editing.line.insertion_datetime" bs-timepicker />
   </div>
-  {% input label="Inserted By" model="editing.line.inserted_by" %}
-  {% input label="External Length When Inserted" model="editing.line.external_length" show="editing.line.line_type != 'Peripheral cannula'" unit="cm" %}
-  {% datepicker "data-date-type=\"date\"" label="Removal Date" model="editing.line.removal_datetime" %}
+</div>
+{% input label="Inserted By" model="editing.line.inserted_by" %}
+{% input label="External Length When Inserted" model="editing.line.external_length" show="editing.line.line_type != 'Peripheral cannula'" unit="cm" %}
+{% datepicker "data-date-type=\"date\"" label="Removal Date" model="editing.line.removal_datetime" %}
+{% checkbox label="Button Hole", model="editing.line.button_hole" %}
 
-  <div class="form-group" ng-show="editing.line.line_type == 'Peripheral cannula'">
-    <label class="control-label col-sm-3">Removal Time</label>
-    <div class="col-sm-3">
+<div class="form-group" ng-show="editing.line.line_type == 'Peripheral cannula'">
+  <label class="control-label col-sm-3">Removal Time</label>
+  <div class="col-sm-3">
 <input class="form-control" type="text"
-             ng-model="editing.line.removal_datetime"
-             bs-timepicker
-             />
-    </div>
+           ng-model="editing.line.removal_datetime"
+           bs-timepicker
+           />
   </div>
-  {% select label="Complications" model="editing.line.complications" lookuplist="line_complication_list" other=True %}
-  {% select label="Removal Reason" model="editing.line.removal_reason" lookuplist="line_removal_reason_list" %}
-  {% textarea label="Special Instructions" model="editing.line.special_instructions" %}
-</form>
+</div>
+{% select label="Complications" model="editing.line.complications" lookuplist="line_complication_list" other=True %}
+{% select label="Removal Reason" model="editing.line.removal_reason" lookuplist="line_removal_reason_list" %}
+{% textarea label="Special Instructions" model="editing.line.special_instructions" %}
