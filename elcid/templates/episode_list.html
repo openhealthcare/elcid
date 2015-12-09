@@ -1,5 +1,35 @@
 {% load forms %}
-<div class="container content-offset">
+<div class="container content-offset bg-white">
+
+  <div class="row screen-only">
+    <div class="col-md-12">
+      <h1 >
+        <div class="btn-group pull-left" dropdown is-open="status.isopen">
+          <button type="button" class="btn btn-secondary dropdown-toggle" ng-disabled="disabled">
+            <i class="fa fa-user-md"></i>
+            [[ tag_display[currentTag] ]]
+            <i class="fa fa-angle-down"></i>
+          </button>
+          <ul class="dropdown-menu slides" role="menu">
+            {% for team in teams %}
+              {% if team.visible_in_list %}
+                {% if not team.has_subteams or team.parent %}
+                  <li ng-hide="currentTag == '{{ team.name }}' || currentSubTag == '{{ team.name }}'">
+                    <a href="#/list/{% if team.parent %}{{ team.parent.name }}/{{ team.name }}{% else %}{{ team.name }}{% endif %}">
+                      {% if team.parent %}
+                        {{ team.parent.title }} /
+                      {% endif %}
+                      {{ team.title }}
+                    </a>
+                  </li>
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+          </ul>
+        </div>
+    </div>
+  </div>
+
   <div class="row">
     <div class="col-md-8 col-md-push-2">
       <a class="panel-link" href="[[ '/#/episode/' + row.id]]" ng-repeat="row in rows">
@@ -14,31 +44,58 @@
             </h3>
           </div>
           <div class="panel-body">
+            
             <div class="row">
               <div class="col-md-6">
-                <h4>Primary Diagnosis</h4>
+                <h4><strong>
+                    {% icon models.PrimaryDiagnosis.get_icon %} Primary Diagnosis
+                </strong></h4>
+                <p ng-repeat="item in row.primary_diagnosis">
+                  {% include models.PrimaryDiagnosis.get_display_template %}
+                </p>
               </div>
+              
               <div class="col-md-6">
-                <h4 class="no-margins">Antimicrobials:</h4>
-                <span ng-repeat="item in rows.antimicrobial">
-                  {% include "records/antimicrobial.html" %}
-                </span>
+                <h4><strong>
+                    {% icon models.Antimicrobial.get_icon %} Antimicrobials
+                </strong></h4>
+                <p ng-repeat="item in row.antimicrobial">
+                  {% include models.Antimicrobial.get_display_template %}
+                </p>
+
               </div>
             </div>
+
             <div class="row">
               <div class="col-md-6">
-                <h4>{% icon 'fa-tasks' %} Diagnosis</h4>
-                <ul>
-                  <li>CAP</li>
-                  <li>Alcohol Withdrawal</li>
-                </ul>
+                <h4><strong>
+                    {% icon models.Diagnosis.get_icon %} Diagnosis
+                </strong></h4>
+                <p ng-repeat="item in row.diagnosis">
+                  {% include models.Diagnosis.get_display_template %}
+                </p>
+
               </div>
               <div class="col-md-6">
-                <h4 class="no-margins">Investigations:</h4>
+                <h4><strong>{% icon 'fa fa-crosshairs' %}Investigations</strong></h4>
               </div>
             </div>
+
           </div>
         </div>
       </a>
     </div>
   </div>
+
+  <div class="empty-list" ng-hide="num_episodes > 0">
+    <p class="lead text-center">
+      There are no patients on this list.
+    </p>
+    <p class="lead text-center">
+      <span class="screen-only">
+        Would you like to <a href="/pathway/#/add_patient">add one</a>?
+      </span>
+    </p>
+  </div>
+
+</div>

@@ -1,5 +1,5 @@
 """
-elCID OPAL implementation
+elCID Royal Free Hospital implementation
 """
 
 from opal.core import application
@@ -30,3 +30,9 @@ class Application(application.OpalApplication):
     patient_view_forms = {
         "General Consultation": "inline_forms/clinical_advice.html",
     }
+
+    menuitems = [
+        dict(
+            href='/pathway/#/add_patient', display='Add Patient', icon='fa fa-plus',
+            activepattern='/pathway/#/add_patient')
+    ]

@@ -1,13 +1,11 @@
+{% load forms %}
 <div class="row">
   <div class="col-md-4 col-md-push-4 lead text-center">
     <p>
       We couldn't find any results for your search.
     </p>
-    <p>
-      <a href="/pathway/#/add_patient?hospital_number=[[ searchTerm ]]">Maybe you'd like to create a patient</a>
-    </p>
-    <p>
-      <a href="#/extract">Or perhaps try an advanced search?</a>
-    </p>
+    <center>
+      <a href="/pathway/#/add_patient" class="btn btn-primary btn-lg">{% icon 'fa-plus' %} Add a patient</a>
+    </center>
   </div>
 </div>
