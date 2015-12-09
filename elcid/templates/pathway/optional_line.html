@@ -1,0 +1,20 @@
+{% load forms %}
+<div class="row">
+  <form class="form-horizontal">
+    <div class="form-group">
+      <label class="control-label col-sm-5">
+          Does the patient have a line?
+      </label>
+      <div class="col-sm-4">
+          <select autofocus class="form-control" ng-model="currentStep.controller.hasLine">
+            <option>No</option>
+            <option>Yes</option>
+          </select>
+      </div>
+    </div>
+    <hr />
+    <div ng-if="currentStep.controller.hasLine == 'Yes'">
+        {% include 'forms/line_form.html' %}
+    </div>
+  </form>
+</div>
