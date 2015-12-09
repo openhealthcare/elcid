@@ -53,6 +53,6 @@ class NotMergedFilter(admin.SimpleListFilter):
 class DuplicatePatientAdmin(admin.ModelAdmin):
     list_filter = (NotMergedFilter,)
 
-admin.site.register(models.DuplicatePatient, DuplicatePatientAdmin)
+#admin.site.register(models.DuplicatePatient, DuplicatePatientAdmin)
 admin.site.register(rmodels.Version, admin.ModelAdmin)
 admin.site.register(rmodels.Revision, admin.ModelAdmin)
