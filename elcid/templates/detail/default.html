@@ -4,7 +4,7 @@
 {% block content %}
 {% include 'detail/_demographics_location_panels.html' %}
 {% teams_panel %}
-  
+
 {% record_panel models.Procedure %}
 {% record_panel models.PrimaryDiagnosis %}
 {% record_panel models.Diagnosis %}
@@ -34,7 +34,7 @@
         </div>
       </div>
     </div>
-    <div class="patient-timeline-container">
+    <div ng-show="episode.microbiology_input.length" class="patient-timeline-container">
       <div class="row">
         <div class="col-md-3 patient-timeline">
           <div class="patient-timeline-now">

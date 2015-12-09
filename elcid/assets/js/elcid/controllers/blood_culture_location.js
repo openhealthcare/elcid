@@ -1,7 +1,10 @@
 controllers.controller('BloodCultureLocationCtrl',
-  function(Options) {
+  function(Options, $controller) {
       "use strict";
+      var parentCtrl = $controller("MultistageDefault");
       var vm = this;
+
+      _.extend(vm, parentCtrl);
       vm.tagging_display_list = [];
       vm.display_tag_to_name = {};
       vm.selectedTags = [];
@@ -18,9 +21,5 @@ controllers.controller('BloodCultureLocationCtrl',
         currentScope.editing.tagging = _.map(vm.selectedTags, function(t){
             return vm.display_tag_to_name[t];
         });
-      };
-
-      vm.valid = function(){
-        return true;
       };
 });
