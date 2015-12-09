@@ -1,5 +1,5 @@
 {% load forms %}
 <span ng-controller="ProcedureFormCtrl as formCtrl">
-  {% datepicker label="Date" name="date" model="editing.procedure.date" %}
+  {% datepicker  "autofocus" label="Date" name="date" model="editing.procedure.date" %}
   {% select label="Procedure" name="procedure" model="formCtrl.selectedProcedure" lookuplist="formCtrl.procedures" %}
 </span>
