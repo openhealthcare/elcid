@@ -7,8 +7,9 @@ angular.module('opal.controllers').controller(
                                 EpisodeDetailMixin, ngProgressLite, $q,
                                 growl
                                    ){
+       "use strict";
 
-        COOKIE_NAME = "patientNotes-inlineForm";
+       var COOKIE_NAME = "patientNotes-inlineForm";
 
        $scope.episodes = _.sortBy(episodes, function(e){
            var significantDate = e.discharge_date || e.date_of_episode || e.date_of_admission;
@@ -23,15 +24,9 @@ angular.module('opal.controllers').controller(
            return significantDate;
        }).reverse();
 
-       _.each($scope.episodes, function(e){
-           if(e.microbiology_input){
-               _.each(e.microbiology_input, function(m){
-                   if(m.when){
-                       m.when = moment(m.when);
-                   }
-               });
-           }
-       });
+       $scope.orderByDate = function(x){
+          return -moment(x.when).unix();
+       };
 
        $scope.inlineForm = {};
 
