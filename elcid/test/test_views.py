@@ -38,7 +38,14 @@ class ViewsTest(OpalTestCase):
 
     def test_try_to_create_episode_for_existing_patient_with_active_episode(self):
         data = {
-            'demographics': self.patient.demographics_set.get().to_dict(self.user),
+            'demographics': {
+                "consistency_token": "12345678",
+                "date_of_birth": "20/06/1972",
+                "hospital_number": "AA1111",
+                "id": 1,
+                "name": "John Smith",
+                "patient_id": 1
+            },
             'location': {
                 'category': 'Inpatient',
                 'hospital': 'UCH',
@@ -54,7 +61,7 @@ class ViewsTest(OpalTestCase):
             'demographics': {
                 'hospital_number': 'BB2222',
                 'name': 'Johann Schmidt',
-                'date_of_birth': '1970-06-01'
+                'date_of_birth': '01/06/1970'
                 },
             'location': {
                 'category': 'Inpatient',
@@ -72,7 +79,7 @@ class ViewsTest(OpalTestCase):
             'demographics': {
                 'hospital_number': '',
                 'name': 'Johann Schmidt',
-                'date_of_birth': '1970-06-01'
+                'date_of_birth': '01/06/1970'
                 },
             'location': {
                 'category': 'Inpatient',
@@ -176,7 +183,7 @@ class MicrobiologyInputViewTest(OpalTestCase, AbstractEpisodeTestCase):
             "episode_id": self.episode.id,
             "initials": "Jane Doe",
             "reason_for_interaction": constants.MICROHAEM_CONSULTATIONS[0],
-            "when": "2015-10-07 23:30+01:00"
+            "when": "07/10/2015 23:30:00"
         }
 
     def test_add_microbiology_input(self):

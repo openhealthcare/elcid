@@ -4,6 +4,8 @@ angular.module('opal.controllers')
                                                     $modalInstance, Episode, schema,
                                                     options,
                                                     demographics) {
+
+        DATE_FORMAT = 'DD/MM/YYYY';
         $scope.currentTag = $cookieStore.get('opal.currentTag') || 'mine';
         $scope.currentSubTag = $cookieStore.get('opal.currentSubTag') || 'all';
 
@@ -34,28 +36,21 @@ angular.module('opal.controllers')
         };
 
         $scope.save = function() {
-            var value;
+            var doa, dob;
 
             // This is a bit mucky but will do for now
             // TODO - this is obviously broken now that location is not like this.
-            value = $scope.editing.date_of_admission;
-            if (value) {
-                if(typeof value == 'string'){
-                    var doa = moment(value, 'DD/MM/YYYY').format('YYYY-MM-DD');
-                }else{
-                    var doa = moment(value).format('YYYY-MM-DD');
+
+            if($scope.editing.date_of_admission){
+                if(!angular.isString(value)){
+                    $scope.editing.date_of_admission = moment($scope.editing.date_of_admission).format('DATE_FORMAT');
                 }
-                $scope.editing.date_of_admission = doa;
             }
 
-            value = $scope.editing.demographics.date_of_birth;
-            if (value) {
-                if(typeof value == 'string'){
-                    var dob = moment(value, 'DD/MM/YYYY').format('YYYY-MM-DD');
-                }else{
-                    var dob = moment(value).format('YYYY-MM-DD');
+            if($scope.editing.date_of_birth){
+                if(!angular.isString(value)){
+                    $scope.editing.date_of_birth = moment($scope.editing.date_of_birth).format('DATE_FORMAT');
                 }
-                $scope.editing.demographics.date_of_birth = dob;
             }
 
             // TODO: Un-hard code this as part of elcid#192
