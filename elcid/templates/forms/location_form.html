@@ -1,6 +1,5 @@
 {% load forms %}
-{% select "autofocus" name="category" label="Category" model="editing.location.category" lookuplist="category_list" %}
-{% select label="Provenance" model="editing.location.provenance" lookuplist="provenance_list" %}
+{% select "autofocus" label="Provenance" model="editing.location.provenance" lookuplist="provenance_list" %}
 {% input name="bed" label="Bed" model="editing.location.bed" %}
 {% input label="Ward" model="editing.location.ward" %}
 {% input label="Hospital" model="editing.location.hospital" %}
