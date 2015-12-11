@@ -21,7 +21,7 @@ angular.module('opal.controllers').controller(
               $scope.editing.procedure.medical_procedure = vm.selectedProcedure;
               $scope.editing.procedure.surgical_procedure = undefined;
           }
-          else if(_.contains(options.surgical_procedure, vm.selectedProcedure)){
+          else if(_.contains(options.surgicalprocedure, vm.selectedProcedure)){
               $scope.editing.procedure.surgical_procedure = vm.selectedProcedure;
               $scope.editing.procedure.medical_procedure = undefined;
           }
