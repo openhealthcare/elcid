@@ -1,0 +1,19 @@
+{% extends 'modal_base.html' %}
+{% load forms %}
+
+{% block icon_name %}fa fa-search {% endblock %}
+{% block title %}Find Patient{% endblock %}
+{% block modal_body %}
+  <div>
+    <form class="form form-horizontal">
+      {% input "autofocus" label="Filter Patients" model="filter.query"%}
+    </form>
+  </div>
+  {% include 'partials/_episode_summary_table.html' %}
+{% endblock %}
+{% block modal_save %}
+
+{% endblock %}
+{% block modal_another %}
+
+{% endblock %}

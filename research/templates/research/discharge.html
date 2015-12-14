@@ -1,0 +1,15 @@
+{% extends 'modal_base.html' %}
+{% load forms %}
+
+{% block icon_name %}fa fa-remove{% endblock %}
+{% block title %}Remove{% endblock %}
+{% block modal_body %}
+<form class="form-horizontal">
+  {% radio label="Reason" model="editing.category" lookuplist="['Ineligible', 'Deceased', 'Duplicate']" %}
+  {% datepicker label="Date of removal" model="editing.discharge_date" %}
+</form>
+{% endblock %}
+{% block modal_save %}
+  <button class="btn btn-primary" ng-click="discharge()">Remove</button>
+{% endblock %}
+{% block modal_another %}{% endblock %}

@@ -1,0 +1,11 @@
+<div class="form-group">
+  <label class="control-label col-sm-3"><i class="fa fa-users"></i> Teams</label>
+  <div class="col-sm-8">
+    <select class="form-control" ng-model="filters.team">
+      <option value="">---------</option>
+      {% for team in teams %}
+      <option value="{{ team.name }}">{% if team.parent %}{{ team.parent.title }} / {% endif %}{{ team.title }}</option>
+      {% endfor %}
+    </select>
+  </div>
+</div>

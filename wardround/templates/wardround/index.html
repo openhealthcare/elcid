@@ -1,0 +1,9 @@
+{% extends 'opal.html' %}
+
+{% load opalplugins %}
+
+{% block ngapp %}opal.wardround{% endblock %}
+{% block angularapp %}
+  {% plugin_javascripts 'opal.wardround' %}
+{% endblock %}
+

@@ -1,0 +1,27 @@
+{% extends 'layouts/two_column.html' %}
+{% load panels %}
+{% block left_column %}
+  {% include 'detail/_demographics_location_panels.html' %}
+  {% record_panel models.ContactDetails %}
+  {% record_panel models.Carers %}
+  {% record_panel models.Allergies %}
+  {% include 'obs/detail_panel.html' %}
+  {% record_panel models.PastMedicalHistory %}
+  {% record_panel models.Travel %}
+  {% record_panel models.Appointment %}
+  {% record_panel models.MicrobiologyInput %}
+{% endblock %}
+{% block right_column %}
+  {% record_panel models.OPATOutcome %}
+  {% record_panel models.Diagnosis %}
+  {% record_panel models.Antimicrobial %}
+  {% record_panel models.MicrobiologyTest %}
+  {% record_panel models.Line %}
+  {% record_panel models.OPATLineAssessment %}
+  {% record_panel models.OPATOutstandingIssues %}
+{% endblock %}
+{% block under_split_cols %}
+  <div class="col-md-12">
+    {% record_panel models.OPATReview %}
+  </div>
+{% endblock %}
