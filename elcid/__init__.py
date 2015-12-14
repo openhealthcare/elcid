@@ -33,6 +33,8 @@ class Application(application.OpalApplication):
 
     menuitems = [
         dict(
-            href='/pathway/#/add_patient', display='Add Patient', icon='fa fa-plus',
-            activepattern='/pathway/#/add_patient')
+            href='/pathway/#/bloodculturepathway',
+            display='Add Patient',
+            icon='fa fa-plus',
+            activepattern='/pathway/#/bloodculturepathway')
     ]
