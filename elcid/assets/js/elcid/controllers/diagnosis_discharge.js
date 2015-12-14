@@ -11,7 +11,7 @@ controllers.controller(
         $location,
         growl,
         Flow,
-        tags, schema, options, episode, DischargePatientService){
+        tags, options, episode, DischargePatientService){
 
         $scope.tags = tags;
         $scope.episode = episode;
@@ -278,8 +278,8 @@ controllers.controller(
         $scope.goToNextStep = function(form, model){
             var require_all, nextStep;
             if($scope.step === "diagnosis"){
-                if(!form.editing_primary_diagnosis_condition.$valid){
-                    form.editing_primary_diagnosis_condition.$setDirty();
+                if(!form.primary_diagnosis_condition.$valid){
+                    form.primary_diagnosis_condition.$setDirty();
                     return;
                 }
 
@@ -300,14 +300,14 @@ controllers.controller(
                 with ngRequired. It might be better to set each model as a different form
                 */
                 if(!model.presenting_complaint.symptoms.length){
-                    form.editing_presenting_complaint_symptoms.$setValidity("required", false);
-                    form.editing_presenting_complaint_symptoms.$setDirty();
+                    form.presenting_complaint_symptoms.$setValidity("required", false);
+                    form.presenting_complaint_symptoms.$setDirty();
                     return;
                 }
             }
             if($scope.step === "consultant_at_discharge"){
-                if(!form.editing_consultant_at_discharge_consultant.$valid){
-                    form.editing_consultant_at_discharge_consultant.$setDirty();
+                if(!form.consultant_at_discharge_consultant.$valid){
+                    form.consultant_at_discharge_consultant.$setDirty();
                     return;
                 }
             }

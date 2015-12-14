@@ -23,7 +23,7 @@ except ImportError:
         }
     }
 
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -103,8 +103,6 @@ STATICFILES_FINDERS = (
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'hq6wg27$1pnjvuesa-1%-wiqrpnms_kx+w4g&&o^wr$5@stjbu'
 
-# List of callables that know how to import templates from various sources.
-
 if DEBUG:
     TEMPLATE_LOADERS = (
         'django.template.loaders.filesystem.Loader',
@@ -117,7 +115,6 @@ else:
             'django.template.loaders.app_directories.Loader',
             )),
     )
-
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
@@ -208,10 +205,9 @@ LOGGING = {
             'level': 'INFO',
             'propagate': True,
         },
-        'django.db.backends':{
+        'django.request': {
             'handlers': ['console'],
             'level': 'ERROR',
-            'propagate': True,
         }
     }
 }
@@ -220,8 +216,10 @@ LOGGING = {
 # (Heroku requirement)
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-DATE_FORMAT = 'Y-m-d'
-DATE_INPUT_FORMATS = ['Y-m-d']
+DATE_FORMAT = 'd/m/Y'
+DATE_INPUT_FORMATS = ['%d/%m/%Y']
+DATETIME_FORMAT = 'd/m/Y H:i:s'
+DATETIME_INPUT_FORMATS = ['%d/%m/%Y %H:%M:%S']
 
 CSRF_COOKIE_NAME = 'XSRF-TOKEN'
 APPEND_SLASH = False
@@ -259,7 +257,7 @@ else:
     EMAIL_HOST = 'localhost'
 
 
-VERSION_NUMBER = '0.5.3'
+VERSION_NUMBER = '0.6.0'
 #TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 #TEST_RUNNER = 'django_test_coverage.runner.CoverageTestSuiteRunner'
 

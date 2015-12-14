@@ -1,9 +1,11 @@
 angular.module('opal.controllers')
     .controller('DiagnosisAddEpisodeCtrl', function($scope, $http, $cookieStore, $q,
                                                     $timeout, $modal,
-                                                    $modalInstance, Episode, schema,
+                                                    $modalInstance, Episode,
                                                     options,
                                                     demographics) {
+        var DATE_FORMAT = 'DD/MM/YYYY';
+
         $scope.currentTag = $cookieStore.get('opal.currentTag') || 'mine';
         $scope.currentSubTag = $cookieStore.get('opal.currentSubTag') || 'all';
 
@@ -34,29 +36,24 @@ angular.module('opal.controllers')
         };
 
         $scope.save = function() {
-            var value;
+	    var dob, doa;
 
-            // This is a bit mucky but will do for now
-            // TODO - this is obviously broken now that location is not like this.
-            value = $scope.editing.date_of_admission;
-            if (value) {
-                if(typeof value == 'string'){
-                    var doa = moment(value, 'DD/MM/YYYY').format('YYYY-MM-DD');
-                }else{
-                    var doa = moment(value).format('YYYY-MM-DD');
+	    // This is a bit mucky but will do for now
+	    doa = $scope.editing.date_of_admission;
+	    if (doa) {
+                if(!angular.isString(doa)){
+                    doa = moment(doa).format(DATE_FORMAT);
                 }
-                $scope.editing.date_of_admission = doa;
-            }
+		$scope.editing.date_of_admission = doa;
+	    }
 
-            value = $scope.editing.demographics.date_of_birth;
-            if (value) {
-                if(typeof value == 'string'){
-                    var dob = moment(value, 'DD/MM/YYYY').format('YYYY-MM-DD');
-                }else{
-                    var dob = moment(value).format('YYYY-MM-DD');
+	    dob = $scope.editing.demographics.date_of_birth;
+	    if (dob) {
+                if(!angular.isString(dob)){
+                    dob = moment(dob).format(DATE_FORMAT);
                 }
-                $scope.editing.demographics.date_of_birth = dob;
             }
+	    $scope.editing.demographics.date_of_birth = dob;
 
             // TODO: Un-hard code this as part of elcid#192
             if($scope.editing.tagging[0].opat){
@@ -64,7 +61,7 @@ angular.module('opal.controllers')
             }
 
             $http.post('episode/', $scope.editing).success(function(episode) {
-                $scope.episode = new Episode(episode, schema);
+                $scope.episode = new Episode(episode);
                 $scope.presenting_complaint();
             });
         };
@@ -78,6 +75,7 @@ angular.module('opal.controllers')
             modal = $modal.open({
                 templateUrl: '/templates/modals/presenting_complaint.html/',
                 controller: 'EditItemCtrl',
+                size: 'lg',
                 resolve: {
                     item: function() { return item; },
                     options: function() { return options; },
