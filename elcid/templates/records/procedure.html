@@ -1,11 +1,8 @@
-<div>
-  <span>[[ item.date | shortDate ]]</span>
-</div>
+<b>Procedure:</b>
 <span ng-show="item.medical_procedure">
-  <div><b>Type:</b> medical</div>
-  <div><b>Procedure:</b> [[ item.medical_procedure ]]</div>
+ [[ item.medical_procedure ]]
 </span>
 <span ng-show="item.surgical_procedure">
-  <div><b>Type:</b> medical</div>
-  <div><b>Procedure:</b> [[ item.medical_procedure ]]</div>
+  [[ item.surgical_procedure ]]
 </span>
+[[ item.date | fromNow ]]

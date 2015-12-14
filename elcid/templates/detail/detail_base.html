@@ -6,12 +6,12 @@
       <h2>
         {% icon 'fa-user' %}
         {% block heading %}[[ episode.demographics[0].name ]]{% endblock %}
-        <small>
+        <span class="small">
           {% block subheading %}
             [[ episode.demographics[0].hospital_number ]]
             [[ episode.demographics[0].date_of_birth | shortDate ]]
           {% endblock %}
-        </small>
+        </span>
 
       </h2>
     </div>
