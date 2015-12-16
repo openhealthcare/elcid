@@ -8,7 +8,6 @@ from opat import OpatPlugin
 class ApplicationTestCase(TestCase):
     def test_flows(self):
         flows = OpatPlugin().flows()
-        self.assertEqual(1, len(flows))
+        self.assertEqual(2, len(flows))
         self.assertIn('enter', flows['opat']['default'].keys())
         self.assertIn('exit', flows['opat']['default'].keys())
-
