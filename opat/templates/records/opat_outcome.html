@@ -1,0 +1,25 @@
+<b>[[ item.outcome_stage ]] </b> <br />
+<div ng-show="item.outcome_stage && item.outcome_stage.indexOf('Completed Therapy') === 0">
+  Patient Outcome: [[ item.patient_outcome ]] <br />
+  OPAT Outcome: [[ item.opat_outcome ]] <br />
+  Infective Diagnosis: [[ item.infective_diagnosis ]]
+</div>
+<div ng-show="item.outcome_stage == 'OPAT Review'">
+  Patient Outcome: [[ item.patient_outcome ]] <br />
+  OPAT Outcome: [[ item.opat_outcome ]] <br />
+  Infective Diagnosis: [[ item.infective_diagnosis ]]
+  <span ng-show="item.deceased">
+    Deceased
+    [[ item.death_category ]] <br />
+    [[ item.cause_of_death ]] <br />
+  </span>
+  <span ng-show="item.readmitted">
+    Readmitted
+    [[ item.readmission_cause ]] <br />
+  </span>
+  <span ng-show="item.notes">Notes: [[ item.notes ]]</span>
+  <span ng-show="item.patient_feedback">
+    <br />
+    Patient survey sent
+  </span>
+</div>

@@ -1,0 +1,71 @@
+<p>
+  <b>
+    Indication for OPAT:
+  </b>
+</p>
+<ul>
+  <li ng-repeat="diagnosis in episode.diagnosis">
+    [[ diagnosis.condition ]]
+  </li>
+</ul>
+<p>
+  <b>
+    PMH:
+  </b>
+</p>
+<ul>
+  <li ng-repeat="cond in episode.past_medical_history">
+    [[ cond.condition ]]
+  </li>
+</ul>
+
+<p>
+  <b>
+    Allergies:
+  </b>
+</p>
+<ul>
+  <li ng-repeat="allergy in episode.allergies">
+    [[ allergy.drug ]]
+  </li>
+</ul>
+
+<p>
+  <b>
+    Antimicrobials:
+  </b>
+</p>
+<ul>
+  <li ng-repeat="drug in episode.antimicrobial">
+    [[ drug.drug ]] [[ drug.dose ]] [[ drug.frequency ]] delivered by
+    [[ drug.delivered_by ]] started on [[ drug.start_date | shortDate ]]
+    due to finish on [[ drug.end_date | shortDate ]]
+  </li>
+</ul>
+
+<p>
+  <b>
+    Current vascular access:
+  </b>
+</p>
+<ul>
+  <li ng-repeat="line in episode.line">
+    [[ line.line_type ]] - [[ line.site ]] Inserted on [[ line.insertion_datetime | shortDate ]].
+    External length at insertion [[ line.external_length ]].
+  </li>
+</ul>
+
+<p><b>OPAT Plan</b></p>
+<p>
+  [[ episode.opat_review[0].opat_plan ]]
+</p>
+
+<p><b>Observations</b></p>
+<p>
+  Date: [[episode.observation[0].datetime | shortDate ]] [[ episode.observation[0].datetime | hhmm ]]<br />
+  BP: [[episode.observation[0].bp_systolic]]/[[episode.observation[0].bp_diastolic]]<br />
+  Pulse: [[episode.observation[0].pulse]]<br />
+  RR: [[episode.observation[0].resp_rate]]<br />
+  Sp02: [[episode.observation[0].sp02]]<br />
+  Temp: [[episode.observation[0].temperature]]
+</p>

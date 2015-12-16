@@ -1,0 +1,39 @@
+<div class="container content-offset">
+  <div class="panel panel-primary">
+    <!-- Default panel contents -->
+    <div class="panel-heading">
+      <h2>
+        <i class="fa fa-tasks"></i>
+        Ward Rounds
+      </h2>
+    </div>
+
+    <div class="panel-body">
+      <div class="row">
+        {% for wardround in wardrounds %}
+        <div class="col-md-4">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3>{{ wardround.name }}</h3>
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-md-6">
+                  <p>
+                    {{ wardround.description }}
+                  </p>
+                </div> 
+                <div class="col-md-6">
+                  <a href="#/{{ wardround.slug }}" class="btn btn-primary btn-lg">
+                    <i class="fa fa-arrow-right"></i>
+                    Start
+                  </a>
+                </div> 
+              </div> 
+            </div>
+          </div>          
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>

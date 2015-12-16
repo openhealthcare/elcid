@@ -2,7 +2,7 @@
 Defining the schemas for various list / detail views
 """
 from elcid import models
-from opal import models as omodels
+from opat import models as opat_models
 
 list_columns = [
     models.Demographics,
@@ -51,9 +51,9 @@ list_columns_opat = [
     models.PastMedicalHistory,
     models.Antimicrobial,
     models.MicrobiologyTest,
-    models.OPATReview,
+    opat_models.OPATReview,
     models.Line,
-    models.OPATOutstandingIssues,
+    opat_models.OPATOutstandingIssues,
 ]
 
 list_columns_opat_review = [
