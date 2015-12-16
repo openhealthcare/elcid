@@ -30,7 +30,7 @@ def backwards(apps, *args):
 
 class Migration(migrations.Migration):
     dependencies = [
-        ('opat', '0004_opat_rvt_opatlineassessment_opatoutstandingissues_opatreview'),
+        ('opat', '0003_opat_rvt_opatlineassessment_opatoutstandingissues_opatreview'),
         ('elcid', '0027_ridrtistudydiagnosis'),
     ]
 

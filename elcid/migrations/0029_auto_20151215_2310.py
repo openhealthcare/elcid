@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('elcid', '0028_move_models_to_opat'),
-        ('opat', '0005_migrate_data_from_elcid'),
+        ('opat', '0004_migrate_data_from_elcid'),
     ]
 
     state_operations = [
