@@ -1,0 +1,5 @@
+{% extends 'modal_base.html' %}
+{% load forms %}
+{% block modal_body %}
+    {% select "autofocus" placeholder="Consultant At Discharge" label="Consultant At Discharge" model="editing.consultant" default_null=False lookuplist="consultant_list" %}
+{% endblock %}

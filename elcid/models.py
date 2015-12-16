@@ -4,11 +4,16 @@ elCID implementation specific models!
 from django.db import models
 
 import opal.models as omodels
-from opal.models import (Subrecord,
-                         EpisodeSubrecord, PatientSubrecord, GP, CommunityNurse)
+
+from opal.models import (
+    EpisodeSubrecord, PatientSubrecord, GP, CommunityNurse, Episode, Team,
+    Tagging
+)
 from opal.core.fields import ForeignKeyOrFreeText
 from opal.core import lookuplists
+from constants import MICROHAEM_CONSULTATIONS, MICROHAEM_TEAM_NAME
 from opat import models as opatmodels
+
 
 class Demographics(PatientSubrecord):
     _is_singleton = True
@@ -23,7 +28,7 @@ class Demographics(PatientSubrecord):
     gender           = models.CharField(max_length=255, blank=True, null=True)
 
     pid_fields       = 'name', 'hospital_number', 'nhs_number'
-    
+
     class Meta:
         verbose_name_plural = "Demographics"
 
@@ -59,6 +64,17 @@ class Carers(PatientSubrecord):
 
     class Meta:
         verbose_name_plural = "Carers"
+
+
+class DuplicatePatient(PatientSubrecord):
+    _no_admin = True
+    _icon = 'fa fa-clone'
+    _advanced_searchable = False
+    reviewed = models.BooleanField(default=False)
+    merged = models.BooleanField(default=False)
+
+    def icon(self):
+        return self._icon
 
 
 class Location(EpisodeSubrecord):
@@ -102,28 +118,58 @@ class PresentingComplaint(EpisodeSubrecord):
     _title = 'Presenting Complaint'
     _icon = 'fa fa-stethoscope'
 
-    symptom  = ForeignKeyOrFreeText(omodels.Symptom)
+    symptom = ForeignKeyOrFreeText(omodels.Symptom)
+    symptoms = models.ManyToManyField(omodels.Symptom, related_name="presenting_complaints")
     duration = models.CharField(max_length=255, blank=True, null=True)
-    details  = models.CharField(max_length=255, blank=True, null=True)
+    details = models.TextField(blank=True, null=True)
+
+    def set_symptom(self, *args, **kwargs):
+        # ignore symptom for the time being
+        pass
+
+    def to_dict(self, user):
+        return dict(
+            symptoms=[i.name for i in self.symptoms.all()],
+            duration=self.duration,
+            details=self.details
+        )
+
+    @classmethod
+    def _get_fieldnames_to_serialize(cls):
+        field_names = super(PresentingComplaint, cls)._get_fieldnames_to_serialize()
+        removed_fields = {u'symptom_fk_id', 'symptom_ft', 'symptom'}
+        field_names = [i for i in field_names if i not in removed_fields]
+        return field_names
 
 
 class PrimaryDiagnosis(EpisodeSubrecord):
     """
     This is the confirmed primary diagnosisa
     """
-    _is_singleton= True
+    _is_singleton = True
+    _title = 'Primary Diagnosis'
 
     condition = ForeignKeyOrFreeText(omodels.Condition)
-    confirmed = models.NullBooleanField(default=False)
+    confirmed = models.BooleanField(default=False)
 
     class Meta:
         verbose_name_plural = "Primary diagnoses"
+
+
+class Consultant(lookuplists.LookupList):
+    pass
+
+class ConsultantAtDischarge(EpisodeSubrecord):
+    _title = 'Consultant At Discharge'
+    _is_singleton = True
+    consultant = ForeignKeyOrFreeText(Consultant)
 
 
 class SecondaryDiagnosis(EpisodeSubrecord):
     """
     This is a confirmed diagnosis at discharge time.
     """
+    _title = 'Secondary Diagnosis'
     condition   = ForeignKeyOrFreeText(omodels.Condition)
     co_primary = models.NullBooleanField(default=False)
 
@@ -216,6 +262,8 @@ class Antimicrobial(EpisodeSubrecord):
     adverse_event = ForeignKeyOrFreeText(omodels.Antimicrobial_adverse_event)
     comments      = models.TextField(blank=True, null=True)
     frequency     = ForeignKeyOrFreeText(omodels.Antimicrobial_frequency)
+    no_antimicrobials = models.NullBooleanField(default=False)
+
 
 class Allergies(PatientSubrecord):
     _icon = 'fa fa-warning'
@@ -230,22 +278,41 @@ class Allergies(PatientSubrecord):
 
 class MicrobiologyInput(EpisodeSubrecord):
     _title = 'Clinical Advice'
-    _sort = 'date'
+    _sort = 'when'
     _icon = 'fa fa-comments'
     _modal = 'lg'
     _list_limit = 3
 
-    date                              = models.DateField(null=True, blank=True)
-    initials                          = models.CharField(max_length=255, blank=True)
-    reason_for_interaction            = ForeignKeyOrFreeText(
-        omodels.Clinical_advice_reason_for_interaction)
-    clinical_discussion               = models.TextField(blank=True)
-    agreed_plan                       = models.TextField(blank=True)
-    discussed_with                    = models.CharField(max_length=255, blank=True)
-    clinical_advice_given             = models.NullBooleanField()
-    infection_control_advice_given    = models.NullBooleanField()
+    when = models.DateTimeField(null=True, blank=True)
+    initials = models.CharField(max_length=255, blank=True)
+    reason_for_interaction = ForeignKeyOrFreeText(
+        omodels.Clinical_advice_reason_for_interaction
+    )
+    clinical_discussion = models.TextField(blank=True)
+    agreed_plan = models.TextField(blank=True)
+    discussed_with = models.CharField(max_length=255, blank=True)
+    clinical_advice_given = models.NullBooleanField()
+    infection_control_advice_given = models.NullBooleanField()
     change_in_antibiotic_prescription = models.NullBooleanField()
-    referred_to_opat                  = models.NullBooleanField()
+    referred_to_opat = models.NullBooleanField()
+
+    def set_reason_for_interaction(self, incoming_value, user, data):
+        if(incoming_value in MICROHAEM_CONSULTATIONS):
+            if self.id:
+                episode = self.episode
+            else:
+                episode = Episode.objects.get(pk=data["episode_id"])
+
+            exists = Tagging.objects.filter(
+                episode=episode, team__name=MICROHAEM_TEAM_NAME
+            )
+            exists = exists.exists()
+            if not exists:
+                Tagging.objects.create(
+                    episode=episode,
+                    team=Team.objects.get(name=MICROHAEM_TEAM_NAME)
+                )
+        self.reason_for_interaction = incoming_value
 
 
 class Todo(EpisodeSubrecord):
@@ -266,6 +333,7 @@ class MicrobiologyTest(EpisodeSubrecord):
     _modal = 'lg'
 
     test                  = models.CharField(max_length=255)
+    alert_investigation   = models.BooleanField(default=False)
     date_ordered          = models.DateField(null=True, blank=True)
     details               = models.CharField(max_length=255, blank=True)
     microscopy            = models.CharField(max_length=255, blank=True)
@@ -320,6 +388,54 @@ class MicrobiologyTest(EpisodeSubrecord):
 Begin OPAT specific fields.
 """
 
+
+class HaemChemotherapyType(lookuplists.LookupList):
+    class Meta:
+        verbose_name = "Chemotherapy type"
+
+
+class HaemTransplantType(lookuplists.LookupList):
+    class Meta:
+        verbose_name = "Transplant Type"
+
+
+class HaemInformationType(lookuplists.LookupList):
+    pass
+
+
+class EpisodeOfNeutropenia(PatientSubrecord):
+    _icon = 'fa fa-info-circle'
+    _sort = 'start'
+    _title = 'Episode of Neutropenia'
+    start = models.DateField(blank=True, null=True)
+    stop = models.DateField(blank=True, null=True)
+
+    class Meta:
+        ordering = ['-start']
+
+    @property
+    def icon(self):
+        return self._icon
+
+
+class HaemInformation(PatientSubrecord):
+    _icon = 'fa fa-info-circle'
+    _title = 'Haematology Background Information'
+
+    patient_type = ForeignKeyOrFreeText(HaemInformationType)
+    date_of_transplant = models.DateField(blank=True, null=True)
+    neutropenia_onset = models.DateField(blank=True, null=True)
+    type_of_transplant = ForeignKeyOrFreeText(HaemTransplantType)
+    type_of_chemotherapy = ForeignKeyOrFreeText(HaemChemotherapyType)
+    date_of_chemotherapy = models.DateField(blank=True, null=True)
+    count_recovery = models.DateField(blank=True, null=True)
+    details = models.TextField(blank=True, null=True)
+
+    @property
+    def icon(self):
+        return self._icon
+
+
 class Unplanned_stop(lookuplists.LookupList):
     class Meta:
         verbose_name = "Unplanned stop"
@@ -342,7 +458,7 @@ class OPATMeta(EpisodeSubrecord):
     readmitted            = models.NullBooleanField(default=False)
     readmission_cause     = models.CharField(max_length=200, blank=True, null=True)
     notes                 = models.TextField(blank=True, null=True)
-    
+
 
     class Meta:
         verbose_name = "OPAT meta"
@@ -482,6 +598,9 @@ class Specimin(lookuplists.LookupList):
     class Meta:
         verbose_name = "Specimen"
 
+class LabtestDetails(lookuplists.LookupList):
+    _advanced_searchable = False
+
 class Organism_details(lookuplists.LookupList):
     _advanced_searchable = False
 
@@ -561,6 +680,13 @@ class LabTest(EpisodeSubrecord):
     freezer_box_number           = models.CharField(max_length=200, blank=True, null=True)
     esbl                         = models.NullBooleanField(default=False)
     carbapenemase                = models.NullBooleanField(default=False)
+
+
+class RidRTIStudyDiagnosis(EpisodeSubrecord):
+    """
+    The RidRTI study Diagnosis.
+    """
+    diagnosis = models.CharField(max_length=255)
 
 
 class RidRTITest(EpisodeSubrecord):

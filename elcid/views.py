@@ -5,23 +5,33 @@ import csv
 import random
 
 from django import forms
+from django.apps import apps
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
 from django.views.generic import TemplateView, FormView, View
+
 import letter
 from letter.contrib.contact import EmailForm, EmailView
 
-from elcid.forms import BulkCreateUsersForm
-from elcid import reports
+from opal.core.subrecords import subrecords
+from opal.core.views import _build_json_response
+from opal import models as opal_models
+from opal.core import application
 
+from elcid.forms import BulkCreateUsersForm
+
+app = application.get_app()
 u = unicode
 POSTIE = letter.DjangoPostman()
+
 
 def temp_password():
     num = random.randint(1, 100)
     word = random.choice(['womble', 'bananas', 'flabbergasted', 'kerfuffle'])
     return '{0}{1}'.format(num, word)
+
 
 class FeedbackForm(EmailForm):
     """
@@ -36,8 +46,11 @@ class FeedbackForm(EmailForm):
                 u(self.cleaned_data.get('email', ''))),
             u(self.cleaned_data.get('message', '')))
 
-    def subject(self): return u'eLCID - Feedback Form'
-    def reply_to(self): return u(self.cleaned_data.get('email', ''))
+    def subject(self):
+        return u'eLCID - Feedback Form'
+
+    def reply_to(self):
+        return u(self.cleaned_data.get('email', ''))
 
 
 class FeedbackView(EmailView):
@@ -122,6 +135,32 @@ class BulkCreateUserView(FormView):
         return super(BulkCreateUserView, self).form_valid(form)
 
 
+class PatientDetailDataView(View):
+    """
+    Return a serialised view of the patient.
+    """
+    def get(self, *args, **kwargs):
+        patient_id = kwargs.get("patient_id")
+        patient = get_object_or_404(opal_models.Patient, id=patient_id)
+
+        serialised = opal_models.Episode.objects.serialised(
+            self.request.user,
+            patient.episode_set.all()
+        )
+
+        return _build_json_response(serialised)
+
+
+class PatientDetailTemplateView(TemplateView):
+    template_name = 'patient_notes.html'
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(PatientDetailTemplateView, self).get_context_data(*args, **kwargs)
+        context['models'] = {m.__name__: m for m in subrecords()}
+        context['inline_forms'] = getattr(app, "patient_view_forms", [])
+        return context
+
+
 class ElcidTemplateView(TemplateView):
     def dispatch(self, *args, **kwargs):
         self.name = kwargs['name']
@@ -129,3 +168,13 @@ class ElcidTemplateView(TemplateView):
 
     def get_template_names(self, *args, **kwargs):
         return ['elcid/modals/'+self.name]
+
+    def get_context_data(self, *args, **kwargs):
+        ctd = super(ElcidTemplateView, self).get_context_data(*args, **kwargs)
+
+        try:
+            ctd["model"] = apps.get_model(app_label='elcid', model_name=self.name)
+        except LookupError:
+            pass
+
+        return ctd

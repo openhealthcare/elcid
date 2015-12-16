@@ -32,7 +32,7 @@ flows = {
     },
     'tropical_diseases': {
         'default': diagnosis_flow
-        
+
     },
     'walkin': {
         'default': {
