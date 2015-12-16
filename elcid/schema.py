@@ -3,6 +3,8 @@ Defining the schemas for various list / detail views
 """
 from elcid import models
 from opat import models as opat_models
+from research import models as research_models
+
 
 list_columns = [
     models.Demographics,
@@ -132,19 +134,19 @@ from research import models as researchmodels
 list_columns_research_practitioner = [
     models.Demographics,
     models.Location,
-    models.RidRTIStudyDiagnosis,
+    research_models.RidRTIStudyDiagnosis,
     models.Diagnosis,
     models.Antimicrobial,
     models.MicrobiologyTest,
-    models.LabTest,
     models.Travel,
-    models.LabSpecimin
+    research_models.LabTest,
+    research_models.LabSpecimin
 ]
 
 list_columns_scientist = [
     models.Demographics,
-    models.RidRTIStudyDiagnosis,
-    models.LabTest,
-    models.CheckpointsAssay,
-    models.RidRTITest
+    research_models.RidRTIStudyDiagnosis,
+    research_models.LabTest,
+    research_models.CheckpointsAssay,
+    research_models.RidRTITest
 ]
