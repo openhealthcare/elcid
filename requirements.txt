@@ -28,6 +28,7 @@ django-compressor==1.5
 -e git+https://github.com/openhealthcare/opal-opat.git@v0.2#egg=opal_opat
 -e git+https://github.com/openhealthcare/opal-dashboard.git@#egg=opal_dashboard
 -e git+https://github.com/openhealthcare/opal-dischargesummary.git@v0.1#egg=opal_dischargesummary
--e git+https://github.com/openhealthcare/opal-guidelines.git@#egg=opal_guidelines
 -e git+https://github.com/openhealthcare/opal-iframe-api.git@#egg=opal-iframe-api
 -e git+https://github.com/srosro/django-test-coverage#egg=django-test-coverage
+
+-e git+https://github.com/openhealthcare/opal-guidelines.git@v0.2#egg=opal_guidelines

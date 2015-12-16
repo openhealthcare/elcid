@@ -3,11 +3,10 @@ elCID implementation specific models!
 """
 from django.db import models
 
-import opal.models as omodels
 from opal.models import (Subrecord,
                          EpisodeSubrecord, PatientSubrecord, GP, CommunityNurse)
 from opal.core.fields import ForeignKeyOrFreeText
-from opal.core import lookuplists
+from opal.core import lookuplists, referencedata
 from opat import models as opatmodels
 
 class Demographics(PatientSubrecord):
@@ -18,7 +17,7 @@ class Demographics(PatientSubrecord):
     hospital_number  = models.CharField(max_length=255, blank=True)
     nhs_number       = models.CharField(max_length=255, blank=True, null=True)
     date_of_birth    = models.DateField(null=True, blank=True)
-    country_of_birth = ForeignKeyOrFreeText(omodels.Destination)
+    country_of_birth = ForeignKeyOrFreeText(referencedata.Destination)
     ethnicity        = models.CharField(max_length=255, blank=True, null=True)
     gender           = models.CharField(max_length=255, blank=True, null=True)
 
@@ -102,7 +101,7 @@ class PresentingComplaint(EpisodeSubrecord):
     _title = 'Presenting Complaint'
     _icon = 'fa fa-stethoscope'
 
-    symptom  = ForeignKeyOrFreeText(omodels.Symptom)
+    symptom  = ForeignKeyOrFreeText(referencedata.Symptom)
     duration = models.CharField(max_length=255, blank=True, null=True)
     details  = models.CharField(max_length=255, blank=True, null=True)
 
@@ -113,7 +112,7 @@ class PrimaryDiagnosis(EpisodeSubrecord):
     """
     _is_singleton= True
 
-    condition = ForeignKeyOrFreeText(omodels.Condition)
+    condition = ForeignKeyOrFreeText(referencedata.Condition)
     confirmed = models.NullBooleanField(default=False)
 
     class Meta:
@@ -124,7 +123,7 @@ class SecondaryDiagnosis(EpisodeSubrecord):
     """
     This is a confirmed diagnosis at discharge time.
     """
-    condition   = ForeignKeyOrFreeText(omodels.Condition)
+    condition   = ForeignKeyOrFreeText(referencedata.Condition)
     co_primary = models.NullBooleanField(default=False)
 
     class Meta:
@@ -140,7 +139,7 @@ class Diagnosis(EpisodeSubrecord):
     _sort = 'date_of_diagnosis'
     _icon = 'fa fa-stethoscope'
 
-    condition         = ForeignKeyOrFreeText(omodels.Condition)
+    condition         = ForeignKeyOrFreeText(referencedata.Condition)
     provisional       = models.NullBooleanField()
     details           = models.CharField(max_length=255, blank=True)
     date_of_diagnosis = models.DateField(blank=True, null=True)
@@ -160,7 +159,7 @@ class PastMedicalHistory(EpisodeSubrecord):
     _sort = 'year'
     _icon = 'fa fa-history'
 
-    condition = ForeignKeyOrFreeText(omodels.Condition)
+    condition = ForeignKeyOrFreeText(referencedata.Condition)
     year      = models.CharField(max_length=200, blank=True)
     details   = models.CharField(max_length=255, blank=True)
 
@@ -180,13 +179,13 @@ class GeneralNote(EpisodeSubrecord):
 class Travel(EpisodeSubrecord):
     _icon = 'fa fa-plane'
 
-    destination         = ForeignKeyOrFreeText(omodels.Destination)
+    destination         = ForeignKeyOrFreeText(referencedata.Destination)
     dates               = models.CharField(max_length=255, blank=True)
-    reason_for_travel   = ForeignKeyOrFreeText(omodels.Travel_reason)
+    reason_for_travel   = ForeignKeyOrFreeText(referencedata.Travel_reason)
     did_not_travel      = models.NullBooleanField(default=False)
     specific_exposures  = models.CharField(max_length=255, blank=True)
     malaria_prophylaxis = models.NullBooleanField(default=False)
-    malaria_drug        = ForeignKeyOrFreeText(omodels.Antimicrobial)
+    malaria_drug        = ForeignKeyOrFreeText(referencedata.Antimicrobial)
     malaria_compliance  = models.CharField(max_length=200, blank=True, null=True)
 
 
@@ -206,21 +205,21 @@ class Antimicrobial(EpisodeSubrecord):
     _icon = 'fa fa-flask'
     _modal = 'lg'
 
-    drug          = ForeignKeyOrFreeText(omodels.Antimicrobial)
+    drug          = ForeignKeyOrFreeText(referencedata.Antimicrobial)
     dose          = models.CharField(max_length=255, blank=True)
-    route         = ForeignKeyOrFreeText(omodels.Antimicrobial_route)
+    route         = ForeignKeyOrFreeText(referencedata.Antimicrobial_route)
     start_date    = models.DateField(null=True, blank=True)
     end_date      = models.DateField(null=True, blank=True)
     delivered_by  = ForeignKeyOrFreeText(Drug_delivered)
     reason_for_stopping = ForeignKeyOrFreeText(Iv_stop)
-    adverse_event = ForeignKeyOrFreeText(omodels.Antimicrobial_adverse_event)
+    adverse_event = ForeignKeyOrFreeText(referencedata.Antimicrobial_adverse_event)
     comments      = models.TextField(blank=True, null=True)
-    frequency     = ForeignKeyOrFreeText(omodels.Antimicrobial_frequency)
+    frequency     = ForeignKeyOrFreeText(referencedata.Antimicrobial_frequency)
 
 class Allergies(PatientSubrecord):
     _icon = 'fa fa-warning'
 
-    drug        = ForeignKeyOrFreeText(omodels.Antimicrobial)
+    drug        = ForeignKeyOrFreeText(referencedata.Antimicrobial)
     provisional = models.NullBooleanField()
     details     = models.CharField(max_length=255, blank=True)
 
@@ -238,7 +237,7 @@ class MicrobiologyInput(EpisodeSubrecord):
     date                              = models.DateField(null=True, blank=True)
     initials                          = models.CharField(max_length=255, blank=True)
     reason_for_interaction            = ForeignKeyOrFreeText(
-        omodels.Clinical_advice_reason_for_interaction)
+        referencedata.Clinical_advice_reason_for_interaction)
     clinical_discussion               = models.TextField(blank=True)
     agreed_plan                       = models.TextField(blank=True)
     discussed_with                    = models.CharField(max_length=255, blank=True)
@@ -394,14 +393,14 @@ class Line(EpisodeSubrecord):
     _sort = 'insertion_datetime'
     _icon = 'fa fa-bolt'
 
-    line_type            = ForeignKeyOrFreeText(omodels.Line_type)
-    site                 = ForeignKeyOrFreeText(omodels.Line_site)
+    line_type            = ForeignKeyOrFreeText(referencedata.Line_type)
+    site                 = ForeignKeyOrFreeText(referencedata.Line_site)
     insertion_datetime   = models.DateTimeField(blank=True, null=True)
     inserted_by          = models.CharField(max_length=255, blank=True, null=True)
     external_length      = models.CharField(max_length=255, blank=True, null=True)
     removal_datetime     = models.DateTimeField(blank=True, null=True)
-    complications        = ForeignKeyOrFreeText(omodels.Line_complication)
-    removal_reason       = ForeignKeyOrFreeText(omodels.Line_removal_reason)
+    complications        = ForeignKeyOrFreeText(referencedata.Line_complication)
+    removal_reason       = ForeignKeyOrFreeText(referencedata.Line_removal_reason)
     special_instructions = models.TextField()
 
 
@@ -421,7 +420,7 @@ class OPATReview(EpisodeSubrecord):
     dressing_changed        = models.NullBooleanField(default=False)
     bung_changed            = models.NullBooleanField(default=False)
     medication_administered = models.TextField(blank=True, null=True)
-    adverse_events          = ForeignKeyOrFreeText(omodels.Antimicrobial_adverse_event)
+    adverse_events          = ForeignKeyOrFreeText(referencedata.Antimicrobial_adverse_event)
 
     class Meta:
         verbose_name = "OPAT review"
