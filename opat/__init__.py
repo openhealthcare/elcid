@@ -66,7 +66,7 @@ class OpatPlugin(plugins.OpalPlugin):
         """
         return {}
 
-    
+
 plugins.register(OpatPlugin)
 
 class OPATEpisode(episodes.EpisodeType):
