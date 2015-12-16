@@ -1,0 +1,311 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
+from django.db import models, migrations
+import opal.models
+from django.conf import settings
+
+
+class Migration(migrations.Migration):
+
+    dependencies = [
+        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+        ('research', '0002_auto_20150918_1510'),
+        ('elcid', '0030_move_models_to_research'),
+    ]
+
+    state_operations = [
+        migrations.CreateModel(
+            name='Antimicrobial_susceptability',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('name', models.CharField(unique=True, max_length=255)),
+            ],
+            options={
+                'verbose_name': 'Antimicrobial susceptability',
+                'verbose_name_plural': 'Antimicrobial susceptibilities',
+            },
+        ),
+        migrations.CreateModel(
+            name='Checkpoints_assay',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('name', models.CharField(unique=True, max_length=255)),
+            ],
+            options={
+                'verbose_name': 'Checkpoints assay values',
+                'verbose_name_plural': 'Checkpoints assay values',
+            },
+        ),
+        migrations.CreateModel(
+            name='CheckpointsAssay',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('created', models.DateTimeField(null=True, blank=True)),
+                ('updated', models.DateTimeField(null=True, blank=True)),
+                ('consistency_token', models.CharField(max_length=8)),
+                ('acc', models.NullBooleanField(default=False)),
+                ('act_mir', models.NullBooleanField(default=False)),
+                ('bel', models.NullBooleanField(default=False)),
+                ('cmy_i_mox', models.NullBooleanField(default=False)),
+                ('cmy_ii', models.NullBooleanField(default=False)),
+                ('ctx_m_1_group', models.NullBooleanField(default=False)),
+                ('ctx_m_1_like', models.NullBooleanField(default=False)),
+                ('ctx_m_15_like', models.NullBooleanField(default=False)),
+                ('ctx_m_2_group', models.NullBooleanField(default=False)),
+                ('ctx_m_3_like', models.NullBooleanField(default=False)),
+                ('ctx_m_32_like', models.NullBooleanField(default=False)),
+                ('ctx_m_8_25_group', models.NullBooleanField(default=False)),
+                ('ctx_m_9_group', models.NullBooleanField(default=False)),
+                ('dha', models.NullBooleanField(default=False)),
+                ('fox', models.NullBooleanField(default=False)),
+                ('ges', models.NullBooleanField(default=False)),
+                ('gim', models.NullBooleanField(default=False)),
+                ('imp', models.NullBooleanField(default=False)),
+                ('kpc', models.NullBooleanField(default=False)),
+                ('ndm', models.NullBooleanField(default=False)),
+                ('oxa_23_like', models.NullBooleanField(default=False)),
+                ('oxa_24_like', models.NullBooleanField(default=False)),
+                ('oxa_48_like', models.NullBooleanField(default=False)),
+                ('oxa_58_like', models.NullBooleanField(default=False)),
+                ('per', models.NullBooleanField(default=False)),
+                ('shv_e240k', models.NullBooleanField(default=False)),
+                ('shv_g238a', models.NullBooleanField(default=False)),
+                ('shv_g238s', models.NullBooleanField(default=False)),
+                ('shv_wt', models.NullBooleanField(default=False)),
+                ('spm', models.NullBooleanField(default=False)),
+                ('tem_e104k', models.NullBooleanField(default=False)),
+                ('tem_g238s', models.NullBooleanField(default=False)),
+                ('tem_r164c', models.NullBooleanField(default=False)),
+                ('tem_r164h', models.NullBooleanField(default=False)),
+                ('tem_r164s', models.NullBooleanField(default=False)),
+                ('tem_wt', models.NullBooleanField(default=False)),
+                ('veb', models.NullBooleanField(default=False)),
+                ('vim', models.NullBooleanField(default=False)),
+                ('negative', models.NullBooleanField(default=False)),
+                ('comments', models.TextField(null=True, blank=True)),
+                ('created_by', models.ForeignKey(related_name='created_research_checkpointsassay_subrecords', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
+                ('episode', models.ForeignKey(to='opal.Episode')),
+                ('updated_by', models.ForeignKey(related_name='updated_research_checkpointsassay_subrecords', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
+            ],
+            options={
+                'verbose_name': 'Checkpoints assay',
+            },
+            bases=(opal.models.UpdatesFromDictMixin, models.Model),
+        ),
+        migrations.CreateModel(
+            name='LabSpecimin',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('created', models.DateTimeField(null=True, blank=True)),
+                ('updated', models.DateTimeField(null=True, blank=True)),
+                ('consistency_token', models.CharField(max_length=8)),
+                ('date_collected', models.DateField(null=True, blank=True)),
+                ('volume', models.CharField(max_length=200, null=True, blank=True)),
+                ('epithelial_cell', models.CharField(max_length=200, null=True, blank=True)),
+                ('white_blood_cells', models.CharField(max_length=200, null=True, blank=True)),
+                ('date_tested', models.DateField(null=True, blank=True)),
+                ('external_id', models.CharField(max_length=200, null=True, blank=True)),
+                ('biobanking', models.NullBooleanField(default=False)),
+                ('biobanking_box', models.CharField(max_length=200, null=True, blank=True)),
+                ('date_biobanked', models.DateField(null=True, blank=True)),
+                ('volume_biobanked', models.CharField(max_length=200, null=True, blank=True)),
+                ('specimin_type_ft', models.CharField(default=b'', max_length=255, null=True, blank=True)),
+                ('appearance_ft', models.CharField(default=b'', max_length=255, null=True, blank=True)),
+            ],
+            options={
+                'verbose_name': 'Lab specimen appearance',
+            },
+            bases=(opal.models.UpdatesFromDictMixin, models.Model),
+        ),
+        migrations.CreateModel(
+            name='LabTest',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('created', models.DateTimeField(null=True, blank=True)),
+                ('updated', models.DateTimeField(null=True, blank=True)),
+                ('consistency_token', models.CharField(max_length=8)),
+                ('test', models.CharField(max_length=255)),
+                ('date_ordered', models.DateField(null=True, blank=True)),
+                ('details', models.CharField(max_length=255, blank=True)),
+                ('result', models.CharField(max_length=255, blank=True)),
+                ('significant_organism', models.NullBooleanField(default=False)),
+                ('retrieved', models.NullBooleanField(default=False)),
+                ('date_retrieved', models.DateField(null=True, blank=True)),
+                ('sweep_biobanked', models.NullBooleanField(default=False)),
+                ('organism_biobanked', models.NullBooleanField(default=False)),
+                ('freezer_box_number', models.CharField(max_length=200, null=True, blank=True)),
+                ('esbl', models.NullBooleanField(default=False)),
+                ('carbapenemase', models.NullBooleanField(default=False)),
+                ('antimicrobials_resistant_ft', models.CharField(default=b'', max_length=255, null=True, blank=True)),
+                ('antimicrobials_susceptible_ft', models.CharField(default=b'', max_length=255, null=True, blank=True)),
+                ('antimicrobials_intermediate_ft', models.CharField(default=b'', max_length=255, null=True, blank=True)),
+                ('organism_details_ft', models.CharField(default=b'', max_length=255, null=True, blank=True)),
+                ('antimicrobials_intermediate_fk', models.ForeignKey(related_name='intermediate', blank=True, to='research.Antimicrobial_susceptability', null=True)),
+                ('antimicrobials_resistant_fk', models.ForeignKey(related_name='resistant', blank=True, to='research.Antimicrobial_susceptability', null=True)),
+                ('antimicrobials_susceptible_fk', models.ForeignKey(related_name='susceptible', blank=True, to='research.Antimicrobial_susceptability', null=True)),
+                ('created_by', models.ForeignKey(related_name='created_research_labtest_subrecords', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
+                ('episode', models.ForeignKey(to='opal.Episode')),
+            ],
+            options={
+                'abstract': False,
+            },
+            bases=(opal.models.UpdatesFromDictMixin, models.Model),
+        ),
+        migrations.CreateModel(
+            name='LabtestDetails',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('name', models.CharField(unique=True, max_length=255)),
+            ],
+            options={
+                'ordering': ['name'],
+                'abstract': False,
+            },
+        ),
+        migrations.CreateModel(
+            name='Organism_details',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('name', models.CharField(unique=True, max_length=255)),
+            ],
+            options={
+                'verbose_name_plural': 'Organism details',
+            },
+        ),
+        migrations.CreateModel(
+            name='RidRTIStudyDiagnosis',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('created', models.DateTimeField(null=True, blank=True)),
+                ('updated', models.DateTimeField(null=True, blank=True)),
+                ('consistency_token', models.CharField(max_length=8)),
+                ('diagnosis', models.CharField(max_length=255)),
+                ('created_by', models.ForeignKey(related_name='created_research_ridrtistudydiagnosis_subrecords', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
+                ('episode', models.ForeignKey(to='opal.Episode')),
+                ('updated_by', models.ForeignKey(related_name='updated_research_ridrtistudydiagnosis_subrecords', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
+            ],
+            options={
+                'abstract': False,
+            },
+            bases=(opal.models.UpdatesFromDictMixin, models.Model),
+        ),
+        migrations.CreateModel(
+            name='RidRTITest',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('created', models.DateTimeField(null=True, blank=True)),
+                ('updated', models.DateTimeField(null=True, blank=True)),
+                ('consistency_token', models.CharField(max_length=8)),
+                ('test', models.CharField(max_length=200, null=True, blank=True)),
+                ('notes', models.TextField(null=True, blank=True)),
+                ('pseudomonas_aeruginosa', models.NullBooleanField(default=False)),
+                ('acinetobacter_baumannii', models.NullBooleanField(default=False)),
+                ('senotophomonas_maltophilia', models.NullBooleanField(default=False)),
+                ('klebsiella_spp', models.NullBooleanField(default=False)),
+                ('enterobacter_spp', models.NullBooleanField(default=False)),
+                ('staphylococcus_aureus', models.NullBooleanField(default=False)),
+                ('staphylococcus_mrsa', models.NullBooleanField(default=False)),
+                ('ctx_m', models.NullBooleanField(default=False)),
+                ('shv_esbl', models.NullBooleanField(default=False)),
+                ('tem_esbl', models.NullBooleanField(default=False)),
+                ('vim', models.NullBooleanField(default=False)),
+                ('imp', models.NullBooleanField(default=False)),
+                ('ndm', models.NullBooleanField(default=False)),
+                ('kpc', models.NullBooleanField(default=False)),
+                ('oxa_48', models.NullBooleanField(default=False)),
+                ('meca', models.NullBooleanField(default=False)),
+                ('mycoplasma_pneumoniae', models.NullBooleanField(default=False)),
+                ('chlamydophila_pneumoniae', models.NullBooleanField(default=False)),
+                ('legionella_pneumophila', models.NullBooleanField(default=False)),
+                ('mtc', models.NullBooleanField(default=False)),
+                ('haemophilus_influenzae', models.NullBooleanField(default=False)),
+                ('streptococcus_pneumoniae', models.NullBooleanField(default=False)),
+                ('rsva', models.NullBooleanField(default=False)),
+                ('rsvb', models.NullBooleanField(default=False)),
+                ('influenza_a', models.NullBooleanField(default=False)),
+                ('influenza_b', models.NullBooleanField(default=False)),
+                ('cap_coronavirus_oc43', models.NullBooleanField(default=False)),
+                ('cap_coronavirus_hku1', models.NullBooleanField(default=False)),
+                ('cap_coronavirus_nl63', models.NullBooleanField(default=False)),
+                ('cap_coronavirus_229e', models.NullBooleanField(default=False)),
+                ('nocardia_spp', models.NullBooleanField(default=False)),
+                ('rhodococcus_equi', models.NullBooleanField(default=False)),
+                ('aspergillus_spp', models.NullBooleanField(default=False)),
+                ('cryptococcus_neoformans', models.NullBooleanField(default=False)),
+                ('pneumocystis_jiroveci', models.NullBooleanField(default=False)),
+                ('orti_coronavirus_oc43', models.NullBooleanField(default=False)),
+                ('orti_coronavirus_hku1', models.NullBooleanField(default=False)),
+                ('orti_coronavirus_nl63', models.NullBooleanField(default=False)),
+                ('orti_coronavirus_229e', models.NullBooleanField(default=False)),
+                ('created_by', models.ForeignKey(related_name='created_research_ridrtitest_subrecords', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
+                ('episode', models.ForeignKey(to='opal.Episode')),
+                ('updated_by', models.ForeignKey(related_name='updated_research_ridrtitest_subrecords', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
+            ],
+            options={
+                'verbose_name': 'RiD-RTI',
+            },
+            bases=(opal.models.UpdatesFromDictMixin, models.Model),
+        ),
+        migrations.CreateModel(
+            name='Specimin',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('name', models.CharField(unique=True, max_length=255)),
+            ],
+            options={
+                'verbose_name': 'Specimen',
+            },
+        ),
+        migrations.CreateModel(
+            name='Specimin_appearance',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('name', models.CharField(unique=True, max_length=255)),
+            ],
+            options={
+                'verbose_name': 'Specimen appearance',
+            },
+        ),
+        migrations.AddField(
+            model_name='labtest',
+            name='organism_details_fk',
+            field=models.ForeignKey(blank=True, to='research.Organism_details', null=True),
+        ),
+        migrations.AddField(
+            model_name='labtest',
+            name='updated_by',
+            field=models.ForeignKey(related_name='updated_research_labtest_subrecords', blank=True, to=settings.AUTH_USER_MODEL, null=True),
+        ),
+        migrations.AddField(
+            model_name='labspecimin',
+            name='appearance_fk',
+            field=models.ForeignKey(blank=True, to='research.Specimin_appearance', null=True),
+        ),
+        migrations.AddField(
+            model_name='labspecimin',
+            name='created_by',
+            field=models.ForeignKey(related_name='created_research_labspecimin_subrecords', blank=True, to=settings.AUTH_USER_MODEL, null=True),
+        ),
+        migrations.AddField(
+            model_name='labspecimin',
+            name='episode',
+            field=models.ForeignKey(to='opal.Episode'),
+        ),
+        migrations.AddField(
+            model_name='labspecimin',
+            name='specimin_type_fk',
+            field=models.ForeignKey(blank=True, to='research.Specimin', null=True),
+        ),
+        migrations.AddField(
+            model_name='labspecimin',
+            name='updated_by',
+            field=models.ForeignKey(related_name='updated_research_labspecimin_subrecords', blank=True, to=settings.AUTH_USER_MODEL, null=True),
+        ),
+    ]
+
+    operations = [
+        # After this state operation, the Django DB state should match the
+        # actual database structure.
+        migrations.SeparateDatabaseAndState(state_operations=state_operations)
+    ]
