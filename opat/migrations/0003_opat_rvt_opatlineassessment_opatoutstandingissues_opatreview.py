@@ -10,7 +10,6 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('opal', '0008_auto_20151214_1652'),
         ('elcid', '0028_move_models_to_opat'),
         ('opat', '0002_opatdressingtype'),
     ]
