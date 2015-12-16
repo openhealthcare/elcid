@@ -23,7 +23,7 @@ except ImportError:
         }
     }
 
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -103,13 +103,18 @@ STATICFILES_FINDERS = (
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'hq6wg27$1pnjvuesa-1%-wiqrpnms_kx+w4g&&o^wr$5@stjbu'
 
-# List of callables that know how to import templates from various sources.
-TEMPLATE_LOADERS = (
-    ('django.template.loaders.cached.Loader', (
+if DEBUG:
+    TEMPLATE_LOADERS = (
         'django.template.loaders.filesystem.Loader',
         'django.template.loaders.app_directories.Loader',
-    )),
-)
+    )
+else:
+    TEMPLATE_LOADERS = (
+        ('django.template.loaders.cached.Loader', (
+            'django.template.loaders.filesystem.Loader',
+            'django.template.loaders.app_directories.Loader',
+            )),
+    )
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
@@ -200,6 +205,10 @@ LOGGING = {
             'level': 'INFO',
             'propagate': True,
         },
+        'django.request': {
+            'handlers': ['console'],
+            'level': 'ERROR',
+        }
     }
 }
 

@@ -20,13 +20,14 @@ django-celery==3.1.17
 
 django-compressor==1.5
 
--e git+https://github.com/openhealthcare/opal.git@splash-modals#egg=opal
+
+-e git+https://github.com/openhealthcare/opal.git@v0.6.0#egg=opal
 -e git+https://github.com/openhealthcare/opal-walk-in.git@splash#egg=opal_walk_in
 -e git+https://github.com/openhealthcare/opal-opat.git@splash#egg=opal_opat
--e git+https://github.com/openhealthcare/opal-research.git@vsplash#egg=opal_research
+-e git+https://github.com/openhealthcare/opal-research.git@splash#egg=opal_research
+-e git+https://github.com/openhealthcare/opal-observations.git@v0.1.1#egg=opal_observations
 -e git+https://github.com/openhealthcare/opal-guidelines.git@v0.2#egg=opal_guidelines
 
--e git+https://github.com/openhealthcare/opal-observations.git@v0.1.1#egg=opal_observations
 -e git+https://github.com/openhealthcare/opal-wardround.git@master#egg=opal_wardround
 -e git+https://github.com/openhealthcare/opal-referral.git@v0.1.1#egg=opal_referral
 -e git+https://github.com/openhealthcare/opal-dashboard.git@v0.1.1#egg=opal_dashboard
@@ -34,5 +35,3 @@ django-compressor==1.5
 -e git+https://github.com/openhealthcare/opal-iframe-api.git@#egg=opal-iframe-api
 -e git+https://github.com/srosro/django-test-coverage#egg=django-test-coverage
 -e git+https://github.com/openhealthcare/opal-taskrunner.git@#egg=opal_taskrunner
-
-
