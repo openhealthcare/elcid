@@ -1,0 +1,116 @@
+{% load panels %}
+<div class="panel panel-active">
+  <div class="panel-heading text-center">
+    <h3>
+      Micro Haem Consult
+    </h3>
+  </div>
+</div>
+<div>
+  <div class="bg-white">
+    <div class="patient-timeline-container">
+      <div class="row">
+        <div class="col-md-6">
+          {% record_panel models.Allergies noentries="No known allergies"%}
+        </div>
+        <div class="col-md-6">
+          {% record_panel models.MicrobiologyTest editable="false" title="Alert Investigation Results" name="alertInvestigations()" %}
+        </div>
+      </div>
+      <section ng-repeat="episode in patient.episodes">
+        <div class="row">
+          <div class="col-md-12 text-center">
+            <a class="orange-link" ng-href="[[ getEpisodeLink(episode) ]]">
+              <span ng-show="episode.active">Current </span>
+              <span ng-show="episode.category === 'inpatient'">Inpatient Admission</span>
+              <span ng-show="episode.category !== 'inpatient'">[[ episode.category | title ]] Episode</span>
+              <span ng-show="episode.date_of_admission">
+                [[ episode.date_of_admission | shortDate ]]
+                <span ng-show="episode.date_of_admission"> - [[ episode.discharge_date | shortDate ]]</span>
+              </span>
+              <span ng-show="!episode.date_of_admission">
+                [[ episode.date_of_episode | shortDate ]]
+              </span>
+            </a>
+          </div>
+        </div>
+        <hr class="patient-timeline-seperator">
+        <div class="row">
+          <div parent-height class="col-md-6">
+            <div ng-if="$first" class="row">
+              <div class="col-md-12">
+                {% if inline_forms|length > 1 %}
+                  <form>
+                    <div class="fake-select-wrapper">
+                      <select class="form-control attached-select" ng-model="inlineForm.name" ng-init="initialiseForm('{{ inline_forms.keys|first }}')">
+                        {% for form_name in inline_forms %}
+                          <option>{{ form_name }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                  </form>
+                {% endif %}
+                {% for form_name, form_template in inline_forms.items %}
+                  {% if inline_forms|length > 1 %}
+                    <div class="select-attached" ng-show="inlineForm.name === '{{ form_name }}'">
+                  {% endif %}
+                  {% include form_template %}
+                  {% if inline_forms|length > 1 %}
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              </div>
+            </div>
+            <div ng-if="$first" class="row">
+              <div class="col-md-3 patient-timeline">
+                <div class="patient-timeline-now">
+                  <div class="patient-timeline-now-text bg-secondary">
+                    Now
+                  </div>
+                </div>
+              </div>
+            </div>
+            <svg class="speech-bubble-timeline-container">
+              <line class="speech-bubble-timeline hidden-sm hidden-xs" x1="12.5%" y1="0" x2="12.5%" y2="500%" />
+              <line class="speech-bubble-timeline hidden-md hidden-lg" x1="50%" y1="0" x2="50%" y2="500%" />
+            </svg>
+            <div ng-repeat="microbiology_input in episode.microbiology_input  | orderBy:'-when'" class="row content-offset-20">
+
+              <div class="col-md-3 patient-timeline">
+                <div class="patient-timeline-speech-bubble">
+                  <i class="fa fa-comments patient-timeline-speech-bubble-icon"></i>
+                </div>
+                <div ng-show="microbiology_input.when">
+                  <div class="patient-timeline-date">
+                    [[ microbiology_input.when | momentDateFormat:'DD MMM YYYY' ]]
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-9">
+                <div class="patient-timeline-discussion">
+                  <b ng-show="microbiology_input.initials && microbiology_input.initials.trim().length">
+                    ([[microbiology_input.initials]]<span ng-show="microbiology_input.discussed_with"> with [[microbiology_input.discussed_with]]</span>)
+                  </b>
+                  <b>
+                    [[microbiology_input.reason_for_interaction]]
+                  </b>
+                  <br />
+                  [[ microbiology_input.clinical_discussion]]
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <span ng-if="$first">
+              {% record_panel models.HaemInformation title="Haematology Background Information" angular_filter="isRecentHaemInformation" %}
+              {% record_panel models.EpisodeOfNeutropenia title="Episodes of Neutropenia"  %}
+            </span>
+            {% record_panel models.Antimicrobial editable="firstEpisode.id === episode.id" %}
+            {% record_panel models.MicrobiologyTest editable="firstEpisode.id === episode.id" %}
+            {% record_panel models.Diagnosis editable="firstEpisode.id === episode.id" %}
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>

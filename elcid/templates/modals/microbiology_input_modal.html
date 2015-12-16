@@ -10,19 +10,26 @@
         <div class="form-group">
           <label class="control-label col-sm-3">Date</label>
           <div class="col-sm-8">
-	    <input class="form-control" type="text" ng-model="editing.date" bs-datepicker>
+    	    <input class="form-control" type="text" data-date-type="date" data-autoclose="1" placeholder="Date" ng-model="editing.microbiology_input.when" bs-datepicker>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-sm-3">Time</label>
+          <div class="col-sm-8">
+          <input type="text" size="8" class="form-control" ng-model="editing.microbiology_input.when"
+                 data-autoclose="1" placeholder="Time" bs-timepicker>
           </div>
         </div>
         <div class="form-group">
           <label class="control-label col-sm-3">Advice given by</label>
           <div class="col-sm-8">
-	    <input class="form-control" type="text" ng-model="editing.initials" autofocus>
+	    <input class="form-control" type="text" ng-model="editing.microbiology_input.initials" autofocus>
           </div>
         </div>
         <div class="form-group">
           <label class="control-label col-sm-3">Reason for clinical interaction</label>
           <div class="col-sm-8">
-            <select class="form-control" ng-model="editing.reason_for_interaction">
+            <select class="form-control" ng-model="editing.microbiology_input.reason_for_interaction">
               <option ng-repeat="reason in clinical_advice_reason_for_interaction_list">[[reason]]</option>
             </select>
           </div>
@@ -32,7 +39,7 @@
           <div class="col-sm-8">
 	    <textarea
                class="form-control"
-               ng-model="editing.clinical_discussion"
+               ng-model="editing.microbiology_input.clinical_discussion"
                rows="5"
                {% include 'partials/_mentio_edit_item.html' %}
                ></textarea>
@@ -42,35 +49,35 @@
         <div class="form-group">
           <label class="control-label col-sm-3">Discussed with</label>
           <div class="col-sm-8">
-	    <input class="form-control" type="text" ng-model="editing.discussed_with">
+	    <input class="form-control" type="text" ng-model="editing.microbiology_input.discussed_with">
           </div>
         </div>
 
         <table>
           <tr>
 	    <td>
-              {% checkbox label="Clinical advice given?" model="editing.clinical_advice_given" %}
+              {% checkbox label="Clinical advice given?" model="editing.microbiology_input.clinical_advice_given" %}
 	    </td>
 	    <td>
-              {% checkbox label="Change in antibiotic prescription?" model="editing.change_in_antibiotic_prescription" %}
+              {% checkbox label="Change in antibiotic prescription?" model="editing.microbiology_input.change_in_antibiotic_prescription" %}
 	    </td>
           </tr>
           <tr>
 	    <td>
-              {% checkbox label="Infection control advice given?" model="editing.infection_control_advice_given" %}
+              {% checkbox label="Infection control advice given?" model="editing.microbiology_input.infection_control_advice_given" %}
 	    </td>
 	    <td>
-              {% checkbox label="Referred to OPAT?" model="editing.referred_to_opat" %}
+              {% checkbox label="Referred to OPAT?" model="editing.microbiology_input.referred_to_opat" %}
 	    </td>
           </tr>
         </table>
       </form>
-    </div> 
+    </div>
     <div class="col-md-4">
       {% include 'modals/_allergies_sidebar.html' %}
-    </div> 
+    </div>
 
-  </div> 
+  </div>
 {% endblock %}
 {% block modal_save %}
   <button     class="btn btn-primary" ng-click="save('save')">
@@ -80,4 +87,3 @@
 {% endblock %}
 {% block modal_another %}{% endblock %}
 {% block modal_cancel %}<button class="btn" ng-click="cancel()">Close</button>{% endblock %}
-

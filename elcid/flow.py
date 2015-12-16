@@ -32,7 +32,7 @@ flows = {
     },
     'tropical_diseases': {
         'default': diagnosis_flow
-        
+
     },
     'walkin': {
         'default': {
@@ -47,3 +47,4 @@ flows = {
         }
     }
 }
+flows['Walkin'] = flows['walkin']['default'] # Episode Category

@@ -1,4 +1,9 @@
-[[row.category.charAt(0).toUpperCase() + row.category.substring(1)]]<br />
+<span ng-show="item.category === 'Followup'">
+  Discharged with Follow up<br />
+</span>
+<span ng-hide="item.category === 'Followup'">
+  [[row.category.charAt(0).toUpperCase() + row.category.substring(1)]]<br />
+</span>
 <span ng-hide="item.hospital=='UCH'">[[item.hospital]] </span>
 [[item.ward]] [[item.bed]]<br />
 <span ng-show="row.date_of_admission">

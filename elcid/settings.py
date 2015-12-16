@@ -5,7 +5,6 @@ import sys
 
 PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
 
-
 try:
     import dj_database_url
 
@@ -15,12 +14,12 @@ try:
 except ImportError:
     DATABASES = {
         'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(PROJECT_PATH, 'opal.sqlite'),
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': '',
-        'PORT': ''
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(PROJECT_PATH, 'opal.sqlite'),
+            'USER': '',
+            'PASSWORD': '',
+            'HOST': '',
+            'PORT': '',
         }
     }
 
@@ -106,9 +105,10 @@ SECRET_KEY = 'hq6wg27$1pnjvuesa-1%-wiqrpnms_kx+w4g&&o^wr$5@stjbu'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
+    ('django.template.loaders.cached.Loader', (
+        'django.template.loaders.filesystem.Loader',
+        'django.template.loaders.app_directories.Loader',
+    )),
 )
 
 MIDDLEWARE_CLASSES = (
@@ -121,6 +121,7 @@ MIDDLEWARE_CLASSES = (
     'opal.middleware.DjangoReversionWorkaround',
     'reversion.middleware.RevisionMiddleware',
     'axes.middleware.FailedLoginMiddleware',
+    'elcid.middleware.LoggingMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -159,7 +160,6 @@ INSTALLED_APPS = (
     'rest_framework',
     'compressor',
     'opal.core.search',
-    'analytics',
     'elcid',
     'obs',
     'django.contrib.admin',
@@ -173,6 +173,8 @@ INSTALLED_APPS = (
 #    'opal.core.collaborative',
     'guidelines',
     'dischargesummary',
+    'djcelery',
+    'taskrunner',
 )
 
 if 'test' in sys.argv:
@@ -186,27 +188,16 @@ if 'test' in sys.argv:
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
-    'filters': {
-        'require_debug_false': {
-            '()': 'django.utils.log.RequireDebugFalse'
-        }
-    },
     'handlers': {
         'console': {
-            'level': 'ERROR',
-            'filters': ['require_debug_false'],
-            'class': 'logging.StreamHandler'
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
         },
-        'mail_admins': {
-            'level': 'ERROR',
-            'filters': ['require_debug_false'],
-            'class': 'django.utils.log.AdminEmailHandler'
-        }
     },
     'loggers': {
-        'django.request': {
-            'handlers': ['console', 'mail_admins'],
-            'level': 'ERROR',
+        '': {
+            'handlers': ['console'],
+            'level': 'INFO',
             'propagate': True,
         },
     }
@@ -216,8 +207,10 @@ LOGGING = {
 # (Heroku requirement)
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-DATE_FORMAT = 'Y-m-d'
-DATE_INPUT_FORMATS = ['Y-m-d']
+DATE_FORMAT = 'd/m/Y'
+DATE_INPUT_FORMATS = ['%d/%m/%Y']
+DATETIME_FORMAT = 'd/m/Y H:i:s'
+DATETIME_INPUT_FORMATS = ['%d/%m/%Y %H:%M:%S']
 
 CSRF_COOKIE_NAME = 'XSRF-TOKEN'
 APPEND_SLASH = False
@@ -256,6 +249,7 @@ else:
 
 
 VERSION_NUMBER = '0.6.0'
+
 #TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 #TEST_RUNNER = 'django_test_coverage.runner.CoverageTestSuiteRunner'
 
@@ -282,3 +276,4 @@ except:
 # MIDDLEWARE_CLASSES = MIDDLEWARE_CLASSES + ('debug_toolbar.middleware.DebugToolbarMiddleware',)
 # INSTALLED_APPS = INSTALLED_APPS + ('debug_toolbar',)
 # #INTERNAL_IPS = ('127.0.0.1',)
+EXTRACT_ASYNC = True

@@ -1,7 +1,7 @@
 <p
-  ng-hide="(episode.presenting_complaint.0.symptom || episode.presenting_complaint.0.duration || episode.presenting_complaint.0.details) || (!episode.tagging[0].tropical_diseases && !episode.tagging[0].id_inpatients && !episode.tagging[0].immune_inpatients)"
+  ng-hide="!listView || (episode.presenting_complaint[0].symptoms || episode.presenting_complaint[0].duration || episode.presenting_complaint[0].details) || (!episode.tagging[0].tropical_diseases && !episode.tagging[0].id_inpatients && !episode.tagging[0].immune_inpatients)"
   ng-show=""
-  ng-click="newNamedItem(episode, 'presenting_complaint')"
+  ng-click="editNamedItem(episode, 'presenting_complaint', 0)"
   ng-dblclick=""
   ng-class="{selected: false}">
   <button class="screen-only btn btn-primary btn-sm"
@@ -13,7 +13,7 @@
 <p ng-hide="!ward_round || episode.primary_diagnosis[0].confirmed || episode.category != 'inpatient' ">
   <button class="screen-only btn btn-primary btn-sm"
           ng-click="named_controller('/templates/elcid/modals/diagnosis_discharge.html', 'DiagnosisDischargeCtrl')">
-    <i class="glyphicon glyphicon-ok"></i>    
+    <i class="glyphicon glyphicon-ok"></i>
     Confirm Final Diagnosis
   </button>
 </span>
