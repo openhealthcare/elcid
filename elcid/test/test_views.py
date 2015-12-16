@@ -1,6 +1,7 @@
 """
 Unittests for the UCLH eLCID OPAL implementation.
 """
+import datetime
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 import ffs
@@ -54,7 +55,7 @@ class ViewsTest(OpalTestCase):
             'demographics': {
                 'hospital_number': 'BB2222',
                 'name': 'Johann Schmidt',
-                'date_of_birth': '1970-06-01'
+                'date_of_birth': '01/06/1970'
                 },
             'location': {
                 'category': 'Inpatient',
@@ -72,7 +73,7 @@ class ViewsTest(OpalTestCase):
             'demographics': {
                 'hospital_number': '',
                 'name': 'Johann Schmidt',
-                'date_of_birth': '1970-06-01'
+                'date_of_birth': '01/06/1970'
                 },
             'location': {
                 'category': 'Inpatient',
@@ -176,7 +177,7 @@ class MicrobiologyInputViewTest(OpalTestCase, AbstractEpisodeTestCase):
             "episode_id": self.episode.id,
             "initials": "Jane Doe",
             "reason_for_interaction": constants.MICROHAEM_CONSULTATIONS[0],
-            "when": "2015-10-07 23:30+01:00"
+            "when": datetime.datetime(2015, 10, 7, 23,30)
         }
 
     def test_add_microbiology_input(self):
@@ -184,9 +185,9 @@ class MicrobiologyInputViewTest(OpalTestCase, AbstractEpisodeTestCase):
         self.assertEqual(len(tags), 0)
         self.post_json(self.url, self.args)
         updated_tags = self.episode.get_tag_names(self.user)
-        self.assertEqual(updated_tags, [constants.MICROHAEM_TEAM_NAME])
+        self.assertEqual([str(i) for i in updated_tags], [constants.MICROHAEM_TEAM_NAME])
         self.post_json(self.url, self.args)
 
         # make sure tags don't get applied twice if run twice
         updated_tags = self.episode.get_tag_names(self.user)
-        self.assertEqual(updated_tags, [constants.MICROHAEM_TEAM_NAME])
+        self.assertEqual([str(i) for i in updated_tags], [constants.MICROHAEM_TEAM_NAME])
