@@ -7,6 +7,7 @@ from django.contrib import admin
 admin.autodiscover()
 
 from opal.urls import urlpatterns as opatterns
+from microhaem.urls import urlpatterns as mpatterns
 
 from elcid import views
 
@@ -21,3 +22,4 @@ urlpatterns = patterns(
 )
 
 urlpatterns += opatterns
+urlpatterns += mpatterns

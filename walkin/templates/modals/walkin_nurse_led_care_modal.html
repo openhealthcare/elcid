@@ -1,0 +1,10 @@
+{% extends 'modal_base.html' %}
+{% load forms %}
+
+{% block icon_name %}fa fa-user-md{% endblock %}
+{% block modal_body %}
+  <form class="form-horizontal">
+   {% textarea  label="Treatment" model="editing.treatment"  %}
+   {% input  label="Reason" model="editing.reason"  %}
+  </form>
+{% endblock %}

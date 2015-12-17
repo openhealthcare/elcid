@@ -173,6 +173,7 @@ INSTALLED_APPS = (
     'research',
     'wardround',
     'microhaem',
+    'infectiousdiseases',
     'referral',
     'dashboard',
     'iframeapi',

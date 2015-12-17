@@ -1,0 +1,100 @@
+[
+    {
+        "fields": {
+            "name": "Discharged from clinic: No Follow-up"
+        },
+        "model": "walkin.management_follow_up",
+        "pk": 1
+    },
+    {
+        "fields": {
+            "name": "Discharged from clinic: Follow-Up in clinic"
+        },
+        "model": "walkin.management_follow_up",
+        "pk": 2
+    },
+    {
+        "fields": {
+            "name": "Admitted to Ward"
+        },
+        "model": "walkin.management_follow_up",
+        "pk": 3
+    },
+    {
+        "fields": {
+            "name": "General infection clinic (Doherty, Moore, Maybe, Whitty, Bailey)"
+        },
+        "model": "walkin.management_clinics",
+        "pk": 1
+    },
+    {
+        "fields": {
+            "name": "Tropical dermatology clinic (FVL)"
+        },
+        "model": "walkin.management_clinics",
+        "pk": 2
+    },
+    {
+        "fields": {
+            "name": "Leishmania clinic (DL)"
+        },
+        "model": "walkin.management_clinics",
+        "pk": 3
+    },
+    {
+        "fields": {
+            "name": "Parasitology clinic (PLC)"
+        },
+        "model": "walkin.management_clinics",
+        "pk": 4
+    },
+    {
+        "fields": {
+            "name": "Mortimer Market Centre (for HIV/GUM referrals)"
+        },
+        "model": "walkin.management_clinics",
+        "pk": 5
+    },
+    {
+        "fields": {
+            "name": "Rash Type 1"
+        },
+        "model": "walkin.findings_rash_type",
+        "pk": 1
+    },
+    {
+        "fields": {
+            "name": "Rash Type 2"
+        },
+        "model": "walkin.findings_rash_type",
+        "pk": 2
+    },
+    {
+        "fields": {
+            "name": "Rash Type 3"
+        },
+        "model": "walkin.findings_rash_type",
+        "pk": 3
+    },
+    {
+        "fields": {
+            "name": "Rash Distribution 1"
+        },
+        "model": "walkin.findings_rash_distribution",
+        "pk": 1
+    },
+    {
+        "fields": {
+            "name": "Rash Distribution 2"
+        },
+        "model": "walkin.findings_rash_distribution",
+        "pk": 2
+    },
+    {
+        "fields": {
+            "name": "Rash Distribution 3"
+        },
+        "model": "walkin.findings_rash_distribution",
+        "pk": 3
+    }
+]

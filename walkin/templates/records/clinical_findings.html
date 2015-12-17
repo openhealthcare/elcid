@@ -1,0 +1,98 @@
+<span ng-show="
+  item.lymphadenopathy == 'N' &&
+  item.jaundice == 'N' &&
+  item.dehydrated == 'N' &&
+  item.rash == 'N' &&
+  item.cardiovascular == 'NAD' &&
+  item.respiratory == 'NAD' &&
+  item.abdominal == 'NAD' &&
+  item.oropharnyx == 'NAD' &&
+  item.neurological == 'NAD' &&
+  item.other_findings == 'NAD'"
+  >
+  Examination NAD
+</span>
+<span ng-hide="
+  item.lymphadenopathy == 'N' &&
+  item.jaundice == 'N' &&
+  item.dehydrated == 'N' &&
+  item.rash == 'N' &&
+  item.cardiovascular == 'NAD' &&
+  item.respiratory == 'NAD' &&
+  item.abdominal == 'NAD' &&
+  item.oropharnyx == 'NAD' &&
+  item.neurological == 'NAD' &&
+  item.other_findings == 'NAD'"
+  >
+  <span ng-show="item.lymphadenopathy == 'Y' || item.lymphadenopathy == 'N'">
+    Lymphadenopathy:
+    [[item.lymphadenopathy]]
+    <span ng-show="item.lymphadenopathy == 'Y'">
+      ([[item.lymphadenopathy_details]])
+    </span>
+    <br />
+  </span>
+
+  <span ng-show="item.jaundice == 'Y' || item.jaundice == 'N'">
+    Jaundice:
+    [[item.jaundice]]
+    <br />
+  </span>
+
+  <span ng-show="item.dehydrated == 'Y' || item.dehydrated == 'N'">
+    Dehydrated:
+    [[item.dehydrated]]
+    <br />
+  </span>
+
+  <span ng-show="item.rash == 'Y' || item.rash == 'N'">
+    Rash:
+    <span ng-show="item.rash == 'N'">
+      [[item.rash]]<br />
+    </span>
+    <span ng-show="item.rash == 'Y' && (item.rash_type != '' || item.rash_distribution != '')"><!--
+      --><span ng-show="item.rash_type != ''">[[item.rash_type]]</span><!--
+      --><span ng-show="item.rash_distribution != ''"><!--
+        --><span ng-show="item.rash_type != ''">, </span><!--
+        -->[[item.rash_distribution]]<!--
+      --></span>
+    </span>
+    <br />
+  </span>
+
+  <span ng-show="item.cardiovascular">
+    Cardiovascular:
+    [[item.cardiovascular]]
+    <br />
+  </span>
+
+  <span ng-show="item.respiratory">
+    Respiratory:
+    [[item.respiratory]]
+    <br />
+  </span>
+
+  <span ng-show="item.abdominal">
+    Abdominal:
+    [[item.abdominal]]
+    <br />
+  </span>
+
+  <span ng-show="item.oropharnyx">
+    Oropharnyx:
+    [[item.oropharnyx]]
+    <br />
+  </span>
+
+  <span ng-show="item.neurological">
+    Neurological:
+    [[item.neurological]]
+    <br />
+  </span>
+
+  <span ng-show="item.other_findings">
+    Other findings:
+    [[item.other_findings]]
+    <br />
+  </span>
+</span>

@@ -32,7 +32,7 @@ class ViewsTest(OpalTestCase):
         else:
             nonexistent_id = 1
 
-        url = reverse("patient_detail_data_view", kwargs={
+        url = reverse("microhaem_data_view", kwargs={
             "patient_id": nonexistent_id
         })
         self.assertStatusCode(url, 404)
@@ -95,13 +95,6 @@ class ViewsTest(OpalTestCase):
 
     def test_episode_detail_template_view(self):
         self.assertStatusCode('/templates/episode_detail.html/1', 200)
-
-    def test_patient_notes_template_view(self):
-        url = reverse("patient_detail_template_view")
-        self.assertStatusCode(url, 200)
-
-    def test_add_patient_template_view(self):
-        self.assertStatusCode('/templates/modals/add_episode.html/', 200)
 
     def test_discharge_patient_template_view(self):
         self.assertStatusCode('/templates/modals/discharge_episode.html/', 200)
