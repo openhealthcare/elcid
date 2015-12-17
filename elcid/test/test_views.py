@@ -10,7 +10,7 @@ from opal.core.test import OpalTestCase
 from opal.models import Patient, Team
 
 from elcid.test.test_models import AbstractEpisodeTestCase
-from elcid import constants
+from microhaem import constants
 
 HERE = ffs.Path.here()
 TEST_DATA = HERE/'test_data'
