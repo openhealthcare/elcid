@@ -5,7 +5,7 @@ from opal.core.views import _build_json_response
 from opal import models as opal_models
 
 
-class PatientNotesDataView(View):
+class MicroHaemDataView(View):
     """
     Return a serialised view of the patient.
     """
@@ -21,7 +21,7 @@ class PatientNotesDataView(View):
         return _build_json_response(serialised)
 
 
-class PatientNotesTemplateView(TemplateView):
+class MicroHaemTemplateView(TemplateView):
     template_name = 'patient_notes.html'
 
     def get_context_data(self, *args, **kwargs):
