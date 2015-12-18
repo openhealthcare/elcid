@@ -6,13 +6,12 @@ from django.db import models
 import opal.models as omodels
 
 from opal.models import (
-    EpisodeSubrecord, PatientSubrecord, GP, CommunityNurse, Episode, Team,
+    EpisodeSubrecord, PatientSubrecord, Episode, Team,
     Tagging
 )
 from opal.core.fields import ForeignKeyOrFreeText
 from opal.core import lookuplists
-from constants import MICROHAEM_CONSULTATIONS, MICROHAEM_TEAM_NAME
-from opat import models as opatmodels
+from microhaem.constants import MICROHAEM_CONSULTATIONS, MICROHAEM_TEAM_NAME
 
 
 class Demographics(PatientSubrecord):
@@ -383,57 +382,6 @@ class MicrobiologyTest(EpisodeSubrecord):
     typhus_group_igg      = models.CharField(max_length=20, blank=True)
     scrub_typhus_igm      = models.CharField(max_length=20, blank=True)
     scrub_typhus_igg      = models.CharField(max_length=20, blank=True)
-
-"""
-Begin OPAT specific fields.
-"""
-
-
-class HaemChemotherapyType(lookuplists.LookupList):
-    class Meta:
-        verbose_name = "Chemotherapy type"
-
-
-class HaemTransplantType(lookuplists.LookupList):
-    class Meta:
-        verbose_name = "Transplant Type"
-
-
-class HaemInformationType(lookuplists.LookupList):
-    pass
-
-
-class EpisodeOfNeutropenia(PatientSubrecord):
-    _icon = 'fa fa-info-circle'
-    _sort = 'start'
-    _title = 'Episode of Neutropenia'
-    start = models.DateField(blank=True, null=True)
-    stop = models.DateField(blank=True, null=True)
-
-    class Meta:
-        ordering = ['-start']
-
-    @property
-    def icon(self):
-        return self._icon
-
-
-class HaemInformation(PatientSubrecord):
-    _icon = 'fa fa-info-circle'
-    _title = 'Haematology Background Information'
-
-    patient_type = ForeignKeyOrFreeText(HaemInformationType)
-    date_of_transplant = models.DateField(blank=True, null=True)
-    neutropenia_onset = models.DateField(blank=True, null=True)
-    type_of_transplant = ForeignKeyOrFreeText(HaemTransplantType)
-    type_of_chemotherapy = ForeignKeyOrFreeText(HaemChemotherapyType)
-    date_of_chemotherapy = models.DateField(blank=True, null=True)
-    count_recovery = models.DateField(blank=True, null=True)
-    details = models.TextField(blank=True, null=True)
-
-    @property
-    def icon(self):
-        return self._icon
 
 
 class Line(EpisodeSubrecord):

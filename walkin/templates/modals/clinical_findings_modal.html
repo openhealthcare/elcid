@@ -1,0 +1,179 @@
+{% extends 'modal_base.html' %}
+{% block icon %}<i class="fa fa-stethoscope"></i>{% endblock %}
+{% block modal_body %}
+<form class="form-horizontal">
+    <div class="form-group">
+        <label class="control-label col-sm-3">Lymphadenopathy</label>
+        <div class="col-sm-8">
+
+            <label class="radio-inline">
+                <input class="" type="radio" value="Y" ng-model="editing.lymphadenopathy">
+                Yes
+            </label>
+
+            <label class="radio-inline">
+                <input class="" type="radio" value="N" ng-model="editing.lymphadenopathy">
+                No
+            </label>
+
+            <label class="radio-inline">
+                <input class="" type="radio" value="NAD" ng-model="editing.lymphadenopathy">
+                Not assessed
+            </label>
+        </div>
+    </div>
+
+    <span ng-show="editing.lymphadenopathy == 'Y'">
+        <div class="form-group">
+            <label class="control-label col-sm-3">Details</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="text"
+                     ng-model="editing.lymphadenopathy_details">
+            </div>
+        </div>
+    </span>
+
+    <div class="form-group">
+        <label class="control-label col-sm-3">Jaundice</label>
+        <div class="col-sm-8">
+
+            <label class="radio-inline">
+                <input class="" type="radio" value="Y" ng-model="editing.jaundice">
+                Yes
+            </label>
+
+            <label class="radio-inline">
+                <input class="" type="radio" value="N" ng-model="editing.jaundice">
+                No
+            </label>
+
+            <label class="radio-inline">
+                <input class="" type="radio" value="NAD" ng-model="editing.jaundice">
+                Not assessed
+            </label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-sm-3">Dehydrated</label>
+        <div class="col-sm-8">
+
+            <label class="radio-inline">
+                <input class="" type="radio" value="Y" ng-model="editing.dehydrated">
+                Yes
+            </label>
+
+            <label class="radio-inline">
+                <input class="" type="radio" value="N" ng-model="editing.dehydrated">
+                No
+            </label>
+
+            <label class="radio-inline">
+                <input class="" type="radio" value="NAD" ng-model="editing.dehydrated">
+                Not assessed
+            </label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-sm-3">Rash</label>
+        <div class="col-sm-8">
+
+            <label class="radio-inline">
+                <input class="" type="radio" value="Y" ng-model="editing.rash">
+                Yes
+            </label>
+
+            <label class="radio-inline">
+                <input class="" type="radio" value="N" ng-model="editing.rash">
+                No
+            </label>
+
+            <label class="radio-inline">
+                <input class="" type="radio" value="NAD" ng-model="editing.rash">
+                Not assessed
+            </label>
+        </div>
+    </div>
+
+    <span ng-show="editing.rash == 'Y'">
+        <div class="form-group">
+            <label class="control-label col-sm-3">Rash type</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="text"
+                     ng-model="editing.rash_type"
+                     ng-options="f for f in findings_rash_type_list"
+                     bs-typeahead >
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-3">Rash distribution</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="text"
+                     ng-model="editing.rash_distribution"
+                     ng-options="f for f in findings_rash_distribution_list"
+                     bs-typeahead >
+            </div>
+        </div>
+    </span>
+
+    <div class="form-group">
+        <label class="control-label col-sm-3">Cardiovascular</label>
+        <div class="col-sm-8">
+            <input type="text" class="form-control" ng-model="editing.cardiovascular">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-sm-3">Respiratory</label>
+        <div class="col-sm-8">
+            <input type="text" class="form-control" ng-model="editing.respiratory">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-sm-3">Abdominal</label>
+        <div class="col-sm-8">
+            <input type="text" class="form-control" ng-model="editing.abdominal">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-sm-3">Oropharnyx</label>
+        <div class="col-sm-8">
+            <input type="text" class="form-control" ng-model="editing.oropharnyx">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-sm-3">Neurological</label>
+        <div class="col-sm-8">
+            <input type="text" class="form-control" ng-model="editing.neurological">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-sm-3">Other findings</label>
+        <div class="col-sm-8">
+            <input type="text" class="form-control" ng-model="editing.other_findings">
+        </div>
+    </div>
+</form>
+{% endblock %}
+
+{% block pop_buttons %}
+<button class="btn btn-secondary pull-left"
+              ng-click="prepopulate($event)"
+              data-lymphadenopathy="N"
+              data-jaundice="N"
+              data-dehydrated="N"
+              data-rash="N"
+              data-cardiovascular="NAD"
+              data-respiratory="NAD"
+              data-abdominal="NAD"
+              data-oropharnyx="NAD"
+              data-neurological="NAD"
+              data-other_findings="NAD"
+              ><i class="fa fa-file-text"></i> NAD</button>
+{% endblock %}

@@ -1,0 +1,8 @@
+<span ng-show="item.follow_up">
+  [[item.follow_up]]
+  <span ng-show="item.follow_up == 'Discharged from clinic: Follow-Up in clinic'">
+    ([[item.follow_up_clinic]] [[item.date_of_appointment | shortDate]])
+  </span>
+<br />
+</span>
+<span ng-show="item.advice">Advice: [[item.advice]]</span>

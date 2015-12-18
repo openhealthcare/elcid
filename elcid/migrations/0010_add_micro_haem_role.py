@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
-from elcid.constants import MICROHAEM_ROLE
+from microhaem.constants import MICROHAEM_ROLE
 
 
 def add(apps, schema_editor):

@@ -1,0 +1,9 @@
+{% load modalsummary %}
+
+<p ng-show="episode.category == 'Walkin' && ((episode.hasTag('walkin_doctor') || episode.hasTag('walkin_review') ) || episode.getTags().length == 1)">
+  {% modalsummary 'walkindoctor' %}
+</p>
+
+<p ng-show="episode.category == 'Walkin' && episode.getTags().length == 1">
+  {% modalsummary 'walkinnurse' %}
+</p>

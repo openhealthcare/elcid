@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from django.db import migrations
-from elcid.constants import MICROHAEM_CONSULTATIONS
+from microhaem.constants import MICROHAEM_CONSULTATIONS
 
 
 def add(apps, schema_editor):

@@ -172,6 +172,8 @@ INSTALLED_APPS = (
     'walkin',
     'research',
     'wardround',
+    'microhaem',
+    'infectiousdiseases',
     'referral',
     'dashboard',
     'iframeapi',
