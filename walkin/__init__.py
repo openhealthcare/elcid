@@ -4,7 +4,6 @@ Plugin definition
 from opal.core import plugins
 
 from walkin.urls import urlpatterns
-from walkin import schema
 
 
 class WalkinPlugin(plugins.OpalPlugin):
@@ -21,17 +20,5 @@ class WalkinPlugin(plugins.OpalPlugin):
         'actions/nurse_investigations.html',
         'actions/discharge_summary.html'
     ]
-
-    def list_schemas(self):
-        """
-        Return any patient list schemas that our plugin may define.
-        """
-        return {
-            'walkin': {
-                'walkin_triage': schema.list_columns_triage,
-                'walkin_review': schema.list_columns_walkin_review,
-                'default': schema.list_columns_walkin
-            }
-        }
 
 plugins.register(WalkinPlugin)
