@@ -83,7 +83,7 @@
         "pk": 1,
         "model": "opal.team",
         "fields": {
-            "name": "team 2",
+            "name": "team_2",
             "title": "Team 2"
         }
     },
@@ -91,7 +91,7 @@
         "pk": 2,
         "model": "opal.team",
         "fields": {
-            "name": "team 1",
+            "name": "team_1",
             "title": "Team 1"
         }
     },

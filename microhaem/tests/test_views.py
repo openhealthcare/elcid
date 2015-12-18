@@ -6,7 +6,7 @@
                                               password=self.PASSWORD))
             self.patient = Patient.objects.get(pk=1)
 
-        def test_try_to_get_patient_detail_for_nonexistent_patient(self):
+        def test_try_to_get_microhaem_for_nonexistent_patient(self):
             last_patient = Patient.objects.order_by("-id").first()
 
             if last_patient:
@@ -25,3 +25,17 @@
 
         def test_add_patient_template_view(self):
             self.assertStatusCode('/templates/modals/add_episode.html/', 200)
+
+
+    def test_try_to_get_microhaem_for_nonexistent_patient(self):
+        last_patient = Patient.objects.order_by("-id").first()
+
+        if last_patient:
+            nonexistent_id = last_patient.id + 1
+        else:
+            nonexistent_id = 1
+
+        url = reverse("microhaem_data_view", kwargs={
+            "patient_id": nonexistent_id
+        })
+        self.assertStatusCode(url, 404)
