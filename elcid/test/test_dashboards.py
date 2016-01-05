@@ -85,7 +85,7 @@ class ConfirmedDiagnosisTestCase(OpalTestCase):
                 'Consultant__link': u'/wardround/#/consultantreview?consultant_at_discharge=Ben'
             },
             {
-                'number': 3,
+                'number': '-',
                 'Consultant': u'No Episodes',
                 'Total Number of Patients': 0,
                 'Consultant__link': u'/wardround/#/consultantreview?consultant_at_discharge=No+Episodes'
