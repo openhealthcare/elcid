@@ -1,7 +1,8 @@
 from opal.core.patient_lists import PatientList, TaggedPatientList
 from elcid import models
 
-class Virology(TaggedPatientList, PatientList):
+
+class Virology(TaggedPatientList):
     tag = "virology"
     schema = [
         models.Demographics,
@@ -14,7 +15,7 @@ class Virology(TaggedPatientList, PatientList):
     ]
 
 
-class Microbiology(TaggedPatientList, PatientList):
+class Microbiology(TaggedPatientList):
     tag = "microbiology"
     schema = [
         models.Demographics,
@@ -27,7 +28,7 @@ class Microbiology(TaggedPatientList, PatientList):
     ]
 
 
-class InfectiousDiseasesIdLiason(TaggedPatientList, PatientList):
+class InfectiousDiseasesIdLiason(TaggedPatientList):
     tag = "infectious_diseases"
     subtag = "id_liaison"
 
@@ -44,7 +45,7 @@ class InfectiousDiseasesIdLiason(TaggedPatientList, PatientList):
     ]
 
 
-class InfectiousDiseasesIdInpatient(TaggedPatientList, PatientList):
+class InfectiousDiseasesIdInpatient(TaggedPatientList):
     tag = "infectious_diseases"
     subtag = "id_inpatients"
 

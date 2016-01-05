@@ -1,9 +1,9 @@
 from elcid import models
 from research import models as research_models
-from opal.core.patient_lists import PatientList, TaggedPatientList
+from opal.core.patient_lists import TaggedPatientList
 
 
-class RidRtiScientist(TaggedPatientList, PatientList):
+class RidRtiScientist(TaggedPatientList):
     tag = "rid_rti"
     subtag = "rid_rti_scientist"
     schema = [
@@ -15,7 +15,7 @@ class RidRtiScientist(TaggedPatientList, PatientList):
     ]
 
 
-class RidRtiResearchPractitioner(TaggedPatientList, PatientList):
+class RidRtiResearchPractitioner(TaggedPatientList):
     tag = "rid_rti"
     subtag = "rid_rti_research_practitioner"
     schema = [

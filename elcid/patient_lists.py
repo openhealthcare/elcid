@@ -1,8 +1,8 @@
-from opal.core.patient_lists import PatientList, TaggedPatientList
+from opal.core.patient_lists import TaggedPatientList
 from elcid import models
 
 
-class InfectionControl(TaggedPatientList, PatientList):
+class InfectionControl(TaggedPatientList):
     tag = "infectioncontrol"
 
     schema = [
