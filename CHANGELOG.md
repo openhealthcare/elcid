@@ -1,3 +1,20 @@
+## 0.5.2 Release
+
+#### Patient Notes View fixes
+Minor fixes for if there is no date attatched to the clinical advice
+
+#### Confirmed Diagnosis dashboard
+Better handling if the consultant has no patients
+
+#### Behind the Scenes
+added in django cached loaders to our template loaders
+improved nginx logging
+
+
+opal -> v0.5.3
+opal-walk-in -> v0.2.3
+opal-dashboard -> v0.1.2
+
 ## 0.5.1 Release
 
 * bug fixes for saving synonyms
