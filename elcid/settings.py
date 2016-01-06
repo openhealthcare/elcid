@@ -122,7 +122,7 @@ MIDDLEWARE_CLASSES = (
     'opal.middleware.DjangoReversionWorkaround',
     'reversion.middleware.RevisionMiddleware',
     'axes.middleware.FailedLoginMiddleware',
-    'elcid.middleware.LoggingMiddleware',
+    # 'elcid.middleware.LoggingMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
