@@ -208,11 +208,11 @@ LOGGING = {
             'level': 'ERROR',
             'propagate': True,
         },
-        # 'elcid.requestLogger': {
-        #     'handlers': ['console'],
-        #     'level': 'INFO',
-        #     'propagate': True,
-        # },
+        'elcid.requestLogger': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': True,
+        },
     }
 }
 
