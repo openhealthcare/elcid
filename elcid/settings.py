@@ -196,7 +196,7 @@ LOGGING = {
         },
     },
     'loggers': {
-        '': {
+        'elcid.requestLogger': {
             'handlers': ['console'],
             'level': 'INFO',
             'propagate': True,
