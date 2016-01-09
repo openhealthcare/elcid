@@ -304,7 +304,7 @@ class Command(BaseCommand):
         # over the past 3 years, at least 10 of which have an episode in the
         # last week
         if options['number']:
-            number = options['number']
+            number = int(options['number'])
         else:
             number = 100
         p = PatientGenerator()
@@ -323,6 +323,11 @@ class Command(BaseCommand):
                 "walkin_doctor",
                 "walkin_review"
                 ]
+
+        tags = Team.objects.filter(name__in=tags).values_list("name", flat=True)
+
+        if not tags:
+            raise ValueError("teams not loaded")
 
         for i in xrange(number):
             p.make(tags=random.sample(tags, random.randint(1, 3)))
