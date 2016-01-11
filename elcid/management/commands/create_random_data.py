@@ -235,12 +235,35 @@ class SubRecordGenerator(object):
                     if field.__class__ in self.default_mapping:
                         yield field
 
+    def is_null_field(self, field):
+        """ should we make this field null
+        """
+        if random.randint(1, 10) <= self.PROB_OF_NONE:
+            if field == NullBooleanField:
+                return True
+
+            if getattr(field, "null", False):
+                return True
+
+        return False
+
+    def is_empty_string_field(self, field):
+        """ should we make this field empty
+        """
+        if random.randint(1, 10) <= self.PROB_OF_NONE:
+            if field == CharField and getattr(field, "blank", False):
+                return True
+
+        return False
+
     def make(self):
         instance = self.get_instance()
 
         for field in self.get_fields():
-            if getattr(field, "null", True) and random.randint(1, 10) <= self.PROB_OF_NONE:
+            if self.is_null_field(field):
                 setattr(instance, field.name, None)
+            elif self.is_empty_string_field(field):
+                setattr(instance, field.name, "")
             else:
                 some_func = self.default_mapping[field.__class__]
                 kwargs = self.get_additional_kwargs(field.__class__)
