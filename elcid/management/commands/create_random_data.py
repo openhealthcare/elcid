@@ -112,6 +112,43 @@ def boolean_field_generator(*args, **kwargs):
     return random.choice([True, False])
 
 
+class TagGenerator(object):
+    unique_together = [
+        ("opat_referrals", "opat_current", "opat_followup",),
+        ("walkin_triage", "walkin_doctor", "walkin_review",),
+        ("immune_inpatients", "immune_liason",),
+        None,  # everything else
+    ]
+
+    category_map = {
+        "opat": "OPAT",
+        "walkin": "Walkin"
+    }
+
+    def tag_episode(self, episode):
+        tag_types = random.choice(self.unique_together)
+
+        if tag_types:
+            tag_type = random.choice(tag_types)
+            for tag_category, category in self.category_map.iteritems():
+                if tag_type.startswith(tag_category):
+                    episode.category = category
+                    episode.save()
+            episode.set_tag_names([tag_type], None)
+        else:
+            unique_tag_names = []
+            for u in self.unique_together:
+                if u:
+                    unique_tag_names.extend(u)
+            possible_tags = omodels.Team.objects.exclude(
+                name__in=unique_tag_names
+            ).values_list("name", flat=True)
+            tag_amount = random.randint(1, min(len(possible_tags), 3))
+
+            chosen_tags = random.sample(possible_tags, tag_amount)
+            episode.set_tag_names(chosen_tags, None)
+
+
 class PatientGenerator(object):
     """ returns a whole batch of patients with a single episde
         with names, hospital numbers and dates of birth
@@ -156,10 +193,6 @@ class PatientGenerator(object):
     def get_gender(self):
         return foreign_key_or_free_text_generator(omodels.Gender)
 
-    def tag_episode(self, episode, tags):
-        usr = User.objects.first()
-        episode.set_tag_names(tags, usr)
-
     def create_episode(self, patient):
         dob = patient.demographics_set.first().date_of_birth
         kwargs = dict(date_of_admission=date_generator(start_date=dob))
@@ -170,11 +203,12 @@ class PatientGenerator(object):
                 start_date=kwargs["date_of_admission"]
             )
 
-        return patient.create_episode(**kwargs)
+        episode = patient.create_episode(**kwargs)
+        t = TagGenerator()
+        t.tag_episode(episode)
+        return episode
 
-    def make(self, tags=None):
-        if tags is None:
-            tags = ["id_inpatients"]
+    def make(self):
         patient = omodels.Patient.objects.create()
         demographics = patient.demographics_set.first()
         hospital_number = random.randint(1000, 2000000)  # self.get_unique_hospital_numbers(1)[0]
@@ -190,8 +224,7 @@ class PatientGenerator(object):
         patient.demographics_set.update(**demographics_kwargs)
         demographics = patient.demographics_set.get()
         demographics.country_of_birth = foreign_key_or_free_text_generator(Demographics.country_of_birth)
-        episode = self.create_episode(patient)
-        self.tag_episode(episode, tags)
+        self.create_episode(patient)
 
         for subrecord in episode_subrecords():
             s = EpisodeSubrecordGenerator(subrecord, patient.episode_set.first())
@@ -332,25 +365,5 @@ class Command(BaseCommand):
             number = 100
         p = PatientGenerator()
 
-        tags = ["opat_referrals",
-                "opat_current",
-                "opat_followup",
-                "micro_haem",
-                "infectious_diseases",
-                "id_inpatients",
-                "id_liaison",
-                "hiv",
-                "mine",
-                "walkin",
-                "walkin_triage",
-                "walkin_doctor",
-                "walkin_review"
-                ]
-
-        tags = Team.objects.filter(name__in=tags).values_list("name", flat=True)
-
-        if not tags:
-            raise ValueError("teams not loaded")
-
         for i in xrange(number):
-            p.make(tags=random.sample(tags, random.randint(1, 3)))
+            p.make()
