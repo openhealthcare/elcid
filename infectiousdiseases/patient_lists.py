@@ -1,7 +1,19 @@
-from opal.core.patient_lists import PatientList, TaggedPatientList
+from opal.core.patient_lists import TaggedPatientList
 from elcid import models
 
-class Virology(TaggedPatientList, PatientList):
+generic_infectious_diseases_list = [
+    models.Demographics,
+    models.Location,
+    models.Diagnosis,
+    models.PastMedicalHistory,
+    models.Antimicrobial,
+    models.MicrobiologyTest,
+    models.GeneralNote,
+    models.Todo
+]
+
+
+class Virology(TaggedPatientList):
     tag = "virology"
     schema = [
         models.Demographics,
@@ -14,8 +26,9 @@ class Virology(TaggedPatientList, PatientList):
     ]
 
 
-class Microbiology(TaggedPatientList, PatientList):
+class MicroOrtho(TaggedPatientList):
     tag = "microbiology"
+    subtag = "micro_ortho"
     schema = [
         models.Demographics,
         models.Location,
@@ -27,7 +40,7 @@ class Microbiology(TaggedPatientList, PatientList):
     ]
 
 
-class InfectiousDiseasesIdLiason(TaggedPatientList, PatientList):
+class InfectiousDiseasesIdLiason(TaggedPatientList):
     tag = "infectious_diseases"
     subtag = "id_liaison"
 
@@ -44,18 +57,27 @@ class InfectiousDiseasesIdLiason(TaggedPatientList, PatientList):
     ]
 
 
-class InfectiousDiseasesIdInpatient(TaggedPatientList, PatientList):
+class InfectiousDiseasesIdInpatient(TaggedPatientList):
     tag = "infectious_diseases"
     subtag = "id_inpatients"
 
-    schema = [
-        models.Demographics,
-        models.Location,
-        models.Diagnosis,
-        models.PastMedicalHistory,
-        models.Travel,
-        models.Antimicrobial,
-        models.MicrobiologyTest,
-        models.GeneralNote,
-        models.Todo,
-        ]
+    schema = generic_infectious_diseases_list
+
+
+class ImmuneInpatients(TaggedPatientList):
+    tag = "hiv"
+    subtag = "immune_inpatients"
+
+    schema = generic_infectious_diseases_list
+
+
+class ImmuneLiason(TaggedPatientList):
+    tag = "hiv"
+    subtag = "immune_liason"
+
+    schema = generic_infectious_diseases_list
+
+
+class Tropical(TaggedPatientList):
+    tag = "tropical_diseases"
+    schema = generic_infectious_diseases_list

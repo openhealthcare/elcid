@@ -1,10 +1,10 @@
 from elcid import models
 from obs import models as obsmodels
 from walkin import models as wimodels
-from opal.core.patient_lists import PatientList, TaggedPatientList
+from opal.core.patient_lists import TaggedPatientList
 
 
-class WalkinDoctor(TaggedPatientList, PatientList):
+class WalkinDoctor(TaggedPatientList):
     tag = "walkin"
     subtag = "walkin_doctor"
     schema = [
@@ -21,7 +21,7 @@ class WalkinDoctor(TaggedPatientList, PatientList):
     ]
 
 
-class WalkinNurseTriage(TaggedPatientList, PatientList):
+class WalkinNurseTriage(TaggedPatientList):
     tag = "walkin"
     subtag = "walkin_triage"
     schema = [
@@ -34,7 +34,7 @@ class WalkinNurseTriage(TaggedPatientList, PatientList):
     ]
 
 
-class WalkinReview(TaggedPatientList, PatientList):
+class WalkinReview(TaggedPatientList):
     tag = "walkin"
     subtag = "walkin_review"
     schema = [
