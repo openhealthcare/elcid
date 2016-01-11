@@ -3,16 +3,6 @@ from elcid import models
 from opal.models import Episode
 
 
-class InfectionControl(TaggedPatientList):
-    tag = "infectioncontrol"
-
-    schema = [
-        models.Demographics,
-        models.Location,
-        models.MicrobiologyTest,
-    ]
-
-
 class Mine(PatientList):
     """
     if the user has tagged episodes as their's this will give them the appropriate
