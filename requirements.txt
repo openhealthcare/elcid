@@ -22,7 +22,7 @@ django-compressor==1.5
 
 -e git+https://github.com/openhealthcare/opal.git@v0.6.0#egg=opal
 -e git+https://github.com/openhealthcare/opal-research.git@v0.2.0#egg=opal_research
--e git+https://github.com/openhealthcare/opal-observations.git@v0.1.1#egg=opal_observations
+-e git+https://github.com/openhealthcare/opal-observations.git@v0.1.2#egg=opal_observations
 
 -e git+https://github.com/openhealthcare/opal-walk-in.git@v0.3.0#egg=opal_walk_in
 
