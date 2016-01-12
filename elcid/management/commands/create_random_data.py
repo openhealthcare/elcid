@@ -224,17 +224,20 @@ class PatientGenerator(object):
         patient.demographics_set.update(**demographics_kwargs)
         demographics = patient.demographics_set.get()
         demographics.country_of_birth = foreign_key_or_free_text_generator(Demographics.country_of_birth)
-        self.create_episode(patient)
+        
+        # Let's have some episode history.
+        for i in range(0, random.choice(range(1, 5))):
+            self.create_episode(patient)
 
-        for subrecord in episode_subrecords():
-            s = EpisodeSubrecordGenerator(subrecord, patient.episode_set.first())
-            s.make()
-
-        for subrecord in patient_subrecords():
-            # we've already made the demographics above
-            if subrecord.__name__ != "Demographics":
-                s = PatientSubrecordGenerator(subrecord, patient)
+            for subrecord in episode_subrecords():
+                s = EpisodeSubrecordGenerator(subrecord, patient.episode_set.first())
                 s.make()
+
+            for subrecord in patient_subrecords():
+                # we've already made the demographics above
+                if subrecord.__name__ != "Demographics":
+                    s = PatientSubrecordGenerator(subrecord, patient)
+                    s.make()
 
         return patient
 
