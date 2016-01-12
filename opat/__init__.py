@@ -3,7 +3,7 @@ Plugin definition for the opat OPAL plugin
 """
 from opal.core import episodes, plugins
 from opat.urls import urlpatterns
-from opat.schema import list_columns_opat
+
 
 class OpatPlugin(plugins.OpalPlugin):
     """
@@ -32,14 +32,6 @@ class OpatPlugin(plugins.OpalPlugin):
         plugin may define.
         """
         return []
-
-    def list_schemas(self):
-        """
-        Return any patient list schemas that our plugin may define.
-        """
-        return {
-            "default": list_columns_opat
-        }
 
     def flows(self):
         """

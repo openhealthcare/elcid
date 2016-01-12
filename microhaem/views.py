@@ -1,6 +1,7 @@
 from django.views.generic import TemplateView, View
 from django.shortcuts import get_object_or_404
 
+from opal.core.subrecords import subrecords
 from opal.core.views import _build_json_response
 from opal import models as opal_models
 
@@ -27,5 +28,7 @@ class MicroHaemTemplateView(TemplateView):
     def get_context_data(self, *args, **kwargs):
         context = super(MicroHaemTemplateView, self).get_context_data(*args, **kwargs)
         context['models'] = {m.__name__: m for m in subrecords()}
-        context['inline_forms'] = getattr(app, "patient_view_forms", [])
+        context['inline_forms'] = {
+            "General Consultation": "inline_forms/clinical_advice.html",
+        }
         return context
