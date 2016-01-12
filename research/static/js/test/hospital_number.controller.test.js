@@ -1,10 +1,10 @@
-describe('ResearchHospitalNumberCtrl', function (){ 
+describe('ResearchHospitalNumberCtrl', function (){
+    "use strict";
     var $controller, $scope, $httpBackend, $modalInstance, $modal;
     var controller;
 
     beforeEach(module('opal.controllers'));
 
-    
     beforeEach(inject(function($injector){
         $rootScope   = $injector.get('$rootScope');
         $scope       = $rootScope.$new();
@@ -15,7 +15,7 @@ describe('ResearchHospitalNumberCtrl', function (){
         Item         = $injector.get('Item');
 
         $modalInstance = $modal.open({template: 'Not a real template'});
-        
+
         options = {};
         schema = {};
 
@@ -38,14 +38,14 @@ describe('ResearchHospitalNumberCtrl', function (){
         expect($scope.model.hospitalNumber).toBe(null);
     });
 
-    
+
     describe('new_patient()', function (){
-        
+
         beforeEach(function(){
             spyOn($modal, 'open').and.callThrough();
             $httpBackend.whenGET('/templates/modals/add_episode_without_teams.html/').respond('hi');
         });
-        
+
         it('Should call the AddEpisode controller', function () {
             $scope.new_patient({});
             callArgs = $modal.open.calls.mostRecent().args;
@@ -56,10 +56,10 @@ describe('ResearchHospitalNumberCtrl', function (){
         it('Should use the without teams template', function () {
             $scope.new_patient({});
             callArgs = $modal.open.calls.mostRecent().args;
-            expect(callArgs[0].templateUrl).toBe('/templates/modals/add_episode_without_teams.html/');            
+            expect(callArgs[0].templateUrl).toBe('/templates/modals/add_episode_without_teams.html/');
             $httpBackend.flush();
         });
-        
+
         it('Should pass through hospital number', function () {
             hospital_number = '12345';
             $scope.model.hospitalNumber = hospital_number;
@@ -68,7 +68,7 @@ describe('ResearchHospitalNumberCtrl', function (){
             expect(callArgs[0].resolve.demographics().hospital_number).toBe(hospital_number)
             $httpBackend.flush();
         });
-        
+
     });
-   
+
 });
