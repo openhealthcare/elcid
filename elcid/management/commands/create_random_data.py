@@ -41,8 +41,17 @@ nouns = [
 PROB_OF_FREE_TEXT = 2  # out of 10
 
 
-def string_generator(*args, **kwargs):
-    return "{0} {1}".format(random.choice(adjectives), random.choice(nouns))
+def string_generator(field, *args, **kwargs):
+    random_string = "{0} {1}".format(
+        random.choice(adjectives), random.choice(nouns)
+    )
+    if hasattr(field, "max_length"):
+        random_string = random_string[:field.max_length]
+    return random_string
+
+
+def consistency_generator(*args, **kwargs):
+    return '%08x' % random.randrange(16**8)
 
 
 def date_generator(*args, **kwargs):
@@ -293,6 +302,8 @@ class SubRecordGenerator(object):
         instance = self.get_instance()
 
         for field in self.get_fields():
+            if field.name == "consistency_token":
+                setattr(instance, field.name, consistency_generator())
             if self.is_null_field(field):
                 setattr(instance, field.name, None)
             elif self.is_empty_string_field(field):
