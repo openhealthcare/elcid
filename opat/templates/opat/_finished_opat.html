@@ -1,0 +1,38 @@
+{% load forms %}
+
+{% select label="Patient Outcome" model="meta.patient_outcome" lookuplist="['Cure', 'Improved', 'Failure']" help="opat/_patient_outcome_help.html" %}
+{% select label="Opat Outcome" model="meta.opat_outcome" lookuplist="['Success', 'Partial Success', 'Failure of OPAT', 'Intermidiate Outcome']" help="opat/_opat_outcome_help.html" %}
+{% select label="Primary Infective Diagnosis" model="meta.infective_diagnosis" lookuplist="opatinfectivediagnosis_list" other=True %}
+{% checkbox model="meta.died" label="Died?" %}
+
+<div class="form-group" ng-show="meta.died">
+  <label class="control-label col-sm-3">Death Category</label>
+  <div class="col-sm-8">
+    <select class="form-control" ng-model="meta.death_category">
+      <option>Death due the infection for which OPAT was initiated'</option>
+      <option>Death due to a complication of OPAT</option>
+      <option>Death due to pathology unrelated to OPAT or indication for OPAT</option>
+    </select>
+  </div>
+</div>
+
+{% input model="meta.cause_of_death" show="meta.died" label="Cause of death"%}
+{% checkbox model="meta.readmitted" label="Readmitted" %}
+
+<div class="form-group" ng-show="meta.readmitted">
+  <label class="control-label col-sm-3">Readmission Cause</label>
+  <div class="col-sm-8">
+    <select class="form-control" ng-model="meta.outcome">
+      <option>Relapse of the infection for which they had received OPAT</option>
+      <option>New infection</option>
+      <option>Planned procedure</option>
+      <option>Unrelated to infection</option>
+    </select>
+  </div>
+</div>
+<div class="form-group">
+  <label class="control-label col-sm-3">Notes</label>
+  <div class="col-sm-8">
+	<textarea class="form-control" ng-model="meta.notes" rows="5"></textarea>
+  </div>
+</div>
