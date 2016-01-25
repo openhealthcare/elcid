@@ -14,6 +14,12 @@ class RidRtiScientist(TaggedPatientList):
         research_models.RidRTITest
     ]
 
+    def visibile_to_user(self):
+        user = self.request.user
+        research_user = user.researcher_user.filter(name=self.tag).exists()
+        research_scientist = user.scientist_user.filter(name=self.tag).exists()
+        return research_user or research_scientist
+
 
 class RidRtiResearchPractitioner(TaggedPatientList):
     tag = "rid_rti"
@@ -29,3 +35,9 @@ class RidRtiResearchPractitioner(TaggedPatientList):
         research_models.LabTest,
         research_models.LabSpecimin
     ]
+
+    def visibile_to_user(self):
+        user = self.request.user
+        research_user = user.researcher_user.filter(name=self.tag).exists()
+        research_nurse = user.research_nurse_user.filter(name=self.tag).exists()
+        return research_user or research_nurse
