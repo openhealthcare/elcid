@@ -1,0 +1,21 @@
+{% extends 'iframe_templates/base.html' %}
+{% block content %}
+  {% for object in object_list %}
+    <p>
+      <b>
+        {{ object.when }}
+        {% if object.initials %}
+          ({{ object.initials }})
+        {% endif %}
+        {% if object.discussed_with %}
+          with {{ object.discussed_with }}
+        {% endif %}
+      </b>
+      <br />
+      {{ object.reason_for_interaction }}
+    </p>
+    <p>
+      {{ object.clinical_discussion }}
+    </p>
+  {% endfor %}
+{% endblock %}
