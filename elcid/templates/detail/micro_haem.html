@@ -17,7 +17,7 @@
           {% record_panel models.MicrobiologyTest editable="false" title="Alert Investigation Results" name="alertInvestigations()" %}
         </div>
       </div>
-      <section ng-repeat="episode in patient.episodes">
+      <section ng-repeat="episode in patient.episodes | orderBy:haemView.getEpisodeOrdering">
         <div class="row">
           <div class="col-md-12 text-center">
             <a class="orange-link" ng-href="[[ getEpisodeLink(episode) ]]">
@@ -55,16 +55,16 @@
               <line class="speech-bubble-timeline hidden-sm hidden-xs" x1="12.5%" y1="0" x2="12.5%" y2="500%" />
               <line class="speech-bubble-timeline hidden-md hidden-lg" x1="50%" y1="0" x2="50%" y2="500%" />
             </svg>
-            <div ng-repeat="microbiology_input in episode.microbiology_input  | orderBy:'-when'" class="row content-offset-20">
+            <div ng-repeat="microbiology_input in episode.microbiology_input  | orderBy:haemView.clinicalAdviceOrdering" class="row content-offset-20">
 
               <div class="col-md-3 patient-timeline">
                 <div class="patient-timeline-speech-bubble">
                   <i class="fa fa-comments patient-timeline-speech-bubble-icon"></i>
                 </div>
-                <div ng-show="microbiology_input.when">
-                  <div class="patient-timeline-date">
-                    [[ microbiology_input.when | momentDateFormat:'DD MMM YYYY' ]]
-                  </div>
+                <div ng-show="haemView.getClinicalAdviceDate(microbiology_input)">
+                    <div class="patient-timeline-date">
+                          [[ haemView.getClinicalAdviceDate(microbiology_input) | momentDateFormat:'DD MMM YYYY' ]]
+                    </div>
                 </div>
               </div>
               <div class="col-md-9">

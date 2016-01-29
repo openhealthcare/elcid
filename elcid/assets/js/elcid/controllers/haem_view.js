@@ -1,5 +1,6 @@
 angular.module('opal.controllers').controller('HaemView', function($scope){
   "use strict";
+  var vm = this;
   function getAlertInvestigations(episode){
       if(episode.microbiology_test){
         return _.filter(episode.microbiology_test, function(mt){
@@ -10,6 +11,31 @@ angular.module('opal.controllers').controller('HaemView', function($scope){
         return [];
       }
   }
+
+  var orderByDate = function(significantDate){
+     // order by -date where date could be null, so we put that at the bottom
+     if(significantDate){
+         return -(moment(significantDate).unix());
+     }
+     else{
+         // this should never happen, but if it does, put it at the bottom
+         return 0;
+     }
+  };
+
+  vm.getClinicalAdviceDate = function(clinicalAdvice){
+     return clinicalAdvice.when || clinicalAdvice.created;
+  };
+
+  vm.clinicalAdviceOrdering = function(clinicalAdvice){
+     var clinicalAdviceDate = vm.getClinicalAdviceDate(clinicalAdvice);
+     return orderByDate(clinicalAdviceDate);
+  };
+
+  vm.getEpisodeOrdering = function(episode){
+      var significantDate = e.discharge_date || e.date_of_episode || e.date_of_admission;
+      return orderByDate(significantDate)
+  };
 
   if($scope.patient.episodes.length){
       $scope.episode.alertInvestigations = function(){
