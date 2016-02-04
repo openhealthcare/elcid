@@ -1,4 +1,4 @@
-{% load panels %}
+  {% load panels %}
 <div class="panel panel-active">
   <div class="panel-heading text-center">
     <h3>
@@ -6,7 +6,7 @@
     </h3>
   </div>
 </div>
-<div>
+<div ng-controller="HaemView as haemView">
   <div class="bg-white">
     <div class="patient-timeline-container">
       <div class="row">
@@ -17,7 +17,7 @@
           {% record_panel models.MicrobiologyTest editable="false" title="Alert Investigation Results" name="alertInvestigations()" %}
         </div>
       </div>
-      <section ng-repeat="episode in patient.episodes">
+      <section ng-repeat="episode in patient.episodes | orderBy:haemView.getEpisodeOrdering">
         <div class="row">
           <div class="col-md-12 text-center">
             <a class="orange-link" ng-href="[[ getEpisodeLink(episode) ]]">
@@ -39,26 +39,7 @@
           <div parent-height class="col-md-6">
             <div ng-if="$first" class="row">
               <div class="col-md-12">
-                {% if inline_forms|length > 1 %}
-                  <form>
-                    <div class="fake-select-wrapper">
-                      <select class="form-control attached-select" ng-model="inlineForm.name" ng-init="initialiseForm('{{ inline_forms.keys|first }}')">
-                        {% for form_name in inline_forms %}
-                          <option>{{ form_name }}</option>
-                        {% endfor %}
-                      </select>
-                    </div>
-                  </form>
-                {% endif %}
-                {% for form_name, form_template in inline_forms.items %}
-                  {% if inline_forms|length > 1 %}
-                    <div class="select-attached" ng-show="inlineForm.name === '{{ form_name }}'">
-                  {% endif %}
-                  {% include form_template %}
-                  {% if inline_forms|length > 1 %}
-                    </div>
-                  {% endif %}
-                {% endfor %}
+                {% include "inline_forms/clinical_advice.html" %}
               </div>
             </div>
             <div ng-if="$first" class="row">
@@ -74,16 +55,16 @@
               <line class="speech-bubble-timeline hidden-sm hidden-xs" x1="12.5%" y1="0" x2="12.5%" y2="500%" />
               <line class="speech-bubble-timeline hidden-md hidden-lg" x1="50%" y1="0" x2="50%" y2="500%" />
             </svg>
-            <div ng-repeat="microbiology_input in episode.microbiology_input  | orderBy:'-when'" class="row content-offset-20">
+            <div ng-repeat="microbiology_input in episode.microbiology_input  | orderBy:haemView.clinicalAdviceOrdering" class="row content-offset-20">
 
               <div class="col-md-3 patient-timeline">
                 <div class="patient-timeline-speech-bubble">
                   <i class="fa fa-comments patient-timeline-speech-bubble-icon"></i>
                 </div>
-                <div ng-show="microbiology_input.when">
-                  <div class="patient-timeline-date">
-                    [[ microbiology_input.when | momentDateFormat:'DD MMM YYYY' ]]
-                  </div>
+                <div ng-show="haemView.getClinicalAdviceDate(microbiology_input)">
+                    <div class="patient-timeline-date">
+                          [[ haemView.getClinicalAdviceDate(microbiology_input) | momentDateFormat:'DD MMM YYYY HH:MM' ]]
+                    </div>
                 </div>
               </div>
               <div class="col-md-9">
@@ -102,12 +83,12 @@
           </div>
           <div class="col-md-6">
             <span ng-if="$first">
-              {% record_panel models.HaemInformation title="Haematology Background Information" angular_filter="isRecentHaemInformation" %}
+              {% record_panel models.HaemInformation title="Haematology Background Information" angular_filter="haemView.isRecentHaemInformation" %}
               {% record_panel models.EpisodeOfNeutropenia title="Episodes of Neutropenia"  %}
             </span>
-            {% record_panel models.Antimicrobial editable="firstEpisode.id === episode.id" %}
-            {% record_panel models.MicrobiologyTest editable="firstEpisode.id === episode.id" %}
-            {% record_panel models.Diagnosis editable="firstEpisode.id === episode.id" %}
+            {% record_panel models.Antimicrobial editable="patient.episodes[0].id === episode.id" %}
+            {% record_panel models.MicrobiologyTest editable="patient.episodes[0].id === episode.id" %}
+            {% record_panel models.Diagnosis editable="patient.episodes[0].id === episode.id" %}
           </div>
         </div>
       </section>
