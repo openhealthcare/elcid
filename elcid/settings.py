@@ -178,6 +178,7 @@ INSTALLED_APPS = (
     'dischargesummary',
     'djcelery',
     'taskrunner',
+    'nicebnf',
 )
 
 if 'test' in sys.argv:
