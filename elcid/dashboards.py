@@ -80,7 +80,7 @@ class ConfirmedDiagnosisByConsultant(widgets.Table):
             rows.append(row)
 
         rows = sorted(rows, key=lambda x: x[self.CONSULTANT])
-        rows = sorted(rows, key=lambda x: x.get(self.CONFIRMED_DIAGNOSIS, 100))
+        rows = sorted(rows, key=lambda x: x.get(self.CONFIRMED_DIAGNOSIS, 101))
 
         for i, row in enumerate(rows, start=1):
             if row[self.TOTAL_NUMBER] == 0:
