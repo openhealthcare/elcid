@@ -4,22 +4,22 @@
 import datetime
 
 from opal.models import Episode
-from wardround import WardRound
+from wardround.wardrounds import WardRound
 
 
 class HistoricTagsMixin(object):
-
-    @classmethod
-    def to_dict(klass, user):
+    def to_dict(self):
         """
         We're overriding this so that we can set the extra flag on historic Tags.
         """
-        return dict(name=klass.name,
-                    description=klass.description,
-                    episodes=Episode.objects.serialised(user, klass.episodes(),
-                                                        episode_history=True,
-                                                        historic_tags=True),
-                    filters=klass.filters)
+        return dict(name=self.name,
+                    description=self.description,
+                    episodes=Episode.objects.serialised(
+                        self.request.user,
+                        self.episodes(),
+                        episode_history=True,
+                        historic_tags=True),
+                    )
 
 
 class Discharged(HistoricTagsMixin, WardRound):
@@ -32,11 +32,16 @@ class Discharged(HistoricTagsMixin, WardRound):
         'team': 'episode.tagging[0][value]'
     }
 
-    @staticmethod
-    def episodes():
+    def episodes(self):
         today = datetime.date.today()
         two_weeks_ago = today - datetime.timedelta(days=7)
+        team = self.request.GET.get("team", None)
+
         episodes = Episode.objects.filter(
             category__in=['inpatient', 'Walkin'],
             discharge_date__gte=two_weeks_ago)
+
+        if team:
+            episodes = episodes.filter(tagging__team__name=team)
+
         return episodes
