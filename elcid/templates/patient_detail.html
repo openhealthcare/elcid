@@ -1,0 +1,16 @@
+{% extends 'patient_detail_base.html' %}
+{% block viewnavigation %}
+  <a class="list-group-item episodelist pointer"
+     ng-class="{'bg-active': view == 'micro_haem'}"
+     ng-show="profile.has_role('micro_haem')"
+     ng-click="switch_to_episode(0, $event) && switch_to_view('micro_haem')"
+     href="[[ '/#/patient/' + patient.id + '/micro_haem' ]]"
+     >
+    Micro Haem Consult
+  </a>
+{% endblock %}
+{% block viewtemplates %}
+  <div class="row" ng-show="view == 'micro_haem'">
+    {% include 'detail/micro_haem.html' %}
+  </div>
+{% endblock %}
