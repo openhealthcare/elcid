@@ -161,6 +161,7 @@ INSTALLED_APPS = (
     'rest_framework',
     'compressor',
     'opal.core.search',
+    'opal.core.glossolalia',
     'elcid',
     'obs',
     'django.contrib.admin',
