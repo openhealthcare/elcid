@@ -20,16 +20,13 @@ django-celery==3.1.17
 
 django-compressor==1.5
 
--e git+https://github.com/openhealthcare/opal.git@901-make-lists-declarative#egg=opal
--e git+https://github.com/openhealthcare/opal-research.git@v0.2.0#egg=opal_research
+-e git+https://github.com/openhealthcare/opal.git@v6-haem-fixes#egg=opal
 -e git+https://github.com/openhealthcare/opal-observations.git@v0.1.2#egg=opal_observations
 
--e git+https://github.com/openhealthcare/opal-walk-in.git@v0.3.0#egg=opal_walk_in
-
 -e git+https://github.com/openhealthcare/opal-wardround.git@master#egg=opal_wardround
+-e git+https://github.com/openhealthcare/opal-referral.git@v0.1.2#egg=opal_referral
+-e git+https://github.com/openhealthcare/opal-dashboard.git@v0.1.2#egg=opal_dashboard
 
--e git+https://github.com/openhealthcare/opal-referral.git@v0.1.1#egg=opal_referral
--e git+https://github.com/openhealthcare/opal-dashboard.git@v0.1.1#egg=opal_dashboard
 -e git+https://github.com/openhealthcare/opal-dischargesummary.git@v0.1#egg=opal_dischargesummary
 -e git+https://github.com/openhealthcare/opal-guidelines.git@#egg=opal_guidelines
 -e git+https://github.com/openhealthcare/opal-iframe-api.git@#egg=opal-iframe-api

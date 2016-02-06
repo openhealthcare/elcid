@@ -3,13 +3,15 @@
   <div class="panel panel-active">
     <div class="panel-heading text-center">
       <h3>
+        {% block title %}
         Inpatient admission
         [[ episode.date_of_admission | shortDate]]<span ng-show="episode.discharge_date"> - [[ episode.discharge_date | shortDate ]]</span>
+        {% endblock title %}
       </h3>
     </div>
     <div class="panel-body">
       <center>
-        <button 
+        <button
            ng-hide="profile.readonly"
            ng-click="dischargeEpisode(episode)"
            class="btn btn-primary btn-lg">
