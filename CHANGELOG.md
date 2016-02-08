@@ -11,9 +11,9 @@ Added in django cached loaders to our template loaders
 Improved nginx logging
 
 
-opal -> v0.5.3
-opal-walk-in -> v0.2.3
-opal-dashboard -> v0.1.2
+* opal -> v0.5.3
+* opal-walk-in -> v0.2.3
+* opal-dashboard -> v0.1.2
 
 ## 0.5.1 Release
 
