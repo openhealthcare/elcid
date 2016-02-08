@@ -7,8 +7,8 @@ Minor fixes for if there is no date attatched to the clinical advice
 Better handling if the consultant has no patients
 
 #### Behind the Scenes
-added in django cached loaders to our template loaders
-improved nginx logging
+Added in django cached loaders to our template loaders
+Improved nginx logging
 
 
 opal -> v0.5.3
