@@ -25,7 +25,19 @@ angular.module('opal.controllers').controller(
        }).reverse();
 
        $scope.orderByDate = function(x){
-          return -moment(x.when).unix();
+          var significantDate = $scope.getSignicantDate(x)
+
+          if(significantDate){
+              return -moment().unix();
+          }
+          else{
+              // this should never happen, but if it does, put it at the bottom
+              return 0;
+          }
+       };
+
+       $scope.getSignicantDate = function(clinicalAdvice){
+          return clinicalAdvice.when || clinicalAdvice.created;
        };
 
        $scope.inlineForm = {};
@@ -98,7 +110,7 @@ angular.module('opal.controllers').controller(
                   return new Date(significantDate);
               });
 
-              result = {};
+              var result = {};
 
               _.forEach(haemInformation, function(hi){
                   result[hi.patient_type] = hi.id;
