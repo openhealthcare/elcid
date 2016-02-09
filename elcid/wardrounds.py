@@ -43,9 +43,15 @@ class Discharged(HistoricTagsMixin, WardRound):
             discharge_date__gte=two_weeks_ago)
 
         if team:
-            episodes = episodes.filter(tagging__team__name=team)
+            result = []
 
-        return episodes
+            for episode in episodes:
+                if team in episode.get_tag_names(self.request.user, historic=True):
+                    result.append(episode.id)
+
+            return Episode.objects.filter(id__in=result)
+        else:
+            return episodes
 
 
 class ConsultantReview(WardRound):
