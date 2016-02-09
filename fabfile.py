@@ -85,15 +85,20 @@ def checkout(package_name_version):
                         local("python setup.py develop")
 
 
-def db_commands():
-    return [
+def db_commands(username):
+    cmds =  [
         "python manage.py migrate",
         "python manage.py loaddata data/elcid.teams.json",
         "python manage.py load_lookup_lists -f data/lookuplists/lookuplists.json",
         'echo "from opal.models import Role; Role.objects.create(name=\'micro_haem\')" | python ./manage.py shell',
         "python manage.py create_random_data"
     ]
-
+    python_cmd = "echo '"
+    python_cmd += "from django.contrib.auth.models import User; "
+    python_cmd += "User.objects.create_superuser(\"{0}\", \"{0}@example.com\", \"{0}1\")".format(username)
+    python_cmd += "' | python ./manage.py shell"
+    cmds.append(python_cmd)
+    return cmds
 
 def push_to_heroku(remote_name):
     with lcd(fabfile_dir):
@@ -106,7 +111,7 @@ def push_to_heroku(remote_name):
 
 
 @task
-def create_heroku_instance(name):
+def create_heroku_instance(name, username):
     """
     creates and populates a heroku instance
     TODO make sure that we're fully committed git wise before pushing
@@ -124,7 +129,7 @@ def create_heroku_instance(name):
             local("heroku run --app {0} python manage.py migrate opal".format(
                 name
             ))
-        for db_command in db_commands():
+        for db_command in db_commands(username):
             local("heroku run --app {0} {1}".format(name, db_command))
 
 
@@ -143,7 +148,7 @@ def checkout_project():
 
 
 @task
-def create_db():
+def create_db(username):
     with lcd(fabfile_dir):
         with warn_only():
             # heroku somtimes has memory issues doing migrate
@@ -152,5 +157,5 @@ def create_db():
             # been migrated, but that's fine we'll do that later
             local("python manage.py migrate opal")
 
-        for db_command in db_commands():
+        for db_command in db_commands(username):
             local(db_command)
