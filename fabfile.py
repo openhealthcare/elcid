@@ -1,5 +1,5 @@
 from fabric.api import env, task, local, lcd
-from fabric.context_managers import warn_only
+from fabric.context_managers import warn_only, prefix
 import os
 
 
@@ -7,6 +7,7 @@ env.hosts = ["elcid-uch-test.openhealthcare.org.uk"]
 env.user = "ubuntu"
 project_name = "elcid"
 fabfile_dir = os.path.realpath(os.path.dirname(__file__))
+github_url = "git://github.com/openhealthcare/elcid.git"
 
 
 def check_for_uncommitted():
@@ -133,14 +134,32 @@ def create_heroku_instance(name, username):
             local("heroku run --app {0} {1}".format(name, db_command))
 
 
-@task
-def production_deploy():
-    # TODO include the supervisor commands
-    # synch the nginx conf
-    with lcd(fabfile_dir):
-        local("python manage.py migrate")
-        local("python manage.py collectstatic --noinput")
+def get_latest_db_snapshot():
+    db_snapshot_dir = "/usr/local/ohc/var"
+    with lcd(db_snapshot_dir):
+        ldbs = local("ls -t").split("\n")[0]
+    latest_db_snapshot = os.join(db_snapshot_dir, ldbs)
+    return latest_db_snapshot
 
+
+@task
+def test_deploy(branch):
+    # TODO synch the nginx conf
+    env_name = branch.replace("v", "").replace(".", "").replace("-", "")
+    env_name = "elcid{}".format(env_name)
+
+    with lcd(fabfile_dir):
+        local('mkproject '.format(env_name))
+        with prefix("/usr/bin/virtualenv"):
+            with prefix("workon ".format(env_name)):
+                local("git clone -b {0} {1}".format(branch, github_url))
+                with lcd("elcid"):
+                    local("pip install -r requirements.txt")
+                local("psql {0} < {1}".format(env_name, get_latest_db_snapshot()))
+                local("python manage.py migrate")
+                local("python manage.py collectstatic --noinput")
+                local("pkill super; pkill gunic; pkill celery")
+                local("supervisord")
 
 @task
 def checkout_project():
