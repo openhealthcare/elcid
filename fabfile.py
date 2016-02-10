@@ -149,7 +149,7 @@ def test_deploy(branch):
     env_name = "elcid{}".format(env_name)
 
     # assumes we've pip installed virtualenvwrapper
-    with prefix("/usr/local/virtualenvwrapper.sh"):
+    with prefix("/usr/local/bin/virtualenvwrapper.sh"):
         local('mkproject '.format(env_name))
         with prefix("workon ".format(env_name)):
             local("git clone -b {0} {1}".format(branch, github_url))
