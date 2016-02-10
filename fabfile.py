@@ -7,7 +7,7 @@ env.hosts = ["elcid-uch-test.openhealthcare.org.uk"]
 env.user = "ubuntu"
 project_name = "elcid"
 fabfile_dir = os.path.realpath(os.path.dirname(__file__))
-github_url = "git://github.com/openhealthcare/elcid.git"
+github_url = "https://github.com/openhealthcare/elcid.git"
 
 
 def check_for_uncommitted():
@@ -148,18 +148,19 @@ def test_deploy(branch):
     env_name = branch.replace("v", "").replace(".", "").replace("-", "")
     env_name = "elcid{}".format(env_name)
 
-    with lcd(fabfile_dir):
-        local('mkproject '.format(env_name))
-        with prefix("/usr/bin/virtualenv"):
-            with prefix("workon ".format(env_name)):
-                local("git clone -b {0} {1}".format(branch, github_url))
-                with lcd("elcid"):
-                    local("pip install -r requirements.txt")
-                local("psql {0} < {1}".format(env_name, get_latest_db_snapshot()))
-                local("python manage.py migrate")
-                local("python manage.py collectstatic --noinput")
-                local("pkill super; pkill gunic; pkill celery")
-                local("supervisord")
+    with prefix("source ~/.bashrc"):
+        with lcd(fabfile_dir):
+            local('mkproject '.format(env_name))
+            with prefix("/usr/bin/virtualenv"):
+                with prefix("workon ".format(env_name)):
+                    local("git clone -b {0} {1}".format(branch, github_url))
+                    with lcd("elcid"):
+                        local("pip install -r requirements.txt")
+                    local("psql {0} < {1}".format(env_name, get_latest_db_snapshot()))
+                    local("python manage.py migrate")
+                    local("python manage.py collectstatic --noinput")
+                    local("pkill super; pkill gunic; pkill celery")
+                    local("supervisord")
 
 @task
 def checkout_project():
