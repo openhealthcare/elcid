@@ -4,6 +4,10 @@
 Wardrounds have been completely rewritten with local storage caching on the
 client side
 
+# Fab utility scripts
+Create a fully populated heroku instance, populate a database or checkout
+an whole opal dependency tree just from an elcid project
+
 opal -> v0.5.4
 opal-wardround -> v0.4
 
