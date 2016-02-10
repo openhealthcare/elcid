@@ -3,7 +3,7 @@
 """
 from datetime import timedelta, date
 
-from opal.models import Episode
+from opal.models import Episode, Tagging
 from wardround.wardrounds import WardRound
 from elcid.models import Consultant, OPATMeta
 
@@ -45,9 +45,19 @@ class Discharged(HistoricTagsMixin, WardRound):
         if team:
             result = []
 
-            for episode in episodes:
-                if team in episode.get_tag_names(self.request.user, historic=True):
-                    result.append(episode.id)
+            history_tags_for_episodes = Tagging.historic_tags_for_episodes(
+                episodes
+            )
+
+            for episode_id, tag_dict in history_tags_for_episodes.iteritems():
+                if team in tag_dict:
+                    result.append(episode_id)
+
+            existing_episode_ids_with_tags = Tagging.objects.filter(
+                team__name=team, episode__in=episodes
+            ).values_list("episode_id", flat=True)
+
+            result.extend(existing_episode_ids_with_tags)
 
             return Episode.objects.filter(id__in=result)
         else:
