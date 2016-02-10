@@ -143,6 +143,11 @@ def get_latest_db_snapshot():
 
 
 @task
+def local_prefix_test():
+    with prefix("export HELLO='there'"):
+        local("echo $HELLO")
+
+@task
 def test_deploy(branch):
     # TODO synch the nginx conf
     env_name = branch.replace("v", "").replace(".", "").replace("-", "")
@@ -155,6 +160,7 @@ def test_deploy(branch):
     pref = "{0} workon {1} && cdproject {1} &&".format(pref, env_name)
     local("{0} git clone -b {1} {2}".format(pref, branch, github_url))
     pref = "{0} && cd elcid &&"
+
 
     cmds = [
         "pip install -r requirements.txt",
