@@ -149,17 +149,25 @@ def test_deploy(branch):
     env_name = "elcid{}".format(env_name)
 
     # assumes we've pip installed virtualenvwrapper
-    with prefix(". ~/.bashrc"):
-        local('mkproject '.format(env_name))
-        with prefix("workon ".format(env_name)):
-            local("git clone -b {0} {1}".format(branch, github_url))
-            with lcd("elcid"):
-                local("pip install -r requirements.txt")
-            local("psql {0} < {1}".format(env_name, get_latest_db_snapshot()))
-            local("python manage.py migrate")
-            local("python manage.py collectstatic --noinput")
-            local("pkill super; pkill gunic; pkill celery")
-            local("supervisord")
+    # we can't use traditional prefix as this is for remote envs rather than local
+    pref = ". ~/.bashrc &&"
+    local('{0} mkproject {1}'.format(pref, env_name))
+    pref = "{0} workon {1} && cdproject {1} &&".format(pref, env_name)
+    local("{0} git clone -b {1} {2}".format(pref, branch, github_url))
+    pref = "{0} && cd elcid &&"
+
+    cmds = [
+        "pip install -r requirements.txt",
+        "psql {0} < {1}".format(env_name, get_latest_db_snapshot()),
+        "python manage.py migrate",
+        "python manage.py collectstatic --noinput",
+        "pkill super; pkill gunic; pkill celery",
+        "supervisord"
+    ]
+
+    for cmd in cmds:
+        local("{0} {1}".format(pref, cmd))
+
 
 @task
 def checkout_project():
