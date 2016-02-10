@@ -148,7 +148,7 @@ def test_deploy(branch):
     env_name = branch.replace("v", "").replace(".", "").replace("-", "")
     env_name = "elcid{}".format(env_name)
 
-    with prefix("source ~/.bashrc"):
+    with prefix(". ~/.bashrc"):
         with lcd(fabfile_dir):
             local('mkproject '.format(env_name))
             with prefix("/usr/bin/virtualenv"):
