@@ -1,3 +1,13 @@
+## 0.5.3 Release
+
+#### Wardrounds update
+Wardrounds have been completely rewritten with local storage caching on the
+client side
+
+opal -> v0.5.4
+opal-wardround -> v0.4
+
+
 ## 0.5.2 Release
 
 #### Patient Notes View fixes
@@ -7,13 +17,13 @@ Minor fixes for if there is no date attatched to the clinical advice
 Better handling if the consultant has no patients
 
 #### Behind the Scenes
-Added in django cached loaders to our template loaders
-Improved nginx logging
+added in django cached loaders to our template loaders
+improved nginx logging
 
 
-* opal -> v0.5.3
-* opal-walk-in -> v0.2.3
-* opal-dashboard -> v0.1.2
+opal -> v0.5.3
+opal-walk-in -> v0.2.3
+opal-dashboard -> v0.1.2
 
 ## 0.5.1 Release
 
@@ -49,7 +59,7 @@ reporting compliance.
 
 Updates dependencies (Most of the changes in this release are in these modules):
 
-opal -> 0.
+opal -> 0.4.3
 opal-walk-in -> 0.1.3
 opal-opat -> 0.2
 
