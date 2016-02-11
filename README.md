@@ -5,7 +5,7 @@ elCID is an electronic Clinical Infection Database.
 This is the implementation of the [OPAL](https://github.com/openhealthcare/opal) project in use at UCLH.
 
 It is highly customisable open source software for managing inpatients & outpatients with infections.
-          
+
 [![Build
 Status](https://travis-ci.org/openhealthcare/elcid.png)](https://travis-ci.org/openhealthcare/elcid)
 
