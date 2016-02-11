@@ -1,3 +1,17 @@
+## 0.5.3 Release
+
+#### Wardrounds update
+Wardrounds have been completely rewritten with local storage caching on the
+client side
+
+# Fab utility scripts
+Create a fully populated heroku instance, populate a database or checkout
+an whole opal dependency tree just from an elcid project
+
+opal -> v0.5.4
+opal-wardround -> v0.4
+
+
 ## 0.5.2 Release
 
 #### Patient Notes View fixes
@@ -49,7 +63,7 @@ reporting compliance.
 
 Updates dependencies (Most of the changes in this release are in these modules):
 
-opal -> 0.
+opal -> 0.4.3
 opal-walk-in -> 0.1.3
 opal-opat -> 0.2
 

@@ -63,28 +63,3 @@ class TestPatientGenerator(OpalTestCase):
         subrecord = e.make()
         self.assertTrue(bool(subrecord))
         self.assertTrue(bool(subrecord.address_line1))
-
-    def test_tagger(self):
-        patient = omodels.Patient.objects.create()
-        episode = patient.create_episode()
-        omodels.Team.objects.create(name="test_something")
-        omodels.Team.objects.create(name="test_something_else")
-        t = TagGenerator()
-        t.unique_together = [
-            ("test_something",)
-        ]
-        t.category_map = {
-            "test": "tester"
-        }
-
-        t.tag_episode(episode)
-        self.assertEqual(episode.category, "tester")
-        self.assertEqual(list(episode.get_tag_names(None)), [u'test_something'])
-
-        t.unique_together = [None]
-        t.tag_episode(episode)
-        other_tag_names = episode.get_tag_names(None)
-
-        self.assertTrue(
-            "test_something_else" in other_tag_names or self.FAKE_TAG in other_tag_names
-        )
