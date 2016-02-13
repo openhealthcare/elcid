@@ -4,8 +4,8 @@ import ffs
 from opal.core import exceptions
 from opal.core.test import OpalTestCase
 from django.test import TestCase
-from opal.models import Patient, Episode, Condition, Synonym
-from elcid.models import Location
+from opal.models import Patient, Episode, Condition, Synonym, Symptom
+from elcid.models import Location, PresentingComplaint
 
 HERE = ffs.Path.here()
 TEST_DATA = HERE/'test_data'
@@ -132,6 +132,56 @@ class LocationTest(OpalTestCase, AbstractEpisodeTestCase):
         self.location.update_from_dict(data, self.user)
         self.assertEqual('HH', self.location.hospital)
 
+
+class PresentingComplaintTest(OpalTestCase, AbstractEpisodeTestCase):
+    def setUp(self):
+        super(PresentingComplaintTest, self).setUp()
+        self.symptom_1 = Symptom.objects.create(name="tiredness")
+        self.symptom_2 = Symptom.objects.create(name="alertness")
+        self.symptom_3 = Symptom.objects.create(name="apathy")
+        self.presenting_complaint = PresentingComplaint.objects.create(
+            symptom=self.symptom_1,
+            duration="a week",
+            details="information",
+            consistency_token=1111,
+            episode=self.episode
+        )
+        self.presenting_complaint.symptoms.add(self.symptom_2, self.symptom_3)
+
+    def test_to_dict(self):
+        expected_data = dict(
+            id=self.presenting_complaint.id,
+            consistency_token=self.presenting_complaint.consistency_token,
+            symptoms=["alertness", "apathy"],
+            duration="a week",
+            details="information",
+            episode_id=1,
+            updated=None,
+            updated_by_id=None,
+            created=None,
+            created_by_id=None
+        )
+        self.assertEqual(
+            expected_data, self.presenting_complaint.to_dict(self.user)
+        )
+
+    def test_update_from_dict(self):
+        data = {
+            u'consistency_token': self.presenting_complaint.consistency_token,
+            u'id': self.presenting_complaint.id,
+            u'symptoms': [u'alertness', u'tiredness'],
+            u'duration': 'a month',
+            u'details': 'other information'
+        }
+        self.presenting_complaint.update_from_dict(data, self.user)
+        new_symptoms = self.presenting_complaint.symptoms.values_list(
+            "name", flat=True
+        )
+        self.assertEqual(set(new_symptoms), set([u'alertness', u'tiredness']))
+        self.assertEqual(self.presenting_complaint.duration, 'a month')
+        self.assertEqual(
+            self.presenting_complaint.details, 'other information'
+        )
 
 
 class DiagnosisTest(OpalTestCase, AbstractEpisodeTestCase):
