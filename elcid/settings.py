@@ -182,7 +182,18 @@ INSTALLED_APPS = (
 
 if 'test' in sys.argv:
     INSTALLED_APPS += ('opal.tests',)
-
+    PASSWORD_HASHERS = (
+        'django.contrib.auth.hashers.MD5PasswordHasher',
+    )
+    MIGRATION_MODULES = {
+        'opal': 'opal.nomigrations',
+        'elcid': 'elcid.nomigrations',
+        'walkin': 'walkin.nomigrations',
+        'research': 'research.nomigrations',
+        'opat': 'opat.nomigrations',
+        'microhaem': 'microhaem.nomigrations',
+        'iframeapi': 'iframeapi.nomigrations'
+    }
 
 LOGGING = {
     'version': 1,
