@@ -127,11 +127,12 @@ class PresentingComplaint(EpisodeSubrecord):
         pass
 
     def to_dict(self, user):
-        return dict(
-            symptoms=[i.name for i in self.symptoms.all()],
-            duration=self.duration,
-            details=self.details
-        )
+        field_names = self.__class__._get_fieldnames_to_serialize()
+        result = {
+            i: getattr(self, i) for i in field_names if not i == "symptoms"
+        }
+        result["symptoms"] = list(self.symptoms.values_list("name", flat=True))
+        return result
 
     @classmethod
     def _get_fieldnames_to_serialize(cls):
