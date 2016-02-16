@@ -193,7 +193,8 @@ if 'test' in sys.argv:
         'research': 'research.nomigrations',
         'opat': 'opat.nomigrations',
         'microhaem': 'microhaem.nomigrations',
-        'iframeapi': 'iframeapi.nomigrations'
+        'iframeapi': 'iframeapi.nomigrations',
+        'obs': 'obs.nomigrations'
     }
 
 LOGGING = {
