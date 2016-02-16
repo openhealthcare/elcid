@@ -1,0 +1,24 @@
+{% extends 'modal_base.html' %}
+{% load forms %}
+{% block icon %}<i class="fa fa-stethoscope"></i>{% endblock %}
+{% block modal_body %}
+<form class="form-horizontal" name="form">
+  {% select "autofocus" multiple=True tagging=False search_select=True label="Symptoms" lookuplist="symptom_list" help_text="If your symptom isn't in the list please add it to the details box below" model="editing.symptoms" maxlength="255" %}
+  <div class="form-group">
+    <label class="control-label col-sm-3">Duration</label>
+    <div class="col-sm-8">
+      <select class="form-control" ng-model="editing.duration">
+        <option value="">---------</option>
+        <option value="3 days or less">3 days or less</option>
+        <option value="4-10 days">4-10 days</option>
+        <option value="11-21 days">11-21 days</option>
+        <option value="22 days to 3 months">22 days to 3 months</option>
+        <option value="over 3 months">over 3 months</option>
+      </select>
+    </div>
+  </div>
+
+  {% textarea label="Details" model="editing.details" maxlength="255" %}
+
+</form>
+{% endblock %}

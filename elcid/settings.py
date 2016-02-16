@@ -23,7 +23,7 @@ except ImportError:
         }
     }
 
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -103,7 +103,6 @@ STATICFILES_FINDERS = (
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'hq6wg27$1pnjvuesa-1%-wiqrpnms_kx+w4g&&o^wr$5@stjbu'
 
-
 # This should be over written by local settings in the development environment
 TEMPLATE_LOADERS = (
     ('django.template.loaders.cached.Loader', (
@@ -111,6 +110,7 @@ TEMPLATE_LOADERS = (
         'django.template.loaders.app_directories.Loader',
         )),
 )
+
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
@@ -168,6 +168,8 @@ INSTALLED_APPS = (
     'walkin',
     'research',
     'wardround',
+    'microhaem',
+    'infectiousdiseases',
     'referral',
     'dashboard',
     'iframeapi',
@@ -220,8 +222,10 @@ LOGGING = {
 # (Heroku requirement)
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-DATE_FORMAT = 'Y-m-d'
-DATE_INPUT_FORMATS = ['Y-m-d']
+DATE_FORMAT = 'd/m/Y'
+DATE_INPUT_FORMATS = ['%d/%m/%Y']
+DATETIME_FORMAT = 'd/m/Y H:i:s'
+DATETIME_INPUT_FORMATS = ['%d/%m/%Y %H:%M:%S']
 
 CSRF_COOKIE_NAME = 'XSRF-TOKEN'
 APPEND_SLASH = False
@@ -259,7 +263,7 @@ else:
     EMAIL_HOST = 'localhost'
 
 
-VERSION_NUMBER = '0.5.3'
+VERSION_NUMBER = '0.6.0'
 #TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 #TEST_RUNNER = 'django_test_coverage.runner.CoverageTestSuiteRunner'
 
@@ -269,9 +273,6 @@ COVERAGE_EXCLUDE_MODULES = ('elcid.migrations', 'elcid.tests',
                             'opal.migrations', 'opal.tests',
                             'opal.wsgi')
 
-# Research settings
-LIST_SCHEMA_RESEARCH_PRACTITIONER = "elcid.schema.list_columns_research_practitioner"
-LIST_SCHEMA_SCIENTIST = "elcid.schema.list_columns_scientist"
 
 INTEGRATING = False
 GLOSSOLALIA_URL = 'http://localhost:5000/'

@@ -1,11 +1,10 @@
 """
 [Virtual] Ward Round implementations
 """
-from datetime import timedelta, date
+import datetime
 
-from opal.models import Episode, Tagging
+from opal.models import Episode
 from wardround.wardrounds import WardRound
-from elcid.models import Consultant, OPATMeta
 
 
 class HistoricTagsMixin(object):
@@ -34,8 +33,8 @@ class Discharged(HistoricTagsMixin, WardRound):
     }
 
     def episodes(self):
-        today = date.today()
-        two_weeks_ago = today - timedelta(days=7)
+        today = datetime.date.today()
+        two_weeks_ago = today - datetime.timedelta(days=7)
         team = self.request.GET.get("team", None)
 
         episodes = Episode.objects.filter(
@@ -43,67 +42,6 @@ class Discharged(HistoricTagsMixin, WardRound):
             discharge_date__gte=two_weeks_ago)
 
         if team:
-            result = []
+            episodes = episodes.filter(tagging__team__name=team)
 
-            history_tags_for_episodes = Tagging.historic_tags_for_episodes(
-                episodes
-            )
-
-            for episode_id, tag_dict in history_tags_for_episodes.iteritems():
-                if team in tag_dict:
-                    result.append(episode_id)
-
-            existing_episode_ids_with_tags = Tagging.objects.filter(
-                team__name=team, episode__in=episodes
-            ).values_list("episode_id", flat=True)
-
-            result.extend(existing_episode_ids_with_tags)
-
-            return Episode.objects.filter(id__in=result)
-        else:
-            return episodes
-
-
-class ConsultantReview(WardRound):
-    name = "Consultant review"
-    description = "Patients diagnosis review"
-    filter_template = "wardrounds/consultant_review_filter.html"
-    detail_template = 'wardrounds/discharged_detail.html'
-
-    def episodes(self):
-        consultant_name = self.request.GET.get("consultant_at_discharge", None)
-
-        episodes = Episode.objects.exclude(discharge_date=None)
-        episodes = episodes.exclude(consultantatdischarge__consultant_fk=None)
-        episodes = episodes.filter(primarydiagnosis__confirmed=False)
-
-        if consultant_name:
-            consultant = Consultant.objects.get(name=consultant_name)
-            episodes = episodes.filter(
-                consultantatdischarge__consultant_fk=consultant.id
-            )
-
-        return episodes.order_by("-discharge_date")
-
-
-class OPATReviewList(WardRound):
-    name = 'OPAT Review'
-    description = 'Final review of OPAT patients post end-of-treatment'
-
-    def episodes(self):
-        review_ready = OPATMeta.objects.filter(review_date__lte=date.today())
-        in_round = set()
-        for om in review_ready:
-            if om.episode.opatoutcome_set.filter(outcome_stage='OPAT Review').count() == 0:
-                in_round.add(om.episode.id)
-        return Episode.objects.filter(id__in=in_round)
-
-    detail_template = 'wardrounds/opat_detail.html'
-
-
-class OPATCurrentList(WardRound):
-    name        = 'OPAT Current'
-    description = 'All patients on the OPAT current list'
-
-    def episodes(self):
-        return Episode.objects.filter(active=True, tagging__team__name='opat_current')
+        return episodes

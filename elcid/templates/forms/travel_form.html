@@ -1,0 +1,7 @@
+{% load forms %}
+{% input "autofocus" label="Destination" model="editing.travel.destination" lookuplist="destination_list" %}
+{% input label="Dates" model="editing.travel.dates" %}
+{% select label="Reason for travel" model="editing.travel.reason_for_travel" lookuplist="travel_reason_list" %}
+{% input label="Specific exposures" model="editing.travel.specific_exposures" %}
+{% checkbox label="No travel in the last 12 months" model="editing.travel.did_not_travel" %}
+

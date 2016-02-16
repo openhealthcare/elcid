@@ -1,0 +1,97 @@
+  {% load panels %}
+<div class="panel panel-active">
+  <div class="panel-heading text-center">
+    <h3>
+      Micro Haem Consult
+    </h3>
+  </div>
+</div>
+<div ng-controller="HaemView as haemView">
+  <div class="bg-white">
+    <div class="patient-timeline-container">
+      <div class="row">
+        <div class="col-md-6">
+          {% record_panel models.Allergies noentries="No known allergies"%}
+        </div>
+        <div class="col-md-6">
+          {% record_panel models.MicrobiologyTest editable="false" title="Alert Investigation Results" name="alertInvestigations()" %}
+        </div>
+      </div>
+      <section ng-repeat="episode in patient.episodes | orderBy:haemView.getEpisodeOrdering">
+        <div class="row">
+          <div class="col-md-12 text-center">
+            <a class="orange-link" ng-href="[[ getEpisodeLink(episode) ]]">
+              <span ng-show="episode.active">Current </span>
+              <span ng-show="episode.category === 'inpatient'">Inpatient Admission</span>
+              <span ng-show="episode.category !== 'inpatient'">[[ episode.category | title ]] Episode</span>
+              <span ng-show="episode.date_of_admission">
+                [[ episode.date_of_admission | shortDate ]]
+                <span ng-show="episode.date_of_admission"> - [[ episode.discharge_date | shortDate ]]</span>
+              </span>
+              <span ng-show="!episode.date_of_admission">
+                [[ episode.date_of_episode | shortDate ]]
+              </span>
+            </a>
+          </div>
+        </div>
+        <hr class="patient-timeline-seperator">
+        <div class="row">
+          <div parent-height class="col-md-6">
+            <div ng-if="$first" class="row">
+              <div class="col-md-12">
+                {% include "inline_forms/clinical_advice.html" %}
+              </div>
+            </div>
+            <div ng-if="$first" class="row">
+              <div class="col-md-3 patient-timeline">
+                <div class="patient-timeline-now">
+                  <div class="patient-timeline-now-text bg-secondary">
+                    Now
+                  </div>
+                </div>
+              </div>
+            </div>
+            <svg class="speech-bubble-timeline-container">
+              <line class="speech-bubble-timeline hidden-sm hidden-xs" x1="12.5%" y1="0" x2="12.5%" y2="500%" />
+              <line class="speech-bubble-timeline hidden-md hidden-lg" x1="50%" y1="0" x2="50%" y2="500%" />
+            </svg>
+            <div ng-repeat="microbiology_input in episode.microbiology_input  | orderBy:haemView.clinicalAdviceOrdering" class="row content-offset-20">
+
+              <div class="col-md-3 patient-timeline">
+                <div class="patient-timeline-speech-bubble">
+                  <i class="fa fa-comments patient-timeline-speech-bubble-icon"></i>
+                </div>
+                <div ng-show="haemView.getClinicalAdviceDate(microbiology_input)">
+                    <div class="patient-timeline-date">
+                          [[ haemView.getClinicalAdviceDate(microbiology_input) | momentDateFormat:'DD MMM YYYY HH:MM' ]]
+                    </div>
+                </div>
+              </div>
+              <div class="col-md-9">
+                <div class="patient-timeline-discussion">
+                  <b ng-show="microbiology_input.initials && microbiology_input.initials.trim().length">
+                    ([[microbiology_input.initials]]<span ng-show="microbiology_input.discussed_with"> with [[microbiology_input.discussed_with]]</span>)
+                  </b>
+                  <b>
+                    [[microbiology_input.reason_for_interaction]]
+                  </b>
+                  <br />
+                  [[ microbiology_input.clinical_discussion]]
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <span ng-if="$first">
+              {% record_panel models.HaemInformation title="Haematology Background Information" angular_filter="haemView.isRecentHaemInformation" %}
+              {% record_panel models.EpisodeOfNeutropenia title="Episodes of Neutropenia"  %}
+            </span>
+            {% record_panel models.Antimicrobial editable="patient.episodes[0].id === episode.id" %}
+            {% record_panel models.MicrobiologyTest editable="patient.episodes[0].id === episode.id" %}
+            {% record_panel models.Diagnosis editable="patient.episodes[0].id === episode.id" %}
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,14 @@
+<b>[[item.id]]</b> [[ item.specimin_type ]] - [[ item.date_collected | shortDate ]] ([[item.volume]])
+<br />
+[[item.appearance]] [[item.epthelial_cells]] [[item.white_blood_cells]]
+<br />
+Shipped: [[ item.date_shipped | shortDate]]
+<br />
+Biobanking: [[item.biobanking]]
+<span ng-show="item.biobanking">
+<br />
+# [[ item.biobanking_box ]]
+<br />
+[[ item.date_biobanked | shortDate]] [[item.volume_biobanked ]]
+</span>
+

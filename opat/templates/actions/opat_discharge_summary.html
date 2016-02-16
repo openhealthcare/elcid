@@ -1,0 +1,4 @@
+{% load modalsummary %}
+<p ng-show="episode.category == 'OPAT' && !episode.hasTag('opat_referrals')">
+  {% modalsummary 'opat' %} 
+</p>

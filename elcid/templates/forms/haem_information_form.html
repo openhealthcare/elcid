@@ -1,0 +1,12 @@
+{% load forms %}
+{% select "autofocus" label="Type" model="editing.haem_information.patient_type" lookuplist="haeminformationtype_list" %}
+<span ng-show="editing.haem_information.patient_type == 'Transplant'">
+  {% input label="Transplant type" model="editing.haem_information.type_of_transplant" lookuplist="haemtransplanttype_list" %}
+  {% datepicker label="Date of transplant" model="editing.haem_information.date_of_transplant" %}
+  {% datepicker label="count recovery" model="editing.haem_information.count_recovery" %}
+</span>
+<span ng-show="editing.haem_information.patient_type == 'White cell'">
+  {% input "autofocus" label="Chemotherapy type" model="editing.haem_information.type_of_chemotherapy" lookuplist="haemchemotherapytype_list" %}
+  {% datepicker label="Date of chemotherapy" model="editing.haem_information.date_of_chemotherapy" %}
+</span>
+{% textarea show="editing.haem_information.patient_type == 'Other'" label="details" model="editing.haem_information.details" %}

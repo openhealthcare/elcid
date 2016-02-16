@@ -1,0 +1,26 @@
+{% extends 'modal_base.html' %}
+{% load forms %}
+{% block icon %}<i class="fa fa-check-square-o"></i>{% endblock %}
+{% block modal_body %}
+<form class="form-horizontal">
+  {% input "autofocus" label="Line" model="editing.line" %}
+  {% datepicker label="Assessment Date" model="editing.assessment_date" %}
+  {% select label="VIP Score" model="editing.vip_score" lookuplist="[0,1,2,3,4,5]"%}
+  {% input label="Dressing Type" model="editing.dressing_type" lookuplist="opatdressingtype_list"%}
+  {% datepicker label="Dressing Change Date" model="editing.dressing_change_date" %}
+  {% input label="Dressing Change Reason" model="editing.dressing_change_reason" %}
+  {% datepicker label="Bionector Change Date" model="editing.bionector_change_date" %}
+  {% datepicker label="Date of next Bionector" model="editing.next_bionector_date" %}
+  {% textarea label="Comments" model="editing.comments" %}
+  {% checkbox label="Dressing Intact" model="editing.dressing_intact" %}
+  {% checkbox label="Lumen flush OK" model="editing.lumen_flush_ok" %}
+  {% checkbox label="Blood Drawback Seen" model="editing.blood_drawback_seen" %}
+  <div class="form-group">
+    <label class="control-label col-sm-3">Distance from exit site</label>
+    <div class="col-sm-2">
+      <input class="form-control" ng-model="editing.cm_from_exit_site" ng-pattern="/^[0-9\.]+$/">
+    </div>
+    <label class="control-label"><small>(CM)</small></label>
+  </div>
+</form>
+{% endblock %}

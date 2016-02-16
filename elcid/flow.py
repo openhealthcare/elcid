@@ -47,3 +47,4 @@ flows = {
         }
     }
 }
+flows['Walkin'] = flows['walkin']['default'] # Episode Category

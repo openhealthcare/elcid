@@ -1,0 +1,5 @@
+{% extends 'detail/inpatient.html' %}
+{% block title %}
+Walkin
+[[ episode.date_of_admission | shortDate]]<span ng-show="episode.discharge_date"> - [[ episode.discharge_date | shortDate ]]</span>
+{% endblock title %}
