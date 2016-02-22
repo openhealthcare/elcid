@@ -1,5 +1,6 @@
 from fabric.api import env, task, local, lcd
 from fabric.context_managers import warn_only
+from jinja2 import Template
 import os
 
 
@@ -7,6 +8,7 @@ env.hosts = ["elcid-uch-test.openhealthcare.org.uk"]
 env.user = "ubuntu"
 project_name = "elcid"
 fabfile_dir = os.path.realpath(os.path.dirname(__file__))
+
 
 
 def check_for_uncommitted():
@@ -159,3 +161,17 @@ def create_db(username):
 
         for db_command in db_commands(username):
             local(db_command)
+
+
+@task
+def create_database(name):
+    local("sudo -u postgres psql -c CREATE DATABASE {}".format(name))
+
+
+@task
+def load_database(name):
+    backups = local("ls -t ../../vars/back.sql.*", capture=True)
+    last_backup = backups.split("\n")[0].strip()
+    last_backup = "../../vars/{}".format(last_backup)
+    local("sudo -u postgres psql {0} < {1}".format(name, last_backup))
+    local("python manage.py migrate")
