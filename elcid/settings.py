@@ -259,7 +259,7 @@ else:
     EMAIL_HOST = 'localhost'
 
 
-VERSION_NUMBER = '0.5.3'
+VERSION_NUMBER = '0.5.4'
 #TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 #TEST_RUNNER = 'django_test_coverage.runner.CoverageTestSuiteRunner'
 
@@ -286,4 +286,4 @@ except:
 # MIDDLEWARE_CLASSES = MIDDLEWARE_CLASSES + ('debug_toolbar.middleware.DebugToolbarMiddleware',)
 # INSTALLED_APPS = INSTALLED_APPS + ('debug_toolbar',)
 # #INTERNAL_IPS = ('127.0.0.1',)
-EXTRACT_ASYNC = True
+EXTRACT_ASYNC = False
