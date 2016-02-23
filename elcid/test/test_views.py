@@ -189,4 +189,4 @@ class MicrobiologyInputViewTest(OpalTestCase, AbstractEpisodeTestCase):
 
         # make sure tags don't get applied twice if run twice
         updated_tags = self.episode.get_tag_names(self.user)
-        self.assertEqual(updated_tags, [constants.MICROHAEM_TEAM_NAME])
+        self.assertEqual(list(updated_tags), [constants.MICROHAEM_TEAM_NAME])
