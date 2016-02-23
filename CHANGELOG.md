@@ -1,3 +1,7 @@
+## 0.5.4 Release
+We change how we handle tags, we no longer delete them, we just archive them
+
+
 ## 0.5.3 Release
 
 #### Wardrounds update
