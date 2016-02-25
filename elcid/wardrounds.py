@@ -89,4 +89,5 @@ class OPATCurrentList(WardRound):
     description = 'All patients on the OPAT current list'
 
     def episodes(self):
-        return Episode.objects.filter(active=True, tagging__team__name='opat_current')
+        e = Episode.objects.filter(active=True, tagging__team__name='opat_current')
+        return e.filter(tagging__archived=False)
