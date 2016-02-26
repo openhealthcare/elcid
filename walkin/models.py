@@ -98,3 +98,15 @@ class WalkinNurseLedCare(omodels.EpisodeSubrecord):
 
     reason    = ForeignKeyOrFreeText(Wi_nurse_reason)
     treatment = models.TextField(blank=True, null=True)
+
+class ZikaPathway(omodels.EpisodeSubrecord):
+    _icon = 'fa fa-warning'
+
+    pregnant           = models.BooleanField(default=False)
+    gestation          = models.CharField(max_length=255, blank=True, null=True)
+    due_date           = models.DateField(blank=True, null=True)
+    antenatal_hospital = models.CharField(max_length=255, blank=True, null=True)
+    yellow_fever       = models.CharField(max_length=255, blank=True, null=True)
+    date_leaving       = models.DateField(blank=True, null=True)
+    advice             = models.TextField(blank=True, null=True)
+    follow_up          = models.TextField(blank=True, null=True)

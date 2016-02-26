@@ -137,7 +137,7 @@
     <div ng-show="!episode.diagnosis.length && !qc.ignore_diagnosis">
       <p class="lead text-center">This patient has <b>no diagnosis</b>?</p>
       <center>
-        <button class="btn btn-primary btn-lg" ng-click="cancel()">Add a diagnosis</button>
+        <button class="btn btn-primary btn-lg" ng-click="add_some_diagnosis()">Add a diagnosis</button>
         <button class="btn btn-secondary btn-lg"  ng-click="qc.ignore_diagnosis = true">Continue anyway</button>
       </center>
     </div>

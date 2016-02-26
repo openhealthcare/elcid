@@ -261,6 +261,26 @@ controllers.controller(
             $modalInstance.close(deferred.promise);
         }
 
+        $scope.add_some_diagnosis = function(){
+            var deferred = $q.defer();
+            var item = $scope.episode.newItem('diagnosis');
+
+            $modal.open({
+                templateUrl: '/templates/modals/diagnosis_modal.html',
+                controller: 'EditItemCtrl',
+                resolve: {
+                    item: function() { return item; },
+                    options: function() { return options; },
+                    profile: function() { return UserProfile; },
+                    episode: function() { return episode; }
+                }
+            }).result.then(
+                function(r){ deferred.resolve(r) },
+                function(r){ deferred.reject(r) }
+            );
+            $modalInstance.close(deferred.promise);
+        }
+
         // Let's have a nice way to kill the modal.
         $scope.cancel = function() {
             $modalInstance.close('cancel');

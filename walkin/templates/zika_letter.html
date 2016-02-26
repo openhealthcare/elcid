@@ -1,0 +1,59 @@
+<p>
+  Re: [[ episode.demographics[0].name ]] <span ng-show="episode.demographisc[0].date_of_birth"> -
+    [[episode.demographisc[0].date_of_birth | shortDate]] ([[ episode.demographisc[0].date_of_birth | age ]])<br />
+  </span>
+</p>
+<p>
+  This patient was seen in the Hospital for Tropical Diseases Emergency Clinic due to concern about
+  possible exposure to the ZIKA virus.
+</p>
+<p><b>Recent travel to:</b></p>
+<p ng-repeat="travel in episode.travel">
+  [[ travel.destination ]] - [[ travel.dates ]]
+  <span ng-show="travel.specific_exposures">(specific exposures: [[ travel.specific_exposures ]])
+  </span>
+</p>
+
+<p ng-hide="episode.zika_pathway[0].pregnant">Not pregnant.</p>
+<div ng-show="episode.zika_pathway[0].pregnant">
+<p>
+  Pregnant
+  <br />
+  [[ episode.zika_pathway[0].gestation ]] weeks gestation at exposure
+  <br />
+  Estimated due date:   [[ episode.zika_pathway[0].due_date | shortDate ]]
+  <br />
+  Hospital where booked for antenatal care:   [[ episode.zika_pathway[0].antenatal_hospital ]]
+</p>
+</div>
+Yellow fever vaccine <span ng-show="episode.zika_pathway[0].yellow_fever">[[episode.zika_pathway[0].yellow_fever]]</span>
+<span ng-hide="episode.zika_pathway[0].yellow_fever">Not Vaccinated</span>
+
+<p><b>Presenting symptoms:</b></p>
+<p ng-repeat="walkinSymptom in episode.symptom">
+  The patient reported a
+  <span ng-show="walkinSymptom.duration == '3 days or less' || walkinSymptom == '4-10 days'">short</span>
+  <span ng-show="walkinSymptom.duration == '11-21 days' || walkinSymptom == '22 days to 3 months'">sub-acute</span>
+  <span ng-show="walkinSymptom.duration == 'over 3 months'">long</span>
+  history of
+  <span ng-repeat="symptom in walkinSymptom.symptoms">[[ symptom.toLowerCase() ]][[ $last ? '' : $index + 2 === episode.symptom[0].symptoms.length ? ' and ' : ', ']]</span>
+</p>
+
+
+<p><b>Investigations sent:</b></p>
+<div class="content-offset-below-10 zero-padded-list" ng-repeat="item in episode.microbiology_test">
+  {% include 'records/microbiology_test.html' %}
+</div>
+
+  <p>
+    <b>Advice Given:</b>
+  </p>
+  <p >
+    [[ episode.zika_pathway[0].advice ]]
+  </p>
+
+
+<p><b>Follow up arrangements:</b></p>
+<p>
+  [[ episode.zika_pathway[0].follow_up ]]
+</p>
