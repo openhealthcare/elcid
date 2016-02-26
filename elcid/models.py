@@ -303,11 +303,13 @@ class MicrobiologyInput(EpisodeSubrecord):
             else:
                 episode = Episode.objects.get(pk=data["episode_id"])
 
-            exists = Tagging.objects.filter(
+            existing = Tagging.objects.filter(
                 episode=episode, team__name=MICROHAEM_TEAM_NAME
             )
-            exists = exists.exists()
-            if not exists:
+
+            if existing.exists():
+                existing.update(archived=False)
+            else:
                 Tagging.objects.create(
                     episode=episode,
                     team=Team.objects.get(name=MICROHAEM_TEAM_NAME)
