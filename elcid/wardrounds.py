@@ -41,25 +41,8 @@ class Discharged(HistoricTagsMixin, WardRound):
         episodes = Episode.objects.filter(
             category__in=['inpatient', 'Walkin'],
             discharge_date__gte=two_weeks_ago)
-
         if team:
-            result = []
-
-            history_tags_for_episodes = Tagging.historic_tags_for_episodes(
-                episodes
-            )
-
-            for episode_id, tag_dict in history_tags_for_episodes.iteritems():
-                if team in tag_dict:
-                    result.append(episode_id)
-
-            existing_episode_ids_with_tags = Tagging.objects.filter(
-                team__name=team, episode__in=episodes
-            ).values_list("episode_id", flat=True)
-
-            result.extend(existing_episode_ids_with_tags)
-
-            return Episode.objects.filter(id__in=result)
+            return episodes.filter(tagging__team__name=team)
         else:
             return episodes
 
@@ -106,4 +89,8 @@ class OPATCurrentList(WardRound):
     description = 'All patients on the OPAT current list'
 
     def episodes(self):
-        return Episode.objects.filter(active=True, tagging__team__name='opat_current')
+        return Episode.objects.filter(
+            active=True,
+            tagging__team__name='opat_current',
+            tagging__archived=False
+        )
