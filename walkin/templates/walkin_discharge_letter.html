@@ -18,12 +18,13 @@
 
 
 <p><b>Presenting complaint:</b></p>
-<p>
+<p ng-repeat="walkinSymptom in episode.symptom">
   The patient reported a
-  <span ng-show="episode.symptom[0].duration == '3 days or less' || episode.symptom[0] == '4-10 days'">short</span>
-  <span ng-show="episode.symptom[0].duration == '11-21 days' || episode.symptom[0] == '22 days to 3 months'">sub-acute</span>
-  <span ng-show="episode.symptom[0].duration == 'over 3 months'">long</span>
-  history of [[ episode.symptom[0].symptom ]]
+  <span ng-show="walkinSymptom.duration == '3 days or less' || walkinSymptom == '4-10 days'">short</span>
+  <span ng-show="walkinSymptom.duration == '11-21 days' || walkinSymptom == '22 days to 3 months'">sub-acute</span>
+  <span ng-show="walkinSymptom.duration == 'over 3 months'">long</span>
+  history of
+  <span ng-repeat="symptom in walkinSymptom.symptoms">[[ symptom.toLowerCase() ]][[ $last ? '' : $index + 2 === episode.symptom[0].symptoms.length ? ' and ' : ', ']]</span>
 </p>
 <p>
   <b>On examination:</b>
@@ -87,7 +88,7 @@
 </div>
 <div ng-show="episode.microbiology_test.length">
   <p><b>Investigations:</b></p>
-  <div class="content-offset-below-10" ng-repeat="item in episode.microbiology_test">
+  <div class="content-offset-below-10 zero-padded-list" ng-repeat="item in episode.microbiology_test">
     {% include 'records/microbiology_test.html' %}
   </div>
 </div>

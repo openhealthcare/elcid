@@ -38,10 +38,12 @@
 </p>
 <p>[[ episode.walkin_nurse_led_care[0].treatment ]]</p>
 <p>[[ episode.walkin_nurse_led_care[0].reason ]]</p>
-<p><b>Investigations:</b></p>
-<p ng-repeat="test in episode.microbiology_test">
-  [[ test.test ]] - [[ test.result ]]
-</p>
+<div ng-show="episode.microbiology_test.length">
+  <p><b>Investigations:</b></p>
+  <div class="content-offset-below-10 zero-padded-list" ng-repeat="item in episode.microbiology_test">
+    {% include 'records/microbiology_test.html' %}
+  </div>
+</div>
 
 <p><b>Management:</b></p>
 <p>
