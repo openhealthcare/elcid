@@ -24,9 +24,5 @@ class ViewsTest(OpalTestCase):
         })
         self.assertStatusCode(url, 404)
 
-    def test_patient_notes_template_view(self):
-        url = reverse("microhaem_template_view")
-        self.assertStatusCode(url, 200)
-
     def test_add_patient_template_view(self):
         self.assertStatusCode('/templates/modals/add_episode.html/', 200)

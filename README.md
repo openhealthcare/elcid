@@ -8,6 +8,7 @@ It is highly customisable open source software for managing inpatients & outpati
 
 [![Build
 Status](https://travis-ci.org/openhealthcare/elcid.png)](https://travis-ci.org/openhealthcare/elcid)
+[![Coverage Status](https://coveralls.io/repos/github/openhealthcare/elcid/badge.svg?branch=master)](https://coveralls.io/github/openhealthcare/elcid?branch=master)
 
 http://elcid.openhealthcare.org.uk
 

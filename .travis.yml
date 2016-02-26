@@ -3,12 +3,13 @@ python:
   - "2.7"
 install:
   - pip install -r requirements.txt --use-mirrors
+  - pip install coveralls
   - npm install karma karma-coverage karma-jasmine@0.1.5 karma-firefox-launcher
-  - gem install rake
 before_script:
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
 script:
-  - rake test
+  - opal test py -c
+after_success: coveralls
 notifications:
   slack: ohcuk:6spaME3CB7f2PGrMAcklYWqp

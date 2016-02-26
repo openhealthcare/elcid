@@ -8,6 +8,8 @@ class Mine(PatientList):
     if the user has tagged episodes as their's this will give them the appropriate
     episode queryset
     """
+    name = 'mine'
+
     @classmethod
     def get(klass, **kwargs):
         tag = kwargs.get("tag", None)
@@ -15,4 +17,7 @@ class Mine(PatientList):
             return klass
 
     def get_queryset(self):
-        return Episode.objects.filter(tagging__user=self.request.user)
+        return Episode.objects.filter(tagging__team__name='mine')
+
+    def to_dict(self, user):
+        return self.get_queryset().filter(tagging__user=user).serialised_active(user)

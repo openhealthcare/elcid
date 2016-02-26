@@ -18,15 +18,15 @@ class TestPatientList(OpalTestCase):
         Team.objects.get_or_create(name="mine")
 
         self.episode_1.set_tag_names(["mine"], self.user)
-        self.assertIn(Mine, PatientList.list_classes())
+        self.assertIn(Mine, PatientList.list())
 
         mock_request = MagicMock(name='Mock request')
         mock_request.user = self.user
 
-        patient_list = PatientList.get_class(mock_request, tag="mine")
+        patient_list = PatientList.get("mine")()
         self.assertEqual(
             [self.episode_1], [i for i in patient_list.get_queryset()]
         )
-        serialized = patient_list.get_serialised()
+        serialized = patient_list.to_dict(self.user)
         self.assertEqual(len(serialized), 1)
         self.assertEqual(serialized[0]["id"], 1)

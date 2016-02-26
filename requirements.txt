@@ -7,7 +7,7 @@ wsgiref==0.1.2
 dj-static==0.0.6
 django-reversion==1.8.7
 django-axes==1.4.0
-ffs==0.0.7.6
+ffs==0.0.8.1
 letter==0.4.1
 supervisor
 django-debug-toolbar
