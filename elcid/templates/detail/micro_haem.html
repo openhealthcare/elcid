@@ -18,22 +18,6 @@
         </div>
       </div>
       <section ng-repeat="episode in patient.episodes | orderBy:haemView.getEpisodeOrdering">
-        <div class="row">
-          <div class="col-md-12 text-center">
-            <a class="orange-link" ng-href="[[ getEpisodeLink(episode) ]]">
-              <span ng-show="episode.active">Current </span>
-              <span ng-show="episode.category === 'inpatient'">Inpatient Admission</span>
-              <span ng-show="episode.category !== 'inpatient'">[[ episode.category | title ]] Episode</span>
-              <span ng-show="episode.date_of_admission">
-                [[ episode.date_of_admission | shortDate ]]
-                <span ng-show="episode.date_of_admission"> - [[ episode.discharge_date | shortDate ]]</span>
-              </span>
-              <span ng-show="!episode.date_of_admission">
-                [[ episode.date_of_episode | shortDate ]]
-              </span>
-            </a>
-          </div>
-        </div>
         <hr class="patient-timeline-seperator">
         <div class="row">
           <div parent-height class="col-md-6">
