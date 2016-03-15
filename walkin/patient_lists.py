@@ -5,6 +5,8 @@ from opal.core.patient_lists import TaggedPatientList
 
 
 class WalkinDoctor(TaggedPatientList):
+    display_name = 'Walkin Doctor'
+    direct_add = False
     tag = "walkin"
     subtag = "walkin_doctor"
     schema = [
@@ -22,6 +24,8 @@ class WalkinDoctor(TaggedPatientList):
 
 
 class WalkinNurseTriage(TaggedPatientList):
+    display_name = 'Walkin Nurse Triage'
+    direct_add = False
     tag = "walkin"
     subtag = "walkin_triage"
     schema = [
@@ -35,6 +39,8 @@ class WalkinNurseTriage(TaggedPatientList):
 
 
 class WalkinReview(TaggedPatientList):
+    display_name = 'Walkin Review'
+    direct_add = False
     tag = "walkin"
     subtag = "walkin_review"
     schema = [

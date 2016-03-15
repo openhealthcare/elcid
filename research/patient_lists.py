@@ -4,6 +4,8 @@ from opal.core.patient_lists import TaggedPatientList
 
 
 class RidRtiScientist(TaggedPatientList):
+    display_name = 'Scientist'
+    direct_add = False
     tag = "rid_rti"
     subtag = "rid_rti_scientist"
     schema = [
@@ -16,6 +18,8 @@ class RidRtiScientist(TaggedPatientList):
 
 
 class RidRtiResearchPractitioner(TaggedPatientList):
+    display_name = 'Research Practitioner'
+    direct_add = False
     tag = "rid_rti"
     subtag = "rid_rti_research_practitioner"
     schema = [
