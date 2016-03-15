@@ -74,6 +74,7 @@ def checkout(package_name_version):
                         print "checking out {0} to {1}".format(
                             package_name, version
                         )
+                        local("git fetch")
                         local("git checkout {}".format(version))
                         local("python setup.py develop")
                 else:
