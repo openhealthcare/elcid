@@ -14,6 +14,7 @@ generic_infectious_diseases_list = [
 
 
 class Virology(TaggedPatientList):
+    display_name = 'Virology'
     tag = "virology"
     schema = [
         models.Demographics,
@@ -27,6 +28,7 @@ class Virology(TaggedPatientList):
 
 
 class MicroOrtho(TaggedPatientList):
+    display_name = 'Micro Ortho'
     tag = "microbiology"
     subtag = "micro_ortho"
     schema = [
@@ -41,6 +43,7 @@ class MicroOrtho(TaggedPatientList):
 
 
 class InfectiousDiseasesIdLiason(TaggedPatientList):
+    display_name = 'ID Liaison'
     tag = "infectious_diseases"
     subtag = "id_liaison"
 
@@ -58,6 +61,7 @@ class InfectiousDiseasesIdLiason(TaggedPatientList):
 
 
 class InfectiousDiseasesIdInpatient(TaggedPatientList):
+    display_name = 'ID Inpatients'
     tag = "infectious_diseases"
     subtag = "id_inpatients"
 
@@ -65,6 +69,7 @@ class InfectiousDiseasesIdInpatient(TaggedPatientList):
 
 
 class ImmuneInpatients(TaggedPatientList):
+    display_name = 'Immune Inpatients'
     tag = "hiv"
     subtag = "immune_inpatients"
 
@@ -72,6 +77,7 @@ class ImmuneInpatients(TaggedPatientList):
 
 
 class ImmuneLiason(TaggedPatientList):
+    display_name = 'Immune Liaison'
     tag = "hiv"
     subtag = "immune_liason"
 
@@ -79,5 +85,6 @@ class ImmuneLiason(TaggedPatientList):
 
 
 class Tropical(TaggedPatientList):
+    display_name = 'Tropical'
     tag = "tropical_diseases"
     schema = generic_infectious_diseases_list
