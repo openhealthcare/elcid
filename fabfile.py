@@ -185,5 +185,5 @@ def deploy(key_file_name="../ec2.pem"):
             run("pip install -r requirements.txt")
             run("python manage.py migrate")
             run("python manage.py collectstatic --noinput")
-            run("pkill supervisord; pkill gunicorn")
+            # run("pkill supervisord; pkill gunicorn")
             run("supervisord -c etc/test.conf")
