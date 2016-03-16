@@ -78,7 +78,7 @@ class ViewsTest(OpalTestCase):
         self.assertEqual(404, response.status_code)
 
     def test_episode_list_template_view(self):
-        self.assertStatusCode('/templates/episode_list.html/team_1', 200)
+        self.assertStatusCode('/templates/patient_list.html/team_1', 200)
 
     def test_episode_detail_template_view(self):
         self.assertStatusCode('/templates/episode_detail.html/1', 200)
