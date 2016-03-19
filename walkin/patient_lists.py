@@ -9,6 +9,7 @@ class WalkinDoctor(TaggedPatientList):
     direct_add = False
     tag = "walkin"
     subtag = "walkin_doctor"
+    order = 12
     schema = [
         models.Demographics,
         models.Location,
@@ -28,6 +29,7 @@ class WalkinNurseTriage(TaggedPatientList):
     direct_add = False
     tag = "walkin"
     subtag = "walkin_triage"
+    order = 11
     schema = [
         models.Demographics,
         models.Location,
@@ -43,6 +45,7 @@ class WalkinReview(TaggedPatientList):
     direct_add = False
     tag = "walkin"
     subtag = "walkin_review"
+    order = 13
     schema = [
         models.Demographics,
         models.Location,
