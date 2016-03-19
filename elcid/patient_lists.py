@@ -9,6 +9,7 @@ class Mine(PatientList):
     episode queryset
     """
     display_name = 'mine'
+    order = -1
 
     @classmethod
     def get(klass, **kwargs):
