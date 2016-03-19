@@ -7,7 +7,7 @@ from opal.models import UserProfile
 class MicroHaemPatientView(detail.PatientDetailView):
     order = 1
     name = 'micro_haem'
-    title = 'Micro Haem'
+    display_name = 'Micro Haem'
     template   = 'detail/micro_haem.html'
 
     @classmethod
