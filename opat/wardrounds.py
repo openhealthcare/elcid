@@ -5,8 +5,8 @@ from opal.models import Episode
 
 
 class OPATReviewList(WardRound):
-    name = 'OPAT Review'
-    description = 'Final review of OPAT patients post end-of-treatment'
+    display_name = 'OPAT Review'
+    description  = 'Final review of OPAT patients post end-of-treatment'
 
     def episodes(self):
         review_ready = models.OPATMeta.objects.filter(review_date__lte=date.today())
@@ -20,8 +20,10 @@ class OPATReviewList(WardRound):
 
 
 class OPATCurrentList(WardRound):
-    name        = 'OPAT Current'
-    description = 'All patients on the OPAT current list'
+    display_name = 'OPAT Current'
+    description  = 'All patients on the OPAT current list'
 
     def episodes(self):
-        return Episode.objects.filter(active=True, tagging__team__name='opat_current', archived=False)
+        return Episode.objects.filter(active=True,
+                                      tagging__team__name='opat_current',
+                                      tagging__archived=False)

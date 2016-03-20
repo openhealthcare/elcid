@@ -4,7 +4,7 @@ from elcid.models import Consultant
 
 
 class ConsultantReview(WardRound):
-    name = "Consultant review"
+    display_name = "Consultant review"
     description = "Patients diagnosis review"
     filter_template = "wardrounds/consultant_review_filter.html"
     detail_template = 'wardrounds/discharged_detail.html'
