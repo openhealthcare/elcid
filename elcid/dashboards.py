@@ -3,9 +3,11 @@ elCID Dashboards
 """
 import datetime
 
-from dashboard import Dashboard, widgets
 from django.db.models import Count
+from django.utils.functional import cached_property
 from opal.models import Episode
+from dashboard import Dashboard, widgets
+
 from elcid.models import Diagnosis
 
 
