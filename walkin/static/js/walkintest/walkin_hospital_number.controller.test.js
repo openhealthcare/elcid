@@ -32,7 +32,15 @@ describe('WalkinHospitalNumberCtrl', function (){
                 fields : [
                     { name: 'date_of_appointment', type: 'date' }
                 ]
+            },
+            'demographics':{
+                name: 'demographics',
+                single: true,
+                fields: [
+                    { name: 'patient_id', type: 'string'}
+                ]
             }
+
         }
 
         var controller = $controller('WalkinHospitalNumberCtrl', {
@@ -56,8 +64,10 @@ describe('WalkinHospitalNumberCtrl', function (){
             var episode  = {
                 id: '3',
                 date_of_episode: moment().format('YYYY-MM-DD'),
-                category: 'Walkin'
+                category: 'Walkin',
+                demographics: [{patient_id: 123}]
             };
+            $httpBackend.expectGET('/api/v0.1/userprofile/').respond({});
             $httpBackend.expectPUT('/episode/3/', episode).respond(episode);
 
             var test = {test: 'HIV Point of Care', episode_id: "3"};

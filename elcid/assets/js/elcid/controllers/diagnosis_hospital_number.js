@@ -9,14 +9,14 @@ angular.module('opal.controllers').controller(
              Episode,
              options,
              tags,
-            hospital_number) {
+             hospital_number) {
 
         $scope.model = {}
         if(hospital_number){
             $scope.model.hospitalNumber = hospital_number;
         }
         $scope.tags = tags;
-
+        console.log($scope.tags)
         $scope.findByHospitalNumber = function() {
 
             Episode.findByHospitalNumber(
@@ -47,14 +47,15 @@ angular.module('opal.controllers').controller(
                     options: function() { return options; },
                     demographics: function() {
                         return { hospital_number: result.hospitalNumber }
-                    }
+                    },
+                    tags: function(){ return $scope.tags; }
                 }
             }).result.then(function(result) {
                 // The user has created the episode, or cancelled
                 if(result.then){
                     result.then(function(r){ $modalInstance.close(r) });
                 }else{
-                    $modalInstance.close(result);                 
+                    $modalInstance.close(result);
                 }
             });
         };

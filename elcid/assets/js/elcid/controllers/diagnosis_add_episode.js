@@ -3,11 +3,12 @@ angular.module('opal.controllers')
                                                     $timeout, $modal,
                                                     $modalInstance, Episode,
                                                     options,
+                                                    tags,
                                                     demographics) {
         var DATE_FORMAT = 'DD/MM/YYYY';
 
-        $scope.currentTag = $cookieStore.get('opal.currentTag') || 'mine';
-        $scope.currentSubTag = $cookieStore.get('opal.currentSubTag') || 'all';
+        $scope.currentTag    = tags.tag;
+        $scope.currentSubTag = tags.subtag
 
         for (var name in options) {
             $scope[name + '_list'] = options[name];
