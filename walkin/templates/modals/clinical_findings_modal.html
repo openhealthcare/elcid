@@ -1,4 +1,5 @@
 {% extends 'modal_base.html' %}
+{% load forms %}
 {% block icon %}<i class="fa fa-stethoscope"></i>{% endblock %}
 {% block modal_body %}
 <form class="form-horizontal">
@@ -7,28 +8,28 @@
         <div class="col-sm-8">
 
             <label class="radio-inline">
-                <input class="" type="radio" value="Y" ng-model="editing.lymphadenopathy">
+                <input class="" type="radio" value="Y" ng-model="editing.clinical_findings.lymphadenopathy">
                 Yes
             </label>
 
             <label class="radio-inline">
-                <input class="" type="radio" value="N" ng-model="editing.lymphadenopathy">
+                <input class="" type="radio" value="N" ng-model="editing.clinical_findings.lymphadenopathy">
                 No
             </label>
 
             <label class="radio-inline">
-                <input class="" type="radio" value="NAD" ng-model="editing.lymphadenopathy">
+                <input class="" type="radio" value="NAD" ng-model="editing.clinical_findings.lymphadenopathy">
                 Not assessed
             </label>
         </div>
     </div>
 
-    <span ng-show="editing.lymphadenopathy == 'Y'">
+    <span ng-show="editing.clinical_findings.lymphadenopathy == 'Y'">
         <div class="form-group">
             <label class="control-label col-sm-3">Details</label>
             <div class="col-sm-8">
                 <input class="form-control" type="text"
-                     ng-model="editing.lymphadenopathy_details">
+                     ng-model="editing.clinical_findings.lymphadenopathy_details">
             </div>
         </div>
     </span>
@@ -38,17 +39,17 @@
         <div class="col-sm-8">
 
             <label class="radio-inline">
-                <input class="" type="radio" value="Y" ng-model="editing.jaundice">
+                <input class="" type="radio" value="Y" ng-model="editing.clinical_findings.jaundice">
                 Yes
             </label>
 
             <label class="radio-inline">
-                <input class="" type="radio" value="N" ng-model="editing.jaundice">
+                <input class="" type="radio" value="N" ng-model="editing.clinical_findings.jaundice">
                 No
             </label>
 
             <label class="radio-inline">
-                <input class="" type="radio" value="NAD" ng-model="editing.jaundice">
+                <input class="" type="radio" value="NAD" ng-model="editing.clinical_findings.jaundice">
                 Not assessed
             </label>
         </div>
@@ -59,17 +60,17 @@
         <div class="col-sm-8">
 
             <label class="radio-inline">
-                <input class="" type="radio" value="Y" ng-model="editing.dehydrated">
+                <input class="" type="radio" value="Y" ng-model="editing.clinical_findings.dehydrated">
                 Yes
             </label>
 
             <label class="radio-inline">
-                <input class="" type="radio" value="N" ng-model="editing.dehydrated">
+                <input class="" type="radio" value="N" ng-model="editing.clinical_findings.dehydrated">
                 No
             </label>
 
             <label class="radio-inline">
-                <input class="" type="radio" value="NAD" ng-model="editing.dehydrated">
+                <input class="" type="radio" value="NAD" ng-model="editing.clinical_findings.dehydrated">
                 Not assessed
             </label>
         </div>
@@ -80,90 +81,70 @@
         <div class="col-sm-8">
 
             <label class="radio-inline">
-                <input class="" type="radio" value="Y" ng-model="editing.rash">
+                <input class="" type="radio" value="Y" ng-model="editing.clinical_findings.rash">
                 Yes
             </label>
 
             <label class="radio-inline">
-                <input class="" type="radio" value="N" ng-model="editing.rash">
+                <input class="" type="radio" value="N" ng-model="editing.clinical_findings.rash">
                 No
             </label>
 
             <label class="radio-inline">
-                <input class="" type="radio" value="NAD" ng-model="editing.rash">
+                <input class="" type="radio" value="NAD" ng-model="editing.clinical_findings.rash">
                 Not assessed
             </label>
         </div>
     </div>
 
-    <span ng-show="editing.rash == 'Y'">
-        <div class="form-group">
-            <label class="control-label col-sm-3">Rash type</label>
-            <div class="col-sm-8">
-                <input class="form-control" type="text"
-                     ng-model="editing.rash_type"
-                     ng-options="f for f in findings_rash_type_list"
-                     bs-typeahead >
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="control-label col-sm-3">Rash distribution</label>
-            <div class="col-sm-8">
-                <input class="form-control" type="text"
-                     ng-model="editing.rash_distribution"
-                     ng-options="f for f in findings_rash_distribution_list"
-                     bs-typeahead >
-            </div>
-        </div>
-    </span>
+    {% input label="Rash type" model="editing.clinical_findings.rash_type" lookuplist="findings_rash_type_list" show="editing.clinical_findings.rash == 'Y'" %}
+    {% input label="Rash distributions" model="editing.clinical_findings.rash_distribution" lookuplist="findings_rash_distribution_list" show="editing.clinical_findings.rash == 'Y'" %}
 
     <div class="form-group">
         <label class="control-label col-sm-3">Cardiovascular</label>
         <div class="col-sm-8">
-            <input type="text" class="form-control" ng-model="editing.cardiovascular">
+            <input type="text" class="form-control" ng-model="editing.clinical_findings.cardiovascular">
         </div>
     </div>
 
     <div class="form-group">
         <label class="control-label col-sm-3">Respiratory</label>
         <div class="col-sm-8">
-            <input type="text" class="form-control" ng-model="editing.respiratory">
+            <input type="text" class="form-control" ng-model="editing.clinical_findings.respiratory">
         </div>
     </div>
 
     <div class="form-group">
         <label class="control-label col-sm-3">Abdominal</label>
         <div class="col-sm-8">
-            <input type="text" class="form-control" ng-model="editing.abdominal">
+            <input type="text" class="form-control" ng-model="editing.clinical_findings.abdominal">
         </div>
     </div>
 
     <div class="form-group">
         <label class="control-label col-sm-3">Oropharnyx</label>
         <div class="col-sm-8">
-            <input type="text" class="form-control" ng-model="editing.oropharnyx">
+            <input type="text" class="form-control" ng-model="editing.clinical_findings.oropharnyx">
         </div>
     </div>
 
     <div class="form-group">
         <label class="control-label col-sm-3">Neurological</label>
         <div class="col-sm-8">
-            <input type="text" class="form-control" ng-model="editing.neurological">
+            <input type="text" class="form-control" ng-model="editing.clinical_findings.neurological">
         </div>
     </div>
 
     <div class="form-group">
         <label class="control-label col-sm-3">Other findings</label>
         <div class="col-sm-8">
-            <input type="text" class="form-control" ng-model="editing.other_findings">
+            <input type="text" class="form-control" ng-model="editing.clinical_findings.other_findings">
         </div>
     </div>
 </form>
-{% endblock %}
-
-{% block pop_buttons %}
-<button class="btn btn-secondary pull-left"
+<div class="row">
+  <div class="col-md-12">
+    <button class="btn btn-secondary pull-left"
               ng-click="prepopulate($event)"
               data-lymphadenopathy="N"
               data-jaundice="N"
@@ -176,4 +157,6 @@
               data-neurological="NAD"
               data-other_findings="NAD"
               ><i class="fa fa-file-text"></i> NAD</button>
+    </div>
+</div>
 {% endblock %}
