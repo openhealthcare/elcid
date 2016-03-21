@@ -75,7 +75,7 @@ module.exports =  function(config){
             '../../../../elcid/opat/static/js/opat/controllers/*': 'coverage',
             '../../../../elcid/research/static/js/research/controllers/*': 'coverage',
             '../../../../elcid/walkin/static/js/walkin/controllers/*': 'coverage',
-        }
+        },
 
         reporters: ['progress', 'coverage'],
         singleRun: true,
