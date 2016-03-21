@@ -76,6 +76,7 @@ def checkout(package_name_version):
                         )
                         local("git fetch")
                         local("git checkout {}".format(version))
+                        local("git pull origin {}".format(version))
                         local("python setup.py develop")
                 else:
                     print "cloning {}".format(package_name)

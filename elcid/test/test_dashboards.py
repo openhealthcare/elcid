@@ -5,7 +5,7 @@ from django.core.urlresolvers import reverse
 from opal.core.test import OpalTestCase
 from opal.models import Patient
 from elcid.models import Consultant
-from microhaem.dashboards import ConfirmedDiagnosisByConsultant
+from elcid.dashboards import ConfirmedDiagnosisByConsultant
 
 
 class ConfirmedDiagnosisTestCase(OpalTestCase):
