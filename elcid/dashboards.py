@@ -14,6 +14,7 @@ from opal.models import Episode
 from elcid.models import Diagnosis, Consultant
 
 
+
 class NumberOfDiagnoses(widgets.Number):
     tagline = 'Diagnoses made'
 

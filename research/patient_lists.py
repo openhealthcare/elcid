@@ -16,6 +16,9 @@ class RidRtiScientist(TaggedPatientList):
         research_models.RidRTITest
     ]
 
+    @classmethod
+    def visible_to(klass, user):
+        return False
 
 class RidRtiResearchPractitioner(TaggedPatientList):
     display_name = 'Research Practitioner'
@@ -33,3 +36,7 @@ class RidRtiResearchPractitioner(TaggedPatientList):
         research_models.LabTest,
         research_models.LabSpecimin
     ]
+
+    @classmethod
+    def visible_to(klass, user):
+        return False

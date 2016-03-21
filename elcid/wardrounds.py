@@ -23,7 +23,7 @@ class HistoricTagsMixin(object):
 
 
 class Discharged(HistoricTagsMixin, WardRound):
-    name = 'Discharged last week'
+    display_name = 'Discharged last week'
     description = 'Patients discharged in the last week'
 
     filter_template = 'wardrounds/discharged_filter.html'

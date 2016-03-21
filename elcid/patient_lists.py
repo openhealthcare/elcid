@@ -8,7 +8,8 @@ class Mine(PatientList):
     if the user has tagged episodes as their's this will give them the appropriate
     episode queryset
     """
-    display_name = 'mine'
+    display_name = 'Mine'
+    order = 100
 
     @classmethod
     def get(klass, **kwargs):

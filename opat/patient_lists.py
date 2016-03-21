@@ -21,6 +21,7 @@ class OPATReferral(TaggedPatientList):
     tag = "opat"
     subtag = "opat_referrals"
     schema = list_columns_opat
+    order = 8
 
 
 class OPATFollowUp(TaggedPatientList):
@@ -29,6 +30,7 @@ class OPATFollowUp(TaggedPatientList):
     tag = "opat"
     subtag = "opat_followup"
     schema = list_columns_opat
+    order = 9
 
 
 class OPATCurrent(TaggedPatientList):
@@ -37,3 +39,4 @@ class OPATCurrent(TaggedPatientList):
     tag = "opat"
     subtag = "opat_current"
     schema = list_columns_opat
+    order = 10
