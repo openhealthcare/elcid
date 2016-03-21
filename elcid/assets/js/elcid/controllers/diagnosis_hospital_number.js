@@ -16,7 +16,6 @@ angular.module('opal.controllers').controller(
             $scope.model.hospitalNumber = hospital_number;
         }
         $scope.tags = tags;
-        console.log($scope.tags)
         $scope.findByHospitalNumber = function() {
 
             Episode.findByHospitalNumber(

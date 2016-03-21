@@ -44,7 +44,6 @@ module.exports =  function(config){
             'opal/filters.js',
             'opal/services_module.js',
             'opal/services/*.js',
-            'opal/services/flow.js',
             'opal/controllers_module.js',
             'opal/controllers/*.js',
             'opal/app.js',
