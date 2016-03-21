@@ -7,7 +7,7 @@ controllers.controller(
              growl,
              options,
              Episode){
-
+        console.log($scope.state)
         $scope.model = {
             hospital_number : null
         }
@@ -89,26 +89,28 @@ controllers.controller(
         // Create a new patient
         //
         $scope.new_patient = function(result){
-			// There is no patient with this hospital number
-			// Show user the form for creating a new episode,
+            // There is no patient with this hospital number
+	    // Show user the form for creating a new episode,
             // with the hospital number pre-populated
-			modal = $modal.open({
-				templateUrl: '/opat/templates/modals/add_episode.html/',
-				controller: 'AddEpisodeCtrl',
-				resolve: {
-					options: function() { return options; },
-					demographics: function() {
-						return { hospital_number: $scope.model.hospital_number }
-					}
-				}
-			}).result.then(function(result) {
-				// The user has created the episode, or cancelled
+	    modal = $modal.open({
+		templateUrl: '/opat/templates/modals/add_episode.html/',
+		controller: 'AddEpisodeCtrl',
+                size: 'lg',
+		resolve: {
+		    options: function() { return options; },
+		    demographics: function() {
+			return { hospital_number: $scope.model.hospital_number }
+		    },
+                    tags: function(){ return {tag: 'opat', subtag: ''} }
+		}
+	    }).result.then(function(result) {
+		// The user has created the episode, or cancelled
                 if(result){ // We made an episode!
                     $scope.tag_and_close(result);
                 }else{
-				    $modalInstance.close(result);
+		    $modalInstance.close(result);
                 }
-			});
+	    });
         };
 
         //
@@ -181,21 +183,23 @@ controllers.controller(
         $scope.add_for_patient = function(patient){
             var demographics = patient.demographics[0];
 
-			modal = $modal.open({
-				templateUrl: '/opat/templates/modals/add_episode.html/',
-				controller: 'AddEpisodeCtrl',
-				resolve: {
-					options: function() { return options; },
-					demographics: function() { return demographics; }
-				}
-			}).result.then(function(result) {
-				// The user has created the episode, or cancelled
+	    modal = $modal.open({
+		templateUrl: '/opat/templates/modals/add_episode.html/',
+		controller: 'AddEpisodeCtrl',
+                size: 'lg',
+		resolve: {
+		    options: function() { return options; },
+		    demographics: function() { return demographics; },
+                    tags: function(){ return {tag: 'walkin', subtag: ''}}
+		}
+	    }).result.then(function(result) {
+		// The user has created the episode, or cancelled
                 if(result){ // We made an episode!
                     $scope.tag_and_close(result);
                 }else{
-				    $modalInstance.close(result);
+		    $modalInstance.close(result);
                 }
-			});
+	    });
         };
 
         // Let's have a nice way to kill the modal.

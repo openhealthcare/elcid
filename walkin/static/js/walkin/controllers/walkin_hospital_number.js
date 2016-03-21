@@ -68,11 +68,13 @@ controllers.controller(
             modal = $modal.open({
                 templateUrl: '/templates/modals/add_walkin_episode.html/',
                 controller: 'AddEpisodeCtrl',
+                size: 'lg',
                 resolve: {
                     options: function() { return options; },
                     demographics: function() {
                         return { hospital_number: $scope.model.hospitalNumber }
-                    }
+                    },
+                    tags: function(){ return {tag: 'walkin', subtag: ''}}
                 }
             }).result.then(function(result) {
                 // The user has created the episode, or cancelled
@@ -155,9 +157,11 @@ controllers.controller(
             modal = $modal.open({
                 templateUrl: '/templates/modals/add_walkin_episode.html/',
                 controller: 'AddEpisodeCtrl',
+                size: 'lg',
                 resolve: {
                     options: function() { return options; },
-                    demographics: function() { return demographics; }
+                    demographics: function() { return demographics; },
+                    tags: function(){ return {tag: 'walkin', subtag: ''}}
                 }
             }).result.then(function(result) {
                 // The user has created the episode, or cancelled
