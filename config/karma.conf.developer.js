@@ -44,7 +44,6 @@ module.exports =  function(config){
             'opal/filters.js',
             'opal/services_module.js',
             'opal/services/*.js',
-            'opal/services/flow.js',
             'opal/controllers_module.js',
             'opal/controllers/*.js',
             'opal/app.js',
@@ -63,20 +62,25 @@ module.exports =  function(config){
 
             // The tests
             '../../../../elcid/elcid/assets/js/elcidtest/*',
-            '../../../../elcid/opat/static/js/test/*',
-            '../../../../elcid/research/static/js/test/*',
-            '../../../../elcid/walkin/static/js/walkintest/*',
+            // '../../../../elcid/opat/static/js/test/*',
+            // '../../../../elcid/research/static/js/test/*',
+            // '../../../../elcid/walkin/static/js/walkintest/*',
         ],
 
         preprocessors: {
-            'opal/**/*.js': 'coverage'
+            '../../../../elcid/elcid/assets/js/elcid/*': 'coverage',
+            '../../../../elcid/elcid/assets/js/elcid/controllers/*': 'coverage',
+            '../../../../elcid/elcid/assets/js/elcid/services/*': 'coverage',
+            '../../../../elcid/opat/static/js/opat/controllers/*': 'coverage',
+            '../../../../elcid/research/static/js/research/controllers/*': 'coverage',
+            '../../../../elcid/walkin/static/js/walkin/controllers/*': 'coverage',
         },
 
         reporters: ['progress', 'coverage'],
         singleRun: true,
         coverageReporter: {
             type : 'html',
-            dir : '../../../htmlcov/js/',
+            dir : '../../../../elcid/htmlcov/js/',
         },
 
     })
