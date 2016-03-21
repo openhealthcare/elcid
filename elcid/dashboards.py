@@ -3,10 +3,15 @@ elCID Dashboards
 """
 import datetime
 
+from django.utils.functional import cached_property
+from django.core.urlresolvers import reverse
+from urllib import urlencode
+
+
 from dashboard import Dashboard, widgets
 from django.db.models import Count
 from opal.models import Episode
-from elcid.models import Diagnosis
+from elcid.models import Diagnosis, Consultant
 
 
 class NumberOfDiagnoses(widgets.Number):
