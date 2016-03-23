@@ -1,3 +1,4 @@
+import json
 from mock import MagicMock, patch
 
 from django.test import override_settings
@@ -18,18 +19,21 @@ class TestPatientApi(OpalTestCase):
         with patch.object(endpoint, "login") as login_method:
             login_method.return_value = self.user
             request = MagicMock()
-            request.data = dict(data={
-                "demographics": [{
-                    "name": "Susan",
-                    "hospital_number": "12312312",
-                }],
-                "hat_wearer": [
-                    {"name": "top"},
-                    {"name": "wizard"},
-                ]
-            })
+            request.data = json.dumps(dict(
+                messages={
+                    "demographics": [{
+                        "name": "Susan",
+                        "hospital_number": "12312312",
+                    }],
+                    "hat_wearer": [
+                        {"name": "top"},
+                        {"name": "wizard"},
+                    ]
+                },
+                hospital_number="12312312"
+            ))
 
-            endpoint.update(request, pk="12312312")
+            endpoint.create(request)
             patient = Patient.objects.get()
             demographics = patient.demographics_set.get()
             self.assertEqual(demographics.name, "Susan")
@@ -45,23 +49,26 @@ class TestPatientApi(OpalTestCase):
         with patch.object(endpoint, "login") as login_method:
             login_method.return_value = self.user
             request = MagicMock()
-            request.data = dict(data={
-                "demographics": [{
-                    "name": "Susan",
-                    "hospital_number": "12312312",
-                }],
-                "hat_wearer": [
-                    {"name": "top"},
-                    {"name": "wizard"},
-                ]
-            })
+            request.data = json.dumps(dict(
+                messages={
+                    "demographics": [{
+                        "name": "Susan",
+                        "hospital_number": "12312312",
+                    }],
+                    "hat_wearer": [
+                        {"name": "top"},
+                        {"name": "wizard"},
+                    ],
+                },
+                hospital_number="12312312"
+            ))
             patient_before = Patient.objects.create()
             demographics = patient_before.demographics_set.get()
             demographics.hospital_number = "12312312"
             demographics.name = "Jane"
             demographics.save()
 
-            endpoint.update(request, pk="12312312")
+            endpoint.create(request)
             patient = Patient.objects.get()
             demographics = patient.demographics_set.get()
             self.assertEqual(demographics.name, "Susan")
