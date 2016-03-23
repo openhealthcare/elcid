@@ -1,6 +1,6 @@
 <div ng-hide="row.category=='Research'">
   [[item.hospital_number]]<br />
-  [[item.name]]<br />
+  [[item.first_name]] [[item.last_name]]<br />
   <span ng-show="item.date_of_birth">
     [[item.date_of_birth | shortDate]] ([[ item.date_of_birth | age ]])<br />
   </span>
@@ -9,7 +9,7 @@
 
 <!-- Research study overrides. -->
 <div ng-show="row.category=='Research'">
-  <b>Study ID:</b> 
+  <b>Study ID:</b>
   [[ row.study_participation[0].study_id ]]
   <span ng-hide="currentSubTag.indexOf('scientist') != -1">
     <br />

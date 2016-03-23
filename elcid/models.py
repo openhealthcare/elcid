@@ -18,15 +18,35 @@ class Demographics(PatientSubrecord):
     _is_singleton = True
     _icon = 'fa fa-user'
 
-    name             = models.CharField(max_length=255, blank=True)
-    hospital_number  = models.CharField(max_length=255, blank=True)
-    nhs_number       = models.CharField(max_length=255, blank=True, null=True)
-    date_of_birth    = models.DateField(null=True, blank=True)
-    country_of_birth = ForeignKeyOrFreeText(omodels.Destination)
-    ethnicity        = models.CharField(max_length=255, blank=True, null=True)
-    gender           = models.CharField(max_length=255, blank=True, null=True)
+    hospital_number = models.CharField(max_length=255, blank=True)
+    nhs_number = models.CharField(max_length=255, blank=True, null=True)
 
-    pid_fields       = 'name', 'hospital_number', 'nhs_number'
+    surname = models.CharField(max_length=255, blank=True)
+    first_name = models.CharField(max_length=255, blank=True)
+    middle_name = models.CharField(max_length=255, blank=True)
+    title = models.CharField(max_length=255, blank=True)
+    date_of_birth = models.DateField(null=True, blank=True)
+    birth_place = models.CharField(max_length=255, blank=True)
+    marital_status = models.CharField(max_length=255, blank=True)
+    religion = models.CharField(max_length=255, blank=True)
+    date_of_death = models.DateField(null=True, blank=True)
+    post_code = models.CharField(max_length=20, blank=True)
+    gp_practice_code = models.CharField(max_length=20, blank=True)
+    country_of_birth = ForeignKeyOrFreeText(omodels.Destination)
+    ethnicity = ForeignKeyOrFreeText(omodels.Ethnicity)
+
+    # not strictly correct, but it will be updated when opal core models
+    # are updated
+    sex = ForeignKeyOrFreeText(omodels.Gender)
+
+    # name             = models.CharField(max_length=255, blank=True)
+    ethnicity_old = models.CharField(max_length=255, blank=True, null=True)
+    gender = models.CharField(max_length=255, blank=True, null=True)
+
+    pid_fields       = (
+        'name', 'hospital_number', 'nhs_number', 'surname', 'first_name',
+        'middle_name', 'last_name',
+    )
 
     class Meta:
         verbose_name_plural = "Demographics"
@@ -270,6 +290,24 @@ class Allergies(PatientSubrecord):
 
     drug        = ForeignKeyOrFreeText(omodels.Antimicrobial)
     provisional = models.NullBooleanField()
+
+    # previously called drug this is the name of the problematic substance
+    # allergy_description = ForeignKeyOrFreeText(omodels.Antimicrobial)
+    #
+    #
+    # allergy_type = models.CharField(max_length=255, blank=True)
+    # allergy_type_description = models.CharField(max_length=255, blank=True)
+    # certainty_id = models.CharField(max_length=255, blank=True)
+    # certainty_description = models.CharField(max_length=255, blank=True)
+    # allergy_reference_name = models.CharField(max_length=255, blank=True)
+    # allergen_reference_system = models.CharField(max_length=255, blank=True)
+    # allergen_reference = models.CharField(max_length=255, blank=True)
+    # status_id = models.CharField(max_length=255, blank=True)
+    # status_description = models.CharField(max_length=255, blank=True)
+    # diagnosis_datetime = models.DateTimeField(null=True, blank=True)
+    # allergy_start_datetime = models.DateTimeField(null=True, blank=True)
+    # no_allergies = models.BooleanField(default=False)
+
     details     = models.CharField(max_length=255, blank=True)
 
     class Meta:
