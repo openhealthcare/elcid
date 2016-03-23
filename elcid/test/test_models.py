@@ -18,7 +18,8 @@ class AbstractPatientTestCase(TestCase):
         self.patient.save()
         self.patient.demographics_set.update(
             consistency_token="12345678",
-            name="John Smith",
+            first_name="John",
+            surname="Smith",
             hospital_number="AA1111",
             date_of_birth="1972-06-20",
         )
@@ -38,10 +39,20 @@ class DemographicsTest(OpalTestCase, AbstractPatientTestCase):
 
     def test_to_dict(self):
         expected_data = {
+            'birth_place': u'',
             'consistency_token': '12345678',
             'patient_id': self.patient.id,
             'id': self.demographics.id,
-            'name': 'John Smith',
+            'first_name': 'John',
+            'surname': 'Smith',
+            'middle_name': '',
+            'title_fk_id': None,
+            'title_ft': u'',
+            'title': '',
+            'marital_status_fk_id': None,
+            'marital_status_ft': u'',
+            'marital_status': u'',
+            'religion': '',
             'created': None,
             'updated': None,
             'created_by_id': None,
@@ -50,10 +61,18 @@ class DemographicsTest(OpalTestCase, AbstractPatientTestCase):
             'country_of_birth': '',
             'country_of_birth_fk_id': None,
             'country_of_birth_ft': '',
-            'ethnicity': None,
-            'gender': None,
+            'ethnicity_fk_id': None,
+            'ethnicity_ft': u'',
+            'ethnicity': u'',
+            'sex_fk_id': None,
+            'sex_ft': '',
+            'sex': '',
             'hospital_number': 'AA1111',
-            'nhs_number': None
+            'nhs_number': None,
+            'date_of_death': None,
+            'post_code': '',
+            'gp_practice_code': '',
+            'sourced_from_upstream': False,
             }
 
         self.assertEqual(expected_data, self.demographics.to_dict(self.user))
@@ -62,14 +81,16 @@ class DemographicsTest(OpalTestCase, AbstractPatientTestCase):
         data = {
             'consistency_token': '12345678',
             'id': self.demographics.id,
-            'name': 'Johann Schmidt',
+            'first_name': 'Johann',
+            'surname': 'Schmidt',
             'date_of_birth': '21/6/1972',
             'hospital_number': 'AA1112',
             }
         self.demographics.update_from_dict(data, self.user)
         demographics = self.patient.demographics_set.get()
 
-        self.assertEqual('Johann Schmidt', demographics.name)
+        self.assertEqual('Johann', demographics.first_name)
+        self.assertEqual('Schmidt', demographics.surname)
         self.assertEqual(datetime.date(1972, 6, 21), demographics.date_of_birth)
         self.assertEqual('AA1112', demographics.hospital_number)
 

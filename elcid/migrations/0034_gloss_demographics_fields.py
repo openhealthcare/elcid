@@ -7,10 +7,16 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
+        ('opal', '0011_patientrecordaccess'),
         ('elcid', '0033_remove_microhaem_models'),
     ]
 
     operations = [
+        migrations.RenameField(
+            model_name='demographics',
+            old_name='ethnicity',
+            new_name='ethnicity_old',
+        ),
         migrations.AddField(
             model_name='demographics',
             name='birth_place',
@@ -20,6 +26,16 @@ class Migration(migrations.Migration):
             model_name='demographics',
             name='date_of_death',
             field=models.DateField(null=True, blank=True),
+        ),
+        migrations.AddField(
+            model_name='demographics',
+            name='ethnicity_fk',
+            field=models.ForeignKey(blank=True, to='opal.Ethnicity', null=True),
+        ),
+        migrations.AddField(
+            model_name='demographics',
+            name='ethnicity_ft',
+            field=models.CharField(default=b'', max_length=255, null=True, blank=True),
         ),
         migrations.AddField(
             model_name='demographics',
@@ -53,18 +69,22 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='demographics',
-            name='title',
+            name='sex_fk',
+            field=models.ForeignKey(blank=True, to='opal.Gender', null=True),
+        ),
+        migrations.AddField(
+            model_name='demographics',
+            name='sex_ft',
+            field=models.CharField(default=b'', max_length=255, null=True, blank=True),
+        ),
+        migrations.AddField(
+            model_name='demographics',
+            name='surname',
             field=models.CharField(max_length=255, blank=True),
         ),
-        migrations.RenameField(
+        migrations.AddField(
             model_name='demographics',
-            old_name='ethnicity',
-            new_name='ethnicity_old '
-        ),
-
-        migrations.RenameField(
-            model_name='demographics',
-            old_name='name',
-            new_name='surname '
+            name='title',
+            field=models.CharField(max_length=255, blank=True),
         ),
     ]

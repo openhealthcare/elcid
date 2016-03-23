@@ -6,7 +6,7 @@
     <span ng-show="episode.hasTag('walkin_triage')" >Next</span>
     <span ng-show="episode.hasTag('walkin_doctor')" >End of appointment</span>
     <span ng-show="episode.hasTag('walkin_review')" >Results actioned</span>
-    ([[ episode.demographics[0].name ]])
+    ([[ episode.demographics[0].first_name ]] [[ episode.demographics[0].surname ]])
   </h3>
 </div>
 <div class="modal-body">
@@ -62,7 +62,7 @@
   <!-- Initial state Doctor led care, what's next -->
   <div ng-show="episode.tagging[0].walkin_doctor == true && meta.next == null">
     <p class="lead">
-      It's the end of the Walk-in appointment for <b>[[ episode.demographics[0].name ]]</b>.
+      It's the end of the Walk-in appointment for <b>[[ episode.demographics[0].first_name ]] [[ episode.demographics[0].surname ]]</b>.
     </p>
     <p class="lead">
       What's the <b>next</b> stage?
@@ -79,7 +79,7 @@
 
   <!-- Review but no management -> add management -->
   <div ng-show="episode.tagging[0].walkin_doctor == true && meta.next == 'review' && meta.follow_up == null">
-    <p class="lead">What is the <b>follow up</b> for [[ episode.demographics[0].name ]]?</p>
+    <p class="lead">What is the <b>follow up</b> for [[ episode.demographics[0].first_name ]] [[ episode.demographics[0].surname ]]?</p>
 
     <form class="form-horizontal">
       {% radio label="Follow-up" model="meta.management.follow_up" lookuplist="['Discharged from clinic: No Follow-Up', 'Discharged from clinic: Follow-Up in clinic']"%}
@@ -100,14 +100,14 @@
   <!-- Review, has management -> remove from list  -->
   <div ng-show="episode.tagging[0].walkin_doctor == true && meta.next == 'review' && meta.follow_up != null">
 
-    <p class="lead">Move [[ episode.demographics[0].name ]] to review?</p>
+    <p class="lead">Move [[ episode.demographics[0].first_name ]] [[ episode.demographics[0].surname ]] to review?</p>
     <center>
       <button class="btn btn-primary btn-lg"  ng-click="move_to_review()">Move to review</button>
     </center>
   </div>
 
   <div ng-show="episode.tagging[0].walkin_doctor == true && meta.next == 'admit'">
-    <p class="lead">Which team should [[ episode.demographics[0].name ]] be <b>admitted</b> to?</p>
+    <p class="lead">Which team should [[ episode.demographics[0].first_name ]] [[ episode.demographics[0].surname ]] be <b>admitted</b> to?</p>
     <form class="form form-horizontal">
       <div class="form-group">
         <label class="control-label col-sm-3">Team:</label>
@@ -143,7 +143,7 @@
     </div>
     <div ng-hide="!episode.diagnosis.length && !qc.ignore_diagnosis">
       <p class="lead text-center">
-        Are all results for [[ episode.demographics[0].name ]] actioned and/or patient has appropriate follow up ?
+        Are all results for [[ episode.demographics[0].first_name ]] [[ episode.demographics[0].surname ]] actioned and/or patient has appropriate follow up ?
       </p>
       <center>
         <button class="btn btn-primary btn-lg"  ng-click="remove_from_list()">

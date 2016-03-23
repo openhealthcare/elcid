@@ -489,7 +489,7 @@ controllers.controller(
                     if($scope.confirming){
                         growl.success('Final Diagnosis approved.');
                     }else{
-                        growl.success($scope.episode.demographics[0].name + ' discharged.');
+                        growl.success($scope.episode.demographics[0].first_name + ' ' + $scope.episode.demographics[0].surname + ' discharged.');
                     }
                     $scope.discharged = true;
                     $modalInstance.close('discharged');

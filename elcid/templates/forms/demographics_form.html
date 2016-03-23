@@ -11,6 +11,7 @@
   <input class="form-control" type="text" ng-model="editing.demographics.nhs_number">
   </div>
 </div>
+{% select label="Title" model="editing.demographics.title" lookuplist="title_list" %}
 <div class="form-group">
   <label class="control-label col-sm-3">First Name</label>
   <div class="col-sm-8">
@@ -38,6 +39,8 @@
     </span>
   </div>
 </div>
+{% input label="Post code" model="editing.demographics.post_code" %}
 {% select label="Sex" model="editing.demographics.sex" lookuplist="gender_list" %}
-{% select label="Country of Birth" model="editing.demographics.country_of_birth" lookuplist="destination_list" %}
+{% select label="Marital Status" model="editing.demographics.marital_status" lookuplist="maritalstatus_list" %}
 {% select label="Ethnicity" model="editing.demographics.ethnicity" lookuplist="ethnicity_list" %}
+{% input label="GP Practice Code" model="editing.demographics.gp_practice_code" %}

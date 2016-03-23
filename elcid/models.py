@@ -24,28 +24,25 @@ class Demographics(PatientSubrecord):
     surname = models.CharField(max_length=255, blank=True)
     first_name = models.CharField(max_length=255, blank=True)
     middle_name = models.CharField(max_length=255, blank=True)
-    title = models.CharField(max_length=255, blank=True)
+    title = ForeignKeyOrFreeText(omodels.Title)
     date_of_birth = models.DateField(null=True, blank=True)
     birth_place = models.CharField(max_length=255, blank=True)
-    marital_status = models.CharField(max_length=255, blank=True)
+    marital_status = ForeignKeyOrFreeText(omodels.MaritalStatus)
     religion = models.CharField(max_length=255, blank=True)
     date_of_death = models.DateField(null=True, blank=True)
     post_code = models.CharField(max_length=20, blank=True)
     gp_practice_code = models.CharField(max_length=20, blank=True)
     country_of_birth = ForeignKeyOrFreeText(omodels.Destination)
     ethnicity = ForeignKeyOrFreeText(omodels.Ethnicity)
+    sourced_from_upstream = models.BooleanField(default=False)
 
     # not strictly correct, but it will be updated when opal core models
     # are updated
     sex = ForeignKeyOrFreeText(omodels.Gender)
 
-    # name             = models.CharField(max_length=255, blank=True)
-    ethnicity_old = models.CharField(max_length=255, blank=True, null=True)
-    gender = models.CharField(max_length=255, blank=True, null=True)
-
     pid_fields       = (
-        'name', 'hospital_number', 'nhs_number', 'surname', 'first_name',
-        'middle_name', 'last_name',
+        'hospital_number', 'nhs_number', 'surname', 'first_name',
+        'middle_name', 'post_code',
     )
 
     class Meta:
