@@ -22,7 +22,7 @@ class TestPatientApi(OpalTestCase):
             request.data = json.dumps(dict(
                 messages={
                     "demographics": [{
-                        "name": "Susan",
+                        "first_name": "Susan",
                         "hospital_number": "12312312",
                     }],
                     "hat_wearer": [
@@ -36,7 +36,7 @@ class TestPatientApi(OpalTestCase):
             endpoint.create(request)
             patient = Patient.objects.get()
             demographics = patient.demographics_set.get()
-            self.assertEqual(demographics.name, "Susan")
+            self.assertEqual(demographics.first_name, "Susan")
             self.assertEqual(demographics.hospital_number, "12312312")
             episode = patient.episode_set.get()
             hat_wearers = episode.hatwearer_set.all()
@@ -52,7 +52,7 @@ class TestPatientApi(OpalTestCase):
             request.data = json.dumps(dict(
                 messages={
                     "demographics": [{
-                        "name": "Susan",
+                        "first_name": "Susan",
                         "hospital_number": "12312312",
                     }],
                     "hat_wearer": [
@@ -65,13 +65,13 @@ class TestPatientApi(OpalTestCase):
             patient_before = Patient.objects.create()
             demographics = patient_before.demographics_set.get()
             demographics.hospital_number = "12312312"
-            demographics.name = "Jane"
+            demographics.first_name = "Jane"
             demographics.save()
 
             endpoint.create(request)
             patient = Patient.objects.get()
             demographics = patient.demographics_set.get()
-            self.assertEqual(demographics.name, "Susan")
+            self.assertEqual(demographics.first_name, "Susan")
             self.assertEqual(demographics.hospital_number, "12312312")
             episode = patient.episode_set.get()
             hat_wearers = episode.hatwearer_set.all()

@@ -102,7 +102,9 @@ controllers.controller(
             }
 
             $q.all(saves).then(function(){
-                growl.success('Accepted: ' + episode.demographics[0].name)
+                growl.success(
+                    'Accepted: ' + episode.demographics[0].first_name + ' ' + episode.demographics[0].surname
+                );
                 $modalInstance.close('moved');
             });
         };
@@ -133,10 +135,10 @@ controllers.controller(
                 $scope.episode.tagging[0].save(tagging),
                 meta.save(opatmetadata)
             ]).then(function(){
-                // 
+                //
                 // This comment edited to add (DM): I have literally no idea what the next
                 // comment means :(
-                // 
+                //
                 // Doesn't auto update for OPAT as TAGGING is not in the default schema.
                 $scope.episode.tagging[0] = tagging;
                 var dateStr = $scope.meta.review_date;
@@ -144,7 +146,7 @@ controllers.controller(
                 if(_.isDate(dateStr)){
                     dateStr = moment($scope.meta.review_date).format(DATE_FORMAT);
                 }
-                var message = 'Rejected: ' + episode.demographics[0].name;
+                var message = 'Rejected: ' + episode.demographics[0].first_name + ' ' + episode.demographics[0].surname;
                 message += '.\n Patient will come up for OPAT review after ' + dateStr;
                 growl.success(message);
                 $modalInstance.close('discharged');
@@ -190,7 +192,7 @@ controllers.controller(
                 meta.save(updatedmeta),
                 $scope.episode.tagging[0].save(tagging)
             ]).then(function(){
-                growl.success('Moved to Follow up: ' + episode.demographics[0].name)
+                growl.success('Moved to Follow up: ' + episode.demographics[0].first_name + ' ' + episode.demographics[0].surname)
                 $modalInstance.close('discharged');
             });
         }
@@ -238,7 +240,7 @@ controllers.controller(
                 $scope.episode.save(ep),
                 outcome.save(outcomesdata)
             ]).then(function(){
-                growl.success('Completed treatment: ' + episode.demographics[0].name);
+                growl.success('Completed treatment: ' + episode.demographics[0].first_name + ' ' + episode.demographics[0].surname);
                 $modalInstance.close('discharged');
             });
         };
@@ -277,7 +279,7 @@ controllers.controller(
                         episode.tagging[0].save(newtagging),
                         episode.location[0].save(locationdata)
                     ]).then(function(){
-                        growl.success(episode.demographics[0].name + ' has been moved back to OPAT referrals');
+                        growl.success(episode.demographics[0].first_name + ' ' + episode.demographics[0].surname + ' has been moved back to OPAT referrals');
                         $modalInstance.close('discharged');
                     })
                 });
