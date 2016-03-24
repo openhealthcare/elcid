@@ -83,7 +83,7 @@ module.exports =  function(config){
         autoWatch: true,
 
         coverageReporter: {
-            type : 'html',
+            type : 'lcovonly',
             dir : __dirname + '/../coverage/',
         },
 
