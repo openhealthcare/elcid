@@ -7,8 +7,6 @@ from opal.core import application
 
 class Application(application.OpalApplication):
     schema_module = 'elcid.schema'
-    flow_module = 'elcid.flow'
-    flow_service = 'elCIDFlow'
     javascripts = [
         'js/elcid/routes.js',
         'js/elcid/controllers/discharge.js',
