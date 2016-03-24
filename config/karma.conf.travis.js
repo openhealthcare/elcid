@@ -1,4 +1,12 @@
 module.exports =  function(config){
+    var preprocessors = {};
+    preprocessors[__dirname + '../elcid/assets/js/elcid/*'] = 'coverage';
+    preprocessors[__dirname + '../elcid/assets/js/elcid/controllers/*'] = 'coverage';
+    preprocessors[__dirname + '../elcid/assets/js/elcid/services/*'] = 'coverage';
+    preprocessors[__dirname + '../opat/static/js/opat/controllers/*'] = 'coverage';
+    preprocessors[__dirname + '../research/static/js/research/controllers/*'] = 'coverage';
+    preprocessors[__dirname + '../walkin/static/js/walkin/controllers/*'] = 'coverage';
+
     config.set({
         frameworks: ['jasmine'],
         browsers: ['Firefox'],
@@ -68,14 +76,7 @@ module.exports =  function(config){
             // '../../../../elcid/walkin/static/js/walkintest/*',
         ],
 
-        preprocessors: {
-            __dirname + '../elcid/assets/js/elcid/*': 'coverage',
-            __dirname + '../elcid/assets/js/elcid/controllers/*': 'coverage',
-            __dirname + '../elcid/assets/js/elcid/services/*': 'coverage',
-            __dirname + '../opat/static/js/opat/controllers/*': 'coverage',
-            __dirname + '../research/static/js/research/controllers/*': 'coverage',
-            __dirname + '../walkin/static/js/walkin/controllers/*': 'coverage',
-        },
+        preprocessors: preprocessors,
 
         reporters: ['progress', 'coverage'],
         singleRun: true,
