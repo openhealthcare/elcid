@@ -53,28 +53,28 @@ module.exports =  function(config){
 
             // Our application
 
-            '../../../../elcid/elcid/assets/js/elcid/*',
-            '../../../../elcid/elcid/assets/js/elcid/controllers/*',
-            '../../../../elcid/elcid/assets/js/elcid/services/*',
-            '../../../../elcid/opat/static/js/opat/controllers/*',
-            '../../../../elcid/research/static/js/research/controllers/*',
-            '../../../../elcid/walkin/static/js/walkin/controllers/*',
+            __dirname + '../elcid/assets/js/elcid/*',
+            __dirname + '../elcid/assets/js/elcid/controllers/*',
+            __dirname + '../elcid/assets/js/elcid/services/*',
+            __dirname + '../opat/static/js/opat/controllers/*',
+            __dirname + '../research/static/js/research/controllers/*',
+            __dirname + '../walkin/static/js/walkin/controllers/*',
 
 
             // The tests
-            '../../../../elcid/elcid/assets/js/elcidtest/*',
+            __dirname + '../elcid/assets/js/elcidtest/*',
             // '../../../../elcid/opat/static/js/test/*',
             // '../../../../elcid/research/static/js/test/*',
             // '../../../../elcid/walkin/static/js/walkintest/*',
         ],
 
         preprocessors: {
-            '../../../../elcid/elcid/assets/js/elcid/*': 'coverage',
-            '../../../../elcid/elcid/assets/js/elcid/controllers/*': 'coverage',
-            '../../../../elcid/elcid/assets/js/elcid/services/*': 'coverage',
-            '../../../../elcid/opat/static/js/opat/controllers/*': 'coverage',
-            '../../../../elcid/research/static/js/research/controllers/*': 'coverage',
-            '../../../../elcid/walkin/static/js/walkin/controllers/*': 'coverage',
+            __dirname + '../elcid/assets/js/elcid/*': 'coverage',
+            __dirname + '../elcid/assets/js/elcid/controllers/*': 'coverage',
+            __dirname + '../elcid/assets/js/elcid/services/*': 'coverage',
+            __dirname + '../opat/static/js/opat/controllers/*': 'coverage',
+            __dirname + '../research/static/js/research/controllers/*': 'coverage',
+            __dirname + '../walkin/static/js/walkin/controllers/*': 'coverage',
         },
 
         reporters: ['progress', 'coverage'],
@@ -83,7 +83,7 @@ module.exports =  function(config){
 
         coverageReporter: {
             type : 'html',
-            dir : '../../../../elcid/coverage/',
+            dir : __dirname + '../coverage/',
         },
 
         // Stolen from http://oligofren.wordpress.com/2014/05/27/running-karma-tests-on-browserstack/
