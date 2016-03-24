@@ -46,7 +46,7 @@ angular.module('opal.services').factory('elCIDFlow', function($routeParams){
                     }
                 }
                 return {
-                    'controller': 'DischargeEpisodeCtrl',
+                    'controller': 'ElcidDischargeEpisodeCtrl',
                     'template'  : '/templates/modals/discharge_episode.html/'
                 }
 
