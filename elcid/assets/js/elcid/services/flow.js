@@ -58,7 +58,6 @@ angular.module('opal.services').factory('elCIDFlow', function($routeParams){
                     'controller': 'OPATReferralCtrl',
                     'template'  : '/opat/templates/modals/opat_referral.html/'
                 }
-
             },
             exit: function(episode){
                 return {

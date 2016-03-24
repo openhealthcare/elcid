@@ -19,6 +19,22 @@ describe('elCIDFlow', function() {
         'controller': 'ElcidDischargeEpisodeCtrl',
         'template'  : '/templates/modals/discharge_episode.html/'
     };
+    var diagnosis_enter = {
+        'controller': 'DiagnosisHospitalNumberCtrl',
+        'template'  : '/templates/modals/hospital_number.html/'
+    };
+    var diagnosis_exit = {
+        'controller': 'DiagnosisDischargeCtrl',
+        'template'  : '/templates/elcid/modals/diagnosis_discharge.html'
+    };
+    var opat_exit =  {
+        'controller': 'OPATDischargeCtrl',
+        'template'  : '/opat/templates/modals/discharge_opat_episode.html/'
+    };
+    var opat_enter = {
+        'controller': 'OPATReferralCtrl',
+        'template'  : '/opat/templates/modals/opat_referral.html/'
+    };
 
     beforeEach(function(){
         module('opal.services');
@@ -51,9 +67,42 @@ describe('elCIDFlow', function() {
             expect(Flow.enter()).toEqual(inpatient_default_enter);
         });
 
-        it('should fetch hte default exit flow', function() {
+        it('should fetch the default exit flow', function() {
             expect(Flow.exit({category: 'Inpatient'})).toEqual(inpatient_default_exit);
         });
+
+        describe('Discharge Overrides', function() {
+
+            beforeEach(function(){
+                $routeParams.slug = 'tropical_diseases';
+            });
+
+            it('enter should fetch the diagnosis flow', function() {
+                expect(Flow.enter()).toEqual(diagnosis_enter);
+            });
+
+            it('should fetch the diagnosis exit flow', function() {
+                expect(Flow.exit({category: 'Inpatient'})).toEqual(diagnosis_exit);
+            });
+
+
+        });
+    });
+
+    describe('OPAT', function() {
+
+        beforeEach(function(){
+            $routeParams.slug = 'opat-opat_current';
+        });
+
+        it('should enter should fetch the flow', function() {
+            expect(Flow.enter()).toEqual(opat_enter);
+        });
+
+        it('should fetch the exit flow', function() {
+            expect(Flow.exit({category: 'OPAT'})).toEqual(opat_exit);
+        });
+
     });
 
 });
