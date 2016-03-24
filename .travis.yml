@@ -12,7 +12,7 @@ before_script:
 script:
   - opal test --coverage
 after_success:
-  - ls -lha coverage
+  - find coverage
   - coveralls-lcov -v -n coverage/Firefox\ 31.0.0\ \(Linux\ 0.0.0\)/lcov.info > coverage/coverage.json
   - cat coverage/coverage.json
   - coveralls debug --merge=coverage/coverage.json
