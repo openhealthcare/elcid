@@ -1,4 +1,12 @@
 module.exports =  function(config){
+    var preprocessors = {};
+    preprocessors[__dirname + '/../elcid/assets/js/elcid/*'] = 'coverage';
+    preprocessors[__dirname + '/../elcid/assets/js/elcid/controllers/*'] = 'coverage';
+    preprocessors[__dirname + '/../elcid/assets/js/elcid/services/*'] = 'coverage';
+    preprocessors[__dirname + '/../opat/static/js/opat/controllers/*'] = 'coverage';
+    preprocessors[__dirname + '/../research/static/js/research/controllers/*'] = 'coverage';
+    preprocessors[__dirname + '/../walkin/static/js/walkin/controllers/*'] = 'coverage';
+
     config.set({
         frameworks: ['jasmine'],
         browsers: ['Firefox'],
@@ -53,37 +61,30 @@ module.exports =  function(config){
 
             // Our application
 
-            '../../../../elcid/elcid/assets/js/elcid/*',
-            '../../../../elcid/elcid/assets/js/elcid/controllers/*',
-            '../../../../elcid/elcid/assets/js/elcid/services/*',
-            '../../../../elcid/opat/static/js/opat/controllers/*',
-            '../../../../elcid/research/static/js/research/controllers/*',
-            '../../../../elcid/walkin/static/js/walkin/controllers/*',
+            __dirname + '/../elcid/assets/js/elcid/*',
+            __dirname + '/../elcid/assets/js/elcid/controllers/*',
+            __dirname + '/../elcid/assets/js/elcid/services/*',
+            __dirname + '/../opat/static/js/opat/controllers/*',
+            __dirname + '/../research/static/js/research/controllers/*',
+            __dirname + '/../walkin/static/js/walkin/controllers/*',
 
 
             // The tests
-            '../../../../elcid/elcid/assets/js/elcidtest/*',
+            __dirname + '/../elcid/assets/js/elcidtest/*',
             // '../../../../elcid/opat/static/js/test/*',
             // '../../../../elcid/research/static/js/test/*',
             // '../../../../elcid/walkin/static/js/walkintest/*',
         ],
 
-        preprocessors: {
-            '../../../../elcid/elcid/assets/js/elcid/*': 'coverage',
-            '../../../../elcid/elcid/assets/js/elcid/controllers/*': 'coverage',
-            '../../../../elcid/elcid/assets/js/elcid/services/*': 'coverage',
-            '../../../../elcid/opat/static/js/opat/controllers/*': 'coverage',
-            '../../../../elcid/research/static/js/research/controllers/*': 'coverage',
-            '../../../../elcid/walkin/static/js/walkin/controllers/*': 'coverage',
-        },
+        preprocessors: preprocessors,
 
         reporters: ['progress', 'coverage'],
         singleRun: true,
         autoWatch: true,
 
         coverageReporter: {
-            type : 'html',
-            dir : '../../../../elcid/coverage/',
+            type : 'lcovonly',
+            dir : __dirname + '/../coverage/',
         },
 
         // Stolen from http://oligofren.wordpress.com/2014/05/27/running-karma-tests-on-browserstack/

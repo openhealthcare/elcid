@@ -52,12 +52,12 @@ module.exports =  function(config){
 
             // Our application
 
-            '../../../../elcid/elcid/assets/js/elcid/*',
-            '../../../../elcid/elcid/assets/js/elcid/controllers/*',
-            '../../../../elcid/elcid/assets/js/elcid/services/*',
-            '../../../../elcid/opat/static/js/opat/controllers/*',
-            '../../../../elcid/research/static/js/research/controllers/*',
-            '../../../../elcid/walkin/static/js/walkin/controllers/*',
+            '../../../../elcid/elcid/assets/js/elcid/*.js',
+            '../../../../elcid/elcid/assets/js/elcid/controllers/*.js',
+            '../../../../elcid/elcid/assets/js/elcid/services/*.js',
+            '../../../../elcid/opat/static/js/opat/controllers/*.js',
+            '../../../../elcid/research/static/js/research/controllers/*.js',
+            '../../../../elcid/walkin/static/js/walkin/controllers/*.js',
 
 
             // The tests
