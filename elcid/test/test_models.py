@@ -39,7 +39,6 @@ class DemographicsTest(OpalTestCase, AbstractPatientTestCase):
 
     def test_to_dict(self):
         expected_data = {
-            'birth_place': u'',
             'consistency_token': '12345678',
             'patient_id': self.patient.id,
             'id': self.demographics.id,
@@ -58,9 +57,9 @@ class DemographicsTest(OpalTestCase, AbstractPatientTestCase):
             'created_by_id': None,
             'updated_by_id': None,
             'date_of_birth': datetime.date(1972, 6, 20),
-            'country_of_birth': '',
-            'country_of_birth_fk_id': None,
-            'country_of_birth_ft': '',
+            'birth_place': '',
+            'birth_place_fk_id': None,
+            'birth_place_ft': '',
             'ethnicity_fk_id': None,
             'ethnicity_ft': u'',
             'ethnicity': u'',

@@ -4,7 +4,7 @@
   <span ng-show="item.date_of_birth">
     [[item.date_of_birth | shortDate]] ([[ item.date_of_birth | age ]])<br />
   </span>
-  [[ item.country_of_birth ]] [[ item.ethnicity ]]<br />
+  [[ item.birth_place ]] [[ item.ethnicity ]]<br />
 </div>
 
 <!-- Research study overrides. -->
@@ -18,7 +18,7 @@
       <span ng-show="item.date_of_birth">
         [[item.date_of_birth | shortDate]] ([[ item.date_of_birth | age ]])<br />
       </span>
-      [[ item.country_of_birth ]] [[ item.ethnicity ]]<br />
+      [[ item.birth_place ]], [[ item.ethnicity ]]<br />
     </span>
     <span ng-show="profile.has_role('researcher')">
       Age: [[item.date_of_birth | age]]<br />
