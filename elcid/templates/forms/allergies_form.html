@@ -1,4 +1,56 @@
 {% load forms %}
-{% input label="Drug" model="editing.allergies.drug" lookuplist="antimicrobial_list" %}
-{% checkbox label="Suspected?" model="editing.allergies.provisional" %}
-{% input label="Details" model="editing.allergies.details" %}
+<div ng-hide="editing.allergies.sourced_from_upstream">
+  {% input label="Drug" model="editing.allergies.drug" lookuplist="antimicrobial_list" %}
+  {% checkbox label="Suspected?" model="editing.allergies.provisional" %}
+</div>
+<div ng-show="editing.allergies.sourced_from_upstream">
+  <div class="text-center content-offset-below-25" ng-show="editing.allergies.no_allergies">
+    <b>The patient has no allergies</b>
+  </div>
+  <div class="content-offset-below-25" ng-hide="editing.allergies.no_allergies">
+    <div class="row">
+      <div class="col-md-4 col-md-offset-2"><b>Allergy Description::</b></div> <div class="col-md-4">[[ editing.allergies.allergy_description  ]]</div>
+    </div>
+    <div class="row">
+      <div class="col-md-4 col-md-offset-2"><b>Allergy Type:</b></div> <div class="col-md-4">[[ editing.allergies.allergy_type ]]</div>
+    </div>
+    <div class="row">
+      <div class="col-md-4 col-md-offset-2"><b>Allergy Type Description:</b></div> <div class="col-md-4">[[ editing.allergies.allergy_type_description ]]</div>
+    </div>
+    <div class="row">
+      <div class="col-md-4 col-md-offset-2"><b>Certainty_id:</b></div> <div class="col-md-4">[[ editing.allergies.certainty_id ]]</div>
+    </div>
+    <div class="row">
+      <div class="col-md-4 col-md-offset-2"><b>Certainty Description:</b></div> <div class="col-md-4">[[ editing.allergies.certainty_description ]]</div>
+    </div>
+    <div class="row">
+      <div class="col-md-4 col-md-offset-2"><b>Allergy Reference Name:</b></div> <div class="col-md-4">[[ editing.allergies.allergy_reference_name ]]</div>
+    </div>
+    <div class="row">
+      <div class="col-md-4 col-md-offset-2"><b>Allergy Reference System:</b></div> <div class="col-md-4">[[ editing.allergies.allergen_reference_system ]]</div>
+    </div>
+    <div class="row">
+      <div class="col-md-4 col-md-offset-2"><b>Allergen Reference:</b></div> <div class="col-md-4">[[ editing.allergies.allergen_reference ]]</div>
+    </div>
+    <div class="row">
+      <div class="col-md-4 col-md-offset-2"><b>Status id:</b></div> <div class="col-md-4">[[ editing.allergies.status_id ]]</div>
+    </div>
+    <div class="row">
+      <div class="col-md-4 col-md-offset-2"><b>Status Description:</b></div> <div class="col-md-4">[[ editing.allergies.status_description ]]</div>
+    </div>
+    <div class="row">
+      <div class="col-md-4 col-md-offset-2"><b>Diagnosis Date:</b></div> <div class="col-md-4">[[ editing.allergies.diagnosis_datetime ]]</div>
+    </div>
+    <div class="row">
+      <div class="col-md-4 col-md-offset-2"><b>Allergy Start Date:</b></div> <div class="col-md-4">[[ editing.allergies.allergy_start_datetime ]]</div>
+    </div>
+  </div>
+  <div class="row content-offset-below-25">
+    <div class="text-center col-md-12">
+      <b>This data was sourced from ePMA</b>
+    </div>
+  </div>
+</div>
+<div class="form-horizontal">
+  {% input label="Add Additional Details" model="editing.allergies.details" %}
+</div>

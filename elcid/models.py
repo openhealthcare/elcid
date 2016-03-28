@@ -297,25 +297,23 @@ class Allergies(PatientSubrecord):
 
     drug        = ForeignKeyOrFreeText(omodels.Antimicrobial)
     provisional = models.NullBooleanField()
+    details     = models.CharField(max_length=255, blank=True)
 
     # previously called drug this is the name of the problematic substance
-    # allergy_description = ForeignKeyOrFreeText(omodels.Antimicrobial)
-    #
-    #
-    # allergy_type = models.CharField(max_length=255, blank=True)
-    # allergy_type_description = models.CharField(max_length=255, blank=True)
-    # certainty_id = models.CharField(max_length=255, blank=True)
-    # certainty_description = models.CharField(max_length=255, blank=True)
-    # allergy_reference_name = models.CharField(max_length=255, blank=True)
-    # allergen_reference_system = models.CharField(max_length=255, blank=True)
-    # allergen_reference = models.CharField(max_length=255, blank=True)
-    # status_id = models.CharField(max_length=255, blank=True)
-    # status_description = models.CharField(max_length=255, blank=True)
-    # diagnosis_datetime = models.DateTimeField(null=True, blank=True)
-    # allergy_start_datetime = models.DateTimeField(null=True, blank=True)
-    # no_allergies = models.BooleanField(default=False)
-
-    details     = models.CharField(max_length=255, blank=True)
+    allergy_description = models.CharField(max_length=255, blank=True)
+    allergy_type = models.CharField(max_length=255, blank=True)
+    allergy_type_description = models.CharField(max_length=255, blank=True)
+    certainty_id = models.CharField(max_length=255, blank=True)
+    certainty_description = models.CharField(max_length=255, blank=True)
+    allergy_reference_name = models.CharField(max_length=255, blank=True)
+    allergen_reference_system = models.CharField(max_length=255, blank=True)
+    allergen_reference = models.CharField(max_length=255, blank=True)
+    status_id = models.CharField(max_length=255, blank=True)
+    status_description = models.CharField(max_length=255, blank=True)
+    diagnosis_datetime = models.DateTimeField(null=True, blank=True)
+    allergy_start_datetime = models.DateTimeField(null=True, blank=True)
+    no_allergies = models.BooleanField(default=False)
+    sourced_from_upstream = models.BooleanField(default=False)
 
     class Meta:
         verbose_name_plural = "Allergies"
