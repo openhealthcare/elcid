@@ -1,4 +1,5 @@
 import json
+import logging
 
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponseForbidden
@@ -43,7 +44,7 @@ class GlossEndpointApi(viewsets.ViewSet):
 
         user = self.login(request)
 
-        patient.bulk_update(update_dict, user)
+        patient.bulk_update(update_dict, user, force=True)
         return Response("ok")
 
 
