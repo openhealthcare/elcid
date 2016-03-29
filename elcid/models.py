@@ -143,7 +143,8 @@ class Result(EpisodeSubrecord):
 
     def to_dict(self, user):
         result = super(Result, self).to_dict(user)
-        result["observations"] = json.loads(self.observations)
+        if self.observations:
+            result["observations"] = json.loads(self.observations)
         return result
 
 class PresentingComplaint(EpisodeSubrecord):
