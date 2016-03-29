@@ -74,7 +74,7 @@ controllers.controller(
                     demographics: function() {
                         return { hospital_number: $scope.model.hospitalNumber }
                     },
-                    tags: function(){ return {tag: 'walkin', subtag: ''}}
+                    tags: function(){ return tags }
                 }
             }).result.then(function(result) {
                 // The user has created the episode, or cancelled
@@ -161,7 +161,7 @@ controllers.controller(
                 resolve: {
                     options: function() { return options; },
                     demographics: function() { return demographics; },
-                    tags: function(){ return {tag: 'walkin', subtag: ''}}
+                    tags: function(){ return tags }
                 }
             }).result.then(function(result) {
                 // The user has created the episode, or cancelled

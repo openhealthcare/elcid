@@ -1,15 +1,17 @@
 describe('WalkinHospitalNumberCtrl', function (){
     "use strict";
-    var $controller, $scope, $modalInstance, $httpBackend, $rootScope;
+    var $controller, $scope, $modalInstance, $httpBackend, $rootScope, $modal;
     var schema, options, tags, Episode;
+
+    tags = {tag: 'walkin', subtag: 'walkin_doctor'}
 
     beforeEach(module('opal.controllers'));
 
     beforeEach(inject(function($injector){
-        var $modal   = $injector.get('$modal');
         $rootScope   = $injector.get('$rootScope');
         $scope       = $rootScope.$new();
         $controller  = $injector.get('$controller');
+        $modal       = $injector.get('$modal');
         Episode      = $injector.get('Episode');
         $httpBackend = $injector.get('$httpBackend');
 
@@ -46,17 +48,15 @@ describe('WalkinHospitalNumberCtrl', function (){
         var controller = $controller('WalkinHospitalNumberCtrl', {
             $scope         : $scope,
             $modalInstance : $modalInstance,
+            $modal         : $modal,
             schema         : schema,
             options        : options,
             tags           : tags
         });
+
+        $httpBackend.expectGET('/api/v0.1/userprofile/').respond({});
+
     }));
-
-    afterEach(function() {
-        $httpBackend.verifyNoOutstandingExpectation();
-        $httpBackend.verifyNoOutstandingRequest();
-    });
-
 
     describe('tag_and_close()', function (){
 
@@ -67,7 +67,6 @@ describe('WalkinHospitalNumberCtrl', function (){
                 category: 'Walkin',
                 demographics: [{patient_id: 123}]
             };
-            $httpBackend.expectGET('/api/v0.1/userprofile/').respond({});
             $httpBackend.expectPUT('/episode/3/').respond(episode);
 
             var test = {test: 'HIV Point of Care', episode_id: "3"};
@@ -78,6 +77,29 @@ describe('WalkinHospitalNumberCtrl', function (){
             $httpBackend.flush();
 
             expect($modalInstance.close).toHaveBeenCalled();
+        });
+
+    });
+
+    describe('new_patient()', function() {
+
+        it('should pass through the tags', function() {
+            spyOn($modal, 'open').and.returnValue({result: {then: function(){}}});
+            $scope.new_patient();
+            var resolves = $modal.open.calls.mostRecent().args[0].resolve;
+            expect(resolves.tags()).toEqual(tags);
+        });
+
+    });
+
+    describe('add_for_patient()', function() {
+
+        it('should pass through the tags', function() {
+            var patientData = {demographics: [{}]};
+            spyOn($modal, 'open').and.returnValue({result: {then: function(){}}});
+            $scope.add_for_patient(patientData);
+            var resolves = $modal.open.calls.mostRecent().args[0].resolve;
+            expect(resolves.tags()).toEqual(tags);
         });
 
     });
