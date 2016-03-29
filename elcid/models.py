@@ -141,11 +141,6 @@ class Result(EpisodeSubrecord):
     result_status = models.CharField(max_length=255, blank=True, null=True)
     observations = JSONField(blank=True, null=True)
 
-    def to_dict(self, user):
-        result = super(Result, self).to_dict(user)
-        if self.observations:
-            result["observations"] = json.loads(self.observations)
-        return result
 
 class PresentingComplaint(EpisodeSubrecord):
     _title = 'Presenting Complaint'
