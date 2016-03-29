@@ -73,7 +73,7 @@ module.exports =  function(config){
             __dirname + '/../elcid/assets/js/elcidtest/*.js',
             // '../../../../elcid/opat/static/js/test/*',
             // '../../../../elcid/research/static/js/test/*',
-            __dirname + '/../elcid/walkin/static/js/walkintest/*.js',
+            __dirname + '/../walkin/static/js/walkintest/*.js',
         ],
 
         preprocessors: preprocessors,
