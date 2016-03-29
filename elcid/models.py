@@ -1,6 +1,7 @@
 """
 elCID implementation specific models!
 """
+import json
 from django.db import models
 from jsonfield import JSONField
 
@@ -139,6 +140,11 @@ class Result(EpisodeSubrecord):
     last_edited = models.DateTimeField(blank=True, null=True)
     result_status = models.CharField(max_length=255, blank=True, null=True)
     observations = JSONField(blank=True, null=True)
+
+    def to_dict(self, user):
+        result = super(Result, self).to_dict(user)
+        result["observations"] = json.loads(self.observations)
+        return result
 
 class PresentingComplaint(EpisodeSubrecord):
     _title = 'Presenting Complaint'
