@@ -207,7 +207,7 @@ class PresentingComplaintTest(OpalTestCase, AbstractEpisodeTestCase):
         )
 
 
-class ResultTest(OpalTestCase, AbstractEpisodeTestCase):
+class ResultTest(OpalTestCase, AbstractPatientTestCase):
     def test_to_dict_and_from_dict(self):
         datetime_format = settings.DATETIME_INPUT_FORMATS[0]
 
@@ -222,7 +222,7 @@ class ResultTest(OpalTestCase, AbstractEpisodeTestCase):
         )
 
         result_args = dict(
-            episode_id=self.episode.id,
+            patient_id=self.patient.id,
             lab_number="234324",
             profile_code="2343344",
             profile_description="RENAL PROFILE",
