@@ -131,7 +131,7 @@ class Location(EpisodeSubrecord):
             return 'demographics'
 
 
-class Result(EpisodeSubrecord):
+class Result(PatientSubrecord):
     lab_number = models.CharField(max_length=255, blank=True, null=True)
     profile_code = models.CharField(max_length=255, blank=True, null=True)
     profile_description = models.CharField(max_length=255, blank=True, null=True)
