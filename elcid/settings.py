@@ -146,7 +146,7 @@ TEMPLATE_CONTEXT_PROCESSORS= (
     'django.core.context_processors.tz',
     'django.contrib.messages.context_processors.messages',
     'opal.context_processors.settings',
-    'opal.context_processors.models',
+    'opal.context_processors.models'
 )
 
 INSTALLED_APPS = (
