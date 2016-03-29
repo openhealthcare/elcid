@@ -61,10 +61,10 @@ module.exports =  function(config){
 
 
             // The tests
-            '../../../../elcid/elcid/assets/js/elcidtest/*',
+            '../../../../elcid/elcid/assets/js/elcidtest/*.js',
             // '../../../../elcid/opat/static/js/test/*',
             // '../../../../elcid/research/static/js/test/*',
-            // '../../../../elcid/walkin/static/js/walkintest/*',
+            '../../../../elcid/walkin/static/js/walkintest/*.js',
         ],
 
         preprocessors: {

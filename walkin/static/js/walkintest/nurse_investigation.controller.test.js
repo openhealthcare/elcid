@@ -17,7 +17,7 @@ describe('WalkinNurseInvestigationsCtrl', function (){
         $httpBackend = $injector.get('$httpBackend');
 
         $modalInstance = $modal.open({template: 'Not a real template'})
-        episode = new Episode({});
+        episode = new Episode({demographics: [{patient_id: 1234}]});
         $rootScope.fields = {
             'microbiology_test': {
                 name: 'microbiology_test',
@@ -34,12 +34,9 @@ describe('WalkinNurseInvestigationsCtrl', function (){
             $modalInstance : $modalInstance,
             episode        : episode
         });
-    }));
 
-    afterEach(function() {
-        $httpBackend.verifyNoOutstandingExpectation();
-        $httpBackend.verifyNoOutstandingRequest();
-    });
+        $httpBackend.expectGET('/api/v0.1/userprofile/').respond({});
+    }));
 
     it('Should set up an investigations object', function () {
         expect($scope.investigations).toEqual({});
@@ -49,7 +46,7 @@ describe('WalkinNurseInvestigationsCtrl', function (){
 
         beforeEach(
             inject(function($injector){
-                var episode = new Episode({});
+                var episode = new Episode({demographics: [{patient_id: 1234}]});
                 var test = episode.newItem('microbiology_test');
                 test.test = 'Serum Save';
                 episode.addItem(test);
@@ -72,7 +69,7 @@ describe('WalkinNurseInvestigationsCtrl', function (){
             $scope.investigations.blood_culture = true;
 
             $httpBackend.expectPOST('/api/v0.1/microbiology_test/',
-                                    {test: 'Blood Culture', date_ordered: today.format('YYYY-MM-DD')}).respond('yes');
+                                    {test: 'Blood Culture', date_ordered: today.format('DD/MM/YYYY')}).respond('yes');
             $scope.save();
 
             $httpBackend.flush();
@@ -88,7 +85,7 @@ describe('WalkinNurseInvestigationsCtrl', function (){
             $httpBackend.expectPOST('/api/v0.1/microbiology_test/',
                                   {
                                       test: 'Blood Culture',
-                                      date_ordered: today.format('YYYY-MM-DD')}).respond('yes');
+                                      date_ordered: today.format('DD/MM/YYYY')}).respond('yes');
             $scope.save();
             $httpBackend.flush();
         });
@@ -98,10 +95,10 @@ describe('WalkinNurseInvestigationsCtrl', function (){
             $scope.investigations.malaria_film  = true
 
             $httpBackend.expectPOST('/api/v0.1/microbiology_test/',
-                                    {test: 'Blood Culture', date_ordered: today.format('YYYY-MM-DD')})
+                                    {test: 'Blood Culture', date_ordered: today.format('DD/MM/YYYY')})
                 .respond('yes');
             $httpBackend.expectPOST('/api/v0.1/microbiology_test/',
-                                    {test: 'Malaria Film', date_ordered: today.format('YYYY-MM-DD')})
+                                    {test: 'Malaria Film', date_ordered: today.format('DD/MM/YYYY')})
                 .respond('yes');
 
             expect($scope.saving).toBe(false);

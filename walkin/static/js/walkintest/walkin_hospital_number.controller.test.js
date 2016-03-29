@@ -68,12 +68,10 @@ describe('WalkinHospitalNumberCtrl', function (){
                 demographics: [{patient_id: 123}]
             };
             $httpBackend.expectGET('/api/v0.1/userprofile/').respond({});
-            $httpBackend.expectPUT('/episode/3/', episode).respond(episode);
+            $httpBackend.expectPUT('/episode/3/').respond(episode);
 
             var test = {test: 'HIV Point of Care', episode_id: "3"};
             $httpBackend.expectPOST('/api/v0.1/microbiology_test/', test).respond(test);
-            var episode = {id: '3'};
-
             spyOn($modalInstance, 'close');
 
             $scope.tag_and_close(episode);

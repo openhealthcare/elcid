@@ -70,10 +70,10 @@ module.exports =  function(config){
 
 
             // The tests
-            __dirname + '/../elcid/assets/js/elcidtest/*',
+            __dirname + '/../elcid/assets/js/elcidtest/*.js',
             // '../../../../elcid/opat/static/js/test/*',
             // '../../../../elcid/research/static/js/test/*',
-            // '../../../../elcid/walkin/static/js/walkintest/*',
+            __dirname + '/../elcid/walkin/static/js/walkintest/*.js',
         ],
 
         preprocessors: preprocessors,
