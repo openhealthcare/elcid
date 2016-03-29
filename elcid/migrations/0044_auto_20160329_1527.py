@@ -7,7 +7,7 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('opal', '0013_inpatientadmission'),
+        ('opal', '0012_maritalstatus_title'),
         ('elcid', '0043_allergies_sourced_from_upstream'),
     ]
 
