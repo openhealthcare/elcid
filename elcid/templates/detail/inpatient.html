@@ -93,7 +93,7 @@
       </div>
     </div>
   </div>
-  {% record_panel models.InpatientAdmission only_display_if_exists=True %}
+  {% record_panel models.InpatientAdmission only_display_if_exists=True editable=False %}
   {% teams_panel %}
   {% record_panel models.Allergies noentries="No known allergies"%}
   {% record_panel models.PastMedicalHistory %}

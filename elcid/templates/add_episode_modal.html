@@ -9,8 +9,8 @@
       <div class="col-sm-8"><label class="readonly">[[editing.demographics.hospital_number]]</label></div>
     </div>
 
-    {% input "autofocus" label="First Name" model="editing.demographics.first_name" enter="save()"%}
-    {% input "autofocus" label="Surname" model="editing.demographics.surname" enter="save()"%}
+    {% input "autofocus" field="Demographics.first_name" %}
+    {% input field="Demographics.surname" enter="save()"%}
 
     <div class="form-group">
       <label class="control-label col-sm-3">Date of birth</label>
@@ -27,13 +27,7 @@
       </div>
     </div>
 
-    {% select label="Sex" model="editing.demographics.sex" lookuplist="gender_list" %}
-    {% select label="Hospital" model="editing.location.hospital" lookuplist="hospital_list" %}
-
-    {% select label="Ward" model="editing.location.ward" lookuplist="ward_list" %}
-    {% input label="Bed" model="editing.location.bed" %}
-
-    {% datepicker label="Date of admission" model="editing.date_of_admission" %}
+    {% select field="Demographics.sex" %}
 
     {% if teams %}
       <div class="row">
