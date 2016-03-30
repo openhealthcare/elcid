@@ -2,9 +2,9 @@ describe('DiagnosisHospitalNumber', function(){
     "use strict";
 
     var $rootScope, $scope, $modal, $httpBackend, $controller;
-    var modalInstance, tags, options, hospital_number;
+    var modalInstance, tags, options, hospital_number, $q;
 
-    tags = {}
+    tags = {};
 
     beforeEach(module('opal.controllers'));
     beforeEach(function(){
@@ -13,6 +13,7 @@ describe('DiagnosisHospitalNumber', function(){
             $rootScope      = $injector.get('$rootScope');
             $modal          = $injector.get('$modal');
             $controller = $injector.get('$controller');
+            $q           = $injector.get('$q');
         });
 
         $scope = $rootScope.$new();
@@ -47,6 +48,42 @@ describe('DiagnosisHospitalNumber', function(){
             var resolvers = $modal.open.calls.mostRecent().args[0].resolve
             expect(resolvers.tags()).toEqual(tags)
         });
+    });
+
+    describe('addForPatient()', function() {
+      it('should call through if there is an active discharged episode.', function(){
+          var deferred, callArgs;
+          spyOn($scope, 'newForPatientWithActiveEpisode');
+
+          var patientData = {
+              "demographics": [
+                      {
+                          "consistency_token": "0beb0d46",
+                          "date_of_birth": "1999-12-12",
+                          "hospital_number": "",
+                          "id": 2,
+                          "name": "Mr WAT",
+                          "patient_id": 2
+                      }
+                  ]
+            };
+
+          deferred = $q.defer();
+          spyOn($modal, 'open').and.returnValue({result: deferred.promise});
+
+          $scope.newForPatient(patientData);
+
+          callArgs = $modal.open.calls.mostRecent().args;
+          expect(callArgs.length).toBe(1);
+          expect(callArgs[0].controller).toBe('AddEpisodeCtrl');
+          var resolves = $modal.open.calls.mostRecent().args[0].resolve;
+          expect(resolves.options()).toEqual(options);
+          var expected_demographics = angular.copy(patientData.demographics[0]);
+          expected_demographics.date_of_birth = "12/12/1999";
+          expect(resolves.demographics()).toEqual(expected_demographics);
+          expect(resolves.tags()).toEqual({});
+      });
+
     });
 
 });
