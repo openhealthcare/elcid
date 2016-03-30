@@ -90,7 +90,7 @@ describe('WalkinDischargeCtrl', function(){
 
         episode = new Episode(
             {id: 555, management: [{}], tagging: [{}],
-             demographics: [{}]}
+             demographics: [{ patient_id: 1234 }]}
         );
 
         var controller = $controller('WalkinDischargeCtrl', {
@@ -102,11 +102,6 @@ describe('WalkinDischargeCtrl', function(){
             episode        : episode,
         });
     }));
-
-    afterEach(function() {
-        $httpBackend.verifyNoOutstandingExpectation();
-        $httpBackend.verifyNoOutstandingRequest();
-    });
 
     describe('move_to_review()', function (){
 
@@ -225,7 +220,8 @@ describe('WalkinDischargeCtrl', function(){
         beforeEach(function(){
             $httpBackend.expectGET('/api/v0.1/userprofile/').respond({});
             $httpBackend.expectPOST('/episode/555/actions/copyto/inpatient')
-                .respond({id: 556, management: [{}], tagging: [{}] });
+                .respond({id: 556, management: [{}], tagging: [{}],
+                          demographics: [{patient_id: 1234}]});
             $httpBackend.expectPUT('/api/v0.1/tagging/555/').respond({});
 
             $httpBackend.expectPUT(

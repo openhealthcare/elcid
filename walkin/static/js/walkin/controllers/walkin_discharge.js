@@ -81,7 +81,7 @@ controllers.controller(
                     $scope.meta.follow_up = 'saved';
                 }
             );
-        }
+        };
 
         $scope.move_to_doctor = function(){
             $scope.ensure_tagging($scope.episode);
@@ -93,7 +93,7 @@ controllers.controller(
                 growl.success('Moved to Doctor list')
                 $modalInstance.close('discharged');
             });
-        }
+        };
 
         //
         // The doctor has finished seeing this patient - but there remain
