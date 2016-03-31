@@ -6,7 +6,7 @@ module.exports =  function(config){
         basePath = '/home/travis/virtualenv/python2.7/src/opal/opal/static/js';
         coverageReporter = {
             type: 'lcovonly', // lcov or lcovonly are required for generating lcov.info files
-            dir: '../../../coverage/',
+            dir: __dirname + '/../coverage/',
         };
     }
     else{
