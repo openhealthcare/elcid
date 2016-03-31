@@ -1,4 +1,15 @@
 module.exports =  function(config){
+    var browsers, basePath;
+
+    if(process.env.TRAVIS){
+        browsers = ["Firefox"];
+        basePath = '/home/travis/virtualenv/python2.7/src/opal/opal/static/js';
+    }
+    else{
+        browsers = ['PhantomJS'];
+        basePath = '../../opal/opal/static/js';
+    }
+
     var preprocessors = {};
     preprocessors[__dirname + '/../elcid/assets/js/elcid/*'] = 'coverage';
     preprocessors[__dirname + '/../elcid/assets/js/elcid/controllers/*'] = 'coverage';
@@ -9,8 +20,8 @@ module.exports =  function(config){
 
     config.set({
         frameworks: ['jasmine'],
-        browsers: ['Firefox'],
-        basePath:  '/home/travis/virtualenv/python2.7/src/opal/opal/static/js',
+        browsers: browsers,
+        basePath:  basePath,
 
         files: [
             //JASMINE,
