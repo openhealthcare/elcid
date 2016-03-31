@@ -179,6 +179,7 @@ def deploy(key_file_name="../ec2.pem"):
         if not proceed:
             return
 
+
     git_branch_name = local('git rev-parse --abbrev-ref HEAD', capture=True)
     with prefix(". /usr/share/virtualenvwrapper/virtualenvwrapper.sh"):
         with prefix("workon {}".format(virtual_env_name)):
@@ -188,3 +189,5 @@ def deploy(key_file_name="../ec2.pem"):
             run("python manage.py collectstatic --noinput")
             run("supervisorctl -c etc/test.conf restart gunicorn")
             run("supervisorctl -c etc/test.conf restart celery")
+            run("supervisorctl -c etc/test.conf restart gloss")
+            run("supervisorctl -c etc/test.conf restart gloss_flask")
