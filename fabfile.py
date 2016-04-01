@@ -179,9 +179,12 @@ def deploy(key_file_name="../ec2.pem"):
         if not proceed:
             return
 
+
     git_branch_name = local('git rev-parse --abbrev-ref HEAD', capture=True)
     with prefix(". /usr/share/virtualenvwrapper/virtualenvwrapper.sh"):
         with prefix("workon {}".format(virtual_env_name)):
+            run("git fetch")
+            run("git checkout {}".format(git_branch_name))
             run("git pull origin {}".format(git_branch_name))
             run("pip install -r requirements.txt")
             run("python manage.py migrate")
