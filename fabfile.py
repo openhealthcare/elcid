@@ -191,5 +191,3 @@ def deploy(key_file_name="../ec2.pem"):
             run("python manage.py collectstatic --noinput")
             run("supervisorctl -c etc/test.conf restart gunicorn")
             run("supervisorctl -c etc/test.conf restart celery")
-            run("supervisorctl -c etc/test.conf restart gloss")
-            run("supervisorctl -c etc/test.conf restart gloss_flask")
