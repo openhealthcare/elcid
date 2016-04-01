@@ -225,6 +225,7 @@ class ResultTest(OpalTestCase, AbstractPatientTestCase):
             patient_id=self.patient.id,
             lab_number="234324",
             profile_code="2343344",
+            external_identifier="234324.2343344",
             profile_description="RENAL PROFILE",
             request_datetime=request_datetime,
             observation_datetime=observation_datetime,
@@ -276,6 +277,76 @@ class ResultTest(OpalTestCase, AbstractPatientTestCase):
         )
 
         self.assertEqual(result_args, back_to_dict)
+
+    def test_updates_with_external_identifer(self):
+        Result.objects.create(
+            result_status="Incomplete",
+            external_identifier="1",
+            patient=self.patient
+        )
+
+        update_dict = dict(
+            result_status="Complete",
+            external_identifier="1",
+            patient_id=self.patient.id
+        )
+
+        a = Result()
+        a.update_from_dict(update_dict, self.user)
+
+        result = Result.objects.get()
+        self.assertEqual(
+            result.result_status, "Complete"
+        )
+
+    def test_doesnt_update_empty_external_identifier(self):
+        Result.objects.create(
+            result_status="Incomplete",
+            external_identifier="",
+            patient=self.patient
+        )
+
+        update_dict = dict(
+            result_status="Complete",
+            external_identifier="",
+            patient_id=self.patient.id
+        )
+
+        a = Result()
+        a.update_from_dict(update_dict, self.user)
+        results = Result.objects.all()
+        self.assertEqual(2, len(results))
+        self.assertEqual(
+            results[0].result_status, "Incomplete"
+        )
+        self.assertEqual(
+            results[1].result_status, "Complete"
+        )
+
+    def test_next_updates_a_different_patient(self):
+        other_patient = Patient.objects.create()
+        Result.objects.create(
+            result_status="Incomplete",
+            external_identifier="1",
+            patient=self.patient
+        )
+
+        update_dict = dict(
+            result_status="Complete",
+            external_identifier="1",
+            patient_id=other_patient.id
+        )
+
+        a = Result()
+        a.update_from_dict(update_dict, self.user)
+        results = Result.objects.all()
+        self.assertEqual(2, len(results))
+        self.assertEqual(
+            results[0].patient, self.patient
+        )
+        self.assertEqual(
+            results[1].patient, other_patient
+        )
 
 
 class DiagnosisTest(OpalTestCase, AbstractEpisodeTestCase):
