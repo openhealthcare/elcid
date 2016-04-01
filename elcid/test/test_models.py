@@ -299,6 +299,32 @@ class ResultTest(OpalTestCase, AbstractPatientTestCase):
             result.result_status, "Complete"
         )
 
+    def test_no_external_identifier(self):
+        Result.objects.create(
+            result_status="Incomplete",
+            external_identifier="1",
+            patient=self.patient
+        )
+
+        update_dict = dict(
+            result_status="Complete",
+            patient_id=self.patient.id
+        )
+
+        a = Result()
+        a.update_from_dict(update_dict, self.user)
+        results = Result.objects.all()
+        self.assertEqual(2, len(results))
+        self.assertEqual(
+            results[0].result_status, "Incomplete"
+        )
+        self.assertEqual(
+            results[1].result_status, "Complete"
+        )
+        self.assertEqual(
+            results[1].external_identifier, None
+        )
+
     def test_doesnt_update_empty_external_identifier(self):
         Result.objects.create(
             result_status="Incomplete",
