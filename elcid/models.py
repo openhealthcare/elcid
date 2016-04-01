@@ -134,12 +134,28 @@ class Location(EpisodeSubrecord):
 class Result(PatientSubrecord):
     lab_number = models.CharField(max_length=255, blank=True, null=True)
     profile_code = models.CharField(max_length=255, blank=True, null=True)
+    external_identifier = models.CharField(max_length=255, blank=True, null=True)
     profile_description = models.CharField(max_length=255, blank=True, null=True)
     request_datetime = models.DateTimeField(blank=True, null=True)
     observation_datetime = models.DateTimeField(blank=True, null=True)
     last_edited = models.DateTimeField(blank=True, null=True)
     result_status = models.CharField(max_length=255, blank=True, null=True)
     observations = JSONField(blank=True, null=True)
+
+    def update_from_dict(self, data, *args, **kwargs):
+        if "id" not in data:
+            if "patient_id" not in data:
+                raise ValueError("no patient id found for result in %s" % data)
+            if "external_identifier" in data and data["external_identifier"]:
+                existing = Result.objects.filter(
+                    external_identifier=data["external_identifier"],
+                    patient=data["patient_id"]
+                ).first()
+
+                if existing:
+                    data["id"] = existing.id
+
+        super(Result, self).update_from_dict(data, *args, **kwargs)
 
 
 class PresentingComplaint(EpisodeSubrecord):
