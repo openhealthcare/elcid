@@ -1,15 +1,97 @@
 import json
 from mock import MagicMock, patch
-
-from django.test import override_settings
-from django.core.urlresolvers import reverse
-
 from opal.core.test import OpalTestCase
 from opal.models import Patient
-from opal.tests.models import HatWearer
+from elcid.models import Allergies, Demographics
 
 
 from elcid.api import GlossEndpointApi
+
+
+class TestAllergyInteraction(OpalTestCase):
+    def setUp(self, *args, **kwargs):
+        self.patient = Patient.objects.create()
+        demographics = self.patient.demographics_set.first()
+        demographics.hospital_number = "1"
+        demographics.save()
+        self.before_allergy = Allergies.objects.create(
+            patient=self.patient,
+            drug_ft="some drug"
+        )
+        super(TestAllergyInteraction, self).setUp(*args, **kwargs)
+
+    def run_create(self, some_dict, hospital_number="1"):
+        request = MagicMock()
+        request.data = json.dumps(dict(
+            messages=some_dict,
+            hospital_number="1"
+        ))
+
+        endpoint = GlossEndpointApi()
+        with patch.object(endpoint, "login") as login_method:
+            login_method.return_value = self.user
+            endpoint.create(request)
+
+    def test_remove_allergies(self):
+        # if allergies are present, delete allergies and create new ones
+        # also run any other updates that are required
+        data = dict(
+            demographics=[{
+                "first_name": "Susan",
+                "hospital_number": "1",
+            }],
+            allergies=[
+                {"allergy_description": "penicillin"},
+            ]
+        )
+
+        self.run_create(data)
+        allergy = Allergies.objects.get()
+        self.assertFalse(allergy.id == self.before_allergy.id)
+        self.assertEqual(allergy.allergy_description, "penicillin")
+        self.assertEqual(
+            Demographics.objects.get(hospital_number="1").first_name, "Susan"
+        )
+
+    def test_doesnt_remove_allergies(self):
+        # if no allergies are present, don't delete allergies, but run
+        # the other updates
+        data = dict(
+            demographics=[{
+                "first_name": "Susan",
+                "hospital_number": "1",
+            }],
+        )
+        self.run_create(data)
+        allergy = Allergies.objects.get()
+        self.assertEqual(allergy, self.before_allergy)
+        self.assertEqual(
+            Demographics.objects.get(hospital_number="1").first_name, "Susan"
+        )
+
+    def test_transaction_atomicity(self):
+        # if the update fails, make sure we don't delete allergies
+        data = dict(
+            demographics=[{
+                "first_name": "Susan",
+                "hospital_number": "1",
+            }],
+            allergies=[
+                {"allergy_description": "penicillin"},
+            ]
+        )
+        with patch(
+            "elcid.api.Patient.bulk_update",
+            side_effect=ValueError("some error")
+        ):
+            with self.assertRaises(ValueError):
+                self.run_create(data)
+
+        self.assertEqual(
+            Demographics.objects.get(hospital_number="1").first_name, ""
+        )
+        allergy = Allergies.objects.get()
+        self.assertEqual(allergy, self.before_allergy)
 
 
 class TestPatientApi(OpalTestCase):
