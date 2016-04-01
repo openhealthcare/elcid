@@ -4,10 +4,12 @@ import logging
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponseForbidden
 from django.conf import settings
+from django.db import transaction
 from rest_framework import viewsets
 from rest_framework.response import Response
 from opal.core.api import OPALRouter
 from opal.models import Patient
+from elcid.models import Allergies
 
 
 class GlossEndpointApi(viewsets.ViewSet):
@@ -44,7 +46,13 @@ class GlossEndpointApi(viewsets.ViewSet):
 
         user = self.login(request)
 
-        patient.bulk_update(update_dict, user, force=True)
+        with transaction.atomic():
+            if "allergies" in update_dict:
+                Allergies.objects.filter(
+                    patient__demographics__hospital_number=hospital_number
+                ).delete()
+
+            patient.bulk_update(update_dict, user, force=True)
         return Response("ok")
 
 
