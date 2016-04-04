@@ -7,7 +7,6 @@ controllers.controller(
              growl,
              options,
              Episode){
-        console.log($scope.state)
         $scope.model = {
             hospital_number : null
         }

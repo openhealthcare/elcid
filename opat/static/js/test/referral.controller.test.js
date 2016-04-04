@@ -35,11 +35,7 @@ describe('OPATReferralCtrl', function (){
             });
 
         });
-    });
-
-    afterEach(function() {
-        $httpBackend.verifyNoOutstandingExpectation();
-        $httpBackend.verifyNoOutstandingRequest();
+        $httpBackend.expectGET('/api/v0.1/userprofile/').respond({})
     });
 
     it('Should set up state', function () {

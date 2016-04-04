@@ -14,7 +14,7 @@ module.exports =  function(config){
         basePath = '../../opal/opal/static/js';
         coverageReporter = {
             type : 'html',
-            dir : '../../../htmlcov/js/'
+            dir : __dirname + '/../htmlcov/js/'
         };
     }
 
@@ -80,17 +80,17 @@ module.exports =  function(config){
 
             // Our application
 
-            __dirname + '/../elcid/assets/js/elcid/*',
-            __dirname + '/../elcid/assets/js/elcid/controllers/*',
-            __dirname + '/../elcid/assets/js/elcid/services/*',
-            __dirname + '/../opat/static/js/opat/controllers/*',
-            __dirname + '/../research/static/js/research/controllers/*',
-            __dirname + '/../walkin/static/js/walkin/controllers/*',
+            __dirname + '/../elcid/assets/js/elcid/*.js',
+            __dirname + '/../elcid/assets/js/elcid/controllers/*.js',
+            __dirname + '/../elcid/assets/js/elcid/services/*.js',
+            __dirname + '/../opat/static/js/opat/controllers/*.js',
+            __dirname + '/../research/static/js/research/controllers/*.js',
+            __dirname + '/../walkin/static/js/walkin/controllers/*.js',
 
 
             // The tests
             __dirname + '/../elcid/assets/js/elcidtest/*.js',
-            // '../../../../elcid/opat/static/js/test/*',
+            __dirname + '/../opat/static/js/test/*.js',
             // '../../../../elcid/research/static/js/test/*',
             __dirname + '/../walkin/static/js/walkintest/*.js',
         ],

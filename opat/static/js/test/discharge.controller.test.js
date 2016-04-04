@@ -83,7 +83,7 @@ describe('OPATDischargeCtrl', function (){
             $rootScope.fields = fields;
 
             $modalInstance = $modal.open({template: 'Not a real template'});
-            episode = new Episode({id: 33, tagging: [{opat: true}], demographics: [{}]});
+            episode = new Episode({id: 33, tagging: [{opat: true}], demographics: [{patient_id: 20}]});
             options = {};
             tags    = {};
             growl   = {success: jasmine.createSpy('Growl.success')}
@@ -97,7 +97,9 @@ describe('OPATDischargeCtrl', function (){
                 growl         : growl
             });
 
-        })
+        });
+        $httpBackend.expectGET('/api/v0.1/userprofile/').respond({})
+
     });
 
     afterEach(function() {
@@ -107,6 +109,7 @@ describe('OPATDischargeCtrl', function (){
 
     it('Should set up state', function () {
         expect($scope.episode).toBe(episode);
+        $httpBackend.flush();
     });
 
 
