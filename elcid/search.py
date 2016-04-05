@@ -13,6 +13,7 @@ def query_gloss(hospital_number):
         demographics = result["messages"]["demographics"]
         for demographic in demographics:
             demographic["hospital_number"] = hospital_number
+            demographic["sourced_from_upstream"] = True
 
         return [{"demographics": demographics}]
     else:
