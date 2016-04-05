@@ -108,7 +108,7 @@ angular.module('opal.controllers').controller(
 
             modal = $modal.open({
                 templateUrl: '/templates/modals/add_episode.html/',
-                controller: 'AddEpisodeCtrl',
+                controller: 'DiagnosisAddEpisodeCtrl',
                 size: 'lg',
                 resolve: {
                     options: function() { return options; },
