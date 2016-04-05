@@ -2,7 +2,7 @@ from mock import patch
 
 from opal.core.test import OpalTestCase
 from opal.core.search import queries
-from opal import modles as omodels
+from opal import models as omodels
 
 
 @patch("elcid.search.requests.get")
@@ -30,7 +30,7 @@ class SearchTestCase(OpalTestCase):
             'combine': 'and',
             'column': u'demographics',
         }]
-        queries.SearchBackend(self.user, criteria)
+        queries.create_query(self.user, criteria)
         self.assertFalse(omodels.Patient.objects.exists())
 
     def test_database_flow(self, requests_mock):
