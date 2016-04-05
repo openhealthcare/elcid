@@ -1,30 +1,16 @@
 {% load forms %}
-<div class="form-group">
-  <label class="control-label col-sm-3">Hospital number</label>
-  <div class="col-sm-8">
-  <input class="form-control" type="text" ng-model="editing.demographics.hospital_number" autofocus>
-  </div>
+{% input "autofocus" field="Demographics.hospital_number" static="editing.demographics.sourced_from_upstream" %}
+{% input field="Demographics.nhs_number" label="NHS Number" static="editing.demographics.sourced_from_upstream" %}
+{% select field="Demographics.title" static="editing.demographics.sourced_from_upstream" %}
+{% input field="Demographics.first_name" static="editing.demographics.sourced_from_upstream" %}
+{% input field="Demographics.surname" static="editing.demographics.sourced_from_upstream" %}
+<div ng-show="editing.demographics.sourced_from_upstream" class="form-group">
+  <label class="control-label col-sm-3">Date of birth</label>
+  <p class="form-control-static col-sm-8">
+    [[ editing.demographics.date_of_birth | shortDate ]]
+  </p>
 </div>
-<div class="form-group">
-  <label class="control-label col-sm-3">NHS number</label>
-  <div class="col-sm-8">
-  <input class="form-control" type="text" ng-model="editing.demographics.nhs_number">
-  </div>
-</div>
-{% select label="Title" model="editing.demographics.title" lookuplist="title_list" %}
-<div class="form-group">
-  <label class="control-label col-sm-3">First Name</label>
-  <div class="col-sm-8">
-  <input class="form-control" type="text" ng-model="editing.demographics.first_name">
-  </div>
-</div>
-<div class="form-group">
-  <label class="control-label col-sm-3">Surname</label>
-  <div class="col-sm-8">
-  <input class="form-control" type="text" ng-model="editing.demographics.surname">
-  </div>
-</div>
-<div class="form-group">
+<div ng-hide="editing.demographics.sourced_from_upstream" class="form-group">
   <label class="control-label col-sm-3">Date of birth</label>
   <div class="col-sm-8">
     <input class="form-control" type="text"
@@ -39,9 +25,9 @@
     </span>
   </div>
 </div>
-{% input label="Post code" model="editing.demographics.post_code" %}
-{% select label="Sex" model="editing.demographics.sex" lookuplist="gender_list" %}
-{% select label="Marital Status" model="editing.demographics.marital_status" lookuplist="maritalstatus_list" %}
-{% select label="Ethnicity" model="editing.demographics.ethnicity" lookuplist="ethnicity_list" %}
-{% input label="GP Practice Code" model="editing.demographics.gp_practice_code" %}
-{% input label="Birth Place" model="editing.demographics.birth_place" lookuplist="destination_list" %}
+{% input field="Demographics.post_code" static="editing.demographics.sourced_from_upstream" %}
+{% select field="Demographics.sex" static="editing.demographics.sourced_from_upstream" %}
+{% select field="Demographics.marital_status" static="editing.demographics.sourced_from_upstream" %}
+{% select field="Demographics.ethnicity" static="editing.demographics.sourced_from_upstream" %}
+{% input label="GP Practice Code" field="Demographics.gp_practice_code" static="editing.demographics.sourced_from_upstream" %}
+{% input field="Demographics.birth_place" static="editing.demographics.sourced_from_upstream" %}

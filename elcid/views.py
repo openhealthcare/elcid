@@ -116,19 +116,6 @@ class BulkCreateUserView(FormView):
         for u in new_users:
             u.save()
 
-            class Message(letter.Letter):
-                Postie   = POSTIE
-
-                From     = settings.DEFAULT_FROM_EMAIL
-                To       = u.email
-                Subject  = 'Your new account on eLCID'
-                Template = 'email/new_user'
-                Context  = {
-                    'user': u
-                    }
-
-            Message.send()
-
         return super(BulkCreateUserView, self).form_valid(form)
 
 

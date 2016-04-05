@@ -69,24 +69,20 @@ def checkout(package_name_version):
                 return
 
             for package_name, version in package_name_version.iteritems():
-                if package_name in existing_packages:
-                    with lcd(package_name):
-                        print "checking out {0} to {1}".format(
-                            package_name, version
-                        )
-                        local("git fetch")
-                        local("git checkout {}".format(version))
-                        local("git pull origin {}".format(version))
-                        local("python setup.py develop")
-                else:
+                if package_name not in existing_packages:
                     print "cloning {}".format(package_name)
                     local("git clone {}".format(package_name))
                     with lcd(package_name):
                         print "checking out {0} to {1}".format(
                             package_name, version
                         )
-                        local("git checkout {}".format(version))
-                        local("python setup.py develop")
+                else:
+                    local("git fetch")
+
+                with lcd(package_name):
+                    local("git checkout {}".format(version))
+                    local("git pull origin {}".format(version))
+                    local("python setup.py develop")
 
 
 def db_commands(username):
