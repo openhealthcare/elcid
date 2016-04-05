@@ -4,8 +4,15 @@ describe('DiagnosisAddEpisodeCtrl', function() {
     var $rootScope, $scope, $modal, $httpBackend, $controller;
     var modalInstance, tags, options, demographics;
 
-    demographics = {}
-    tags = {tag: 'tropical', subtag: ''};
+    var fields = {
+        presenting_complaint: {
+            name: 'presenting_complaint',
+            fields: []
+        }
+    };
+
+    demographics = { patient_id: 123 };
+    tags = { tag: 'tropical', subtag: 'inpatients' };
     options = {
         'symptom_list': [
             'cough',
@@ -22,6 +29,8 @@ describe('DiagnosisAddEpisodeCtrl', function() {
             $controller = $injector.get('$controller');
         });
 
+        $rootScope.fields = fields;
+
         $scope = $rootScope.$new();
         modalInstance = $modal.open({template: 'notatemplate'});
 
@@ -37,10 +46,32 @@ describe('DiagnosisAddEpisodeCtrl', function() {
     describe('Freshly initialised', function() {
         it('should store the current tag and sub tag', function() {
             expect($scope.currentTag).toEqual('tropical');
-            expect($scope.currentSubTag).toEqual('');
+            expect($scope.currentSubTag).toEqual('inpatients');
         });
     });
 
+    describe('save()', function() {
+
+        it('should save the episode data', function() {
+            $httpBackend.expectGET('/api/v0.1/userprofile/').respond({});
+            var episodeData = {
+                tagging     : [ { tropical: true, inpatients: true }],
+                location    : { hospital: "UCLH" },
+                demographics: { patient_id: 123 }
+            };
+            var responseData = angular.copy(episodeData);
+            responseData.location = [responseData.location];
+            responseData.demographics = [responseData.demographics]
+            $httpBackend.expectPOST('episode/', episodeData).respond(responseData);
+            $httpBackend.expectGET('/templates/modals/presenting_complaint.html/').respond('notarealtemplate');
+
+            $scope.save();
+
+            $rootScope.$apply();
+            $httpBackend.flush();
+        });
+
+    });
 
     describe('cancel()', function(){
 

@@ -75,6 +75,90 @@ describe('DiagnosisDischarge', function() {
         });
     });
 
+    describe('nextStep()', function() {
+
+        it('should give you the next step', function() {
+            expect($scope.nextStep()).toEqual('diagnosis');
+        });
+
+        it('should give you null on the last step', function() {
+            $scope.step = 'discharge';
+            expect($scope.nextStep()).toEqual(null);
+        });
+
+    });
+
+    describe('previousStep()', function() {
+
+        it('should return null on the first step', function() {
+            expect($scope.previousStep()).toEqual(null)
+        });
+
+        it('should return the previous step', function() {
+            $scope.step = 'discharge';
+            expect($scope.previousStep()).toEqual('travel');
+        });
+
+    });
+
+    describe('resetFormValidation()', function() {
+
+        it('should reset the warning', function() {
+            var form = {};
+            $scope.resetFormValidation(form);
+            expect(form.warning).toEqual(false);
+        });
+
+    });
+
+    describe('resetRequired', function() {
+
+        it('should reset the validity', function() {
+            var formfield = { '$setValidity': jasmine.createSpy() };
+            $scope.resetRequired(formfield);
+            expect(formfield.$setValidity).toHaveBeenCalledWith('required', true)
+        });
+
+    });
+
+    describe('goToNextStep()', function() {
+        var form, model;
+
+        beforeEach(function(){
+            form = {};
+            model = {};
+        });
+
+        describe('diagnosis', function() {
+
+            it('should not allow invlaid steps', function() {
+                $scope.step = 'diagnosis';
+                form.primary_diagnosis_condition = {
+                    '$valid': false,
+                    '$setDirty': jasmine.createSpy()
+                };
+                $scope.goToNextStep(form, model);
+                expect(form.primary_diagnosis_condition.$setDirty).toHaveBeenCalledWith();
+            });
+
+        });
+
+        describe('presenting_complaint', function() {
+
+            it('should not allow invalid forms', function() {
+                model.presenting_complaint = {symptoms: []};
+                form.presenting_complaint_symptoms = {
+                    '$setValidity': jasmine.createSpy(),
+                    '$setDirty'   : jasmine.createSpy()
+                };
+                $scope.goToNextStep(form, model);
+                expect(form.presenting_complaint_symptoms.$setValidity).toHaveBeenCalledWith("required", false);
+                expect(form.presenting_complaint_symptoms.$setDirty).toHaveBeenCalledWith();
+            });
+
+        });
+
+    });
 
     describe('cancel()', function(){
 
