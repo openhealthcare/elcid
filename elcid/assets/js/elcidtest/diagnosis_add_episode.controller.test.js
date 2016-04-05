@@ -6,6 +6,12 @@ describe('DiagnosisAddEpisodeCtrl', function() {
 
     demographics = {}
     tags = {tag: 'tropical', subtag: ''};
+    options = {
+        'symptom_list': [
+            'cough',
+            'rash'
+        ]
+    };
 
     beforeEach(module('opal.controllers'));
     beforeEach(function(){
@@ -33,6 +39,17 @@ describe('DiagnosisAddEpisodeCtrl', function() {
             expect($scope.currentTag).toEqual('tropical');
             expect($scope.currentSubTag).toEqual('');
         });
+    });
+
+
+    describe('cancel()', function(){
+
+        it('should close with null', function(){
+            spyOn(modalInstance, 'close');
+            $scope.cancel();
+            expect(modalInstance.close).toHaveBeenCalledWith(null);
+        });
+
     });
 
 });
