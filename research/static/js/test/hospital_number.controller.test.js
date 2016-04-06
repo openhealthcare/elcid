@@ -7,6 +7,9 @@ describe('ResearchHospitalNumberCtrl', function (){
     beforeEach(module('opal.controllers', function($provide){
         tags = {tag: 'study'};
         $provide.value('tags', function(){ return tags; });
+        $provide.factory('TagService', function(){
+            return function(){ return {toSave: function(x){}}};
+        });
     }));
 
     beforeEach(inject(function($injector){
