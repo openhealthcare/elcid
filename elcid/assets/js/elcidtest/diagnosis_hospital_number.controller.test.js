@@ -75,7 +75,7 @@ describe('DiagnosisHospitalNumber', function(){
 
           callArgs = $modal.open.calls.mostRecent().args;
           expect(callArgs.length).toBe(1);
-          expect(callArgs[0].controller).toBe('AddEpisodeCtrl');
+          expect(callArgs[0].controller).toBe('DiagnosisAddEpisodeCtrl');
           var resolves = $modal.open.calls.mostRecent().args[0].resolve;
           expect(resolves.options()).toEqual(options);
           var expected_demographics = angular.copy(patientData.demographics[0]);

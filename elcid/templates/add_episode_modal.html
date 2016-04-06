@@ -4,12 +4,15 @@
 {% block title %}Add Patient{% endblock %}
 {% block modal_body %}
   <form class="form-horizontal" name="newEpisodeForm">
-    {% include models.Demographics.get_form_template %}
-
+    <div ng-show="editing.demographics.sourced_from_upstream">
+      {% include 'partials/_core_demographics.html' %}
+    </div>
+    <div ng-hide="editing.demographics.sourced_from_upstream">
+      {% include models.Demographics.get_form_template %}
+    </div>
     {% if teams %}
-      {% select name="teams" label="Teams" lookuplist="tagging_display_list" model="editing.current_tags" multiple=True tagging=False %}
+      {% include 'partials/_teams_select.html' %}
     {% endif %}
-
   </form>
 
 {% endblock %}
