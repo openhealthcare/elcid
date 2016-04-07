@@ -28,7 +28,7 @@ describe('DiagnosisHospitalNumber', function(){
             $scope         : $scope,
             $modalInstance : modalInstance,
             options        : options,
-            tags           : tags,
+            tags           : {},
             hospital_number: hospital_number
         });
     });
@@ -51,7 +51,7 @@ describe('DiagnosisHospitalNumber', function(){
             spyOn(modalInstance, 'close');
             $scope.newPatient({hospital_number: '555-123'});
             var resolvers = $modal.open.calls.mostRecent().args[0].resolve
-            expect(resolvers.tags()).toEqual(tags)
+            expect(resolvers.tags()).toEqual({})
         });
     });
 

@@ -50,7 +50,7 @@ describe('DiagnosisAddEpisodeCtrl', function() {
             TagService: mockTagService,
             Episode: function(x){ return {
               newItem: function(){},
-              presenting_complaint: [{}]
+              presenting_complaint: [{}],
             };}
         });
     });
@@ -60,26 +60,6 @@ describe('DiagnosisAddEpisodeCtrl', function() {
             expect($scope.currentTag).toEqual('tropical');
             expect($scope.currentSubTag).toEqual('inpatients');
         });
-    });
-
-    describe('save()', function() {
-        it('should save the episode data', function() {
-            var episodeData = {
-                tagging     : [ { inpatients: true }],
-                location    : { hospital: "UCLH" },
-                demographics: { patient_id: 123 }
-            };
-            var responseData = angular.copy(episodeData);
-            responseData.location = [responseData.location];
-            responseData.demographics = [responseData.demographics]
-            $httpBackend.expectPOST('episode/', episodeData).respond(responseData);
-            $httpBackend.expectGET('/templates/modals/presenting_complaint.html/').respond('notarealtemplate');
-            $httpBackend.expectGET('/api/v0.1/userprofile/').respond({});
-            $scope.save();
-            $rootScope.$apply();
-            $httpBackend.flush();
-        });
-
     });
 
     describe('cancel()', function(){
@@ -105,7 +85,7 @@ describe('DiagnosisAddEpisodeCtrl', function() {
               "tagging":[{"inpatients": true}],
               "location":{"hospital":"UCLH"},
               "demographics":{
-                "patient_id":1,
+                "patient_id":123,
                 "date_of_birth":"10/02/1990"
               },
               "date_of_admission": "10/02/2000",
