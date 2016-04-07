@@ -6,12 +6,9 @@ angular.module('opal.controllers')
   tags, demographics) {
     var DATE_FORMAT = 'DD/MM/YYYY';
 
-    $scope.currentTag    = tags.tag;
-    $scope.currentSubTag = tags.subtag
-
     for (var name in options) {
       $scope[name + '_list'] = options[name];
-    };
+    }
 
     $scope.episode_category_list = ['OPAT', 'Inpatient', 'Outpatient', 'Review'];
     // TODO - this is no longer the way location/admission date works.
@@ -23,12 +20,16 @@ angular.module('opal.controllers')
       demographics: demographics,
     };
     var currentTags = [];
-    if($scope.currentSubTag.length){
-      currentTags = [$scope.currentSubTag];
+
+    if(tags){
+      if(tags.subtag.length){
+        currentTags = [tags.subtag];
+      }
+      else{
+        currentTags = [tags.tag];
+      }
     }
-    else{
-      currentTags = [$scope.currentTag];
-    }
+
 
     $scope.tagService = new TagService(currentTags);
 

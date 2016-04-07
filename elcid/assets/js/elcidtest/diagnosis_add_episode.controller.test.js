@@ -55,13 +55,6 @@ describe('DiagnosisAddEpisodeCtrl', function() {
         });
     });
 
-    describe('Freshly initialised', function() {
-        it('should store the current tag and sub tag', function() {
-            expect($scope.currentTag).toEqual('tropical');
-            expect($scope.currentSubTag).toEqual('inpatients');
-        });
-    });
-
     describe('cancel()', function(){
 
         it('should close with null', function(){
