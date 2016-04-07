@@ -75,8 +75,9 @@ controllers.controller(
                     options: function() { return options; },
                     demographics: function() {
                         return { hospital_number: $scope.model.hospitalNumber }
-                    }
-                }
+                    },
+                    tags: function(){ return {}; }
+                },
             }).result.then(function(result) {
                 // The user has created the episode, or cancelled
                 if(result){ // We made an episode!
@@ -127,14 +128,15 @@ controllers.controller(
         //
         $scope.add_for_patient = function(patient){
             var demographics = patient.demographics[0];
-  
+
             modal = $modal.open({
                 templateUrl: '/templates/modals/add_episode_without_teams.html/',
                 controller: 'AddEpisodeCtrl',
                 resolve: {
                     options: function() { return options; },
-                    demographics: function() { return demographics; }
-                }
+                    demographics: function() { return demographics; },
+                    tags: function(){ return {}; }
+                },
             }).result.then(function(result) {
                 // The user has created the episode, or cancelled
                 if(result){ // We made an episode!
