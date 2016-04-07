@@ -5,11 +5,25 @@ describe('DiagnosisAddEpisodeCtrl', function() {
     var modalInstance, tags, options, demographics, tagServiceSpy;
     var mockTagService, tagServiceToSave;
 
-    demographics = {patient_id: 1};
-    tags = {tag: 'tropical', subtag: ''};
 
+    var fields = {
+        presenting_complaint: {
+            name: 'presenting_complaint',
+            fields: []
+        }
+    };
+
+    demographics = { patient_id: 123 };
+    tags = { tag: 'tropical', subtag: 'inpatients' };
+    options = {
+        'symptom_list': [
+            'cough',
+            'rash'
+        ]
+    };
 
     beforeEach(module('opal.controllers'));
+
     beforeEach(function(){
         inject(function($injector){
             $httpBackend    = $injector.get('$httpBackend');
@@ -18,13 +32,14 @@ describe('DiagnosisAddEpisodeCtrl', function() {
             $controller = $injector.get('$controller');
         });
 
+        $rootScope.fields = fields;
+
         $scope = $rootScope.$new();
         modalInstance = $modal.open({template: 'notatemplate'});
-        tagServiceToSave = jasmine.createSpy('toSave').and.returnValue({"id_inpatients": true});
+        tagServiceToSave = jasmine.createSpy('toSave').and.returnValue({"inpatients": true});
         mockTagService = jasmine.createSpy('TagService').and.returnValue(
             {toSave: tagServiceToSave}
         );
-        // mockTagService.toSave = jasmine.createSpy('toSave');
 
         $controller('DiagnosisAddEpisodeCtrl', {
             $scope         : $scope,
@@ -43,8 +58,38 @@ describe('DiagnosisAddEpisodeCtrl', function() {
     describe('Freshly initialised', function() {
         it('should store the current tag and sub tag', function() {
             expect($scope.currentTag).toEqual('tropical');
-            expect($scope.currentSubTag).toEqual('');
+            expect($scope.currentSubTag).toEqual('inpatients');
         });
+    });
+
+    describe('save()', function() {
+        it('should save the episode data', function() {
+            var episodeData = {
+                tagging     : [ { inpatients: true }],
+                location    : { hospital: "UCLH" },
+                demographics: { patient_id: 123 }
+            };
+            var responseData = angular.copy(episodeData);
+            responseData.location = [responseData.location];
+            responseData.demographics = [responseData.demographics]
+            $httpBackend.expectPOST('episode/', episodeData).respond(responseData);
+            $httpBackend.expectGET('/templates/modals/presenting_complaint.html/').respond('notarealtemplate');
+            $httpBackend.expectGET('/api/v0.1/userprofile/').respond({});
+            $scope.save();
+            $rootScope.$apply();
+            $httpBackend.flush();
+        });
+
+    });
+
+    describe('cancel()', function(){
+
+        it('should close with null', function(){
+            spyOn(modalInstance, 'close');
+            $scope.cancel();
+            expect(modalInstance.close).toHaveBeenCalledWith(null);
+        });
+
     });
 
     describe('save', function(){
@@ -57,7 +102,7 @@ describe('DiagnosisAddEpisodeCtrl', function() {
             $scope.save();
             expect(tagServiceToSave).toHaveBeenCalled();
             $httpBackend.expectPOST('episode/', {
-              "tagging":[{"id_inpatients": true}],
+              "tagging":[{"inpatients": true}],
               "location":{"hospital":"UCLH"},
               "demographics":{
                 "patient_id":1,

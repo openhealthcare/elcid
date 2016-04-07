@@ -91,7 +91,7 @@ module.exports =  function(config){
             // The tests
             __dirname + '/../elcid/assets/js/elcidtest/*.js',
             __dirname + '/../opat/static/js/test/*.js',
-            // '../../../../elcid/research/static/js/test/*',
+            __dirname + '/../research/static/js/test/*.js',
             __dirname + '/../walkin/static/js/walkintest/*.js',
         ],
 

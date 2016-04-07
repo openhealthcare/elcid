@@ -34,9 +34,9 @@ angular.module('opal.controllers')
 
     $scope.showSubtags = function(withsubtags){
       var show =  _.some(withsubtags, function(tag){
-        return $scope.editing.tagging[0][tag]
+        return _.contains($scope.tagService.currentFormTags, tag);
       });
-      return show
+      return show;
     };
 
     $scope.save = function() {

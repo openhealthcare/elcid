@@ -1,9 +1,12 @@
 angular.module('opal.controllers').controller(
-    'ClinicalAdviceForm', function($rootScope, $scope, $window,
-                                 recordLoader, ngProgressLite, $q,
-                                 $cookieStore
-                                    ){
+    'ClinicalAdviceForm',
+    function(
+        $rootScope, $scope, $window,
+            recordLoader, ngProgressLite, $q,
+            $cookieStore
+            ){
         "use strict";
+
         var REASON_FOR_INTERACTION_COOKIE = "patientNotes-reasonForInteraction";
         var DISCUSSED_WITH_COOKIE = "patientNotes-discussedWith";
         /*

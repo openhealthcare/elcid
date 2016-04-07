@@ -10,6 +10,7 @@ source =
 omit =
     */migrations/*
     elcid/test/*
+    elcid/wsgi*
     microhaem/tests/*
     opat/tests/*
     research/tests/*

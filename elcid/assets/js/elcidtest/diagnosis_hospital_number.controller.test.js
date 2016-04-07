@@ -4,9 +4,14 @@ describe('DiagnosisHospitalNumber', function(){
     var $rootScope, $scope, $modal, $httpBackend, $controller;
     var modalInstance, tags, options, hospital_number, $q;
 
-    tags = {};
+    beforeEach(module('opal.controllers', function($provide){
+        $provide.service('Options', function(){
+          return {
+            then: function(x){ x({}); }
+          };
+        });
+    }));
 
-    beforeEach(module('opal.controllers'));
     beforeEach(function(){
         inject(function($injector){
             $httpBackend    = $injector.get('$httpBackend');
