@@ -33,12 +33,6 @@ angular.module('opal.controllers')
 
     $scope.tagService = new TagService(currentTags);
 
-    $scope.showSubtags = function(withsubtags){
-      var show =  _.some(withsubtags, function(tag){
-        return _.contains($scope.tagService.currentFormTags, tag);
-      });
-      return show;
-    };
 
     $scope.save = function() {
       var dob, doa;

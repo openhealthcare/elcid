@@ -21,9 +21,9 @@ def query_gloss(hospital_number):
         return []
 
 
-class GlossSearch(DatabaseQuery):
+class GlossQuery(DatabaseQuery):
     def patients_as_json(self):
-        exists_in_elcid = super(GlossSearch, self).get_patients()
+        exists_in_elcid = super(GlossQuery, self).get_patients()
 
         if exists_in_elcid:
             return [e.to_dict(self.user) for e in exists_in_elcid]
