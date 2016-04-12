@@ -25,16 +25,17 @@ class Demographics(PatientSubrecord):
 
     surname = models.CharField(max_length=255, blank=True)
     first_name = models.CharField(max_length=255, blank=True)
-    middle_name = models.CharField(max_length=255, blank=True)
+    middle_name = models.CharField(max_length=255, blank=True, null=True)
     title = ForeignKeyOrFreeText(omodels.Title)
     date_of_birth = models.DateField(null=True, blank=True)
     marital_status = ForeignKeyOrFreeText(omodels.MaritalStatus)
-    religion = models.CharField(max_length=255, blank=True)
+    religion = models.CharField(max_length=255, blank=True, null=True)
     date_of_death = models.DateField(null=True, blank=True)
-    post_code = models.CharField(max_length=20, blank=True)
-    gp_practice_code = models.CharField(max_length=20, blank=True)
+    post_code = models.CharField(max_length=20, blank=True, null=True)
+    gp_practice_code = models.CharField(max_length=20, blank=True, null=True)
     birth_place = ForeignKeyOrFreeText(omodels.Destination)
     ethnicity = ForeignKeyOrFreeText(omodels.Ethnicity)
+    death_indicator = models.BooleanField(default=False)
     sourced_from_upstream = models.BooleanField(default=False)
 
     # not strictly correct, but it will be updated when opal core models

@@ -292,6 +292,10 @@ COVERAGE_EXCLUDE_MODULES = ('elcid.migrations', 'elcid.tests',
 INTEGRATING = False
 GLOSSOLALIA_URL = 'http://localhost:5000/'
 GLOSSOLALIA_NAME = 'elcid'
+OPAL_SEARCH_BACKEND = "elcid.search.GlossQuery"
+
+GLOSS_URL_BASE = "http://0.0.0.0:6767"
+
 
 try:
     from local_settings import *

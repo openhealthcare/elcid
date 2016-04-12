@@ -5,8 +5,11 @@ describe('ResearchHospitalNumberCtrl', function (){
     var controller, options, schema, tags;
 
     beforeEach(module('opal.controllers', function($provide){
-        tags = {tag: 'study'};
-        $provide.value('tags', function(){ return tags; });
+        $provide.service('Options', function(){
+          return {
+            then: function(x){ x({}); }
+          };
+        });
     }));
 
     beforeEach(inject(function($injector){

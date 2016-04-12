@@ -4,9 +4,14 @@ describe('DiagnosisHospitalNumber', function(){
     var $rootScope, $scope, $modal, $httpBackend, $controller;
     var modalInstance, tags, options, hospital_number, $q;
 
-    tags = {};
+    beforeEach(module('opal.controllers', function($provide){
+        $provide.service('Options', function(){
+          return {
+            then: function(x){ x({}); }
+          };
+        });
+    }));
 
-    beforeEach(module('opal.controllers'));
     beforeEach(function(){
         inject(function($injector){
             $httpBackend    = $injector.get('$httpBackend');
@@ -23,7 +28,7 @@ describe('DiagnosisHospitalNumber', function(){
             $scope         : $scope,
             $modalInstance : modalInstance,
             options        : options,
-            tags           : tags,
+            tags           : {},
             hospital_number: hospital_number
         });
     });
@@ -46,7 +51,7 @@ describe('DiagnosisHospitalNumber', function(){
             spyOn(modalInstance, 'close');
             $scope.newPatient({hospital_number: '555-123'});
             var resolvers = $modal.open.calls.mostRecent().args[0].resolve
-            expect(resolvers.tags()).toEqual(tags)
+            expect(resolvers.tags()).toEqual({})
         });
     });
 
@@ -75,7 +80,7 @@ describe('DiagnosisHospitalNumber', function(){
 
           callArgs = $modal.open.calls.mostRecent().args;
           expect(callArgs.length).toBe(1);
-          expect(callArgs[0].controller).toBe('AddEpisodeCtrl');
+          expect(callArgs[0].controller).toBe('DiagnosisAddEpisodeCtrl');
           var resolves = $modal.open.calls.mostRecent().args[0].resolve;
           expect(resolves.options()).toEqual(options);
           var expected_demographics = angular.copy(patientData.demographics[0]);
