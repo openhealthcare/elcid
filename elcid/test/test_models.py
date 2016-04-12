@@ -1,9 +1,10 @@
 import datetime
 import ffs
 import pytz
+from mock import patch
 
 from django.conf import settings
-from django.test import TestCase
+from django.test import TestCase, override_settings
 
 from opal.core import exceptions
 from opal.core.test import OpalTestCase
@@ -453,3 +454,29 @@ class DiagnosisTest(OpalTestCase, AbstractEpisodeTestCase):
         self.diagnosis.update_from_dict(data, self.user)
         diagnosis = self.episode.diagnosis_set.first()
         self.assertEqual('New condition', diagnosis.condition)
+
+
+@patch("elcid.gloss_api.subscribe")
+@patch("elcid.gloss_api.patient_query")
+class TestGlossUpdate(AbstractPatientTestCase):
+    @override_settings(GLOSS_ENABLED=True)
+    def test_with_settings_on_create(self, patient_query, subscribe):
+        episode = self.patient.create_episode()
+        subscribe.assert_called_once_with("AA1111")
+        patient_query.assert_called_once_with("AA1111", episode=episode)
+
+    def test_not_called_on_update(self, patient_query, subscribe):
+        with override_settings(GLOSS_ENABLED=False):
+            episode = self.patient.create_episode()
+
+        with override_settings(GLOSS_ENABLED=True):
+            episode.save()
+
+        self.assertFalse(patient_query.called)
+        self.assertFalse(subscribe.called)
+
+    @override_settings(GLOSS_ENABLED=False)
+    def test_without_settings_enabled(self, patient_query, subscribe):
+        self.patient.create_episode()
+        self.assertFalse(patient_query.called)
+        self.assertFalse(subscribe.called)

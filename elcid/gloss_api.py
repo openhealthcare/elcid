@@ -44,8 +44,9 @@ def patient_query(hospital_number, episode):
 
         if content["status"] == "error":
             logging.error(
-                "unable to load patient details for {0}, return error {1}").format(
-                hospital_number, response["data"]
+                "unable to load patient details for {0}, return error {1}".format(
+                hospital_number, content["data"]
+                )
             )
         else:
             bulk_create_from_gloss_response(content, episode=episode)

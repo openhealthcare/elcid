@@ -4,6 +4,7 @@ elCID implementation specific models!
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.db import models
+from django.conf import settings
 from jsonfield import JSONField
 
 import opal.models as omodels
@@ -480,7 +481,7 @@ class Appointment(EpisodeSubrecord):
 def get_information_from_gloss(sender, **kwargs):
     episode = kwargs.pop("instance")
     created = kwargs.pop("created")
-    if not created:
+    if created and settings.GLOSS_ENABLED:
         hospital_number = episode.patient.demographics_set.first().hospital_number
         gloss_api.subscribe(hospital_number)
         gloss_api.patient_query(hospital_number, episode=episode)

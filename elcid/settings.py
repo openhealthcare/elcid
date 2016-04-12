@@ -295,6 +295,11 @@ GLOSSOLALIA_NAME = 'elcid'
 OPAL_SEARCH_BACKEND = "elcid.search.GlossQuery"
 
 GLOSS_URL_BASE = "http://0.0.0.0:6767"
+GLOSS_ENABLED = False
+EXTRACT_ASYNC = True
+
+GLOSS_USERNAME = "override_this"
+GLOSS_PASSWORD = "and_override_this"
 
 
 try:
@@ -306,4 +311,3 @@ except ImportError:
 # MIDDLEWARE_CLASSES = MIDDLEWARE_CLASSES + ('debug_toolbar.middleware.DebugToolbarMiddleware',)
 # INSTALLED_APPS = INSTALLED_APPS + ('debug_toolbar',)
 # #INTERNAL_IPS = ('127.0.0.1',)
-EXTRACT_ASYNC = True
