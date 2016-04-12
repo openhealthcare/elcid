@@ -18,7 +18,7 @@ class Mine(PatientList):
             return klass
 
     def get_queryset(self):
-        return Episode.objects.filter(tagging__team__name='mine')
+        return Episode.objects.filter(tagging__value='mine')
 
     def to_dict(self, user):
         return self.get_queryset().filter(tagging__user=user).serialised_active(user)

@@ -130,10 +130,6 @@ class ExtractSchemaViewTest(OpalTestCase):
 class MicrobiologyInputViewTest(OpalTestCase, AbstractEpisodeTestCase):
     def setUp(self):
         super(MicrobiologyInputViewTest, self).setUp()
-        Team.objects.create(
-            name=constants.MICROHAEM_TEAM_NAME,
-            title=constants.MICROHAEM_TEAM_NAME.title()
-        )
         self.url = "/api/v0.1/microbiology_input/"
         self.assertTrue(self.client.login(username=self.user.username,
                                           password=self.PASSWORD))
@@ -152,9 +148,9 @@ class MicrobiologyInputViewTest(OpalTestCase, AbstractEpisodeTestCase):
         self.assertEqual(len(tags), 0)
         self.post_json(self.url, self.args)
         updated_tags = self.episode.get_tag_names(self.user)
-        self.assertEqual([str(i) for i in updated_tags], [constants.MICROHAEM_TEAM_NAME])
+        self.assertEqual([str(i) for i in updated_tags], [constants.MICROHAEM_TAG])
         self.post_json(self.url, self.args)
 
         # make sure tags don't get applied twice if run twice
         updated_tags = self.episode.get_tag_names(self.user)
-        self.assertEqual([str(i) for i in updated_tags], [constants.MICROHAEM_TEAM_NAME])
+        self.assertEqual([str(i) for i in updated_tags], [constants.MICROHAEM_TAG])

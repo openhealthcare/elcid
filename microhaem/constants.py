@@ -3,5 +3,5 @@ MICROHAEM_CONSULTATIONS = [
     "Haematology ward round consult",
 ]
 
-MICROHAEM_TEAM_NAME = "micro_haem"
+MICROHAEM_TAG = "micro_haem"
 MICROHAEM_ROLE = "micro_haem"

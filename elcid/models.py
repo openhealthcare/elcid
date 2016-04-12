@@ -16,7 +16,7 @@ from opal.models import (
 from opal.core.fields import ForeignKeyOrFreeText
 from opal.core import lookuplists
 from elcid import gloss_api
-from microhaem.constants import MICROHAEM_CONSULTATIONS, MICROHAEM_TEAM_NAME
+from microhaem.constants import MICROHAEM_CONSULTATIONS, MICROHAEM_TAG
 
 
 class Demographics(PatientSubrecord):
@@ -369,7 +369,7 @@ class MicrobiologyInput(EpisodeSubrecord):
                 episode = Episode.objects.get(pk=data["episode_id"])
 
             existing = Tagging.objects.filter(
-                episode=episode, team__name=MICROHAEM_TEAM_NAME
+                episode=episode, value=MICROHAEM_TAG
             )
 
             if existing.exists():
@@ -377,7 +377,7 @@ class MicrobiologyInput(EpisodeSubrecord):
             else:
                 Tagging.objects.create(
                     episode=episode,
-                    team=Team.objects.get(name=MICROHAEM_TEAM_NAME)
+                    value=MICROHAEM_TAG
                 )
         self.reason_for_interaction = incoming_value
 
