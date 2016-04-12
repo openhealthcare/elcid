@@ -479,7 +479,8 @@ class Appointment(EpisodeSubrecord):
 @receiver(post_save, sender=Episode)
 def get_information_from_gloss(sender, **kwargs):
     episode = kwargs.pop("instance")
-    if not episode.patient.episode_set.exclude(id=episode.id).exists():
+    created = kwargs.pop("created")
+    if not created:
         hospital_number = episode.patient.demographics_set.first().hospital_number
         gloss_api.subscribe(hospital_number)
         gloss_api.patient_query(hospital_number, episode=episode)
