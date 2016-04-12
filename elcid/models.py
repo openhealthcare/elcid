@@ -1,8 +1,10 @@
 """
 elCID implementation specific models!
 """
-import json
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.db import models
+from django.conf import settings
 from jsonfield import JSONField
 
 import opal.models as omodels
@@ -13,6 +15,7 @@ from opal.models import (
 )
 from opal.core.fields import ForeignKeyOrFreeText
 from opal.core import lookuplists
+from elcid import gloss_api
 from microhaem.constants import MICROHAEM_CONSULTATIONS, MICROHAEM_TEAM_NAME
 
 
@@ -472,3 +475,13 @@ class Appointment(EpisodeSubrecord):
     appointment_type = models.CharField(max_length=200, blank=True, null=True)
     appointment_with = models.CharField(max_length=200, blank=True, null=True)
     date             = models.DateField(blank=True, null=True)
+
+
+@receiver(post_save, sender=Episode)
+def get_information_from_gloss(sender, **kwargs):
+    episode = kwargs.pop("instance")
+    created = kwargs.pop("created")
+    if created and settings.GLOSS_ENABLED:
+        hospital_number = episode.patient.demographics_set.first().hospital_number
+        gloss_api.subscribe(hospital_number)
+        gloss_api.patient_query(hospital_number, episode=episode)

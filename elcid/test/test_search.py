@@ -7,7 +7,7 @@ from opal.core.search import queries
 from opal import models as omodels
 
 
-@patch("elcid.search.requests.get")
+@patch("elcid.gloss_api.requests.get")
 class SearchTestCase(OpalTestCase):
     returned_gloss_result = {
         'demographics': [{
