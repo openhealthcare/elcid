@@ -187,3 +187,14 @@ def deploy(key_file_name="../ec2.pem"):
             run("python manage.py collectstatic --noinput")
             run("supervisorctl -c etc/test.conf restart gunicorn")
             run("supervisorctl -c etc/test.conf restart celery")
+
+
+@task
+def restart_all(key_file_name="../ec2.pem"):
+    env.key_filename = key_file_name
+    with prefix(". /usr/share/virtualenvwrapper/virtualenvwrapper.sh"):
+        with prefix("workon {}".format(virtual_env_name)):
+            run("supervisorctl -c etc/test.conf restart gunicorn")
+            run("supervisorctl -c etc/test.conf restart celery")
+            run("supervisorctl -c etc/test.conf restart gloss")
+            run("supervisorctl -c etc/test.conf restart gloss_flask")

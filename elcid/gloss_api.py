@@ -1,10 +1,13 @@
 from django.contrib.auth.models import User
+from django.db.models import FieldDoesNotExist
 from django.conf import settings
 from django.db import transaction
 
 from rest_framework.reverse import reverse
 
 from opal.models import Patient
+from opal.core import subrecords
+
 import requests
 import json
 import logging
@@ -98,5 +101,18 @@ def bulk_create_from_gloss_response(request_data, episode=None):
             Allergies.objects.filter(
                 patient__demographics__hospital_number=hospital_number
             ).delete()
+
+        # as these are only going to have been sourced from upstream
+        # make sure it says they're sourced from upstream
+        for api_name, updates_list in update_dict.iteritems():
+            model = subrecords.get_subrecord_from_api_name(api_name)
+            try:
+                field = model._meta.get_field("sourced_from_upstream")
+            except FieldDoesNotExist:
+                field = None
+
+            if field:
+                for i in updates_list:
+                    i["sourced_from_upstream"] = True
 
         patient.bulk_update(update_dict, user, force=True, episode=episode)
