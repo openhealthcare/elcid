@@ -1,4 +1,3 @@
-from django.db.models import Q
 from opal.core.search.queries import DatabaseQuery
 from gloss_api import demographics_query
 
