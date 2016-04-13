@@ -15,8 +15,6 @@ class TestPatientList(OpalTestCase):
         ''' given to episodes, calling mine should only return the one tagged with
             the user
         '''
-        Team.objects.get_or_create(name="mine")
-
         self.episode_1.set_tag_names(["mine"], self.user)
         self.assertIn(Mine, PatientList.list())
 
