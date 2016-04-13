@@ -53,6 +53,10 @@ class TestAllergyInteraction(OpalTestCase):
             Demographics.objects.get(hospital_number="1").first_name, "Susan"
         )
 
+        # all allergies should be marked as having been source
+        # from upstream
+        self.assertTrue(allergy.sourced_from_upstream)
+
     def test_doesnt_remove_allergies(self, *args):
         # if no allergies are present, don't delete allergies, but run
         # the other updates
