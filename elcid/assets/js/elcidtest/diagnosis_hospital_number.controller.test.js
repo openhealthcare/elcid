@@ -64,7 +64,7 @@ describe('DiagnosisHospitalNumber', function(){
               "demographics": [
                       {
                           "consistency_token": "0beb0d46",
-                          "date_of_birth": "1999-12-12",
+                          "date_of_birth": "",
                           "hospital_number": "",
                           "id": 2,
                           "name": "Mr WAT",
@@ -84,7 +84,6 @@ describe('DiagnosisHospitalNumber', function(){
           var resolves = $modal.open.calls.mostRecent().args[0].resolve;
           expect(resolves.options()).toEqual(options);
           var expected_demographics = angular.copy(patientData.demographics[0]);
-          expected_demographics.date_of_birth = "12/12/1999";
           expect(resolves.demographics()).toEqual(expected_demographics);
           expect(resolves.tags()).toEqual({});
       });
