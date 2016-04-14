@@ -7,7 +7,7 @@
 </div>
 <div class="modal-body">
   <form class="form-horizontal" name="newEpisodeForm">
-    {% include models.Demographics.get_form_template %}
+    {% include 'partials/_core_demographics.html' %}
     <input type="hidden" value="OPAT" ng-model="editing.location.category" />
   </form>
 </div>
