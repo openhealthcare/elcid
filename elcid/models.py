@@ -136,6 +136,8 @@ class Location(EpisodeSubrecord):
 
 
 class Result(PatientSubrecord):
+    _icon = 'fa fa-crosshairs'
+    
     lab_number = models.CharField(max_length=255, blank=True, null=True)
     profile_code = models.CharField(max_length=255, blank=True, null=True)
     external_identifier = models.CharField(max_length=255, blank=True, null=True)
