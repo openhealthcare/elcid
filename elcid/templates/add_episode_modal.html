@@ -4,12 +4,7 @@
 {% block title %}Add Patient{% endblock %}
 {% block modal_body %}
   <form class="form-horizontal" name="newEpisodeForm">
-    <div ng-show="editing.demographics.sourced_from_upstream">
-      {% include 'partials/_core_demographics.html' %}
-    </div>
-    <div ng-hide="editing.demographics.sourced_from_upstream">
-      {% include models.Demographics.get_form_template %}
-    </div>
+    {% include 'partials/_core_demographics.html' %}
     {% if teams %}
       {% include 'partials/_teams_select.html' %}
     {% endif %}
