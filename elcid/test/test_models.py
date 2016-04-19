@@ -9,7 +9,7 @@ from django.test import TestCase, override_settings
 from opal.core import exceptions
 from opal.core.test import OpalTestCase
 from opal.models import Patient, Episode, Condition, Synonym, Symptom
-from elcid.models import Location, PresentingComplaint, Result, Allergy
+from elcid.models import Location, PresentingComplaint, Result, Allergies
 
 HERE = ffs.Path.here()
 TEST_DATA = HERE/'test_data'
@@ -380,8 +380,8 @@ class ResultTest(OpalTestCase, AbstractPatientTestCase):
 class AllergyTest(OpalTestCase):
     def test_get_modal_footer_template(self):
         self.assertEqual(
-            Allergy.modal_footer_template(),
-            "partials/epma_modal_footer.html""
+            Allergies.get_modal_footer_template(),
+            "partials/epma_modal_footer.html"
         )
 
 
