@@ -33,7 +33,7 @@ angular.module('opal.controllers').controller('HaemView', function($scope){
   };
 
   vm.getEpisodeOrdering = function(episode){
-      var significantDate = e.discharge_date || e.date_of_episode || e.date_of_admission;
+      var significantDate = episode.discharge_date || episode.date_of_episode || episode.date_of_admission;
       return orderByDate(significantDate)
   };
 
