@@ -66,7 +66,12 @@ def demographics_query(hospital_number):
             demographic["hospital_number"] = hospital_number
             demographic["sourced_from_upstream"] = True
 
-        return [{"demographics": demographics}]
+        return [{
+            "demographics": demographics,
+            "duplicate_patient": result["messages"].get(
+                "duplicate_patient", []
+            )
+        }]
     else:
         # TODO: handle this better
         return []

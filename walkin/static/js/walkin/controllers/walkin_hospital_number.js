@@ -4,7 +4,7 @@
 controllers.controller(
     'WalkinHospitalNumberCtrl',
     function($scope, $modalInstance, $modal, $rootScope, $q,
-             tags, options,
+             tags, options, MergeWrapper,
              Episode){
 
         $scope.model = {
@@ -44,11 +44,15 @@ controllers.controller(
         // Add or pull over.
         //
         $scope.findByHospitalNumber = function(){
+            var newForPatient = MergeWrapper.openMergeModal(
+                $scope.new_for_patient
+            )
+
             Episode.findByHospitalNumber(
                 $scope.model.hospitalNumber,
                 {
                     newPatient: $scope.new_patient,
-                    newForPatient: $scope.new_for_patient,
+                    newForPatient: newForPatient,
                     error: function(){
                         // This shouldn't happen, but we should probably handle it better
                         alert('ERROR: More than one patient found with hospital number');
@@ -90,7 +94,6 @@ controllers.controller(
         // Create a new episode for an existing patient
         //
         $scope.new_for_patient = function(patient){
-
             var active_episodes = _.filter(
                 _.values(patient.episodes),
                 function(e){
@@ -149,11 +152,6 @@ controllers.controller(
         //
         $scope.add_for_patient = function(patient){
             var demographics = patient.demographics[0];
-            if(demographics.date_of_birth){
-                var dob = moment(demographics.date_of_birth, 'YYYY-MM-DD')
-                    .format('DD/MM/YYYY');
-                demographics.date_of_birth = dob;
-            }
             modal = $modal.open({
                 templateUrl: '/templates/modals/add_walkin_episode.html/',
                 controller: 'AddEpisodeCtrl',

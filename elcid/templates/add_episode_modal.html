@@ -15,7 +15,7 @@
 <div class="modal-footer">
   <button class="btn btn-lg btn-primary"
           ng-click="save()"
-          ng-disabled="newEpisodeForm.date_of_birth.$invalid"
+          ng-disabled="newEpisodeForm.date_of_birth.$invalid && !editing.demographics.sourced_from_upstream"
           >
     <i class="fa fa-save"></i>
     Save record

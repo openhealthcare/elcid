@@ -6,7 +6,8 @@ controllers.controller(
     function($scope, $modalInstance, $modal, $rootScope,
              $routeParams, $q,
              options,
-             Episode){
+             Episode,
+             MergeWrapper){
 
         $scope.model = {
             hospitalNumber : null
@@ -47,11 +48,14 @@ controllers.controller(
         // Add or pull over.
         //
         $scope.findByHospitalNumber = function(){
+            var newForPatient = MergeWrapper.openMergeModal(
+                $scope.new_for_patient
+            )
             Episode.findByHospitalNumber(
                 $scope.model.hospitalNumber,
                 {
                     newPatient: $scope.new_patient,
-                    newForPatient: $scope.new_for_patient,
+                    newForPatient: newForPatient,
                     error: function(){
                         // This shouldn't happen, but we should probably handle it better
                         alert('ERROR: More than one patient found with hospital number');

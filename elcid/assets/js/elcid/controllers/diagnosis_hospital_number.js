@@ -9,7 +9,9 @@ angular.module('opal.controllers').controller(
              Episode,
              options,
              tags,
-             hospital_number) {
+             hospital_number,
+             MergeWrapper
+          ) {
 
         $scope.model = {}
         if(hospital_number){
@@ -17,20 +19,22 @@ angular.module('opal.controllers').controller(
         }
         $scope.tags = tags;
         $scope.findByHospitalNumber = function() {
+          var newForPatient = MergeWrapper.openMergeModal(
+              $scope.new_for_patient
+          )
 
-            Episode.findByHospitalNumber(
-                $scope.model.hospitalNumber,
-                {
-                    newPatient: $scope.newPatient,
-                    newForPatient: $scope.newForPatient,
-                    error: function(){
-                        // This shouldn't happen, but we should probably handle it better
-                        alert('ERROR: More than one patient found with hospital number');
-                        $modalInstance.close(null)
-                    }
-                }
-            );
-
+          Episode.findByHospitalNumber(
+              $scope.model.hospitalNumber,
+              {
+                  newPatient: $scope.newPatient,
+                  newForPatient: newForPatient,
+                  error: function(){
+                      // This shouldn't happen, but we should probably handle it better
+                      alert('ERROR: More than one patient found with hospital number');
+                      $modalInstance.close(null)
+                  }
+              }
+          );
         };
 
         $scope.newPatient = function(result){
