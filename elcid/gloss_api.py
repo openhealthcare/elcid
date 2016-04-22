@@ -60,13 +60,18 @@ def demographics_query(hospital_number):
     url = "{0}/api/demographics/{1}".format(base_url, hospital_number)
     result = json.loads(requests.get(url).content)
 
-    if result["status"] == "success":
+    if result["status"] == "success" and result["messages"]:
         demographics = result["messages"]["demographics"]
         for demographic in demographics:
             demographic["hospital_number"] = hospital_number
             demographic["sourced_from_upstream"] = True
 
-        return [{"demographics": demographics}]
+        return [{
+            "demographics": demographics,
+            "duplicate_patient": result["messages"].get(
+                "duplicate_patient", []
+            )
+        }]
     else:
         # TODO: handle this better
         return []

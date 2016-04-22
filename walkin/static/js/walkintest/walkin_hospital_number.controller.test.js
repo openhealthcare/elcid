@@ -16,6 +16,7 @@ describe('WalkinHospitalNumberCtrl', function (){
         $httpBackend = $injector.get('$httpBackend');
 
         $modalInstance = $modal.open({template: 'Not a real template'})
+        spyOn($modalInstance, 'close');
         schema = {}
         options = {}
 
@@ -71,8 +72,6 @@ describe('WalkinHospitalNumberCtrl', function (){
 
             var test = {test: 'HIV Point of Care', episode_id: "3"};
             $httpBackend.expectPOST('/api/v0.1/microbiology_test/', test).respond(test);
-            spyOn($modalInstance, 'close');
-
             $scope.tag_and_close(episode);
             $httpBackend.flush();
 
@@ -81,13 +80,13 @@ describe('WalkinHospitalNumberCtrl', function (){
 
     });
 
-    describe('new_patient()', function() {
-
+    describe('newPatient()', function() {
         it('should pass through the tags', function() {
             spyOn($modal, 'open').and.returnValue({result: {then: function(){}}});
-            $scope.new_patient();
+            $scope.newPatient();
             var resolves = $modal.open.calls.mostRecent().args[0].resolve;
             expect(resolves.tags()).toEqual(tags);
+            expect($modalInstance.close).toHaveBeenCalled();
         });
 
     });

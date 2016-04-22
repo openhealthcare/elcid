@@ -25,6 +25,7 @@ describe('OPATReferralCtrl', function (){
             $rootScope.fields = fields;
 
             $modalInstance = $modal.open({template: 'Not a real template'});
+            spyOn($modalInstance, "close");
 
             controller = $controller('OPATReferralCtrl', {
                 $scope        : $scope,
@@ -44,7 +45,7 @@ describe('OPATReferralCtrl', function (){
         expect($scope.message).toBe(null);
     });
 
-    describe('new_for_patient()', function (){
+    describe('newForPatient()', function (){
         var patient;
 
         beforeEach(function(){
@@ -64,7 +65,8 @@ describe('OPATReferralCtrl', function (){
 
             it('Should set the message', function () {
                 patient.episodes[1].tagging[0].opat_referrals = true;
-                $scope.new_for_patient(patient);
+                $scope.newForPatient(patient);
+                expect($modalInstance.close).toHaveBeenCalled();
                 var msg = 'Patient is already on the OPAT Referrals list';
                 expect($scope.message).toEqual(msg)
             });
@@ -74,7 +76,8 @@ describe('OPATReferralCtrl', function (){
                 it('Should set the message', function () {
                     patient.episodes[2] = angular.copy(patient.episodes[1]);
                     patient.episodes[2].tagging[0].opat_referrals = true;
-                    $scope.new_for_patient(patient);
+                    $scope.newForPatient(patient);
+                    expect($modalInstance.close).toHaveBeenCalled();
                     var msg = 'Patient is already on the OPAT Referrals list';
                     expect($scope.message).toEqual(msg)
                 });
