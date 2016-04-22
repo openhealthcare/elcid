@@ -41,7 +41,7 @@ describe('ResearchHospitalNumberCtrl', function (){
     });
 
 
-    describe('new_patient()', function (){
+    describe('newPatient()', function (){
 
         beforeEach(function(){
             spyOn($modal, 'open').and.callThrough();
@@ -50,14 +50,14 @@ describe('ResearchHospitalNumberCtrl', function (){
         });
 
         it('Should call the AddEpisode controller', function () {
-            $scope.new_patient({});
+            $scope.newPatient({});
             var callArgs = $modal.open.calls.mostRecent().args;
             expect(callArgs[0].controller).toBe('AddEpisodeCtrl');
             $httpBackend.flush();
         });
 
         it('Should use the without teams template', function () {
-            $scope.new_patient({});
+            $scope.newPatient({});
             var callArgs = $modal.open.calls.mostRecent().args;
             expect(callArgs[0].templateUrl).toBe('/templates/modals/add_episode_without_teams.html/');
             $httpBackend.flush();
@@ -66,7 +66,7 @@ describe('ResearchHospitalNumberCtrl', function (){
         it('Should pass through hospital number', function () {
             var hospital_number = '12345';
             $scope.model.hospitalNumber = hospital_number;
-            $scope.new_patient({});
+            $scope.newPatient({});
             var callArgs = $modal.open.calls.mostRecent().args;
             expect(callArgs[0].resolve.demographics().hospital_number).toBe(hospital_number)
             $httpBackend.flush();

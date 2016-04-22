@@ -4,7 +4,7 @@
 controllers.controller(
     'WalkinHospitalNumberCtrl',
     function($scope, $modalInstance, $modal, $rootScope, $q,
-             tags, options, MergeWrapper,
+             tags, options,
              Episode){
 
         $scope.model = {
@@ -44,15 +44,24 @@ controllers.controller(
         // Add or pull over.
         //
         $scope.findByHospitalNumber = function(){
-            var newForPatient = MergeWrapper.openMergeModal(
-                $scope.new_for_patient
-            )
+            var patientFound = function(result){
+              if(result.merged && result.merged.length){
+                $scope.result = result;
+              }
+              else{
+                $scope.newForPatient(result);
+              }
+            };
+
+            var patientNotFound = function(result){
+              $scope.result = result;
+            };
 
             Episode.findByHospitalNumber(
                 $scope.model.hospitalNumber,
                 {
-                    newPatient: $scope.new_patient,
-                    newForPatient: newForPatient,
+                    newPatient: patientNotFound,
+                    newForPatient: patientFound,
                     error: function(){
                         // This shouldn't happen, but we should probably handle it better
                         alert('ERROR: More than one patient found with hospital number');
@@ -65,10 +74,11 @@ controllers.controller(
         //
         // Create a new patient
         //
-        $scope.new_patient = function(result){
+        $scope.newPatient = function(result){
             // There is no patient with this hospital number
             // Show user the form for creating a new episode,
             // with the hospital number pre-populated
+            $modalInstance.close();
             modal = $modal.open({
                 templateUrl: '/templates/modals/add_walkin_episode.html/',
                 controller: 'AddEpisodeCtrl',
@@ -93,7 +103,8 @@ controllers.controller(
         //
         // Create a new episode for an existing patient
         //
-        $scope.new_for_patient = function(patient){
+        $scope.newForPatient = function(patient){
+            $modalInstance.close()
             var active_episodes = _.filter(
                 _.values(patient.episodes),
                 function(e){
