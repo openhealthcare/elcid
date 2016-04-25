@@ -1,7 +1,7 @@
 """
 Referral routes for elCID
 """
-from constants import MICROHAEM_TEAM_NAME
+from microhaem.constants import MICROHAEM_TAG
 from referral import ReferralRoute
 from elcid.models import Diagnosis
 
@@ -9,7 +9,7 @@ from elcid.models import Diagnosis
 class MicroHaematology(ReferralRoute):
     name = 'MicroHaematology'
     description = 'The Micro - Haematology service at UCLH'
-    target_teams = [MICROHAEM_TEAM_NAME]
+    target_teams = [MICROHAEM_TAG]
     create_new_episode = False
     additional_models = [
         Diagnosis
