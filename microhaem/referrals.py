@@ -16,4 +16,4 @@ class MicroHaematology(ReferralRoute):
     ]
 
     def get_success_link(self, episode):
-        return '/#/patient/%s' % episode.patient.id
+        return '/#/patient/%s/micro_haem' % episode.patient.id
