@@ -325,7 +325,6 @@ class Allergies(PatientSubrecord):
 
     # previously called drug this is the name of the problematic substance
     allergy_description = models.CharField(max_length=255, blank=True)
-    allergy_type = models.CharField(max_length=255, blank=True)
     allergy_type_description = models.CharField(max_length=255, blank=True)
     certainty_id = models.CharField(max_length=255, blank=True)
     certainty_description = models.CharField(max_length=255, blank=True)
