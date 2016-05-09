@@ -2,8 +2,9 @@
 {% load panels %}
 
 {% block left_column %}
-  {% include 'detail/_demographics_location_panels.html' %}
+  {% include "partials/current_inpatient_admissions.html" %}
   {% record_panel models.Allergies %}
+  {% record_panel models.InpatientAdmission title="Past Inpatient Admissions" editable=False angular_filter="!($index === 0 && !item.datetime_of_discharge)" %}
   {% record_panel models.PastMedicalHistory %}
   {% record_panel models.Travel %}
   {% record_panel models.MicrobiologyInput %}
