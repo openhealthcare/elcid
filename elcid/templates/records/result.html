@@ -2,19 +2,19 @@
   <b>Lab Number</b> [[ item.lab_number ]]
   <span ng-show="item.result_status">([[ item.result_status ]]) <br /></span>
   <br />
-  <span ng-show="item.profile_code"><b>Profile Code</b> [[ item.profile_code ]] <br /></span>
-  <span ng-show="item.profile_description"><b>Profile Description</b>[[ item.profile_description ]] <br /></span>
+  <span ng-show="item.profile_code"><b>Profile Code:</b><br />[[ item.profile_code ]] <br /></span>
+  <span ng-show="item.profile_description"><b>Profile Description:</b> [[ item.profile_description ]] <br /></span>
   <span ng-show="item.request_datetime">
-    <b>Request Datetime</b>[[ item.request_datetime | shortDate ]] <br />
+    <b>Request Datetime:</b> <br />[[ item.request_datetime | shortDateTime ]] <br />
   </span>
   <span ng-show="item.observation_datetime">
-    <b>Observation Datetime</b>
-    [[ item.observation_datetime | shortDate ]]
+    <b>Observation Datetime:</b><br />
+    [[ item.observation_datetime | shortDateTime ]]
     <br />
   </span>
   <span ng-show="item.last_edited">
-    <b>Last Edited</b>
-    [[ item.last_edited | shortDate ]] <br /></span>
+    <b>Last Edited:</b><br />
+    [[ item.last_edited | shortDateTime ]]<br /></span>
 </div>
 <div class="col-md-9" style="max-height: 300px; overflow-y: scroll;">
   <table class="table">
