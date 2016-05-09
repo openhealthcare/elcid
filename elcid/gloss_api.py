@@ -5,12 +5,16 @@ from django.db import transaction
 
 from rest_framework.reverse import reverse
 
-from opal.models import Patient
+from opal.models import Patient, InpatientAdmission
 from opal.core import subrecords
 
 import requests
 import json
 import logging
+
+EXTERNAL_SYSTEM_MAPPING = {
+    InpatientAdmission: "Carecast"
+}
 
 
 def get_gloss_user():
@@ -119,5 +123,14 @@ def bulk_create_from_gloss_response(request_data, episode=None):
             if field:
                 for i in updates_list:
                     i["sourced_from_upstream"] = True
+
+            try:
+                field = model._meta.get_field("external_system")
+            except FieldDoesNotExist:
+                field = None
+
+            if field:
+                for i in updates_list:
+                    i["external_system"] = EXTERNAL_SYSTEM_MAPPING.get(model)
 
         patient.bulk_update(update_dict, user, force=True, episode=episode)

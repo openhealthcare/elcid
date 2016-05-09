@@ -2,7 +2,7 @@ import json
 from django.test import override_settings
 from mock import patch, MagicMock
 from opal.core.test import OpalTestCase
-from opal.models import Patient
+from opal.models import Patient, InpatientAdmission
 from elcid.models import Allergies, Demographics
 from elcid.test.test_models import AbstractEpisodeTestCase
 from elcid import gloss_api
@@ -12,17 +12,13 @@ from elcid import gloss_api
     GLOSS_USERNAME="test_gloss_user",
     GLOSS_PASSWORD="test_gloss_password"
 )
-class TestAllergyInteraction(OpalTestCase):
+class AbstractGlossTestCase(OpalTestCase):
     def setUp(self, *args, **kwargs):
+        super(AbstractGlossTestCase, self).setUp(*args, **kwargs)
         self.patient = Patient.objects.create()
         demographics = self.patient.demographics_set.first()
         demographics.hospital_number = "1"
         demographics.save()
-        self.before_allergy = Allergies.objects.create(
-            patient=self.patient,
-            drug_ft="some drug"
-        )
-        super(TestAllergyInteraction, self).setUp(*args, **kwargs)
 
     def run_create(self, some_dict, hospital_number="1"):
         episode = self.patient.create_episode()
@@ -31,6 +27,34 @@ class TestAllergyInteraction(OpalTestCase):
             hospital_number="1"
         )
         gloss_api.bulk_create_from_gloss_response(expected_request, episode)
+
+
+class TestInpatientAdmission(AbstractGlossTestCase):
+    def test_creates_subrecord(self, *args):
+        data = dict(
+            demographics=[{
+                "first_name": "Susan",
+                "hospital_number": "1",
+            }],
+            inpatient_admission=[
+                {"hospital": "ucl"},
+            ]
+        )
+
+        self.run_create(data)
+        inpatient_admission = InpatientAdmission.objects.get()
+        self.assertEqual(inpatient_admission.hospital, "ucl")
+        self.assertEqual(inpatient_admission.external_system, "Carecast")
+
+
+class TestAllergyInteraction(AbstractGlossTestCase):
+    def setUp(self, *args, **kwargs):
+        super(TestAllergyInteraction, self).setUp(*args, **kwargs)
+
+        self.before_allergy = Allergies.objects.create(
+            patient=self.patient,
+            drug_ft="some drug"
+        )
 
     def test_remove_allergies(self, *args):
         # if allergies are present, delete allergies and create new ones
@@ -103,11 +127,10 @@ class TestAllergyInteraction(OpalTestCase):
     GLOSS_PASSWORD="test_gloss_password"
 )
 class TestPatientApi(OpalTestCase):
-
-    def run_create(self, some_dict, hospital_number="1"):
+    def run_create(self, some_dict, hospital_number="12312312"):
         expected_request = dict(
             messages=some_dict,
-            hospital_number="12312312"
+            hospital_number=hospital_number
         )
         gloss_api.bulk_create_from_gloss_response(expected_request)
 

@@ -26,10 +26,10 @@
 </div>
 
 <div class="col-md-6"> <!-- Detail panels col 1 -->
-  {% include "partials/current_inpatient_admissions.html" %}
+  {% include "partials/current_location.html" %}
   {% teams_panel %}
   {% record_panel models.Allergies noentries="No known allergies"%}
-  {% record_panel models.InpatientAdmission title="Past Inpatient Admissions" editable=False angular_filter="!($index === 0 && !item.datetime_of_discharge)" %}
+  {% record_panel models.InpatientAdmission editable=False %}
   {% record_panel models.PastMedicalHistory %}
   {% record_panel models.Travel %}
   {% record_timeline models.MicrobiologyInput "when" %}
