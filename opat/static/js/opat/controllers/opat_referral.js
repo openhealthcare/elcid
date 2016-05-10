@@ -131,7 +131,6 @@ controllers.controller(
         // Create a new episode for an existing patient
         //
         $scope.newForPatient = function(patient){
-            $modalInstance.close();
             var actually_make_new_episode = function(){
                 // Offer to import the data from this episode.
 				for (var eix in patient.episodes) {

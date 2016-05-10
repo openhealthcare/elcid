@@ -66,7 +66,6 @@ describe('OPATReferralCtrl', function (){
             it('Should set the message', function () {
                 patient.episodes[1].tagging[0].opat_referrals = true;
                 $scope.newForPatient(patient);
-                expect($modalInstance.close).toHaveBeenCalled();
                 var msg = 'Patient is already on the OPAT Referrals list';
                 expect($scope.message).toEqual(msg)
             });
@@ -77,7 +76,6 @@ describe('OPATReferralCtrl', function (){
                     patient.episodes[2] = angular.copy(patient.episodes[1]);
                     patient.episodes[2].tagging[0].opat_referrals = true;
                     $scope.newForPatient(patient);
-                    expect($modalInstance.close).toHaveBeenCalled();
                     var msg = 'Patient is already on the OPAT Referrals list';
                     expect($scope.message).toEqual(msg)
                 });

@@ -104,7 +104,6 @@ controllers.controller(
         // Create a new episode for an existing patient
         //
         $scope.newForPatient = function(patient){
-            $modalInstance.close()
             var active_episodes = _.filter(
                 _.values(patient.episodes),
                 function(e){
@@ -113,7 +112,7 @@ controllers.controller(
             if(active_episodes.length > 0){
                 var die = false;
                 _.each(active_episodes, function(e){
-                    if(e.category == 'inpatient'){
+                    if(e.category == 'Inpatient'){
                         alert('Warning - Patient is a current inpatient');
                     }else if(e.category == 'Walkin'){
                         var episode = new Episode(e);
