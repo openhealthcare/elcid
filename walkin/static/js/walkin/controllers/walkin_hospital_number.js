@@ -104,7 +104,6 @@ controllers.controller(
         // Create a new episode for an existing patient
         //
         $scope.newForPatient = function(patient){
-            $modalInstance.close()
             var active_episodes = _.filter(
                 _.values(patient.episodes),
                 function(e){
