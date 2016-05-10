@@ -382,7 +382,7 @@ class AllergyTest(OpalTestCase):
     def test_get_modal_footer_template(self):
         self.assertEqual(
             Allergies.get_modal_footer_template(),
-            "partials/_modal_footer.html"
+            "partials/_sourced_modal_footer.html"
         )
 
 

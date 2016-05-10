@@ -266,3 +266,16 @@ class TestPatientQuery(AbstractEpisodeTestCase):
             "http://fake_url.com/api/patient/AA1111"
         )
         bulk_create_mock.assert_called_once_with(data, episode=self.episode)
+
+
+@patch("elcid.gloss_api.EXTERNAL_SYSTEM_MAPPING")
+class TestGetExternalSource(OpalTestCase):
+
+    def test_get_external_source(self, external_system):
+        external_system.get = MagicMock(return_value="ePMA")
+        self.assertEqual(gloss_api.get_external_source("demographics"), "ePMA")
+
+    def test_get_external_source_fail(self, external_system):
+        external_system.get = MagicMock(return_value="ePMA")
+        with self.assertRaises(ValueError):
+            gloss_api.get_external_source("Appointment")

@@ -62,7 +62,7 @@ def patient_query(hospital_number, episode):
             bulk_create_from_gloss_response(content, episode=episode)
 
 
-def update_externally_sourced(api_name):
+def get_external_source(api_name):
         model = subrecords.get_subrecord_from_api_name(api_name)
         external_system = EXTERNAL_SYSTEM_MAPPING.get(model)
 
@@ -77,6 +77,7 @@ def update_externally_sourced(api_name):
         else:
             return external_system
 
+
 def demographics_query(hospital_number):
     base_url = settings.GLOSS_URL_BASE
     url = "{0}/api/demographics/{1}".format(base_url, hospital_number)
@@ -84,7 +85,7 @@ def demographics_query(hospital_number):
 
     if result["status"] == "success" and result["messages"]:
         demographics = result["messages"]["demographics"]
-        external_system = update_externally_sourced("demographics")
+        external_system = get_external_source("demographics")
 
         for demographic in demographics:
             demographic["hospital_number"] = hospital_number
@@ -131,7 +132,7 @@ def bulk_create_from_gloss_response(request_data, episode=None):
         # as these are only going to have been sourced from upstream
         # make sure it says they're sourced from upstream
         for api_name, updates_list in update_dict.iteritems():
-            external_system = update_externally_sourced(api_name)
+            external_system = get_external_source(api_name)
 
             if external_system:
                 for i in updates_list:
