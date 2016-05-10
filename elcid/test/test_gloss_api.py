@@ -1,4 +1,5 @@
 import json
+from copy import copy
 from django.test import override_settings
 from mock import patch, MagicMock
 from opal.core.test import OpalTestCase
@@ -79,7 +80,7 @@ class TestAllergyInteraction(AbstractGlossTestCase):
 
         # all allergies should be marked as having been source
         # from upstream
-        self.assertTrue(allergy.sourced_from_upstream)
+        self.assertEqual(allergy.external_system, "ePMA")
 
     def test_doesnt_remove_allergies(self, *args):
         # if no allergies are present, don't delete allergies, but run
@@ -109,7 +110,7 @@ class TestAllergyInteraction(AbstractGlossTestCase):
             ]
         )
         with patch(
-            "elcid.gloss_api.Patient.bulk_update",
+            "elcid.gloss_api.models.Patient.bulk_update",
             side_effect=ValueError("some error")
         ):
             with self.assertRaises(ValueError):
@@ -229,6 +230,31 @@ class TestPatientQuery(AbstractEpisodeTestCase):
             "hospital_number": "AA1111",
             "status": "success",
             "messages": []
+        }
+
+        response = MagicMock()
+        response.status_code = 200
+        response.content = json.dumps(data)
+        request_mock.return_value = response
+        gloss_api.patient_query("AA1111", self.episode)
+        request_mock.assert_called_once_with(
+            "http://fake_url.com/api/patient/AA1111"
+        )
+        bulk_create_mock.assert_called_once_with(data, episode=self.episode)
+
+    @override_settings(GLOSS_URL_BASE="http://fake_url.com")
+    @patch("elcid.gloss_api.bulk_create_from_gloss_response")
+    @patch("elcid.gloss_api.requests.get")
+    def test_patient_query_with_data_in_response(
+        self, request_mock, bulk_create_mock
+    ):
+        data = {
+            "hospital_number": "AA1111",
+            "status": "success",
+            "messages": {"demographics": [{
+                "first_name": "Jane",
+                "surname": "Jackson"
+            }]}
         }
 
         response = MagicMock()

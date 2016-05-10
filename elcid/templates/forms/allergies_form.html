@@ -1,10 +1,10 @@
 {% load forms %}
-<div ng-hide="editing.allergies.sourced_from_upstream">
+<div ng-hide="editing.allergies.external_system">
   {% input label="Drug" model="editing.allergies.drug" lookuplist="antimicrobial_list" %}
   {% checkbox label="Suspected?" model="editing.allergies.provisional" %}
   {% input label="Add Additional Details" model="editing.allergies.details" %}
 </div>
-<div ng-show="editing.allergies.sourced_from_upstream">
+<div ng-show="editing.allergies.external_system">
   <div class="text-center content-offset-below-25" ng-show="editing.allergies.no_allergies">
     <b>The patient has no allergies</b>
   </div>

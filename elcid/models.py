@@ -11,15 +11,14 @@ import opal.models as omodels
 
 from opal.models import (
     EpisodeSubrecord, PatientSubrecord, Episode, Team,
-    Tagging
+    Tagging, ExternallySourcedModel
 )
 from opal.core.fields import ForeignKeyOrFreeText
 from opal.core import lookuplists
-from elcid import gloss_api
 from microhaem.constants import MICROHAEM_CONSULTATIONS, MICROHAEM_TAG
 
 
-class Demographics(PatientSubrecord):
+class Demographics(PatientSubrecord, ExternallySourcedModel):
     _is_singleton = True
     _icon = 'fa fa-user'
 
@@ -39,7 +38,6 @@ class Demographics(PatientSubrecord):
     birth_place = ForeignKeyOrFreeText(omodels.Destination)
     ethnicity = ForeignKeyOrFreeText(omodels.Ethnicity)
     death_indicator = models.BooleanField(default=False)
-    sourced_from_upstream = models.BooleanField(default=False)
 
     # not strictly correct, but it will be updated when opal core models
     # are updated
@@ -316,7 +314,7 @@ class Antimicrobial(EpisodeSubrecord):
     no_antimicrobials = models.NullBooleanField(default=False)
 
 
-class Allergies(PatientSubrecord):
+class Allergies(PatientSubrecord, ExternallySourcedModel):
     _icon = 'fa fa-warning'
 
     drug        = ForeignKeyOrFreeText(omodels.Antimicrobial)
@@ -336,14 +334,9 @@ class Allergies(PatientSubrecord):
     diagnosis_datetime = models.DateTimeField(null=True, blank=True)
     allergy_start_datetime = models.DateTimeField(null=True, blank=True)
     no_allergies = models.BooleanField(default=False)
-    sourced_from_upstream = models.BooleanField(default=False)
 
     class Meta:
         verbose_name_plural = "Allergies"
-
-    @classmethod
-    def get_modal_footer_template(cls):
-        return "partials/epma_modal_footer.html"
 
 
 class MicrobiologyInput(EpisodeSubrecord):
@@ -484,6 +477,8 @@ class Appointment(EpisodeSubrecord):
 
 @receiver(post_save, sender=Episode)
 def get_information_from_gloss(sender, **kwargs):
+    from elcid import gloss_api
+
     episode = kwargs.pop("instance")
     created = kwargs.pop("created")
     if created and settings.GLOSS_ENABLED:
