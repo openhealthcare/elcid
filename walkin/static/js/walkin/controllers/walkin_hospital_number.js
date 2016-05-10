@@ -112,7 +112,7 @@ controllers.controller(
             if(active_episodes.length > 0){
                 var die = false;
                 _.each(active_episodes, function(e){
-                    if(e.category == 'inpatient'){
+                    if(e.category == 'Inpatient'){
                         alert('Warning - Patient is a current inpatient');
                     }else if(e.category == 'Walkin'){
                         var episode = new Episode(e);
