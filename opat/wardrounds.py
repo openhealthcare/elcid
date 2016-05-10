@@ -25,5 +25,5 @@ class OPATCurrentList(WardRound):
 
     def episodes(self):
         return Episode.objects.filter(active=True,
-                                      tagging__team__name='opat_current',
+                                      tagging__value='opat_current',
                                       tagging__archived=False)
