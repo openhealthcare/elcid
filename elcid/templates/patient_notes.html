@@ -121,7 +121,7 @@
                     </div>
                     <div class="col-md-6">
                         <span ng-if="$first">
-                          {% record_panel models.HaemInformation title="Haematology Background Information" angular_filter="isRecentHaemInformation" %}
+                          {% record_panel models.HaemInformation title="Haematology Background Information" angular_filter="isRecentHaemInformation(item)" %}
                           {% record_panel models.EpisodeOfNeutropenia title="Episodes of Neutropenia"  %}
                         </span>
                         {% record_panel models.Antimicrobial editable="firstEpisode.id === episode.id" %}

@@ -22,8 +22,9 @@
   </div>
 </div>
 <div class="col-md-6">
-  {% include 'partials/_location_panel.html' %}
+  {% include "partials/current_location.html" %}
   {% record_panel models.Travel %}
+  {% record_panel models.InpatientAdmission editable=False %}
   {% record_panel models.Allergies %}
   {% include 'obs/detail_panel.html' %}
 </div>

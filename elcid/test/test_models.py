@@ -76,8 +76,9 @@ class DemographicsTest(OpalTestCase, AbstractPatientTestCase):
             'death_indicator': False,
             'post_code': None,
             'gp_practice_code': None,
-            'sourced_from_upstream': False,
-            }
+            'external_system': None,
+            'external_identifier': None
+        }
 
         self.assertEqual(expected_data, self.demographics.to_dict(self.user))
 
@@ -381,7 +382,7 @@ class AllergyTest(OpalTestCase):
     def test_get_modal_footer_template(self):
         self.assertEqual(
             Allergies.get_modal_footer_template(),
-            "partials/epma_modal_footer.html"
+            "partials/_sourced_modal_footer.html"
         )
 
 

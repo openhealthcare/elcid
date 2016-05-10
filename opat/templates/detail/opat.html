@@ -1,12 +1,13 @@
 {% extends 'layouts/two_column.html' %}
 {% load panels %}
 {% block left_column %}
-  {% include 'detail/_demographics_location_panels.html' %}
+  {% include "partials/current_location.html" %}
   {% record_panel models.ContactDetails %}
   {% record_panel models.Carers %}
   {% record_panel models.Allergies %}
   {% include 'obs/detail_panel.html' %}
   {% record_panel models.PastMedicalHistory %}
+  {% record_panel models.InpatientAdmission editable=False %}
   {% record_panel models.Travel %}
   {% record_panel models.Appointment %}
   {% record_panel models.MicrobiologyInput %}

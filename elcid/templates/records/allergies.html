@@ -1,8 +1,8 @@
-<div ng-hide="item.sourced_from_upstream">
+<div ng-hide="item.external_system">
   <b class="text-danger">[[ item.drug ]]</b>
   <span ng-show="item.provisional">?</span>
 </div>
-<div ng-show="item.sourced_from_upstream">
+<div ng-show="item.external_system">
   <div ng-show="item.no_allergies">
     <b class="text-danger">The patient has no allergies</b>
   </div>

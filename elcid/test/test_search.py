@@ -74,16 +74,15 @@ class SearchTestCase(OpalTestCase):
                 'marital_status': None,
                 'date_of_death': None,
                 'sex': None,
+                'external_system': 'Carecast',
                 'date_of_birth': u'12/12/1983',
                 'death_indicator': False,
-                'sourced_from_upstream': True,
                 'middle_name': None,
                 'hospital_number': "1001",
                 'ethnicity': None}]
         }]
 
         expected = copy(self.returned_gloss_result)
-        expected["demographics"][0]['sourced_from_upstream'] = True
         expected["demographics"][0]['hospital_number'] = "1231111"
         expected["duplicate_patient"] = [{u'new_id': "1001"}]
         expected["merged"] = merged
@@ -101,8 +100,8 @@ class SearchTestCase(OpalTestCase):
         result = query.patients_as_json()[0]
 
         expected = copy(self.returned_gloss_result)
-        expected["demographics"][0]["sourced_from_upstream"] = True
         expected["demographics"][0]["hospital_number"] = "1231111"
+        expected["demographics"][0]["external_system"] = "Carecast"
         self.assertEqual(result, expected)
         requests_mock.assert_called_once_with(
             "http://0.0.0.0:6767/api/demographics/1231111"
