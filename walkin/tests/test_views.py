@@ -15,7 +15,10 @@ class ModalsTestCase(OpalTestCase):
 
     def test_add_template(self):
         self.assertStatusCode('/templates/modals/add_walkin_episode.html', 200)
-        
+
     def test_nurse_investigations_view(self):
         self.assertStatusCode('/walkin/modals/nurse_investigations.html', 200)
-    
+
+    def test_modal_render(self):
+        url = "/templates/modals/symptom.html/walkin-walkin_triage"
+        self.assertStatusCode(url, 200)
