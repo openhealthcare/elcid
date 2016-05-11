@@ -219,7 +219,7 @@ describe('WalkinDischargeCtrl', function(){
 
         beforeEach(function(){
             $httpBackend.expectGET('/api/v0.1/userprofile/').respond({});
-            $httpBackend.expectPOST('/episode/555/actions/copyto/inpatient')
+            $httpBackend.expectPOST('/episode/555/actions/copyto/Inpatient')
                 .respond({id: 556, management: [{}], tagging: [{}],
                           demographics: [{patient_id: 1234}]});
             $httpBackend.expectPUT('/api/v0.1/tagging/555/').respond({});

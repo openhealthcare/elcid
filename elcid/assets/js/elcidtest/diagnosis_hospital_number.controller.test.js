@@ -55,6 +55,62 @@ describe('DiagnosisHospitalNumber', function(){
         });
     });
 
+    describe('newForPatientWithActiveEpisode()', function(){
+        var patientData = {
+            active_episode_id: "1",
+            episodes: {
+                1: {
+                  tagging: [{
+                    infectious_diseases: true,
+                    id_inpatients: true
+                  }],
+                  demographics: [{
+                      hospital_number: "1",
+                      patient_id: "1",
+                  }],
+                  category: "Inpatient"
+            }},
+            demographics: [{
+                hospital_number: "1",
+                patient_id: "1",
+            }]
+        };
+
+        it('if the patient is an inpatient and has no subtag, tag the episode and close', function(){
+            var patient = angular.copy(patientData);
+            spyOn(modalInstance, 'close');
+            $scope.tags = {tag: "infectious_diseases", subtag: ""}
+            $scope.newForPatientWithActiveEpisode(patient);
+            expect(modalInstance.close).toHaveBeenCalled();
+        });
+        it('if the patient is an inpatient and has a subtag, tag the episode and close', function(){
+            var patient = angular.copy(patientData);
+            patient.episodes["1"].tagging[0].save = function(){
+              return {
+                then: function(fn){ return fn(patient); }
+              };
+            };
+            patient.episodes["1"].tagging[0].makeCopy = function(){
+                return this;
+            };
+            spyOn(patient.episodes["1"].tagging[0], "save").and.callThrough();
+            spyOn(modalInstance, 'close');
+            $scope.tags = {tag: "infectious_diseases", subtag: "id_liason"};
+            $scope.newForPatientWithActiveEpisode(patient);
+            expect(modalInstance.close).toHaveBeenCalled();
+            expect(patient.episodes["1"].tagging[0].save).toHaveBeenCalled();
+            var callArgs = patient.episodes["1"].tagging[0].save.calls.argsFor(0);
+            expect(callArgs[0].id_liason).toBe(true);
+        });
+        it('if the patient is not an inpatient, call through', function(){
+            var patient = angular.copy(patientData);
+            patient.episodes["1"].category = "Tropical";
+            spyOn($scope, "addForPatient");
+            $scope.newForPatientWithActiveEpisode(patient);
+            expect($scope.addForPatient).toHaveBeenCalled();
+        });
+    });
+
     describe('addForPatient()', function() {
       it('should call through if there is an active discharged episode.', function(){
           var deferred, callArgs;

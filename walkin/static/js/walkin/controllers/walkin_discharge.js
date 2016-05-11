@@ -219,7 +219,7 @@ controllers.controller(
             tagging.walkin_doctor = false;
             $scope.meta.management.follow_up = 'Admitted to ward';
 
-            CopyToCategory($scope.episode.id, 'inpatient').then(
+            CopyToCategory($scope.episode.id, 'Inpatient').then(
                 function(episode){
                     var newtagging = episode.tagging[0];
                     var newtags = {};

@@ -23,7 +23,6 @@ angular.module('opal.controllers').controller(
               $scope.result = result;
             }
             else{
-              $modalInstance.close();
               $scope.newForPatient(result);
             }
           };
@@ -87,12 +86,12 @@ angular.module('opal.controllers').controller(
         $scope.newForPatientWithActiveEpisode = function(patient){
             episode = new Episode(patient.episodes[patient.active_episode_id])
 
-            if(episode.category != 'inpatient'){ // It's the wrong category - add new
+            if(episode.category !== 'Inpatient'){ // It's the wrong category - add new
                 return $scope.addForPatient(patient);
             }
 
             if (episode.tagging[0][$scope.tags.tag] &&
-                ($scope.tags.subtag == 'all' ||
+                ($scope.tags.subtag === "" ||
                  episode.tagging[0][$scope.tags.subtag])) {
                 // There is already an active episode for this patient
                 // with the current tag
@@ -102,7 +101,7 @@ angular.module('opal.controllers').controller(
                 // it doesn't have the current tag.
                 // Add the current Tag.
                 episode.tagging[0][$scope.tags.tag] = true;
-                if($scope.tags.subtag != 'all'){
+                if($scope.tags.subtag !== ""){
                     episode.tagging[0][$scope.tags.subtag] = true;
                 }
                 episode.tagging[0].save(episode.tagging[0].makeCopy()).then(
