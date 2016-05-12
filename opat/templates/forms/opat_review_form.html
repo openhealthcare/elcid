@@ -1,0 +1,48 @@
+{% load forms %}
+<div class="row">
+  <div class="col-md-8">
+
+    <form class="form-horizontal" name="modal_form">
+
+      <div class="form-group">
+        <label class="control-label col-sm-3">Date</label>
+        <div class="col-sm-8">
+	  <input class="form-control" type="text" ng-model="editing.opat_review.datetime"
+                 bs-datepicker data-date-type="date" data-autoclose="true">
+        </div>
+      </div>
+
+      <div class="form-group" ng-class="{'has-error': modal_form.time2.$invalid}">
+        <label class="control-label col-sm-3">
+          <i class="fa fa-clock-o"></i> Time
+        </label>
+        <div class="col-sm-8">
+          <input type="text" class="form-control"
+                 size="5"
+                 ng-model="editing.datetime"
+                 data-time-format="HH:mm"
+                 data-autoclose="1"
+                 bs-timepicker>
+        </div>
+      </div>
+
+      {% input "autofocus" label="Review Undertaken by" model="editing.opat_review.initials" %}
+      {% select field="OPATReview.rv_type" %}
+      {% textarea field="OPATReview.opat_plan" macros=True %}
+
+      <div ng-show="editing.opat_review.rv_type.indexOf('Nurse') == 0">
+        <hr >
+        <h4>Nurse Review</h4>
+        {% checkbox field="OPATReview.dressing_changed" %}
+        {% checkbox field="OPATReview.bung_changed" %}
+        {% textarea field="OPATReview.medication_administered" %}
+        {% input field="OPATReview.adverse_events" %}
+      </div>
+
+    </form>
+  </div>
+  <div class="col-md-4">
+    {% include 'modals/_allergies_sidebar.html' %}
+  </div>
+
+</div>
