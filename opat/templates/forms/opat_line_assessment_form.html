@@ -1,0 +1,21 @@
+{% load forms %}
+
+{% input field="OPATLineAssessment.line" "autofocus" %}
+{% datepicker field="OPATLineAssessment.assessment_date" %}
+{% select field="OPATLineAssessment.vip_score" label="VIP Score" lookuplist="[0,1,2,3,4,5]"%}
+{% input field="OPATLineAssessment.dressing_type" %}
+{% datepicker field="OPATLineAssessment.dressing_change_date" %}
+{% input field="OPATLineAssessment.dressing_change_reason" %}
+{% datepicker field="OPATLineAssessment.bionector_change_date" %}
+{% datepicker field="OPATLineAssessment.next_bionector_date" %}
+{% textarea field="OPATLineAssessment.comments" %}
+{% checkbox field="OPATLineAssessment.dressing_intact" %}
+{% checkbox field="OPATLineAssessment.lumen_flush_ok" %}
+{% checkbox field="OPATLineAssessment.blood_drawback_seen" %}
+<div class="form-group">
+  <label class="control-label col-sm-3">Distance from exit site</label>
+  <div class="col-sm-2">
+    <input class="form-control" ng-model="editing.opat_line_assessment.cm_from_exit_site" ng-pattern="/^[0-9\.]+$/">
+  </div>
+  <label class="control-label"><small>(CM)</small></label>
+</div>
