@@ -13,7 +13,6 @@ class Application(application.OpalApplication):
         'js/elcid/controllers/diagnosis_hospital_number.js',
         'js/elcid/controllers/diagnosis_add_episode.js',
         'js/elcid/controllers/diagnosis_discharge.js',
-        'js/elcid/controllers/patient_notes.js',
         'js/elcid/controllers/clinical_advice_form.js',
         'js/elcid/controllers/haem_view.js',
         'js/elcid/controllers/result_view.js',

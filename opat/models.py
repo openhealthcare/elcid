@@ -81,6 +81,8 @@ class OPATLineAssessment(EpisodeSubrecord):
         verbose_name = "OPAT line assessment"
 
 class OPATMeta(EpisodeSubrecord):
+    _clonable = False
+
     review_date           = models.DateField(blank=True, null=True)
     reason_for_stopping   = models.CharField(max_length=200, blank=True, null=True)
     unplanned_stop_reason = ForeignKeyOrFreeText(Unplanned_stop)
@@ -105,6 +107,7 @@ class OPATOutcome(EpisodeSubrecord):
     differently.
     """
     _title            = "OPAT Outcome"
+    _clonable         = False
 
     outcome_stage         = models.CharField(max_length=200, blank=True, null=True)
     treatment_outcome     = models.CharField(max_length=200, blank=True, null=True)
@@ -124,6 +127,7 @@ class OPATOutcome(EpisodeSubrecord):
 
 
 class OPATRejection(EpisodeSubrecord):
+    _clonable = False
 
     decided_by            = models.CharField(max_length=255, blank=True, null=True)
     patient_choice        = models.NullBooleanField(default=False)
