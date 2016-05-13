@@ -1,4 +1,4 @@
-<b>[[ item.outcome_stage ]] </b> <br />
+<b>[[ item.outcome_stage ]] ([[ item.created | shortDate ]])</b> <br />
 <div ng-show="item.outcome_stage && item.outcome_stage.indexOf('Completed Therapy') === 0">
   Patient Outcome: [[ item.patient_outcome ]] <br />
   OPAT Outcome: [[ item.opat_outcome ]] <br />
