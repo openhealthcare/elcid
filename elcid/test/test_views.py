@@ -8,6 +8,7 @@ import ffs
 
 from opal.core.test import OpalTestCase
 from opal.models import Patient, Team
+from opal.core.subrecords import subrecords
 
 from elcid.test.test_models import AbstractEpisodeTestCase
 from microhaem import constants
@@ -91,8 +92,12 @@ class ViewsTest(OpalTestCase):
     def test_delete_item_confirmation_template_view(self):
         self.assertStatusCode('/templates/modals/delete_item_confirmation.html/', 200)
 
-    def test_location_modal_template_view(self):
-        self.assertStatusCode('/templates/modals/location.html/', 200)
+    def test_all_modal_templates(self):
+        """ This renders all of our modal templates and blows up
+            if they fail to render
+        """
+        for i in subrecords():
+            i.get_modal_template()
 
 
 class DetailSchemaViewTest(OpalTestCase):
