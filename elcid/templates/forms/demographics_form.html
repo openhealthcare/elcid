@@ -1,8 +1,8 @@
 {% load forms %}
-{% input "autofocus" field="Demographics.hospital_number" static="editing.demographics.sourced_from_upstream" %}
-{% input field="Demographics.nhs_number" label="NHS Number" static="editing.demographics.sourced_from_upstream" %}
+{% input "autofocus" field="Demographics.hospital_number" static="editing.demographics.external_system" %}
+{% input field="Demographics.nhs_number" label="NHS Number" static="editing.demographics.external_system" %}
 <div class="form-group">
-  <span ng-show="editing.demographics.sourced_from_upstream">
+  <span ng-show="editing.demographics.external_system">
     <label class="control-label col-sm-3">
       Name
     </label>
@@ -13,19 +13,19 @@
     </p>
   </span>
 </div>
-<span ng-hide="editing.demographics.sourced_from_upstream">
-  {% select field="Demographics.title" static="editing.demographics.sourced_from_upstream" %}
-  {% input field="Demographics.first_name" static="editing.demographics.sourced_from_upstream" %}
-  {% input field="Demographics.surname" static="editing.demographics.sourced_from_upstream" %}
+<span ng-hide="editing.demographics.external_system">
+  {% select field="Demographics.title" static="editing.demographics.external_system" %}
+  {% input field="Demographics.first_name" static="editing.demographics.external_system" %}
+  {% input field="Demographics.surname" static="editing.demographics.external_system" %}
 </span>
 {% include 'partials/_date_of_birth_field.html' %}
-<span ng-hide="editing.demographics.sourced_from_upstream">
-  {% input field="Demographics.post_code" static="editing.demographics.sourced_from_upstream" %}
+<span ng-hide="editing.demographics.external_system">
+  {% input field="Demographics.post_code" static="editing.demographics.external_system" %}
 </span>
-{% select field="Demographics.sex" static="editing.demographics.sourced_from_upstream" %}
-{% select field="Demographics.marital_status" static="editing.demographics.sourced_from_upstream" %}
-{% select field="Demographics.ethnicity" static="editing.demographics.sourced_from_upstream" %}
-<span ng-hide="editing.demographics.sourced_from_upstream">
-  {% input label="GP Practice Code" field="Demographics.gp_practice_code" static="editing.demographics.sourced_from_upstream" %}
+{% select field="Demographics.sex" static="editing.demographics.external_system" %}
+{% select field="Demographics.marital_status" static="editing.demographics.external_system" %}
+{% select field="Demographics.ethnicity" static="editing.demographics.external_system" %}
+<span ng-hide="editing.demographics.external_system">
+  {% input label="GP Practice Code" field="Demographics.gp_practice_code" static="editing.demographics.external_system" %}
 </span>
-{% input field="Demographics.birth_place" static="editing.demographics.sourced_from_upstream" %}
+{% input field="Demographics.birth_place" static="editing.demographics.external_system" %}
