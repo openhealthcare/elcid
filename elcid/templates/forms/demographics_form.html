@@ -18,7 +18,7 @@
   {% input field="Demographics.first_name" static="editing.demographics.external_system" %}
   {% input field="Demographics.surname" static="editing.demographics.external_system" %}
 </span>
-{% include 'partials/_date_of_birth_field.html' static="editing.demographics.external_system" %}
+{% include 'partials/_date_of_birth_field.html' %}
 <span ng-hide="editing.demographics.external_system">
   {% input field="Demographics.post_code" static="editing.demographics.external_system" %}
 </span>

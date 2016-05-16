@@ -1,6 +1,6 @@
 {% load forms %}
 
-{% input field="OPATLineAssessment.line" "autofocus" %}
+{% input "autofocus" field="OPATLineAssessment.line" %}
 {% datepicker field="OPATLineAssessment.assessment_date" %}
 {% select field="OPATLineAssessment.vip_score" label="VIP Score" lookuplist="[0,1,2,3,4,5]"%}
 {% input field="OPATLineAssessment.dressing_type" %}
