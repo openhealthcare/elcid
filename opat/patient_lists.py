@@ -30,7 +30,7 @@ class OPATFollowUp(TaggedPatientList):
     tag = "opat"
     subtag = "opat_followup"
     schema = list_columns_opat
-    order = 9
+    order = 10
 
 
 class OPATCurrent(TaggedPatientList):
@@ -39,4 +39,4 @@ class OPATCurrent(TaggedPatientList):
     tag = "opat"
     subtag = "opat_current"
     schema = list_columns_opat
-    order = 10
+    order = 9
