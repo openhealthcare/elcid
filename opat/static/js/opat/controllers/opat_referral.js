@@ -105,10 +105,9 @@ controllers.controller(
             // There is no patient with this hospital number
 	    // Show user the form for creating a new episode,
             // with the hospital number pre-populated
-            $modalInstance.close();
 	    modal = $modal.open({
-		templateUrl: '/opat/templates/modals/add_episode.html/',
-		controller: 'AddEpisodeCtrl',
+  		templateUrl: '/opat/templates/modals/add_episode.html/',
+  		controller: 'AddEpisodeCtrl',
                 size: 'lg',
 		resolve: {
 		    options: function() { return options; },
