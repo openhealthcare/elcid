@@ -3,7 +3,7 @@
   <label class="control-label col-sm-3">Category</label>
   <div class="col-sm-8" ng-show="editing.location.category == 'Discharged'">
     <label class="readonly">
-      [[ editing.location.category | title]] &nbsp; 
+      [[ editing.location.category | title]] &nbsp;
       <button class="btn" ng-click="undischarge()">Undischarge</button>
     </label>
   </div>
@@ -18,18 +18,10 @@
   </div>
 </div>
 
-<div class="form-group" ng-hide="episode.category == 'OPAT'">
-  <label class="control-label col-sm-3">Hospital</label>
-  <div class="col-sm-8">
-    <select class="form-control" ng-model="editing.location.hospital">
-      <option value="">---------</option>
-      <option ng-repeat="hospital in hospital_list">[[hospital]]</option>
-      <option>Other</option>
-    </select>
-  </div>
+<div ng-hide="episode.category == 'OPAT'">
+  {% select field="Location.hospital" lookuplist="hospital_list" other=True %}
 </div>
 
-{% input model="editing.location.hospital" label="Hospital - Other" hide="episode.category == 'OPAT'" show="hospital_list.indexOf(editing.location.hospital) == -1" %}
 {% select model="editing.location.ward" label="Ward" lookuplist="ward_list" hide="episode.category == 'OPAT'" %}
 {% input model="editing.location.bed" label="Bed" hide="episode.category == 'OPAT'" %}
 {% datepicker model="episode.date_of_admission" label="Date of admission" %}
