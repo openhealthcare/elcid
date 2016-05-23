@@ -1,5 +1,5 @@
 {% load forms %}
-<input type="hidden" ng-init="editing.opat_outcome.outcome_stage = 'OPAT Review'" ng-model="editing.opat_outcome.outcome_stage" />
+<input type="hidden" ng-init="editing.opat_outcome.outcome_stage = editing.opat_outcome.outcome_stage || 'OPAT Review'" ng-model="editing.opat_outcome.outcome_stage" />
 
 {% select field="OPATOutcome.patient_outcome" lookuplist="['Cure', 'Improved', 'Failure']" help="opat/_patient_outcome_help.html" %}
 {% select field="OPATOutcome.opat_outcome" lookuplist="['Success', 'Partial Success', 'Failure of OPAT', 'Intermidiate Outcome']" help="opat/_opat_outcome_help.html" %}
