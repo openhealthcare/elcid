@@ -1,10 +1,12 @@
 <p ng-show="episode.category == 'Walkin' && episode.getTags().length > 1">
+
   <button
-     class="btn btn-primary"
+     class="btn btn-primary btn-lg"
      ng-click="dischargeEpisode(episode)">
-    <i class="glyphicon glyphicon-ok"></i>
-    <span ng-show="episode.hasTag('walkin_triage')" >Next</span>
-    <span ng-show="episode.hasTag('walkin_doctor')" >End of appointment</span>
-    <span ng-show="episode.hasTag('walkin_review')" >Next</span>
+
+
+    <span ng-show="episode.hasTag('walkin_triage')" ><i class="glyphicon glyphicon-ok"></i> Next</span>
+    <span ng-show="episode.hasTag('walkin_doctor')" ><i class="glyphicon glyphicon-ok"></i> End of<br>appointment</span>
+    <span ng-show="episode.hasTag('walkin_review')" ><i class="glyphicon glyphicon-ok"></i> Next</span>
   </button>
 </p>
