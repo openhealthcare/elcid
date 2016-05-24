@@ -72,17 +72,29 @@ describe('elCIDFlow', function() {
         });
 
         describe('Discharge Overrides', function() {
+            var slugs;
 
             beforeEach(function(){
+                slugs = [
+                    'hiv-immune_inpatients',
+                    'infectious_diseases-id_inpatients',
+                    'tropical_diseases'
+                ];
                 $routeParams.slug = 'tropical_diseases';
             });
 
             it('enter should fetch the diagnosis flow', function() {
-                expect(Flow.enter()).toEqual(diagnosis_enter);
+                _.each(slugs, function(slug){
+                    $routeParams.slug = slug;
+                    expect(Flow.enter()).toEqual(diagnosis_enter);
+                });
             });
 
             it('should fetch the diagnosis exit flow', function() {
-                expect(Flow.exit({category: 'Inpatient'})).toEqual(diagnosis_exit);
+                _.each(slugs, function(slug){
+                    $routeParams.slug = slug;
+                    expect(Flow.exit({category: 'Inpatient'})).toEqual(diagnosis_exit);
+                });
             });
 
 
