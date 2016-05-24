@@ -5,7 +5,7 @@ angular.module('opal.services').factory('elCIDFlow', function($routeParams){
     "use strict";
 
     var data_collection_slugs = [
-        'hiv-immune-inpatients',
+        'hiv-immune_inpatients',
         'infectious_diseases-id_inpatients',
         'tropical_diseases'
     ];
