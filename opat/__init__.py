@@ -1,6 +1,8 @@
 """
 Plugin definition for the opat OPAL plugin
 """
+from django.utils.functional import cached_property
+
 from opal.core import episodes, plugins
 from opat.urls import urlpatterns
 
@@ -64,29 +66,37 @@ class OpatPlugin(plugins.OpalPlugin):
 
 plugins.register(OpatPlugin)
 
+
 class OPATEpisode(episodes.EpisodeType):
     name            = 'OPAT'
     detail_template = 'detail/opat2.html'
 
-    @classmethod
-    def start(cls, episode):
-        tags = episode.get_tag_names(None)
-        if "opat_referrals" in tags:
-            # Todo this is probably wrong, need to check with David
-            created = episode.created or episode.updated
-            return created.date()
-        else:
-            return episode.location_set.first().opat_acceptance
+    @cached_property
+    def tags(self):
+        return self.episode.get_tag_names(None)
 
-    @classmethod
-    def end(cls, episode):
-        tags = episode.get_tag_names(None)
-        if "opat_referrals" in tags:
-            rejection = episode.opatrejection_set.first()
+    @cached_property
+    def rejection_date(self):
+        rejection = self.episode.opatrejection_set.first()
+        if rejection:
+            return rejection.date
 
-            if rejection:
-                return rejection.date
-            else:
-                return episode.location_set.first().opat_acceptance
-        else:
-            return super(OPATEpisode, cls).end(episode)
+    @property
+    def start(self):
+        if self.rejection_date:
+            return self.rejection_date
+
+        if "opat_referrals" in self.tags:
+            return None
+
+        return self.episode.location_set.first().opat_acceptance
+
+    @property
+    def end(self):
+        if self.rejection_date:
+            return self.rejection_date
+
+        if "opat_referrals" in self.tags:
+            return None
+
+        return super(OPATEpisode, self).end
