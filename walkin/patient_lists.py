@@ -6,7 +6,7 @@ from opal.core.patient_lists import TaggedPatientList
 
 class WalkinDoctor(TaggedPatientList):
     display_name = 'Walkin Doctor'
-    direct_add = False
+    direct_add = True
     tag = "walkin"
     subtag = "walkin_doctor"
     order = 12
@@ -26,7 +26,7 @@ class WalkinDoctor(TaggedPatientList):
 
 class WalkinNurseTriage(TaggedPatientList):
     display_name = 'Walkin Nurse Triage'
-    direct_add = False
+    direct_add = True
     tag = "walkin"
     subtag = "walkin_triage"
     order = 11
@@ -42,7 +42,7 @@ class WalkinNurseTriage(TaggedPatientList):
 
 class WalkinReview(TaggedPatientList):
     display_name = 'Walkin Review'
-    direct_add = False
+    direct_add = True
     tag = "walkin"
     subtag = "walkin_review"
     order = 13

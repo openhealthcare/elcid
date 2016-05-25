@@ -80,7 +80,7 @@ controllers.controller(
             // with the hospital number pre-populated
             $modalInstance.close();
             modal = $modal.open({
-                templateUrl: '/templates/modals/add_walkin_episode.html/',
+                templateUrl: '/templates/add_walkin_episode_modal.html',
                 controller: 'AddEpisodeCtrl',
                 size: 'lg',
                 resolve: {
@@ -163,7 +163,7 @@ controllers.controller(
         $scope.add_for_patient = function(patient){
             var demographics = patient.demographics[0];
             modal = $modal.open({
-                templateUrl: '/templates/modals/add_walkin_episode.html/',
+                templateUrl: '/templates/add_walkin_episode_modal.html',
                 controller: 'AddEpisodeCtrl',
                 size: 'lg',
                 resolve: {

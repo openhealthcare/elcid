@@ -17,7 +17,7 @@ list_columns_opat = [
 
 class OPATReferral(TaggedPatientList):
     display_name = 'OPAT Referrals'
-    direct_add = False
+    direct_add = True
     tag = "opat"
     subtag = "opat_referrals"
     schema = list_columns_opat
