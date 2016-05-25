@@ -67,3 +67,26 @@ plugins.register(OpatPlugin)
 class OPATEpisode(episodes.EpisodeType):
     name            = 'OPAT'
     detail_template = 'detail/opat2.html'
+
+    @classmethod
+    def start(cls, episode):
+        tags = episode.get_tag_names(None)
+        if "opat_referrals" in tags:
+            # Todo this is probably wrong, need to check with David
+            created = episode.created or episode.updated
+            return created.date()
+        else:
+            return episode.location_set.first().opat_acceptance
+
+    @classmethod
+    def end(cls, episode):
+        tags = episode.get_tag_names(None)
+        if "opat_referrals" in tags:
+            rejection = episode.opatrejection_set.first()
+
+            if rejection:
+                return rejection.date
+            else:
+                return episode.location_set.first().opat_acceptance
+        else:
+            return super(OPATEpisode, cls).end(episode)
