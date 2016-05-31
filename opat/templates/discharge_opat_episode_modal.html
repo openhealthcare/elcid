@@ -1,4 +1,4 @@
-{% load forms %} 
+{% load forms %}
 
 <div class="modal-header">
   <button type="button" class="close" ng-click="cancel()">×</button>
@@ -11,7 +11,7 @@
 
   <!-- Initial State -->
   <div ng-show="episode.tagging[0].opat_referrals == true && meta.accepted == null">
-    <p class="lead text-center"><b>Accept</b> onto OPAT service?</p>
+    <p class="lead text-center"><b>Accept</b> [[ episode.demographics[0].first_name ]] [[ episode.demographics[0].surname ]] onto OPAT service?</p>
     <center>
       <button class="btn btn-primary btn-lg" ng-click="meta.accepted = true">
         {% icon "glyphicon-ok" %}
@@ -28,7 +28,7 @@
   <div ng-show="episode.tagging[0].opat_referrals == true && meta.accepted == true && qc.fails()">
     <form class="form-horizontal">
       <div ng-hide="qc.referral()">
-        <p class="lead text-center">This patient appears to have incomplete referral information</p>
+        <p class="lead text-center">[[ episode.demographics[0].first_name ]] [[ episode.demographics[0].surname ]] appears to have incomplete referral information</p>
         {% input label="Referring consultant" model="qc.consultant" %}
         {% select label="Referring team" model="qc.referring_team" lookuplist="speciality_list" %}
         <center>
@@ -37,7 +37,7 @@
       </div>
       <hr ng-hide="qc.allergies() || qc.referral()"/>
       <div ng-hide="qc.allergies()">
-        <p class="lead text-center">This patient appears to have <b>no allergies</b> - is that correct?</p>
+        <p class="lead text-center">[[ episode.demographics[0].first_name ]] [[ episode.demographics[0].surname ]] appears to have <b>no allergies</b> - is that correct?</p>
         {% checkbox label="No Allergies" model="qc.no_allergies" %}
       </div>
     </form>
@@ -45,7 +45,7 @@
 
   <!-- Accepted state -->
   <div ng-show="episode.tagging[0].opat_referrals == true && meta.accepted == true && qc.passes()">
-    <p class="lead">The patient will now be transferred to the <b>OPAT Current</b> List</p>
+    <p class="lead text-center">[[ episode.demographics[0].first_name ]] [[ episode.demographics[0].surname ]] will now be transferred to the <b>OPAT Current</b> List</p>
     <center>
       <button class="btn btn-primary btn-lg" ng-click="accept()">
         {% icon "glyphicon-ok" %}
@@ -53,10 +53,10 @@
       </button>
     </center>
   </div>
-  
+
   <!-- Rejected state -->
   <div ng-show="episode.tagging[0].opat_referrals == true && meta.accepted == false">
-    <p class="lead text-center">The patient will be <b>rejected</b> from the OPAT service.</p>
+    <p class="lead text-center">[[ episode.demographics[0].first_name ]] [[ episode.demographics[0].surname ]] will be <b>rejected</b> from the OPAT service.</p>
     <form class="form-horizontal">
 
       <div class="form-group">
@@ -85,7 +85,7 @@
     </form>
     <center>
       <p>
-        <button class="btn btn-secondary btn-lg" 
+        <button class="btn btn-secondary btn-lg"
                 ng-click="reject()">
           {% icon "fa-close" %}
           Reject
@@ -97,7 +97,7 @@
   <!-- OPAT Current initial state -->
   <div ng-show="episode.tagging[0].opat_current && meta.oral == null && meta.completed == null && meta.accepted == null">
     <center>
-      <p class="lead">This patient has <b>completed</b> IV Therapy. <br />What's the reason for that ?</p>
+      <p class="lead text-center">[[ episode.demographics[0].first_name ]] [[ episode.demographics[0].surname ]] has <b>completed</b> IV Therapy. <br />What's the reason for that ?</p>
       <button class="btn btn-primary btn-lg" ng-click="meta.oral = true">Ongoing Follow Up</button>
       <button class="btn btn-primary btn-lg" ng-click="meta.completed = true">Completed OPAT care</button>
     </center>
@@ -105,7 +105,7 @@
 
   <!-- OPAT Switch to oral -->
   <div ng-show="episode.tagging[0].opat_current && meta.oral">
-    <p class="lead text-center">The patient will be moved to the OPAT follow up list</p>
+    <p class="lead text-center">[[ episode.demographics[0].first_name ]] [[ episode.demographics[0].surname ]] will be moved to the OPAT follow up list</p>
 
     <form class="form-horizontal">
       {% include 'opat/_stopped_antibiotics.html' %}
@@ -113,7 +113,7 @@
     </form>
 
     <center>
-      <button class="btn btn-primary btn-lg" 
+      <button class="btn btn-primary btn-lg"
               ng-click="switch_to_oral()">
         {% icon "glyphicon-ok" %}
         Confirm
@@ -123,13 +123,13 @@
 
   <!-- OPAT completed therapy -->
   <div ng-show="episode.tagging[0].opat_current && meta.completed">
-    <p class="lead text-center">The patient will be <b>discharged</b></p>
+    <p class="lead text-center">[[ episode.demographics[0].first_name ]] [[ episode.demographics[0].surname ]] will be <b>discharged</b></p>
 
     <form class="form-horizontal">
       <div class="form-group">
         <label class="control-label col-sm-3">OPAT Review date</label>
         <div class="col-sm-8">
-	  <input class="form-control" type="text" ng-model="meta.review_date" 
+	  <input class="form-control" type="text" ng-model="meta.review_date"
                  bs-datepicker data-autoclose="true" />
         </div>
       </div>
@@ -138,14 +138,14 @@
     </form>
 
     <center>
-      <button class="btn btn-primary btn-lg" 
+      <button class="btn btn-primary btn-lg"
               ng-click="completed_therapy()">Confirm</button>
     </center>
   </div>
 
   <!-- OPAT Follow up initial state -->
   <div ng-show="episode.tagging[0].opat_followup && meta.iv == null && meta.completed == null">
-    <p class="lead text-center">This patient has completed Oral treatment. What's the reason for that ?</p>
+    <p class="lead text-center">[[ episode.demographics[0].first_name ]] [[ episode.demographics[0].surname ]] has completed Oral treatment. What's the reason for that ?</p>
     <center>
       <button class="btn btn-primary btn-lg" ng-click="meta.iv = true">Back to IV Therapy</button>
       <button class="btn btn-primary btn-lg" ng-click="meta.completed = true">Completed OPAT care</button>
@@ -154,7 +154,7 @@
 
   <!-- OPAT Back to IV -->
   <div ng-show="episode.tagging[0].opat_followup && meta.iv">
-    <p class="lead text-center">The patient will go back to OPAT Referrals</p>
+    <p class="lead text-center">[[ episode.demographics[0].first_name ]] [[ episode.demographics[0].surname ]] will go back to OPAT Referrals</p>
 
     <form class="form-horizontal">
       {% select label="Reason for return to IVs" model="meta.reason" lookuplist="['Intolarance of agents', 'Progression of infection', 'New infection', 'Other']" %}
@@ -162,19 +162,19 @@
     </form>
 
     <center>
-      <button class="btn btn-primary btn-lg" 
+      <button class="btn btn-primary btn-lg"
               ng-click="back_to_iv()">Confirm</button>
     </center>
   </div>
   <!-- OPAT completed therapy -->
   <div ng-show="episode.tagging[0].opat_followup && meta.completed">
-    <p>The patient will be discharged</p>
+    <p>[[ episode.demographics[0].first_name ]] [[ episode.demographics[0].surname ]] will be discharged</p>
 
     <form class="form-horizontal">
       <div class="form-group">
         <label class="control-label col-sm-3">OPAT Review date</label>
         <div class="col-sm-8">
-	  <input class="form-control" type="text" ng-model="meta.review_date" 
+	  <input class="form-control" type="text" ng-model="meta.review_date"
                  bs-datepicker data-autoclose="true" />
         </div>
       </div>
@@ -183,12 +183,12 @@
     </form>
 
     <center>
-      <button class="btn btn-warning btn-lg" 
+      <button class="btn btn-warning btn-lg"
               ng-click="completed_therapy(' Post Follow Up')">Confirm</button>
     </center>
   </div>
-  
-  
+
+
 </div>
 <div class="modal-footer">
   <button class="btn" ng-click="cancel()">Cancel</button>
