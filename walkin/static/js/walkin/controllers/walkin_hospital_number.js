@@ -78,7 +78,6 @@ controllers.controller(
             // There is no patient with this hospital number
             // Show user the form for creating a new episode,
             // with the hospital number pre-populated
-            $modalInstance.close();
             modal = $modal.open({
                 templateUrl: '/templates/modals/add_walkin_episode.html/',
                 controller: 'AddEpisodeCtrl',
