@@ -36,22 +36,41 @@ describe('DiagnosisHospitalNumber', function(){
     describe('newPatient()', function() {
 
         it('should open the AddPatientModal and then close with cancel', function() {
-            spyOn($modal, 'open').and.callFake(function(){
-                return {result: {then: function(fn){ fn('cancel') }}}
-            });
             spyOn(modalInstance, 'close');
+            spyOn($modal, 'open').and.callFake(function(){
+                return {
+                  result: {
+                    then: function(fn){
+                      // modal instance should only be closed when
+                      // the add patient modal has been resolved
+                      expect(modalInstance.close).not.toHaveBeenCalled();
+                      fn('cancel');
+                    }
+                  }
+                }
+            });
             $scope.newPatient({hospital_number: '555-123'});
             expect(modalInstance.close).toHaveBeenCalledWith('cancel')
         });
 
         it('should pass the tags to the addpatient modal', function() {
-            spyOn($modal, 'open').and.callFake(function(){
-                return {result: {then: function(fn){ fn('cancel') }}}
-            });
+          spyOn($modal, 'open').and.callFake(function(){
+              return {
+                result: {
+                  then: function(fn){
+                    // modal instance should only be closed when
+                    // the add patient modal has been resolved
+                    expect(modalInstance.close).not.toHaveBeenCalled();
+                    fn('cancel');
+                  }
+                }
+              }
+          });
             spyOn(modalInstance, 'close');
             $scope.newPatient({hospital_number: '555-123'});
             var resolvers = $modal.open.calls.mostRecent().args[0].resolve
-            expect(resolvers.tags()).toEqual({})
+            expect(resolvers.tags()).toEqual({});
+            expect(modalInstance.close).toHaveBeenCalled();
         });
     });
 

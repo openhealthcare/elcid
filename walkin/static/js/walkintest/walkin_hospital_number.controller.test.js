@@ -86,7 +86,7 @@ describe('WalkinHospitalNumberCtrl', function (){
             $scope.newPatient();
             var resolves = $modal.open.calls.mostRecent().args[0].resolve;
             expect(resolves.tags()).toEqual(tags);
-            expect($modalInstance.close).toHaveBeenCalled();
+            expect($modalInstance.close).not.toHaveBeenCalled();
         });
 
     });
