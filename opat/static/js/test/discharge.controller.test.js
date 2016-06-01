@@ -173,4 +173,19 @@ describe('OPATDischargeCtrl', function (){
         });
     });
 
+    describe('switch_to_oral()', function(){
+
+        beforeEach(function(){
+            $httpBackend.expectPOST('/api/v0.1/opat_outcome/').respond('Yes');
+            $httpBackend.expectPOST('/api/v0.1/opat_meta/').respond('Yes');
+            $httpBackend.expectPUT('/api/v0.1/tagging/33/').respond('Yes');
+        });
+
+        it('should send a growl message', function(){
+            $scope.switch_to_oral();
+            $httpBackend.flush();
+            expect(growl.success).toHaveBeenCalled();
+        })
+    });
+
 });
