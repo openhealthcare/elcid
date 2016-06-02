@@ -2,7 +2,7 @@ from opal.core import episodes
 from django.utils.functional import cached_property
 
 
-class OPATEpisode(episodes.EpisodePattern):
+class OPATEpisode(episodes.EpisodeCategory):
     display_name            = 'OPAT'
     detail_template = 'detail/opat2.html'
 

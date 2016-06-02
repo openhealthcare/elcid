@@ -3,7 +3,7 @@ from opat import models as opat_models
 import datetime
 
 
-class EpisodePatternTestCase(OpalTestCase):
+class EpisodeCategoryTestCase(OpalTestCase):
     def setUp(self):
         self.today = datetime.date.today()
         self.yesterday = self.today - datetime.timedelta(1)
