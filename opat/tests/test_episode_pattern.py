@@ -1,10 +1,9 @@
 from opal.core.test import OpalTestCase
 from opat import models as opat_models
-from elcid import models as elcid_models
 import datetime
 
 
-class EpisodeTypeTestCase(OpalTestCase):
+class EpisodePatternTestCase(OpalTestCase):
     def setUp(self):
         self.today = datetime.date.today()
         self.yesterday = self.today - datetime.timedelta(1)
