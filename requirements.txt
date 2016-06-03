@@ -21,7 +21,7 @@ django-compressor==1.5
 jsonfield==1.0.3
 pycrypto==2.6.1
 
--e git+https://github.com/openhealthcare/opal.git@v0.6.0#egg=opal
+-e git+https://github.com/openhealthcare/opal.git@v0.6.1#egg=opal
 -e git+https://github.com/openhealthcare/opal-observations.git@v0.1.2#egg=opal_observations
 
 -e git+https://github.com/openhealthcare/opal-wardround.git@v0.6#egg=opal_wardround
