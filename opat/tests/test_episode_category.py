@@ -8,14 +8,14 @@ class EpisodeCategoryTestCase(OpalTestCase):
         self.today = datetime.date.today()
         self.yesterday = self.today - datetime.timedelta(1)
         patient, self.accepted_episode = self.new_patient_and_episode_please()
-        self.accepted_episode.category = "OPAT"
+        self.accepted_episode.category_name = "OPAT"
         self.accepted_episode.date_of_episode = self.today
         self.accepted_episode.save()
         location = self.accepted_episode.location_set.first()
         location.opat_acceptance = self.yesterday
         location.save()
         self.rejected_episode = patient.create_episode()
-        self.rejected_episode.category = "OPAT"
+        self.rejected_episode.category_name = "OPAT"
         opat_models.OPATRejection.objects.create(
             episode = self.rejected_episode,
             date = self.today
@@ -23,7 +23,7 @@ class EpisodeCategoryTestCase(OpalTestCase):
         self.rejected_episode.save()
 
         self.referral_episode = patient.create_episode()
-        self.referral_episode.category = "OPAT"
+        self.referral_episode.category_name = "OPAT"
         self.referral_episode.save()
         self.referral_episode.set_tag_names(["opat_referrals"], None)
 
