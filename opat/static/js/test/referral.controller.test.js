@@ -54,7 +54,7 @@ describe('OPATReferralCtrl', function (){
                 demographics: [{}],
                 episodes: {
                     1: {
-                        category: 'OPAT',
+                        category_name: 'OPAT',
                         tagging: [{}],
                     }
                 }
