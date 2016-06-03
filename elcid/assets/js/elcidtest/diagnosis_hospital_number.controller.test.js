@@ -87,7 +87,7 @@ describe('DiagnosisHospitalNumber', function(){
                       hospital_number: "1",
                       patient_id: "1",
                   }],
-                  category: "Inpatient"
+                  category_name: "Inpatient"
             }},
             demographics: [{
                 hospital_number: "1",
@@ -123,7 +123,7 @@ describe('DiagnosisHospitalNumber', function(){
         });
         it('if the patient is not an inpatient, call through', function(){
             var patient = angular.copy(patientData);
-            patient.episodes["1"].category = "Tropical";
+            patient.episodes["1"].category_name = "Tropical";
             spyOn($scope, "addForPatient");
             $scope.newForPatientWithActiveEpisode(patient);
             expect($scope.addForPatient).toHaveBeenCalled();

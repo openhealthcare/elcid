@@ -38,7 +38,7 @@ class Discharged(HistoricTagsMixin, WardRound):
         team = self.request.GET.get("team", None)
 
         episodes = Episode.objects.filter(
-            category__in=['Inpatient', 'Walkin'],
+            category_name__in=['Inpatient', 'Walkin'],
             discharge_date__gte=two_weeks_ago)
 
         if team:

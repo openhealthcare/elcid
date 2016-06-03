@@ -28,7 +28,7 @@ controllers.controller(
 
             var ep = episode.makeCopy()
 
-            ep.category = 'Research'
+            ep.category_name = 'Research'
 
             episode.save(ep).then(
                 function(){
@@ -117,7 +117,7 @@ controllers.controller(
                     controller: 'CopyToCategoryCtrl',
                     resolve: {
                         patient: function() { return patient; },
-                        category: function() { return 'Research'; }
+                        category_name: function() { return 'Research'; }
                     }
                 }).result.then(
                     function(result) {

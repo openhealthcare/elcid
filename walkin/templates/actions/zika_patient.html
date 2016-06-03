@@ -1,5 +1,5 @@
 {% load forms %}
-<p ng-show="episode.category == 'Walkin' && ((episode.hasTag('walkin_doctor') || episode.hasTag('walkin_review') ) || episode.getTags().length == 1)">
+<p ng-show="episode.category_name == 'Walkin' && ((episode.hasTag('walkin_doctor') || episode.hasTag('walkin_review') ) || episode.getTags().length == 1)">
   <button class="btn btn-primary btn-lg" ng-click="open_modal('ZikaCtrl', '/templates/modals/walkin/zika.html', 'lg', {episode: episode, options: options})">
     {% icon "fa-warning" %} Zika Patient
   </button>

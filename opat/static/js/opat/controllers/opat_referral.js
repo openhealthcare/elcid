@@ -37,7 +37,7 @@ controllers.controller(
                 if(teams[team]){ teams[team] = false };
             });
 
-            ep.category = 'OPAT'
+            ep.category_name = 'OPAT'
             teams.opat = true;
             teams.opat_referrals = true;
             location.opat_referral = moment();
@@ -139,8 +139,8 @@ controllers.controller(
 					templateUrl: '/templates/modals/copy_to_category.html/',
 					controller: 'CopyToCategoryCtrl',
 					resolve: {
-                        category: function() { return 'OPAT' },
-						patient: function() { return patient; },
+              category_name: function() { return 'OPAT' },
+  						patient: function() { return patient; },
 					}
 				}).result.then(
                     function(result) {
@@ -160,7 +160,7 @@ controllers.controller(
             }
 
             if(patient.active_episode_id && _.keys(patient.episodes).length > 0){
-                opat_episodes = _.filter(patient.episodes, function(e){ return e.category == 'OPAT' });
+                opat_episodes = _.filter(patient.episodes, function(e){ return e.category_name == 'OPAT' });
                 if(opat_episodes.length > 0){
                     // Tell the user that this patient is already on the opat service
                     var list_name;
