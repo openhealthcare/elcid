@@ -9,7 +9,9 @@ from django.test import TestCase, override_settings
 from opal.core import exceptions
 from opal.core.test import OpalTestCase
 from opal.models import Patient, Episode, Condition, Synonym, Symptom
-from elcid.models import Location, PresentingComplaint, Result, Allergies
+from elcid.models import (
+    Location, PresentingComplaint, Result, Allergies, Demographics
+)
 
 HERE = ffs.Path.here()
 TEST_DATA = HERE/'test_data'
@@ -106,6 +108,20 @@ class DemographicsTest(OpalTestCase, AbstractPatientTestCase):
     def test_update_from_dict_with_incorrect_consistency_token(self):
         with self.assertRaises(exceptions.ConsistencyError):
             self.demographics.update_from_dict({'consistency_token': '87654321'}, self.user)
+
+    @override_settings(GLOSS_ENABLED=True)
+    @patch("opal.models.Subrecord.get_form_template")
+    def test_get_demographics_form_with_gloss(self, form_template_mock):
+        form_template_mock.return_value = "some_template.html"
+        form_template = Demographics.get_form_template()
+        self.assertEqual(form_template, "some_template.html")
+
+    @override_settings(GLOSS_ENABLED=False)
+    def test_get_demographics_form_without_gloss(self):
+        form_template = Demographics.get_form_template()
+        self.assertEqual(
+            form_template, "/forms/demographics_form_pre_gloss.html"
+        )
 
 
 class LocationTest(OpalTestCase, AbstractEpisodeTestCase):
