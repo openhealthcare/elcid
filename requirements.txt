@@ -27,7 +27,7 @@ pycrypto==2.6.1
 -e git+https://github.com/openhealthcare/opal-observations.git@v0.1.2#egg=opal_observations
 
 -e git+https://github.com/openhealthcare/opal-wardround.git@v0.6#egg=opal_wardround
--e git+https://github.com/openhealthcare/opal-referral.git@1164-referrals-fixes#egg=opal_referral
+-e git+https://github.com/openhealthcare/opal-referral.git@v0.1.4#egg=opal_referral
 -e git+https://github.com/openhealthcare/opal-dashboard.git@v0.1.3#egg=opal_dashboard
 
 -e git+https://github.com/openhealthcare/opal-dischargesummary.git@v0.2#egg=opal_dischargesummary
