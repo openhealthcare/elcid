@@ -120,7 +120,7 @@ class DemographicsTest(OpalTestCase, AbstractPatientTestCase):
     def test_get_demographics_form_without_gloss(self):
         form_template = Demographics.get_form_template()
         self.assertEqual(
-            form_template, "/forms/demographics_form_pre_gloss.html"
+            form_template, "forms/demographics_form_pre_gloss.html"
         )
 
 

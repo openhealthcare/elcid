@@ -56,7 +56,7 @@ class Demographics(PatientSubrecord, ExternallySourcedModel):
         if settings.GLOSS_ENABLED:
             return super(Demographics, cls).get_form_template(patient_list=None, episode_type=None)
         else:
-            return "/forms/demographics_form_pre_gloss.html"
+            return "forms/demographics_form_pre_gloss.html"
 
 class ContactDetails(PatientSubrecord):
     _is_singleton = True
