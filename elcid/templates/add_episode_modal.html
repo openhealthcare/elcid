@@ -3,7 +3,7 @@
 {% block icon_name %}glyphicon glyphicon-plus{% endblock %}
 {% block title %}Add Patient{% endblock %}
 {% block modal_body %}
-  <form class="form-horizontal" name="newEpisodeForm">
+  <form class="form-horizontal" name="form">
     {% include 'partials/_core_demographics.html' %}
     {% if teams %}
       {% include 'partials/_teams_select.html' %}
@@ -15,7 +15,7 @@
 <div class="modal-footer">
   <button class="btn btn-lg btn-primary"
           ng-click="save()"
-          ng-disabled="newEpisodeForm.date_of_birth.$invalid && !editing.demographics.external_system"
+          ng-disabled="form.date_of_birth.$invalid && !editing.demographics.external_system"
           >
     <i class="fa fa-save"></i>
     Save record

@@ -6,13 +6,13 @@
   </h3>
 </div>
 <div class="modal-body">
-  <form class="form-horizontal" name="newEpisodeForm">
+  <form class="form-horizontal" name="form">
     {% include 'partials/_core_demographics.html' %}
     <input type="hidden" value="OPAT" ng-model="editing.location.category" />
   </form>
 </div>
 <div class="modal-footer">
-  <button class="btn btn-primary" ng-click="save()" ng-disabled="newEpisodeForm.date_of_birth.$invalid && !editing.demographics.external_system">
+  <button class="btn btn-primary" ng-click="save()" ng-disabled="form.date_of_birth.$invalid && !editing.demographics.external_system">
     <i class="fa fa-save"></i>
     Save
   </button>
