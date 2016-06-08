@@ -13,7 +13,7 @@
       <option ng-repeat="category in episode_category_list">[[category]]</option>
     </select>
   </div>
-  <div class="col-sm-8" ng-show="episode_category_list.indexOf(editing.location.category) == -1 && editing.location.category != 'Discharged'">
+  <div class="col-sm-8 form-control-static " ng-show="episode_category_list.indexOf(editing.location.category) == -1 && editing.location.category != 'Discharged'">
     <p>[[ episode.category ]]</p>
   </div>
 </div>
