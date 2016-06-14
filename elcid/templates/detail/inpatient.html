@@ -29,7 +29,9 @@
   {% include "partials/current_location.html" %}
   {% teams_panel %}
   {% record_panel models.Allergies noentries="No known allergies"%}
-  {% record_panel models.InpatientAdmission editable=False %}
+  {% if GLOSS_ENABLED %}
+    {% record_panel models.InpatientAdmission editable=False %}
+  {% endif %}
   {% record_panel models.PastMedicalHistory %}
   {% record_panel models.Travel %}
   {% record_timeline models.MicrobiologyInput "when" %}
