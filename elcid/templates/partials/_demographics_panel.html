@@ -64,15 +64,5 @@
         [[ patient.demographics[0].ethnicity ]]
       </div>
     </div>
-    <div ng-show="episode.hasTag('opat_current') || episode.hasTag('opat_referrals') || episode.hasTag('opat_followup')" class="row">
-      <div class="col-md-4">
-        <b>OPAT stage</b>
-      </div>
-      <div class="col-md-8">
-        <a class="orange-link" ng-show="episode.hasTag('opat_current')" href="/#/list/[[ options.tags.opat_current.slug ]]">[[ options.tags.opat_current.display_name ]]</a>
-        <a class="orange-link" ng-show="episode.hasTag('opat_referrals')" href="/#/list/[[ options.tags.opat_referrals.slug ]]">[[ options.tags.opat_referrals.display_name ]]</a>
-        <a class="orange-link" ng-show="episode.hasTag('opat_followup')" href="/#/list/[[ options.tags.opat_followup.slug ]]">[[ options.tags.opat_followup.display_name ]]</a>
-      </div>
-    </div>
   </div>
 </div>

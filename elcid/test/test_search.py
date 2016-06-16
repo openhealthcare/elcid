@@ -2,6 +2,8 @@ from mock import patch, MagicMock
 from copy import copy
 import json
 
+from django.test import override_settings
+
 from opal.core.test import OpalTestCase
 from opal.core.search import queries
 from opal import models as omodels
@@ -35,6 +37,10 @@ class SearchTestCase(OpalTestCase):
         'column': u'demographics',
     }]
 
+    @override_settings(
+        OPAL_SEARCH_BACKEND="elcid.search.GlossQuery",
+        GLOSS_URL_BASE="http://0.0.0.0:6767"
+    )
     def test_recusive_gloss_search(self, requests_mock):
         return_1 = copy(self.returned_gloss_result)
         return_1["duplicate_patient"] = [dict(new_id="1000")]
@@ -88,6 +94,10 @@ class SearchTestCase(OpalTestCase):
         expected["merged"] = merged
         self.assertEqual(result, expected)
 
+    @override_settings(
+        OPAL_SEARCH_BACKEND="elcid.search.GlossQuery",
+        GLOSS_URL_BASE="http://0.0.0.0:6767"
+    )
     def test_gloss_query_flow(self, requests_mock):
         requests_mock.return_value = MagicMock()
         requests_mock.return_value.content = json.dumps({

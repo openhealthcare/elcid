@@ -29,14 +29,18 @@
   {% include "partials/current_location.html" %}
   {% teams_panel %}
   {% record_panel models.Allergies noentries="No known allergies"%}
-  {% record_panel models.InpatientAdmission editable=False %}
+  {% if GLOSS_ENABLED %}
+    {% record_panel models.InpatientAdmission editable=False %}
+  {% endif %}
   {% record_panel models.PastMedicalHistory %}
   {% record_panel models.Travel %}
   {% record_timeline models.MicrobiologyInput "when" %}
 </div>                 <!-- Ends Detail panels col 1 -->
 <div class="col-md-6"> <!-- Detail panels col 2 -->
   {% record_panel models.PresentingComplaint %}
-  {% record_panel models.Diagnosis %}
+  {% record_panel models.PrimaryDiagnosis only_display_if_exists=True %}
+  {% record_panel models.SecondaryDiagnosis only_display_if_exists=True %}
+  {% record_panel models.ConsultantAtDischarge only_display_if_exists=True %}
   {% record_panel models.Antimicrobial %}
   {% record_panel models.MicrobiologyTest %}
   {% record_panel models.Todo %}

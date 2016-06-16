@@ -292,20 +292,24 @@ COVERAGE_EXCLUDE_MODULES = ('elcid.migrations', 'elcid.tests',
 INTEGRATING = False
 GLOSSOLALIA_URL = 'http://localhost:5000/'
 GLOSSOLALIA_NAME = 'elcid'
-OPAL_SEARCH_BACKEND = "elcid.search.GlossQuery"
 
-GLOSS_URL_BASE = "http://0.0.0.0:6767"
+
 GLOSS_ENABLED = False
+
+if GLOSS_ENABLED:
+    OPAL_SEARCH_BACKEND = "elcid.search.GlossQuery"
+    GLOSS_URL_BASE = "http://0.0.0.0:6767"
+    GLOSS_USERNAME = "override_this"
+    GLOSS_PASSWORD = "and_override_this"
+
 EXTRACT_ASYNC = True
 
-GLOSS_USERNAME = "override_this"
-GLOSS_PASSWORD = "and_override_this"
 
-
-try:
-    from local_settings import *
-except ImportError:
-    pass
+if 'test' not in sys.argv:
+    try:
+        from local_settings import *
+    except ImportError:
+        pass
 
 # #DEBUG_TOOLBAR_PATCH_SETTINGS = False
 # MIDDLEWARE_CLASSES = MIDDLEWARE_CLASSES + ('debug_toolbar.middleware.DebugToolbarMiddleware',)

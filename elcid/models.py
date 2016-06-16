@@ -51,6 +51,12 @@ class Demographics(PatientSubrecord, ExternallySourcedModel):
     class Meta:
         verbose_name_plural = "Demographics"
 
+    @classmethod
+    def get_form_template(cls, patient_list=None, episode_type=None):
+        if settings.GLOSS_ENABLED:
+            return super(Demographics, cls).get_form_template(patient_list=None, episode_type=None)
+        else:
+            return "forms/demographics_form_pre_gloss.html"
 
 class ContactDetails(PatientSubrecord):
     _is_singleton = True

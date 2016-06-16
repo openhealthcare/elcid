@@ -23,8 +23,11 @@
 </div>
 <div class="col-md-6">
   {% include "partials/current_location.html" %}
+  {% teams_panel %}
   {% record_panel models.Travel %}
-  {% record_panel models.InpatientAdmission editable=False %}
+  {% if GLOSS_ENABLED %}
+    {% record_panel models.InpatientAdmission editable=False %}
+  {% endif %}
   {% record_panel models.Allergies %}
   {% include 'obs/detail_panel.html' %}
 </div>

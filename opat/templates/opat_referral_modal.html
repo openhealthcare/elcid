@@ -19,6 +19,7 @@
       </div>
     </div>
   </form>
+  {% if GLOSS_ENABLED %}
   <div ng-show="result && !result.demographics.length">
     <p class="lead text-center">
       We couldn't find any patients with this hospital number.
@@ -50,6 +51,19 @@
     </div>
   </div>
 </div>
+{% else %}
+  <div ng-show="result && !result.demographics.length" >
+    <p class="lead text-center">
+      We've been unable to find this patient, would you like to
+      create a new patient?
+    </p>
+    <div class="text-center">
+      <button ng-click="newPatient()" class="btn btn-secondary">
+        <i class="fa fa-user"></i> Create New Patient
+      </button>
+    </div>
+  </div>
+{% endif %}
 {% endblock %}
 {% block modal_save %}
 <button class="btn btn-primary" ng-click="find_by_hospital_number()" ng-hide="message">

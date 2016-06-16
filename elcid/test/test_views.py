@@ -97,7 +97,9 @@ class ViewsTest(OpalTestCase):
             if they fail to render
         """
         for i in subrecords():
-            i.get_modal_template()
+            if i.get_form_template():
+                url = reverse("{}_modal".format(i.get_api_name()))
+                self.assertStatusCode(url, 200)
 
 
 class DetailSchemaViewTest(OpalTestCase):
