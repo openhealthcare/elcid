@@ -108,7 +108,7 @@ describe('WalkinDischargeCtrl', function(){
         beforeEach(function(){
             $httpBackend.expectGET('/api/v0.1/userprofile/').respond({});
             $httpBackend.expectPUT(
-                '/episode/555/',
+                '/api/v0.1/episode/555/',
                 {id: 555, discharge_date: today_string }).respond({});
             spyOn($modalInstance, 'close');
         });
@@ -158,7 +158,7 @@ describe('WalkinDischargeCtrl', function(){
             $httpBackend.expectPOST('/api/v0.1/management/').respond({});
             $httpBackend.expectPUT('/api/v0.1/tagging/555/').respond({});
             $httpBackend.expectPUT(
-                '/episode/555/',
+                '/api/v0.1/episode/555/',
                 {id: 555, discharge_date: today_string }).respond({});
         });
 
@@ -185,7 +185,7 @@ describe('WalkinDischargeCtrl', function(){
         });
 
         it('Should set the discharge date if empty', function () {
-            $httpBackend.expectPUT('/episode/555/',
+            $httpBackend.expectPUT('/api/v0.1/episode/555/',
                                    {id: 555, discharge_date: today_string }).respond({});
             $scope.remove_from_list();
             $httpBackend.flush();
@@ -198,7 +198,7 @@ describe('WalkinDischargeCtrl', function(){
         });
 
         it('Should send a growl success message', function () {
-            $httpBackend.expectPUT('/episode/555/').respond({});
+            $httpBackend.expectPUT('/api/v0.1/episode/555/').respond({});
             $scope.remove_from_list();
             $httpBackend.flush();
             expect(growl.success.calls.mostRecent().args[0])
@@ -206,7 +206,7 @@ describe('WalkinDischargeCtrl', function(){
         });
 
         it('Should close the modal', function () {
-            $httpBackend.expectPUT('/episode/555/').respond({});
+            $httpBackend.expectPUT('/api/v0.1/episode/555/').respond({});
             $scope.remove_from_list();
             $httpBackend.flush();
             $scope.$digest(); // Fire actual resolving
@@ -225,7 +225,7 @@ describe('WalkinDischargeCtrl', function(){
             $httpBackend.expectPUT('/api/v0.1/tagging/555/').respond({});
 
             $httpBackend.expectPUT(
-                '/episode/555/',
+                '/api/v0.1/episode/555/',
                 {id: 555, discharge_date: today_string }).respond({});
             $httpBackend.expectPUT('/api/v0.1/tagging/556/').respond({});
             $httpBackend.expectPOST('/api/v0.1/management/').respond({});

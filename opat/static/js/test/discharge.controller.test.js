@@ -138,10 +138,10 @@ describe('OPATDischargeCtrl', function (){
             delete meta2['infective_diagnosis'];
 
             // Should save the metadata
-            $httpBackend.expectPOST('/api/v0.1/opat_meta/', meta2).respond('Yes');
+            $httpBackend.expectPOST('/api/v0.1/opat_meta/', meta2).respond({});
             // Should update the teams
             var taggingdata = {opat_current: false, opat_followup: false, id: 33}
-            $httpBackend.expectPUT('/api/v0.1/tagging/33/', taggingdata).respond('Yes');
+            $httpBackend.expectPUT('/api/v0.1/tagging/33/', taggingdata).respond({});
             // Should set the discharge date
             var episode_data = {
                 discharge_date: moment().format('DD/MM/YYYY'),
@@ -154,8 +154,8 @@ describe('OPATDischargeCtrl', function (){
               infective_diagnosis: metavars.infective_diagnosis,
               episode_id: 33
             };
-            $httpBackend.expectPUT('/episode/33/', episode_data).respond('Yes');
-            $httpBackend.expectPOST('/api/v0.1/opat_outcome/', expectedPost).respond('Yes');
+            $httpBackend.expectPUT('/api/v0.1/episode/33/', episode_data).respond({});
+            $httpBackend.expectPOST('/api/v0.1/opat_outcome/', expectedPost).respond({});
         });
 
         it('Should close the mdoal', function () {
@@ -176,9 +176,9 @@ describe('OPATDischargeCtrl', function (){
     describe('switch_to_oral()', function(){
 
         beforeEach(function(){
-            $httpBackend.expectPOST('/api/v0.1/opat_outcome/').respond('Yes');
-            $httpBackend.expectPOST('/api/v0.1/opat_meta/').respond('Yes');
-            $httpBackend.expectPUT('/api/v0.1/tagging/33/').respond('Yes');
+            $httpBackend.expectPOST('/api/v0.1/opat_outcome/').respond({});
+            $httpBackend.expectPOST('/api/v0.1/opat_meta/').respond({});
+            $httpBackend.expectPUT('/api/v0.1/tagging/33/').respond({});
         });
 
         it('should send a growl message', function(){

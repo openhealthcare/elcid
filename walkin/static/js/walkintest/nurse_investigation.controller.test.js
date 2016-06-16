@@ -69,7 +69,7 @@ describe('WalkinNurseInvestigationsCtrl', function (){
             $scope.investigations.blood_culture = true;
 
             $httpBackend.expectPOST('/api/v0.1/microbiology_test/',
-                                    {test: 'Blood Culture', date_ordered: today.format('DD/MM/YYYY')}).respond('yes');
+                                    {test: 'Blood Culture', date_ordered: today.format('DD/MM/YYYY')}).respond({});
             $scope.save();
 
             $httpBackend.flush();
@@ -85,7 +85,7 @@ describe('WalkinNurseInvestigationsCtrl', function (){
             $httpBackend.expectPOST('/api/v0.1/microbiology_test/',
                                   {
                                       test: 'Blood Culture',
-                                      date_ordered: today.format('DD/MM/YYYY')}).respond('yes');
+                                      date_ordered: today.format('DD/MM/YYYY')}).respond({});
             $scope.save();
             $httpBackend.flush();
         });
@@ -96,10 +96,10 @@ describe('WalkinNurseInvestigationsCtrl', function (){
 
             $httpBackend.expectPOST('/api/v0.1/microbiology_test/',
                                     {test: 'Blood Culture', date_ordered: today.format('DD/MM/YYYY')})
-                .respond('yes');
+                .respond({});
             $httpBackend.expectPOST('/api/v0.1/microbiology_test/',
                                     {test: 'Malaria Film', date_ordered: today.format('DD/MM/YYYY')})
-                .respond('yes');
+                .respond({});
 
             expect($scope.saving).toBe(false);
             $scope.save();
