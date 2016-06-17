@@ -240,6 +240,7 @@ class Diagnosis(EpisodeSubrecord):
     _title = 'Diagnosis / Issues'
     _sort = 'date_of_diagnosis'
     _icon = 'fa fa-stethoscope'
+    _angular_service = 'Diagnosis'
 
     condition         = ForeignKeyOrFreeText(omodels.Condition)
     provisional       = models.NullBooleanField()
@@ -273,6 +274,7 @@ class GeneralNote(EpisodeSubrecord):
     _title = 'General Notes'
     _sort  = 'date'
     _icon = 'fa fa-info-circle'
+    _angular_service = 'GeneralNote'
 
     date    = models.DateField(null=True, blank=True)
     comment = models.TextField()
@@ -402,6 +404,7 @@ class MicrobiologyTest(EpisodeSubrecord):
     _sort = 'date_ordered'
     _icon = 'fa fa-crosshairs'
     _modal = 'lg'
+    _angular_service = 'Investigation'
 
     test                  = models.CharField(max_length=255)
     alert_investigation   = models.BooleanField(default=False)

@@ -18,6 +18,8 @@ class Application(application.OpalApplication):
         'js/elcid/controllers/result_view.js',
         'js/elcid/services/dicharge_patient.js',
         'js/elcid/services/flow.js',
+        'js/elcid/services/records/investigation.js',
+        'js/elcid/services/records/general_note.js',
     ]
 
     actions = [
