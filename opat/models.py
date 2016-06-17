@@ -32,6 +32,7 @@ class OPATReview(EpisodeSubrecord):
     _icon = 'fa fa-comments'
     _list_limit = 1
     _modal = 'lg'
+    _angular_service = 'OPATReview'
 
     datetime                = models.DateTimeField(null=True, blank=True)
     initials                = models.CharField(max_length=255, blank=True)
@@ -62,6 +63,7 @@ class OPATOutstandingIssues(EpisodeSubrecord):
 class OPATLineAssessment(EpisodeSubrecord):
     _title = 'OPAT Line Assessment'
     _icon = 'fa fa-check-square-o'
+    _angular_service = 'OPATLineAssessment'
 
     line                   = models.CharField(max_length=200, blank=True, null=True)
     assessment_date        = models.DateField(blank=True, null=True)

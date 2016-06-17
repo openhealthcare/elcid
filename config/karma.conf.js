@@ -22,6 +22,7 @@ module.exports =  function(config){
     preprocessors[__dirname + '/../elcid/assets/js/elcid/*'] = 'coverage';
     preprocessors[__dirname + '/../elcid/assets/js/elcid/controllers/*'] = 'coverage';
     preprocessors[__dirname + '/../elcid/assets/js/elcid/services/*'] = 'coverage';
+    preprocessors[__dirname + '/../elcid/assets/js/elcid/services/records/*'] = 'coverage';
     preprocessors[__dirname + '/../opat/static/js/opat/controllers/*'] = 'coverage';
     preprocessors[__dirname + '/../research/static/js/research/controllers/*'] = 'coverage';
     preprocessors[__dirname + '/../walkin/static/js/walkin/controllers/*'] = 'coverage';
@@ -85,6 +86,7 @@ module.exports =  function(config){
             __dirname + '/../elcid/assets/js/elcid/*.js',
             __dirname + '/../elcid/assets/js/elcid/controllers/*.js',
             __dirname + '/../elcid/assets/js/elcid/services/*.js',
+            __dirname + '/../elcid/assets/js/elcid/services/records/*.js',
             __dirname + '/../opat/static/js/opat/controllers/*.js',
             __dirname + '/../research/static/js/research/controllers/*.js',
             __dirname + '/../walkin/static/js/walkin/controllers/*.js',

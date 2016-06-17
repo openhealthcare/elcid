@@ -240,6 +240,7 @@ class Diagnosis(EpisodeSubrecord):
     _title = 'Diagnosis / Issues'
     _sort = 'date_of_diagnosis'
     _icon = 'fa fa-stethoscope'
+    _angular_service = 'Diagnosis'
 
     condition         = ForeignKeyOrFreeText(omodels.Condition)
     provisional       = models.NullBooleanField()
@@ -273,6 +274,7 @@ class GeneralNote(EpisodeSubrecord):
     _title = 'General Notes'
     _sort  = 'date'
     _icon = 'fa fa-info-circle'
+    _angular_service = 'GeneralNote'
 
     date    = models.DateField(null=True, blank=True)
     comment = models.TextField()
@@ -306,6 +308,7 @@ class Antimicrobial(EpisodeSubrecord):
     _sort = 'start_date'
     _icon = 'fa fa-flask'
     _modal = 'lg'
+    _angular_service = 'Antimicrobial'
 
     drug          = ForeignKeyOrFreeText(omodels.Antimicrobial)
     dose          = models.CharField(max_length=255, blank=True)
@@ -351,6 +354,7 @@ class MicrobiologyInput(EpisodeSubrecord):
     _icon = 'fa fa-comments'
     _modal = 'lg'
     _list_limit = 3
+    _angular_service = 'MicrobiologyInput'
 
     when = models.DateTimeField(null=True, blank=True)
     initials = models.CharField(max_length=255, blank=True)
@@ -402,6 +406,7 @@ class MicrobiologyTest(EpisodeSubrecord):
     _sort = 'date_ordered'
     _icon = 'fa fa-crosshairs'
     _modal = 'lg'
+    _angular_service = 'Investigation'
 
     test                  = models.CharField(max_length=255)
     alert_investigation   = models.BooleanField(default=False)
@@ -459,6 +464,7 @@ class MicrobiologyTest(EpisodeSubrecord):
 class Line(EpisodeSubrecord):
     _sort = 'insertion_datetime'
     _icon = 'fa fa-bolt'
+    _angular_service = 'Line'
 
     line_type            = ForeignKeyOrFreeText(omodels.Line_type)
     site                 = ForeignKeyOrFreeText(omodels.Line_site)
