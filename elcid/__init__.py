@@ -22,6 +22,10 @@ class Application(application.OpalApplication):
         'js/elcid/services/records/general_note.js',
         'js/elcid/services/records/diagnosis.js',
         'js/elcid/services/records/microbiology_input.js',
+        'js/elcid/services/records/line.js',
+        'js/elcid/services/records/opat_line_assessment.js',
+        'js/elcid/services/records/opat_review.js',
+        'js/elcid/services/records/antimicrobial.js',
     ]
 
     actions = [

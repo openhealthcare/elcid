@@ -308,6 +308,7 @@ class Antimicrobial(EpisodeSubrecord):
     _sort = 'start_date'
     _icon = 'fa fa-flask'
     _modal = 'lg'
+    _angular_service = 'Antimicrobial'
 
     drug          = ForeignKeyOrFreeText(omodels.Antimicrobial)
     dose          = models.CharField(max_length=255, blank=True)
@@ -463,6 +464,7 @@ class MicrobiologyTest(EpisodeSubrecord):
 class Line(EpisodeSubrecord):
     _sort = 'insertion_datetime'
     _icon = 'fa fa-bolt'
+    _angular_service = 'Line'
 
     line_type            = ForeignKeyOrFreeText(omodels.Line_type)
     site                 = ForeignKeyOrFreeText(omodels.Line_site)
