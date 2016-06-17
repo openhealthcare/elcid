@@ -21,6 +21,7 @@ class Application(application.OpalApplication):
         'js/elcid/services/records/investigation.js',
         'js/elcid/services/records/general_note.js',
         'js/elcid/services/records/diagnosis.js',
+        'js/elcid/services/records/microbiology_input.js',
     ]
 
     actions = [

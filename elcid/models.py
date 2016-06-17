@@ -353,6 +353,7 @@ class MicrobiologyInput(EpisodeSubrecord):
     _icon = 'fa fa-comments'
     _modal = 'lg'
     _list_limit = 3
+    _angular_service = 'MicrobiologyInput'
 
     when = models.DateTimeField(null=True, blank=True)
     initials = models.CharField(max_length=255, blank=True)
