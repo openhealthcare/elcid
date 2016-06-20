@@ -5,7 +5,7 @@ from mock import patch
 
 from django.conf import settings
 from django.test import TestCase, override_settings
-
+from django.contrib.contenttypes.models import ContentType
 from opal.core import exceptions
 from opal.core.test import OpalTestCase
 from opal.models import Patient, Episode, Condition, Synonym, Symptom
@@ -179,6 +179,17 @@ class PresentingComplaintTest(OpalTestCase, AbstractEpisodeTestCase):
     def setUp(self):
         super(PresentingComplaintTest, self).setUp()
         self.symptom_1 = Symptom.objects.create(name="tiredness")
+
+        synonym_content_type = ContentType.objects.get_for_model(
+            Symptom
+        )
+
+        self.synonym_1 = Synonym.objects.get_or_create(
+            content_type=synonym_content_type,
+            object_id=self.symptom_1.id,
+            name="drowsy"
+        )
+
         self.symptom_2 = Symptom.objects.create(name="alertness")
         self.symptom_3 = Symptom.objects.create(name="apathy")
         self.presenting_complaint = PresentingComplaint.objects.create(
@@ -223,6 +234,43 @@ class PresentingComplaintTest(OpalTestCase, AbstractEpisodeTestCase):
         self.assertEqual(self.presenting_complaint.duration, 'a month')
         self.assertEqual(
             self.presenting_complaint.details, 'other information'
+        )
+
+    def test_update_from_dict_with_synonymns(self):
+        data = {
+            u'consistency_token': self.presenting_complaint.consistency_token,
+            u'id': self.presenting_complaint.id,
+            u'symptoms': [u'alertness', u'drowsy'],
+            u'duration': 'a month',
+            u'details': 'other information'
+        }
+        self.presenting_complaint.update_from_dict(data, self.user)
+        new_symptoms = self.presenting_complaint.symptoms.values_list(
+            "name", flat=True
+        )
+        self.assertEqual(set(new_symptoms), set([u'alertness', u'tiredness']))
+        self.assertEqual(self.presenting_complaint.duration, 'a month')
+        self.assertEqual(
+            self.presenting_complaint.details, 'other information'
+        )
+
+
+    def test_update_with_dict_synonyms_new_complaint(self):
+        data = {
+            'episode_id': self.episode.id,
+            u'symptoms': [u'alertness', u'drowsy'],
+            u'duration': 'a month',
+            u'details': 'other information'
+        }
+        presenting_complaint = PresentingComplaint()
+        presenting_complaint.update_from_dict(data, self.user)
+        new_symptoms = presenting_complaint.symptoms.values_list(
+            "name", flat=True
+        )
+        self.assertEqual(set(new_symptoms), set([u'alertness', u'tiredness']))
+        self.assertEqual(presenting_complaint.duration, 'a month')
+        self.assertEqual(
+            presenting_complaint.details, 'other information'
         )
 
 
