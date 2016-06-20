@@ -4,14 +4,14 @@
   ng-click="episode.recordEditor.editItem('presenting_complaint', 0)"
   ng-dblclick=""
   ng-class="{selected: false}">
-  <button class="screen-only btn btn-primary btn-lg"
+  <button class="screen-only btn btn-primary btn"
     ng-show="!profile.readonly">
     <i class="glyphicon glyphicon-plus"></i> Symptoms
   </button>
 </p>
 
 <p ng-hide="!ward_round || episode.primary_diagnosis[0].confirmed || episode.category != 'Inpatient' ">
-  <button class="screen-only btn btn-primary btn-lg"
+  <button class="screen-only btn btn-primary btn"
           ng-click="open_modal('DiagnosisDischargeCtrl', '/templates/elcid/modals/diagnosis_discharge.html', '', {episode: episode, options: options, tags: {}, schema: {}})">
       <i class="glyphicon glyphicon-ok"></i> Confirm Final Diagnosis
   </button>
