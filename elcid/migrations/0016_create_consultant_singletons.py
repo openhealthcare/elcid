@@ -11,6 +11,7 @@ def create(apps, schema_editor):
     consultants = [ConsultantAtDischarge(episode=episode) for episode in episodes]
     ConsultantAtDischarge.objects.bulk_create(consultants)
 
+
 def remove(apps, schema_editor):
     ConsultantAtDischarge = apps.get_model("elcid", "ConsultantAtDischarge")
     ConsultantAtDischarge.objects.all().delete()
@@ -19,6 +20,7 @@ def remove(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
+        ('opal', '0019_auto_20160607_1039'),
         ('elcid', '0015_antimicrobial_no_antimicriobials'),
     ]
 
