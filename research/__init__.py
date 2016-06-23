@@ -30,8 +30,4 @@ class ResearchStudyPlugin(plugins.OpalPlugin):
         return get_study_roles(user)
 
 
-class ResearchEpisode(episodes.EpisodeType):
-    name            = 'Research'
-
-
 plugins.register(ResearchStudyPlugin)
