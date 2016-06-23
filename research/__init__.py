@@ -1,12 +1,13 @@
 """
 Plugin definition
 """
-from opal.core import plugins
+from opal.core import plugins, episodes
 
 from research.flow import get_study_flows
 from research.roles import get_study_roles
 from research.teams import get_study_teams
 from research.urls import urlpatterns
+
 
 class ResearchStudyPlugin(plugins.OpalPlugin):
     urls        = urlpatterns
@@ -27,5 +28,10 @@ class ResearchStudyPlugin(plugins.OpalPlugin):
 
     def roles(self, user):
         return get_study_roles(user)
+
+
+class ResearchEpisode(episodes.EpisodeType):
+    name            = 'Research'
+
 
 plugins.register(ResearchStudyPlugin)
