@@ -3,7 +3,7 @@
 {% input "autofocus" field="OPATLineAssessment.line" %}
 {% datepicker field="OPATLineAssessment.assessment_date" %}
 {% select field="OPATLineAssessment.vip_score" label="VIP Score" lookuplist="[0,1,2,3,4,5]"%}
-{% input field="OPATLineAssessment.dressing_type" %}
+{% input field="OPATLineAssessment.dressing_type" lookuplist="opatdressingtype_list" %}
 {% datepicker field="OPATLineAssessment.dressing_change_date" %}
 {% input field="OPATLineAssessment.dressing_change_reason" %}
 {% datepicker field="OPATLineAssessment.bionector_change_date" %}
