@@ -74,7 +74,7 @@ describe('DiagnosisAddEpisodeCtrl', function() {
             $scope.editing.demographics.date_of_birth = "10/02/1990";
             $scope.save();
             expect(tagServiceToSave).toHaveBeenCalled();
-            $httpBackend.expectPOST('episode/', {
+            $httpBackend.expectPOST('/api/v0.1/episode/', {
               "tagging":[{"inpatients": true}],
               "location":{"hospital":"UCLH"},
               "demographics":{
