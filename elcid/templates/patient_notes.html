@@ -41,8 +41,8 @@
                     <div class="col-md-12 text-center">
                         <a class="orange-link" ng-href="[[ getEpisodeLink(episode) ]]">
                             <span ng-show="episode.active">Current </span>
-                            <span ng-show="episode.category === 'inpatient'">Inpatient Admission</span>
-                            <span ng-show="episode.category !== 'inpatient'">[[ episode.category | title ]] Episode</span>
+                            <span ng-show="episode.category_name === 'inpatient'">Inpatient Admission</span>
+                            <span ng-show="episode.category_name !== 'inpatient'">[[ episode.category_name | title ]] Episode</span>
                             <span ng-show="episode.date_of_admission">
                                 [[ episode.date_of_admission | shortDate ]]
                                 <span ng-show="episode.date_of_admission"> - [[ episode.discharge_date | shortDate ]]</span>

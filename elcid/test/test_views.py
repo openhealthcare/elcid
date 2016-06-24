@@ -33,9 +33,10 @@ class ViewsTest(OpalTestCase):
                 'hospital': 'UCH',
                 'ward': 'T13',
                 'bed': 10
-                }
+                },
+            'tagging': [{}]
             }
-        response = self.post_json('/episode/', data)
+        response = self.post_json('/api/v0.1/episode/', data)
         self.assertEqual(201, response.status_code)
 
     def test_create_episode_for_new_patient(self):
@@ -54,7 +55,7 @@ class ViewsTest(OpalTestCase):
                 },
             'tagging': [{}]
             }
-        response = self.post_json('/episode/', data)
+        response = self.post_json('/api/v0.1/episode/', data)
         self.assertEqual(201, response.status_code)
 
     def test_create_episode_for_patient_without_hospital_number(self):
@@ -73,7 +74,7 @@ class ViewsTest(OpalTestCase):
                 },
             'tagging': [{}]
             }
-        response = self.post_json('/episode/', data)
+        response = self.post_json('/api/v0.1/episode/', data)
         self.assertEqual(201, response.status_code)
 
     def test_try_to_update_nonexistent_demographics_subrecord(self):

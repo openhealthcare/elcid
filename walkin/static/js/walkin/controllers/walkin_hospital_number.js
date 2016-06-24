@@ -21,7 +21,7 @@ controllers.controller(
                 episode = new Episode(episode);
             };
             var ep = episode.makeCopy();
-            ep.category = 'Walkin';
+            ep.category_name = 'Walkin';
             ep.date_of_episode = moment();
 
             //
@@ -111,9 +111,9 @@ controllers.controller(
             if(active_episodes.length > 0){
                 var die = false;
                 _.each(active_episodes, function(e){
-                    if(e.category == 'Inpatient'){
+                    if(e.category_name == 'Inpatient'){
                         alert('Warning - Patient is a current inpatient');
-                    }else if(e.category == 'Walkin'){
+                    }else if(e.category_name == 'Walkin'){
                         var episode = new Episode(e);
 
                         if(episode.getTags().length > 1){

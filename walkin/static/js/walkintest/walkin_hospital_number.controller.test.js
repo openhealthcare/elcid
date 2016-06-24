@@ -68,7 +68,7 @@ describe('WalkinHospitalNumberCtrl', function (){
                 category: 'Walkin',
                 demographics: [{patient_id: 123}]
             };
-            $httpBackend.expectPUT('/episode/3/').respond(episode);
+            $httpBackend.expectPUT('/api/v0.1/episode/3/').respond(episode);
 
             var test = {test: 'HIV Point of Care', episode_id: "3"};
             $httpBackend.expectPOST('/api/v0.1/microbiology_test/', test).respond(test);
