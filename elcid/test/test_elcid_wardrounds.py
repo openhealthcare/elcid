@@ -35,7 +35,7 @@ class DischargedLastWeekTestCase(OpalTestCase):
 
         # this episode is opat
         opat_episode = patient.create_episode()
-        opat_episode.category = 'OPAT'
+        opat_episode.category_name = 'OPAT'
         opat_episode.save()
 
         # without filter

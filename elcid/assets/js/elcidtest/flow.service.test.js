@@ -56,7 +56,7 @@ describe('elCIDFlow', function() {
         });
 
         it('should fetch the exit flow', function() {
-            expect(Flow.exit({category: 'Walkin'})).toEqual(walkin_exit);
+            expect(Flow.exit({category_name: 'Walkin'})).toEqual(walkin_exit);
         });
 
     });
@@ -68,7 +68,7 @@ describe('elCIDFlow', function() {
         });
 
         it('should fetch the default exit flow', function() {
-            expect(Flow.exit({category: 'Inpatient'})).toEqual(inpatient_default_exit);
+            expect(Flow.exit({category_name: 'Inpatient'})).toEqual(inpatient_default_exit);
         });
 
         describe('Discharge Overrides', function() {
@@ -93,7 +93,7 @@ describe('elCIDFlow', function() {
             it('should fetch the diagnosis exit flow', function() {
                 _.each(slugs, function(slug){
                     $routeParams.slug = slug;
-                    expect(Flow.exit({category: 'Inpatient'})).toEqual(diagnosis_exit);
+                    expect(Flow.exit({category_name: 'Inpatient'})).toEqual(diagnosis_exit);
                 });
             });
 
@@ -112,7 +112,7 @@ describe('elCIDFlow', function() {
         });
 
         it('should fetch the exit flow', function() {
-            expect(Flow.exit({category: 'OPAT'})).toEqual(opat_exit);
+            expect(Flow.exit({category_name: 'OPAT'})).toEqual(opat_exit);
         });
 
     });

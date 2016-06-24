@@ -13,7 +13,7 @@ angular.module('opal.services').factory('DischargePatientService', function($q) 
             currentCategory = episode.location[0].category;
 
             if(!currentCategory.length){
-                currentCategory = episode.category;
+                currentCategory = episode.category_name;
             }
 
             if (currentCategory.toUpperCase() == 'Inpatient'.toUpperCase()) {
@@ -37,7 +37,7 @@ angular.module('opal.services').factory('DischargePatientService', function($q) 
 
             return {
                 date_of_admission: admission,
-          	    category: newCategory,
+          	    category_name: newCategory,
                 discharge_date: discharge_date
             };
         };

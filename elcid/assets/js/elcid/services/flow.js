@@ -81,7 +81,7 @@ angular.module('opal.services').factory('elCIDFlow', function($routeParams){
             return categories[episode_type]['enter']();
         },
         exit: function(episode){
-            return categories[episode.category]['exit'](episode);
+            return categories[episode.category_name]['exit'](episode);
         }
     }
     return Flow
