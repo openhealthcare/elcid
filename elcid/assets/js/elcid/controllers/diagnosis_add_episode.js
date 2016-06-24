@@ -54,7 +54,7 @@ angular.module('opal.controllers')
       }
       $scope.editing.demographics.date_of_birth = dob;
 
-      $http.post('episode/', $scope.editing).success(function(episode) {
+      $http.post('/api/v0.1/episode/', $scope.editing).success(function(episode) {
         $scope.episode = new Episode(episode);
         $scope.presenting_complaint();
       });
