@@ -15,7 +15,3 @@
 <span ng-show="row.discharge_date">
   Discharged [[row.discharge_date | shortDate]]
 </span>
-
-<a ng-show="currentTag == 'mine' && !profile.readonly" class="screen-only" href="#" ng-click="removeFromMine($parent.$index, $event)">
-  Remove from mine
-</a>

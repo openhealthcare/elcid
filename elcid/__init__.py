@@ -29,7 +29,8 @@ class Application(application.OpalApplication):
     ]
 
     actions = [
-        'actions/presenting_complaint.html'
+        'actions/presenting_complaint.html',
+        'actions/mine.html'
     ]
 
     patient_view_forms = {

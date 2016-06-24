@@ -71,7 +71,7 @@ angular.module('opal.services').factory('DischargePatientService', function($q) 
             }
 
             if (editing.category != 'Followup') {
-                      if(currentSubTag != 'all'){
+                      if(currentSubTag != ''){
                           taggingAttrs[currentSubTag] = false;
                       }else{
                           taggingAttrs[currentTag] = false;
