@@ -106,6 +106,7 @@
             ng-click="goToNextStep(dischargeDiagnosis, editing)"
             ng-hide="confirming"
             ng-disabled="saving"
+            one-click-only
             >
       Discharge
       <i class="fa fa-save"></i>
@@ -114,6 +115,7 @@
             ng-click="goToNextStep(dischargeDiagnosis)"
             ng-show="confirming"
             ng-disabled="saving"
+            one-click-only
             >
       <i class="fa fa-save"></i>
       Confirm

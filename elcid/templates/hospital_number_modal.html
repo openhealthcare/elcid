@@ -45,7 +45,7 @@
         <b>[[ result.merged[0].demographics[0].first_name ]] [[ result.merged[0].demographics[0].surname ]] ([[ result.merged[0].demographics[0].hospital_number ]])</b>
       </p>
       <div class="text-center">
-        <button ng-click="newForPatient(result.merged[0])" class="btn btn-secondary">
+        <button one-click-only ng-click="newForPatient(result.merged[0])" class="btn btn-secondary">
           <i class="fa fa-user"></i> Create An Episode For [[ result.merged[0].demographics[0].first_name ]] [[ result.merged[0].demographics[0].surname ]]
         </button>
       </div>
@@ -65,7 +65,7 @@
   {% endif %}
 </div>
 <div class="modal-footer">
-  <button class="btn btn-primary btn-lg" ng-click="findByHospitalNumber()">
+  <button class="btn btn-primary btn-lg" one-click-only ng-click="findByHospitalNumber()">
     <i class="fa fa-search"></i>
     Search
   </button>
