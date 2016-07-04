@@ -1,4 +1,6 @@
 import logging
+import sys
+import traceback
 from django.utils.log import AdminEmailHandler
 
 
@@ -11,6 +13,7 @@ class MailFormatter(logging.Formatter):
 
     def format(self, record):
         record.msg = 'censored'
+
         return super(MailFormatter, self).format(record)
 
 
@@ -21,3 +24,14 @@ class ConfidentialEmailer(AdminEmailHandler):
 
     def format_subject(self, subject):
         return "elCID error"
+
+    def emit(self, record):
+        subject = self.format(record)
+        message = ""
+
+        if hasattr(sys, "last_traceback"):
+            tb = traceback.extract_tb(sys.last_traceback)
+            message = traceback.format_list(tb)[:-1]
+            message = "\n".join(message)
+
+        self.send_mail(subject, message, fail_silently=True, html_message=None)
