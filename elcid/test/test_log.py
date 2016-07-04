@@ -14,9 +14,9 @@ class test_log_output(OpalTestCase):
         logger = logging.getLogger('django.request')
         logger.critical('confidential error')
         self.assertTrue(send_mail.called)
-        expected_subject = "elcid/elcid/test/test_log.py"
-        expected_body = ""
+        expected_subject = "elcid Error"
+        expected_body = "elcid/elcid/test/test_log.py"
         call_args = send_mail.call_args
-        self.assertIn(expected_subject, call_args[0][0])
-        self.assertEqual(call_args[0][1], expected_body)
+        self.assertEqual(expected_subject, call_args[0][0])
+        self.assertIn(expected_body, call_args[0][1])
         self.assertEqual(call_args[1]["html_message"], None)
