@@ -22,9 +22,6 @@ class ConfidentialEmailer(AdminEmailHandler):
         super(ConfidentialEmailer, self).__init__(*args, **kwargs)
         self.include_html = False
 
-    def format_subject(self, subject):
-        return "elCID error"
-
     def emit(self, record):
         subject = self.format_subject(self.format(record))
         message = ""
