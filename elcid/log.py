@@ -24,7 +24,7 @@ class ConfidentialEmailer(AdminEmailHandler):
 
     def emit(self, record):
         subject = "elcid Error"
-        message = self.format(record)
+        message = "%s\n\nRequest repr(): %s" % (self.format(record), request_repr)
         self.send_mail(
             subject, message, fail_silently=True, html_message=None
         )
