@@ -13,6 +13,7 @@ class ConfidentialEmailer(AdminEmailHandler):
     def emit(self, record):
         record.msg = 'censored'
         record.args = []
+        record.request = None
 
         if record.exc_text:
             stack_trace = record.exc_text.split("\n")
