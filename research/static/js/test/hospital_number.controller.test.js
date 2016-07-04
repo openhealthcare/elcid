@@ -47,6 +47,7 @@ describe('ResearchHospitalNumberCtrl', function (){
             spyOn($modal, 'open').and.callThrough();
             $httpBackend.whenGET('/templates/modals/add_episode_without_teams.html/').respond('hi');
             $httpBackend.expectGET('/api/v0.1/userprofile/').respond({});
+            $httpBackend.expectGET('/api/v0.1/referencedata/').respond({});
         });
 
         it('Should call the AddEpisode controller', function () {
