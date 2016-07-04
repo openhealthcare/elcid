@@ -206,12 +206,6 @@ LOGGING = {
             '()': 'django.utils.log.RequireDebugFalse'
         }
     },
-    'formatters': {
-        'censored': {
-            '()': 'elcid.log.MailFormatter',
-            'format': '%(levelname)s %(asctime)s %(pathname)s:%(lineno)s'
-        }
-    },
     'handlers': {
         'console': {
             'level': 'ERROR',
@@ -220,7 +214,6 @@ LOGGING = {
         },
         'mail_admins': {
             'level': 'ERROR',
-            'formatter': 'censored',
             # 'filters': ['require_debug_false'],
             'class': 'elcid.log.ConfidentialEmailer'
         }

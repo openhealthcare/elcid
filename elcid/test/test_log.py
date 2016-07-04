@@ -20,3 +20,14 @@ class test_log_output(OpalTestCase):
         self.assertEqual(expected_subject, call_args[0][0])
         self.assertIn(expected_body, call_args[0][1])
         self.assertEqual(call_args[1]["html_message"], None)
+
+    def test_request_logging_with_arguments(self, send_mail):
+        logger = logging.getLogger('django.request')
+        logger.critical('%s error', "confidential")
+        self.assertTrue(send_mail.called)
+        expected_subject = "elCID error"
+        expected_body = "censored"
+        call_args = send_mail.call_args
+        self.assertEqual(expected_subject, call_args[0][0])
+        self.assertIn(expected_body, call_args[0][1])
+        self.assertEqual(call_args[1]["html_message"], None)
