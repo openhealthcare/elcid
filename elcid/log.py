@@ -26,7 +26,7 @@ class ConfidentialEmailer(AdminEmailHandler):
         return "elCID error"
 
     def emit(self, record):
-        subject = self.format(record)
+        subject = self.format_subject(self.format(record))
         message = ""
 
         if hasattr(sys, "last_traceback"):
