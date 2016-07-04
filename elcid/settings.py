@@ -221,7 +221,7 @@ LOGGING = {
         'mail_admins': {
             'level': 'ERROR',
             'formatter': 'censored',
-            'filters': ['require_debug_false'],
+            # 'filters': ['require_debug_false'],
             'class': 'elcid.log.ConfidentialEmailer'
         }
     },

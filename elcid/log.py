@@ -14,6 +14,11 @@ class MailFormatter(logging.Formatter):
     def format(self, record):
         record.msg = 'censored'
 
+        if record.exc_text:
+            stack_trace = record.exc_text.split("\n")
+            # shave the last line off the stack trace
+            # in case it contains identifiable data
+            record.exc_text = "\n".join(stack_trace[:-1])
         return super(MailFormatter, self).format(record)
 
 
@@ -22,9 +27,5 @@ class ConfidentialEmailer(AdminEmailHandler):
         super(ConfidentialEmailer, self).__init__(*args, **kwargs)
         self.include_html = False
 
-    def emit(self, record):
-        subject = "elcid Error"
-        message = "%s\n\nRequest repr(): %s" % (self.format(record), request_repr)
-        self.send_mail(
-            subject, message, fail_silently=True, html_message=None
-        )
+    def format_subject(self, subject):
+        return "elCID error"
