@@ -16,9 +16,10 @@ class ConfidentialEmailer(AdminEmailHandler):
         record.request = None
 
         if record.exc_text:
-            stack_trace = record.exc_text.split("\n")
-            # shave the last line off the stack trace
-            # in case it contains identifiable data
-            record.exc_text = "\n".join(stack_trace[:-1])
+            record.exc_text = "status code {0} from {1}:{2}".format(
+                record.status_code,
+                record.filename,
+                record.lineno
+            )
 
         return super(ConfidentialEmailer, self).emit(record)
