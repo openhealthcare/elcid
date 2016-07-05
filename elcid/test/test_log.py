@@ -38,14 +38,17 @@ class LogOutputTestCase(OpalTestCase):
         emailer = ConfidentialEmailer()
         record = mock.MagicMock()
         record.exc_text = "confidential"
-        record.status_code = 500
         record.args = ["some_args"]
         record.filename = "some_file.py"
         record.lineno = 20
+        request = self.rf.get("/some/url")
+        request.user = self.user
+        request.session = {}
+        record.request = request
         emailer.emit(record)
         self.assertEqual(
             emitter.call_args[0][0].exc_text,
-            "status code 500 from some_file.py:20"
+            "from some_file.py:20\nNone GET"
         )
 
     def test_no_email_on_info(self, send_mail, stream_handler):

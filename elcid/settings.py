@@ -27,7 +27,7 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    ('Fed', 'fred.kingham@openhealthcare.org.uk',),
+    ('Support', 'support@openhealthcare.org.uk',),
 )
 
 MANAGERS = ADMINS
