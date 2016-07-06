@@ -4,7 +4,7 @@
 controllers.controller(
     'WalkinHospitalNumberCtrl',
     function($scope, $modalInstance, $modal, $rootScope, $q,
-             tags, options,
+             tags,
              Episode){
 
         $scope.model = {
@@ -83,7 +83,7 @@ controllers.controller(
                 controller: 'AddEpisodeCtrl',
                 size: 'lg',
                 resolve: {
-                    options: function() { return options; },
+                    referencedata: function(Referencedata) { return Referencedata; },
                     demographics: function() {
                         return { hospital_number: $scope.model.hospitalNumber }
                     },
@@ -166,7 +166,7 @@ controllers.controller(
                 controller: 'AddEpisodeCtrl',
                 size: 'lg',
                 resolve: {
-                    options: function() { return options; },
+                    referencedata: function(Referencedata) { return Referencedata; },
                     demographics: function() { return demographics; },
                     tags: function(){ return tags }
                 }
