@@ -13,22 +13,20 @@
     </p>
   </span>
 </div>
+<span ng-show="editing.demographics.external_system">
+  {% static "Demographics.date_of_birth" %}
+  {% static "Demographics.sex" %}
+  {% static "Demographics.marital_status" %}
+  {% static "Demographics.ethnicity" %}
+</span>
 <span ng-hide="editing.demographics.external_system">
   {% input field="Demographics.first_name" %}
   {% input field="Demographics.surname" %}
-</span>
-<span ng-hide="editing.demographics.external_system">
   {% date_of_birth_field %}
   {% input field="Demographics.post_code" %}
   {% select field="Demographics.sex" %}
   {% select field="Demographics.marital_status" %}
   {% select field="Demographics.ethnicity" %}
   {% input label="GP Practice Code" field="Demographics.gp_practice_code" %}
-</span>
-<span ng-show="editing.demographics.external_system">
-  {% static "Demographics.date_of_birth" %}
-  {% static "Demographics.sex" %}
-  {% static "Demographics.marital_status" %}
-  {% static "Demographics.ethnicity" %}
 </span>
 {% input field="Demographics.birth_place" %}
