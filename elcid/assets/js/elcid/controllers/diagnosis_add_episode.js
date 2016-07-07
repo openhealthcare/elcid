@@ -2,13 +2,11 @@ angular.module('opal.controllers')
 .controller('DiagnosisAddEpisodeCtrl', function($scope, $http, $cookieStore, $q,
   $timeout, $modal,
   $modalInstance, Episode,
-  TagService, options,
+  TagService, referencedata,
   tags, demographics) {
     var DATE_FORMAT = 'DD/MM/YYYY';
 
-    for (var name in options) {
-      $scope[name + '_list'] = options[name];
-    }
+    _.extend($scope, referencedata.toLookuplists());
 
     // TODO - this is no longer the way location/admission date works.
     $scope.editing = {
@@ -72,7 +70,8 @@ angular.module('opal.controllers')
         size: 'lg',
         resolve: {
           item: function() { return item; },
-          options: function() { return options; },
+          referencedata: function(Referencedata) { return Referencedata; },
+          metadata: function(Metadata) { return Metadata },
           episode: function() { return $scope.episode; },
           profile: function(UserProfile) { return UserProfile }
         }

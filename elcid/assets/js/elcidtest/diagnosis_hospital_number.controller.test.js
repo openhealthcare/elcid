@@ -2,14 +2,9 @@ describe('DiagnosisHospitalNumber', function(){
     "use strict";
 
     var $rootScope, $scope, $modal, $httpBackend, $controller;
-    var modalInstance, tags, options, hospital_number, $q;
+    var modalInstance, tags, hospital_number, $q;
 
     beforeEach(module('opal.controllers', function($provide){
-        $provide.service('Options', function(){
-          return {
-            then: function(x){ x({}); }
-          };
-        });
     }));
 
     beforeEach(function(){
@@ -27,7 +22,6 @@ describe('DiagnosisHospitalNumber', function(){
         $controller('DiagnosisHospitalNumberCtrl', {
             $scope         : $scope,
             $modalInstance : modalInstance,
-            options        : options,
             tags           : {},
             hospital_number: hospital_number
         });
@@ -157,7 +151,6 @@ describe('DiagnosisHospitalNumber', function(){
           expect(callArgs.length).toBe(1);
           expect(callArgs[0].controller).toBe('DiagnosisAddEpisodeCtrl');
           var resolves = $modal.open.calls.mostRecent().args[0].resolve;
-          expect(resolves.options()).toEqual(options);
           var expected_demographics = angular.copy(patientData.demographics[0]);
           expect(resolves.demographics()).toEqual(expected_demographics);
           expect(resolves.tags()).toEqual({});

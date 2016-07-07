@@ -2,7 +2,7 @@ describe('DiagnosisAddEpisodeCtrl', function() {
     "use strict";
 
     var $rootScope, $scope, $modal, $httpBackend, $controller;
-    var modalInstance, tags, options, demographics, tagServiceSpy;
+    var modalInstance, tags, demographics, tagServiceSpy;
     var mockTagService, tagServiceToSave;
 
 
@@ -15,12 +15,15 @@ describe('DiagnosisAddEpisodeCtrl', function() {
 
     demographics = { patient_id: 123 };
     tags = { tag: 'tropical', subtag: 'inpatients' };
-    options = {
+    var referencedata = {
         'symptom_list': [
             'cough',
             'rash'
         ]
     };
+    referencedata.toLookuplists = function(){
+        return referencedata
+    }
 
     beforeEach(module('opal.controllers'));
 
@@ -44,7 +47,7 @@ describe('DiagnosisAddEpisodeCtrl', function() {
         $controller('DiagnosisAddEpisodeCtrl', {
             $scope         : $scope,
             $modalInstance : modalInstance,
-            options        : options,
+            referencedata  : referencedata,
             tags           : tags,
             demographics   : demographics,
             TagService: mockTagService,

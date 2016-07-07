@@ -5,7 +5,6 @@ controllers.controller(
     'OPATReferralCtrl',
     function($scope, $modalInstance, $modal, $rootScope, $q,
              growl,
-             options,
              Episode){
         $scope.model = {
             hospital_number : null
@@ -110,7 +109,7 @@ controllers.controller(
   		controller: 'AddEpisodeCtrl',
                 size: 'lg',
 		resolve: {
-		    options: function() { return options; },
+                    referencedata: function(Referencedata) { return Referencedata; },
 		    demographics: function() {
 			return { hospital_number: $scope.model.hospital_number }
 		    },
@@ -201,7 +200,7 @@ controllers.controller(
 		controller: 'AddEpisodeCtrl',
                 size: 'lg',
 		resolve: {
-		    options: function() { return options; },
+                    referencedata: function(Referencedata) { return Referencedata; },
 		    demographics: function() { return demographics; },
                     tags: function(){ return {tag: 'walkin', subtag: ''}}
 		}
