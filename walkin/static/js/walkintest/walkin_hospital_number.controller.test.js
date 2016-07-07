@@ -82,7 +82,7 @@ describe('WalkinHospitalNumberCtrl', function (){
 
     describe('newPatient()', function() {
         it('should pass through the tags', function() {
-            spyOn($modal, 'open').and.returnValue({result: {then: function(){}}});
+            spyOn($modal, 'open').and.callThrough();
             $scope.newPatient();
             var resolves = $modal.open.calls.mostRecent().args[0].resolve;
             expect(resolves.tags()).toEqual(tags);
@@ -95,7 +95,7 @@ describe('WalkinHospitalNumberCtrl', function (){
 
         it('should pass through the tags', function() {
             var patientData = {demographics: [{}]};
-            spyOn($modal, 'open').and.returnValue({result: {then: function(){}}});
+            spyOn($modal, 'open').and.callThrough();
             $scope.add_for_patient(patientData);
             var resolves = $modal.open.calls.mostRecent().args[0].resolve;
             expect(resolves.tags()).toEqual(tags);

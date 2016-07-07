@@ -5,7 +5,6 @@ controllers.controller(
     'ResearchStudyHospitalNumberCtrl',
     function($scope, $modalInstance, $modal, $rootScope,
              $routeParams, $q,
-             options,
              Episode){
 
         $scope.model = {
@@ -87,7 +86,7 @@ controllers.controller(
                 templateUrl: '/templates/modals/add_episode_without_teams.html/',
                 controller: 'AddEpisodeCtrl',
                 resolve: {
-                    options: function() { return options; },
+                    referencedata: function(Referencedata) { return Referencedata; },
                     demographics: function() {
                         return { hospital_number: $scope.model.hospitalNumber }
                     },
@@ -148,7 +147,7 @@ controllers.controller(
                 templateUrl: '/templates/modals/add_episode_without_teams.html/',
                 controller: 'AddEpisodeCtrl',
                 resolve: {
-                    options: function() { return options; },
+                    referencedata: function(Referencedata) { return Referencedata; },
                     demographics: function() { return demographics; },
                     tags: function(){ return {} }
                 }
