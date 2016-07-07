@@ -14,18 +14,21 @@
   </span>
 </div>
 <span ng-hide="editing.demographics.external_system">
-  {% select field="Demographics.title" static="editing.demographics.external_system" %}
-  {% input field="Demographics.first_name" static="editing.demographics.external_system" %}
-  {% input field="Demographics.surname" static="editing.demographics.external_system" %}
+  {% input field="Demographics.first_name" %}
+  {% input field="Demographics.surname" %}
 </span>
-{% date_of_birth_field %}
 <span ng-hide="editing.demographics.external_system">
-  {% input field="Demographics.post_code" static="editing.demographics.external_system" %}
+  {% date_of_birth_field %}
+  {% input field="Demographics.post_code" %}
+  {% select field="Demographics.sex" %}
+  {% select field="Demographics.marital_status" %}
+  {% select field="Demographics.ethnicity" %}
+  {% input label="GP Practice Code" field="Demographics.gp_practice_code" %}
 </span>
-{% select field="Demographics.sex" static="editing.demographics.external_system" %}
-{% select field="Demographics.marital_status" static="editing.demographics.external_system" %}
-{% select field="Demographics.ethnicity" static="editing.demographics.external_system" %}
-<span ng-hide="editing.demographics.external_system">
-  {% input label="GP Practice Code" field="Demographics.gp_practice_code" static="editing.demographics.external_system" %}
+<span ng-show="editing.demographics.external_system">
+  {% static "Demographics.date_of_birth" %}
+  {% static "Demographics.sex" %}
+  {% static "Demographics.marital_status" %}
+  {% static "Demographics.ethnicity" %}
 </span>
-{% input field="Demographics.birth_place" static="editing.demographics.external_system" %}
+{% input field="Demographics.birth_place" %}
