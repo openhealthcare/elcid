@@ -3,7 +3,7 @@ describe('OPATDischargeCtrl', function (){
     var $controller, $scope, $httpBackend, $modalInstance, $modal;
     var Episode, Item, $rootScope, fields;
     var controller, growl, columns;
-    var episode, options, tags;
+    var episode, referencedata, tags;
 
     var columns = {
         "default": [
@@ -84,7 +84,7 @@ describe('OPATDischargeCtrl', function (){
 
             $modalInstance = $modal.open({template: 'Not a real template'});
             episode = new Episode({id: 33, tagging: [{opat: true}], demographics: [{patient_id: 20}]});
-            options = {};
+            referencedata = { toLookuplists: function(){ return {} }};
             tags    = {};
             growl   = {success: jasmine.createSpy('Growl.success')}
 
@@ -92,7 +92,7 @@ describe('OPATDischargeCtrl', function (){
                 $scope        : $scope,
                 $modalInstance: $modalInstance,
                 episode       : episode,
-                options       : options,
+                referencedata : referencedata,
                 tags          : tags,
                 growl         : growl
             });

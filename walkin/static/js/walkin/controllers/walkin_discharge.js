@@ -4,7 +4,7 @@
 controllers.controller(
     'WalkinDischargeCtrl',
     function($scope, $modalInstance, $modal, $rootScope, $q,
-             growl, Item, CopyToCategory, UserProfile, options, episode, tags){
+             growl, Item, CopyToCategory, UserProfile, referencedata, episode, tags){
 
         "use strict";
 
@@ -54,12 +54,8 @@ controllers.controller(
 
         if($scope.meta.management.follow_up){ $scope.meta.follow_up = true; }
 
-        // Put all of our lookuplists in scope.
-        for (var name in options) {
-            if (name.indexOf('micro_test') != 0) {
-                $scope[name + '_list'] = options[name];
-            };
-        };
+
+        _.extend($scope, referencedata.toLookuplists());
 
         // Make sure that the episode's tagging item is an instance not an object
         $scope.ensure_tagging = function(episode){

@@ -3,7 +3,9 @@ describe('DiagnosisDischarge', function() {
 
     var $rootScope, $scope, $modal, $httpBackend, $controller;
     var Episode;
-    var modalInstance, tags, options, episode, fieldData;
+    var modalInstance, tags, episode, fieldData;
+
+    var referencedata = {toLookuplists: function(){ return {} }}
 
     fieldData = {
         'demographics': {
@@ -69,7 +71,7 @@ describe('DiagnosisDischarge', function() {
         $controller('DiagnosisDischargeCtrl', {
             $scope         : $scope,
             $modalInstance : modalInstance,
-            options        : options,
+            referencedata  : referencedata,
             tags           : tags,
             episode        : episode
         });

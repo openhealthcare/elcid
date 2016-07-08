@@ -6,7 +6,7 @@ controllers.controller(
     function($scope, $modalInstance, $rootScope, $q,
              growl,
              Item, CopyToCategory,
-             options, episode, tags){
+             referencedata, episode, tags){
 
         var DATE_FORMAT = 'DD/MM/YYYY';
         var opat_rejection = $rootScope.fields['opat_rejection'];
@@ -46,12 +46,7 @@ controllers.controller(
             }
         };
 
-        // Put all of our lookuplists in scope.
-	    for (var name in options) {
-		    if (name.indexOf('micro_test') != 0) {
-			    $scope[name + '_list'] = options[name];
-		    };
-	    };
+        _.extend($scope, referencedata.toLookuplists());
 
         // Make sure that the episode's tagging item is an instance not an object
         $scope.ensure_tagging = function(episode){

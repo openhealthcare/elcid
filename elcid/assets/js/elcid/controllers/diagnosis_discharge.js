@@ -11,7 +11,7 @@ controllers.controller(
         $location,
         growl,
         Flow,
-        tags, options, episode, DischargePatientService){
+        tags, referencedata, episode, DischargePatientService){
 
         $scope.tags = tags;
         $scope.episode = episode;
@@ -349,15 +349,7 @@ controllers.controller(
         //
         $scope.discharged = false;
 
-        //
-        // We only really need one lookuplist.
-        // TODO: put these into a nicer service.
-        //
-      	for (var name in options) {
-      	    if (name.indexOf('micro_test') !== 0) {
-            		$scope[name + '_list'] = _.uniq(options[name]);
-      	    }
-      	}
+        _.extend($scope, referencedata.toLookuplists());
 
         //
         // We should deal with the case where we're confirming discharge
