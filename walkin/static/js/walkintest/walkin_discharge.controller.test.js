@@ -2,9 +2,11 @@ describe('WalkinDischargeCtrl', function(){
     "use strict";
 
     var $controller, $scope, $modalInstance, $httpBackend, $rootScope, $modal, $q, growl;
-    var Episode, options, episode, tags;
+    var Episode, episode, tags;
     var today = new Date();
     var today_string = moment(today).format('DD/MM/YYYY');
+
+    var referencedata = {toLookuplists: function(){ return {} }}
 
     beforeEach(module('opal.controllers'));
 
@@ -97,7 +99,7 @@ describe('WalkinDischargeCtrl', function(){
             $scope         : $scope,
             $modalInstance : $modalInstance,
             growl          : growl,
-            options        : options,
+            referencedata  : referencedata,
             tags           : tags,
             episode        : episode,
         });
