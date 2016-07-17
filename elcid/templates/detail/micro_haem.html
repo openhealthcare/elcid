@@ -69,9 +69,11 @@
             <span ng-if="$first">
               {% record_panel models.HaemInformation title="Haematology Background Information" angular_filter="haemView.isRecentHaemInformation(item)" %}
             </span>
-            {% record_panel models.Antimicrobial editable="patient.episodes[0].id === episode.id" %}
-            {% record_panel models.MicrobiologyTest editable="patient.episodes[0].id === episode.id" %}
-            {% record_panel models.Diagnosis editable="patient.episodes[0].id === episode.id" %}
+            <span ng-repeat="editable in [$first]">
+              {% record_panel models.Antimicrobial editable="editable" %}
+              {% record_panel models.MicrobiologyTest editable="editable" %}
+              {% record_panel models.Diagnosis editable="editable" %}
+            </span>
           </div>
         </div>
       </section>
