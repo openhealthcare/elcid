@@ -115,13 +115,17 @@ class Location(EpisodeSubrecord):
     # opal-ideas#21
     opat_referral_route        = models.CharField(max_length=255, blank=True,
                                                   null=True)
-    opat_referral_team         = models.CharField(max_length=255, blank=True,
-                                                  null=True)
-    opat_referral_consultant   = models.CharField(max_length=255, blank=True,
-                                                  null=True)
-    opat_referral_team_address = models.TextField(blank=True, null=True)
-    opat_referral              = models.DateField(blank=True, null=True)
-    opat_acceptance            = models.DateField(blank=True, null=True)
+    opat_referral_team         = models.CharField(
+        max_length=255, blank=True, null=True, verbose_name="Referring Team"
+    )
+    opat_referral_consultant   = models.CharField(
+        max_length=255, blank=True, null=True, verbose_name="Referring Consultant"
+    )
+    opat_referral_team_address = models.TextField(
+        blank=True, null=True, verbose_name="Referring team address"
+    )
+    opat_referral              = models.DateField(blank=True, null=True, verbose_name="Date Of Referral To OPAT")
+    opat_acceptance            = models.DateField(blank=True, null=True, verbose_name="Referring Consultant")
     opat_discharge             = models.DateField(blank=True, null=True)
 
     def __unicode__(self):
@@ -357,9 +361,14 @@ class MicrobiologyInput(EpisodeSubrecord):
     _angular_service = 'MicrobiologyInput'
 
     when = models.DateTimeField(null=True, blank=True)
-    initials = models.CharField(max_length=255, blank=True)
+    initials = models.CharField(
+        max_length=255,
+        blank=True,
+        verbose_name="Advice given by"
+    )
     reason_for_interaction = ForeignKeyOrFreeText(
-        omodels.Clinical_advice_reason_for_interaction
+        omodels.Clinical_advice_reason_for_interaction,
+        verbose_name="Reason for clinical interaction"
     )
     clinical_discussion = models.TextField(blank=True)
     agreed_plan = models.TextField(blank=True)
@@ -417,21 +426,21 @@ class MicrobiologyTest(EpisodeSubrecord):
     sensitive_antibiotics = models.CharField(max_length=255, blank=True)
     resistant_antibiotics = models.CharField(max_length=255, blank=True)
     result                = models.CharField(max_length=255, blank=True)
-    igm                   = models.CharField(max_length=20, blank=True)
-    igg                   = models.CharField(max_length=20, blank=True)
-    vca_igm               = models.CharField(max_length=20, blank=True)
-    vca_igg               = models.CharField(max_length=20, blank=True)
-    ebna_igg              = models.CharField(max_length=20, blank=True)
-    hbsag                 = models.CharField(max_length=20, blank=True)
-    anti_hbs              = models.CharField(max_length=20, blank=True)
-    anti_hbcore_igm       = models.CharField(max_length=20, blank=True)
-    anti_hbcore_igg       = models.CharField(max_length=20, blank=True)
-    rpr                   = models.CharField(max_length=20, blank=True)
-    tppa                  = models.CharField(max_length=20, blank=True)
+    igm                   = models.CharField(max_length=20, blank=True, verbose_name="IgM")
+    igg                   = models.CharField(max_length=20, blank=True, verbose_name="IgG")
+    vca_igm               = models.CharField(max_length=20, blank=True, verbose_name="IgM")
+    vca_igg               = models.CharField(max_length=20, blank=True, verbose_name="IgG")
+    ebna_igg              = models.CharField(max_length=20, blank=True, verbose_name="EBNA IgG")
+    hbsag                 = models.CharField(max_length=20, blank=True, verbose_name="HBsAg")
+    anti_hbs              = models.CharField(max_length=20, blank=True, verbose_name="anti-HbS")
+    anti_hbcore_igm       = models.CharField(max_length=20, blank=True, verbose_name="anti-HbCore IgM")
+    anti_hbcore_igg       = models.CharField(max_length=20, blank=True, verbose_name="anti-HbCore IgG")
+    rpr                   = models.CharField(max_length=20, blank=True, verbose_name="RPR")
+    tppa                  = models.CharField(max_length=20, blank=True, verbose_name="TPPA")
     viral_load            = models.CharField(max_length=20, blank=True)
     parasitaemia          = models.CharField(max_length=20, blank=True)
-    hsv                   = models.CharField(max_length=20, blank=True)
-    vzv                   = models.CharField(max_length=20, blank=True)
+    hsv                   = models.CharField(max_length=20, blank=True, verbose_name="HSV")
+    vzv                   = models.CharField(max_length=20, blank=True, verbose_name="VZV")
     syphilis              = models.CharField(max_length=20, blank=True)
     c_difficile_antigen   = models.CharField(max_length=20, blank=True)
     c_difficile_toxin     = models.CharField(max_length=20, blank=True)
@@ -452,13 +461,27 @@ class MicrobiologyTest(EpisodeSubrecord):
     giardia               = models.CharField(max_length=20, blank=True)
     entamoeba_histolytica = models.CharField(max_length=20, blank=True)
     cryptosporidium       = models.CharField(max_length=20, blank=True)
-    hiv_declined          = ForeignKeyOrFreeText(Hiv_no)
-    spotted_fever_igm     = models.CharField(max_length=20, blank=True)
-    spotted_fever_igg     = models.CharField(max_length=20, blank=True)
-    typhus_group_igm      = models.CharField(max_length=20, blank=True)
-    typhus_group_igg      = models.CharField(max_length=20, blank=True)
-    scrub_typhus_igm      = models.CharField(max_length=20, blank=True)
-    scrub_typhus_igg      = models.CharField(max_length=20, blank=True)
+    hiv_declined          = ForeignKeyOrFreeText(
+        Hiv_no, verbose_name="Reason not done"
+    )
+    spotted_fever_igm     = models.CharField(
+        max_length=20, blank=True, verbose_name="Spotted Fever Group IgM"
+    )
+    spotted_fever_igg     = models.CharField(
+        max_length=20, blank=True, verbose_name="Spotted Fever Group IgG"
+    )
+    typhus_group_igm      = models.CharField(
+        max_length=20, blank=True, verbose_name="Typhus Group IgM"
+    )
+    typhus_group_igg      = models.CharField(
+        max_length=20, blank=True, verbose_name="Typhus Group IgG"
+    )
+    scrub_typhus_igm      = models.CharField(
+        max_length=20, blank=True, verbose_name="Scrub Typhus IgM"
+    )
+    scrub_typhus_igg      = models.CharField(
+        max_length=20, blank=True, verbose_name="Scrub Typhus IgG"
+    )
 
 
 class Line(EpisodeSubrecord):
@@ -470,7 +493,9 @@ class Line(EpisodeSubrecord):
     site                 = ForeignKeyOrFreeText(omodels.Line_site)
     insertion_datetime   = models.DateTimeField(blank=True, null=True)
     inserted_by          = models.CharField(max_length=255, blank=True, null=True)
-    external_length      = models.CharField(max_length=255, blank=True, null=True)
+    external_length      = models.CharField(
+        max_length=255, blank=True, null=True, verbose_name="External Length When Inserted"
+    )
     removal_datetime     = models.DateTimeField(blank=True, null=True)
     complications        = ForeignKeyOrFreeText(omodels.Line_complication)
     removal_reason       = ForeignKeyOrFreeText(omodels.Line_removal_reason)
@@ -483,7 +508,7 @@ class Appointment(EpisodeSubrecord):
     _advanced_searchable = False
 
     appointment_type = models.CharField(max_length=200, blank=True, null=True)
-    appointment_with = models.CharField(max_length=200, blank=True, null=True)
+    appointment_with = models.CharField(max_length=200, blank=True, null=True, verbose_name="With")
     date             = models.DateField(blank=True, null=True)
 
 
