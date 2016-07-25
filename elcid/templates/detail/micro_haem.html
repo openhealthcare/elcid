@@ -17,7 +17,7 @@
           {% record_panel models.MicrobiologyTest editable="false" title="Alert Investigation Results" name="alertInvestigations()" %}
         </div>
       </div>
-      <section ng-repeat="episode in patient.episodes | orderBy:haemView.getEpisodeOrdering">
+      <section ng-repeat="episode in patient.episodes">
         <hr class="patient-timeline-seperator">
         <div class="row">
           <div parent-height class="col-md-6">

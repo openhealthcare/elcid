@@ -32,11 +32,6 @@ angular.module('opal.controllers').controller('HaemView', function($scope){
      return orderByDate(clinicalAdviceDate);
   };
 
-  vm.getEpisodeOrdering = function(episode){
-      var significantDate = episode.discharge_date || episode.date_of_episode || episode.date_of_admission;
-      return orderByDate(significantDate)
-  };
-
   if($scope.patient.episodes.length){
       $scope.episode.alertInvestigations = function(){
               return _.reduce($scope.patient.episodes, function(r, e){
