@@ -39,11 +39,11 @@ class HaemInformation(PatientSubrecord):
     _icon = 'fa fa-info-circle'
     _title = 'Haematology Background Information'
 
-    patient_type = ForeignKeyOrFreeText(HaemInformationType)
+    patient_type = ForeignKeyOrFreeText(HaemInformationType, verbose_name="Type")
     date_of_transplant = models.DateField(blank=True, null=True)
     neutropenia_onset = models.DateField(blank=True, null=True)
-    type_of_transplant = ForeignKeyOrFreeText(HaemTransplantType)
-    type_of_chemotherapy = ForeignKeyOrFreeText(HaemChemotherapyType)
+    type_of_transplant = ForeignKeyOrFreeText(HaemTransplantType, verbose_name="Transplant Type")
+    type_of_chemotherapy = ForeignKeyOrFreeText(HaemChemotherapyType, verbose_name="Chemotherapy Type")
     date_of_chemotherapy = models.DateField(blank=True, null=True)
     count_recovery = models.DateField(blank=True, null=True)
     details = models.TextField(blank=True, null=True)

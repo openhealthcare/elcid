@@ -1,43 +1,44 @@
 {% load forms %}
-{% input "autofocus" label="Test" model="editing.microbiology_test.test" lookuplist="microbiology_test_list" %}
-{% datepicker label="Date ordered" model="editing.microbiology_test.date_ordered" %}
-{% input label="Details" model="editing.microbiology_test.details" %}
+{% input "autofocus" field="MicrobiologyTest.test" lookuplist="microbiology_test_list" %}
+{% datepicker field="MicrobiologyTest.date_ordered" %}
+{% input field="MicrobiologyTest.details" %}
 
-{% input label="Microscopy" model="editing.microbiology_test.microscopy" show="testType == 'micro_test_mcs'" %}
-{% input label="Organism" model="editing.microbiology_test.organism" lookuplist="microbiology_organism_list" show="testType == 'micro_test_mcs'" %}
-{% input label="Sensitive antibiotics" model="editing.microbiology_test.sensitive_antibiotics" lookuplist="antimicrobial_list" show="testType == 'micro_test_mcs'" %}
-{% input label="Resistant antibiotics" model="editing.microbiology_test.resistant_antibiotics" lookuplist="antimicrobial_list" show="testType == 'micro_test_mcs'" %}
+{% input field="MicrobiologyTest.microscopy" show="testType == 'micro_test_mcs'" %}
+{% input field="MicrobiologyTest.organism" lookuplist="microbiology_organism_list" show="testType == 'micro_test_mcs'" %}
 
-{% radio label="IgM" model="editing.microbiology_test.igm" show="testType == 'micro_test_serology'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
-{% radio label="IgG" model="editing.microbiology_test.igg" show="testType == 'micro_test_serology'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
+{% input field="MicrobiologyTest.sensitive_antibiotics" lookuplist="antimicrobial_list" show="testType == 'micro_test_mcs'" %}
+{% input field="MicrobiologyTest.resistant_antibiotics" lookuplist="antimicrobial_list" show="testType == 'micro_test_mcs'" %}
 
-{% radio label="IgM" model="editing.microbiology_test.vca_igm" show="testType == 'micro_test_ebv_serology'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
-{% radio label="IgG" model="editing.microbiology_test.vca_igg" show="testType == 'micro_test_ebv_serology'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
-{% radio label="EBNA IgG" model="editing.microbiology_test.ebna_igg" show="testType == 'micro_test_ebv_serology'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
+{% radio field="MicrobiologyTest.igm" show="testType == 'micro_test_serology'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
+{% radio field="MicrobiologyTest.igg" show="testType == 'micro_test_serology'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
 
-{% radio label="Result" model="editing.microbiology_test.result" show="testType == 'micro_test_hiv'" lookuplist="['pending', 'antibody positive', 'p24 antigen only', 'negative']" %}
+{% radio field="MicrobiologyTest.vca_igm" show="testType == 'micro_test_ebv_serology'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
+{% radio field="MicrobiologyTest.vca_igg" show="testType == 'micro_test_ebv_serology'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
+{% radio field="MicrobiologyTest.ebna_igg" show="testType == 'micro_test_ebv_serology'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
 
-{% radio label="HBsAg" model="editing.microbiology_test.hbsag" show="testType == 'micro_test_hepititis_b_serology'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
-{% radio label="anti-HbS" model="editing.microbiology_test.anti_hbs" show="testType == 'micro_test_hepititis_b_serology'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
-{% radio label="anti-HbCore IgM" model="editing.microbiology_test.anti_hbcore_igm" show="testType == 'micro_test_hepititis_b_serology'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
-{% radio label="anti-HbCore IgG" model="editing.microbiology_test.anti_hbcore_igg" show="testType == 'micro_test_hepititis_b_serology'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
+{% radio field="MicrobiologyTest.result" show="testType == 'micro_test_hiv'" lookuplist="['pending', 'antibody positive', 'p24 antigen only', 'negative']" %}
 
-{% input label="RPR" model="editing.microbiology_test.rpr" show="testType == 'micro_test_syphilis_serology'" %}
-{% radio label="TPPA" model="editing.microbiology_test.tppa" show="testType == 'micro_test_syphilis_serology'" lookuplist="['pending', 'positive', 'negative']" %}
+{% radio field="MicrobiologyTest.hbsag" show="testType == 'micro_test_hepititis_b_serology'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
+{% radio field="MicrobiologyTest.anti_hbs" show="testType == 'micro_test_hepititis_b_serology'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
+{% radio field="MicrobiologyTest.anti_hbcore_igm" show="testType == 'micro_test_hepititis_b_serology'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
+{% radio field="MicrobiologyTest.anti_hbcore_igg" show="testType == 'micro_test_hepititis_b_serology'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
 
-{% radio label="Result" model="editing.microbiology_test.result" show="testType == 'micro_test_single_test_pos_neg'" lookuplist="['pending', 'positive', 'negative']" %}
+{% input field="MicrobiologyTest.rpr" label="RPR" model="editing.microbiology_test.rpr" show="testType == 'micro_test_syphilis_serology'" %}
+{% radio field="MicrobiologyTest.tppa" show="testType == 'micro_test_syphilis_serology'" lookuplist="['pending', 'positive', 'negative']" %}
 
-{% radio label="Result" model="editing.microbiology_test.result" show="testType == 'micro_test_single_test_pos_neg_equiv'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
+{% radio field="MicrobiologyTest.result" show="testType == 'micro_test_single_test_pos_neg'" lookuplist="['pending', 'positive', 'negative']" %}
 
-{% radio label="IgG" model="editing.microbiology_test.igg" show="testType == 'micro_test_single_igg_test'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
+{% radio field="MicrobiologyTest.result" show="testType == 'micro_test_single_test_pos_neg_equiv'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
 
-{% input label="Viral load" model="editing.microbiology_test.viral_load" show="testType == 'micro_test_viral_load'" %}
+{% radio field="MicrobiologyTest.igg" show="testType == 'micro_test_single_igg_test'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
 
-{% input label="Parasitaemia" model="editing.microbiology_test.parasitaemia" show="testType == 'micro_test_parasitaemia'" %}
+{% input field="MicrobiologyTest.viral_load" show="testType == 'micro_test_viral_load'" %}
 
-{% radio label="HSV" model="editing.microbiology_test.hsv" show="testType == 'micro_test_swab_pcr'" lookuplist="['pending', 'positive', 'negative']" %}
-{% radio label="VZV" model="editing.microbiology_test.vzv" show="testType == 'micro_test_swab_pcr'" lookuplist="['pending', 'positive', 'negative']" %}
-{% radio label="Syphilis" model="editing.microbiology_test.syphilis" show="testType == 'micro_test_swab_pcr'" lookuplist="['pending', 'positive', 'negative']" %}
+{% input field="MicrobiologyTest.parasitaemia" show="testType == 'micro_test_parasitaemia'" %}
+
+{% radio field="MicrobiologyTest.hsv" show="testType == 'micro_test_swab_pcr'" lookuplist="['pending', 'positive', 'negative']" %}
+{% radio field="MicrobiologyTest.vzv" show="testType == 'micro_test_swab_pcr'" lookuplist="['pending', 'positive', 'negative']" %}
+{% radio field="MicrobiologyTest.syphilis" show="testType == 'micro_test_swab_pcr'" lookuplist="['pending', 'positive', 'negative']" %}
 
 <span ng-show="testType == 'micro_test_c_difficile'">
 
@@ -543,12 +544,12 @@
 
 </span>
 
-{% select label="Reason not done" model="editing.microbiology_test.hiv_declined" show="editing.microbiology_test.test == 'HIV Point of Care' && editing.microbiology_test.result == 'not done'" lookuplist="hiv_no_list" %}
-{% checkbox label="Alert Investigation" model="editing.microbiology_test.alert_investigation" %}
+{% select field="MicrobiologyTest.hiv_declined" show="editing.microbiology_test.test == 'HIV Point of Care' && editing.microbiology_test.result == 'not done'" lookuplist="hiv_no_list" %}
+{% checkbox field="MicrobiologyTest.alert_investigation" %}
 
-{% radio label="Spotted Fever Group IgM" model="editing.microbiology_test.spotted_fever_igm" show="editing.microbiology_test.test == 'Rickettsia Serology'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
-{% radio label="Spotted Fever Group IgG" model="editing.microbiology_test.spotted_fever_igg" show="editing.microbiology_test.test == 'Rickettsia Serology'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
-{% radio label="Typhus Group IgM" model="editing.microbiology_test.typhus_group_igm" show="editing.microbiology_test.test == 'Rickettsia Serology'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
-{% radio label="Typhus Group IgG" model="editing.microbiology_test.typhus_group_igg" show="editing.microbiology_test.test == 'Rickettsia Serology'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
-{% radio label="Scrub Typhus IgM" model="editing.microbiology_test.scrub_typhus_igm" show="editing.microbiology_test.test == 'Rickettsia Serology'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
-{% radio label="Scrub Typhus IgG" model="editing.microbiology_test.scrub_typhus_igg" show="editing.microbiology_test.test == 'Rickettsia Serology'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
+{% radio field="MicrobiologyTest.spotted_fever_igm" show="editing.microbiology_test.test == 'Rickettsia Serology'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
+{% radio field="MicrobiologyTest.spotted_fever_igg" show="editing.microbiology_test.test == 'Rickettsia Serology'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
+{% radio field="MicrobiologyTest.typhus_group_igm" show="editing.microbiology_test.test == 'Rickettsia Serology'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
+{% radio field="MicrobiologyTest.typhus_group_igg" show="editing.microbiology_test.test == 'Rickettsia Serology'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
+{% radio field="MicrobiologyTest.scrub_typhus_igm" show="editing.microbiology_test.test == 'Rickettsia Serology'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
+{% radio field="MicrobiologyTest.scrub_typhus_igg" show="editing.microbiology_test.test == 'Rickettsia Serology'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}

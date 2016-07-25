@@ -1,8 +1,8 @@
 {% load forms %}
 <div ng-hide="editing.allergies.external_system">
-  {% input label="Drug" model="editing.allergies.drug" lookuplist="antimicrobial_list" %}
-  {% checkbox label="Suspected?" model="editing.allergies.provisional" %}
-  {% input label="Additional Details" model="editing.allergies.details" %}
+  {% input field="Allergies.drug" lookuplist="antimicrobial_list" %}
+  {% checkbox field="Allergies.provisional" %}
+  {% input field="Allergies.details" %}
 </div>
 <div ng-show="editing.allergies.external_system">
   <div class="text-center content-offset-below-25" ng-show="editing.allergies.no_allergies">
