@@ -25,8 +25,9 @@ describe('Antimicrobial', function(){
         });
 
         it('should leave the start date alone if we are not in walkin', function(){
-            var a = new Antimicrobial({start_date:'foo'});
+            var a = new Antimicrobial({});
             expect(a.initials).toEqual(undefined);
+            expect(a.start_date).toEqual(undefined);
         })
 
         it('should leave the start date alone if we set them already', function(){
