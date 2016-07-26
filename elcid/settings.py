@@ -160,6 +160,7 @@ INSTALLED_APPS = (
     'reversion',
     'opal',
     'rest_framework',
+    'rest_framework.authtoken',
     'compressor',
     'opal.core.search',
     'elcid',
@@ -304,6 +305,12 @@ if GLOSS_ENABLED:
 
 EXTRACT_ASYNC = True
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    )
+}
 
 if 'test' not in sys.argv:
     try:
