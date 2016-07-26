@@ -72,10 +72,10 @@
   </span>
 
   <span ng-show="step === 'travel'">
-    {% include "elcid/_includes/travel_multi_form.html" %}
+    {% include "partials/travel_multi_form.html" %}
   </span>
   <span ng-show="step === 'antimicrobial'">
-    {% include "elcid/_includes/antimicrobial_multi_form.html" %}
+    {% include "partials/antimicrobial_multi_form.html" %}
   </span>
   <span ng-show="step === 'consultant_at_discharge'">
       {% select "autofocus" placeholder="Consultant At Discharge" label="Consultant At Discharge" model="editing.consultant_at_discharge.consultant" lookuplist="consultant_list" required="Consultant at discharge is required." formname="dischargeDiagnosis" %}
