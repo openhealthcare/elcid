@@ -1,3 +1,15 @@
+## 0.6.1 Release
+We now use the field='modelName.field' api for all our forms, this lets us infer attributes such as max length
+
+We use a custom angular service on the models for investigation, diagnosis and other models to put in intelligent defaults.
+
+We have started the process of moving away from options to using reference data and meta data services.
+
+Category on the episode has changed to category_name as part of the v0.7.0 release
+
+## 0.6.0 Release
+OPAT, research and Walkin have been folded into the elcid repository. Haem and infectiousdiseases have been broken up into their own apps, OPAL is bumped to v0.6.0.
+
 ## 0.5.4 Release
 We change how we handle tags, we no longer delete them, we just archive them
 
