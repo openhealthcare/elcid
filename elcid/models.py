@@ -1,37 +1,62 @@
 """
 elCID implementation specific models!
 """
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.db import models
+from django.conf import settings
+from jsonfield import JSONField
 
 import opal.models as omodels
 
 from opal.models import (
-    EpisodeSubrecord, PatientSubrecord, GP, CommunityNurse, Episode, Team,
-    Tagging
+    EpisodeSubrecord, PatientSubrecord, Episode, Team,
+    Tagging, ExternallySourcedModel
 )
 from opal.core.fields import ForeignKeyOrFreeText
 from opal.core import lookuplists
-from constants import MICROHAEM_CONSULTATIONS, MICROHAEM_TEAM_NAME
-from opat import models as opatmodels
+from microhaem.constants import MICROHAEM_CONSULTATIONS, MICROHAEM_TAG
 
 
-class Demographics(PatientSubrecord):
+class Demographics(PatientSubrecord, ExternallySourcedModel):
     _is_singleton = True
     _icon = 'fa fa-user'
 
-    name             = models.CharField(max_length=255, blank=True)
-    hospital_number  = models.CharField(max_length=255, blank=True)
-    nhs_number       = models.CharField(max_length=255, blank=True, null=True)
-    date_of_birth    = models.DateField(null=True, blank=True)
-    country_of_birth = ForeignKeyOrFreeText(omodels.Destination)
-    ethnicity        = models.CharField(max_length=255, blank=True, null=True)
-    gender           = models.CharField(max_length=255, blank=True, null=True)
+    hospital_number = models.CharField(max_length=255, blank=True)
+    nhs_number = models.CharField(max_length=255, blank=True, null=True)
 
-    pid_fields       = 'name', 'hospital_number', 'nhs_number'
+    surname = models.CharField(max_length=255, blank=True)
+    first_name = models.CharField(max_length=255, blank=True)
+    middle_name = models.CharField(max_length=255, blank=True, null=True)
+    title = ForeignKeyOrFreeText(omodels.Title)
+    date_of_birth = models.DateField(null=True, blank=True)
+    marital_status = ForeignKeyOrFreeText(omodels.MaritalStatus)
+    religion = models.CharField(max_length=255, blank=True, null=True)
+    date_of_death = models.DateField(null=True, blank=True)
+    post_code = models.CharField(max_length=20, blank=True, null=True)
+    gp_practice_code = models.CharField(max_length=20, blank=True, null=True)
+    birth_place = ForeignKeyOrFreeText(omodels.Destination)
+    ethnicity = ForeignKeyOrFreeText(omodels.Ethnicity)
+    death_indicator = models.BooleanField(default=False)
+
+    # not strictly correct, but it will be updated when opal core models
+    # are updated
+    sex = ForeignKeyOrFreeText(omodels.Gender)
+
+    pid_fields       = (
+        'hospital_number', 'nhs_number', 'surname', 'first_name',
+        'middle_name', 'post_code',
+    )
 
     class Meta:
         verbose_name_plural = "Demographics"
 
+    @classmethod
+    def get_form_template(cls, patient_list=None, episode_type=None):
+        if settings.GLOSS_ENABLED:
+            return super(Demographics, cls).get_form_template(patient_list=None, episode_type=None)
+        else:
+            return "forms/demographics_form_pre_gloss.html"
 
 class ContactDetails(PatientSubrecord):
     _is_singleton = True
@@ -90,13 +115,17 @@ class Location(EpisodeSubrecord):
     # opal-ideas#21
     opat_referral_route        = models.CharField(max_length=255, blank=True,
                                                   null=True)
-    opat_referral_team         = models.CharField(max_length=255, blank=True,
-                                                  null=True)
-    opat_referral_consultant   = models.CharField(max_length=255, blank=True,
-                                                  null=True)
-    opat_referral_team_address = models.TextField(blank=True, null=True)
-    opat_referral              = models.DateField(blank=True, null=True)
-    opat_acceptance            = models.DateField(blank=True, null=True)
+    opat_referral_team         = models.CharField(
+        max_length=255, blank=True, null=True, verbose_name="Referring Team"
+    )
+    opat_referral_consultant   = models.CharField(
+        max_length=255, blank=True, null=True, verbose_name="Referring Consultant"
+    )
+    opat_referral_team_address = models.TextField(
+        blank=True, null=True, verbose_name="Referring team address"
+    )
+    opat_referral              = models.DateField(blank=True, null=True, verbose_name="Date Of Referral To OPAT")
+    opat_acceptance            = models.DateField(blank=True, null=True, verbose_name="Referring Consultant")
     opat_discharge             = models.DateField(blank=True, null=True)
 
     def __unicode__(self):
@@ -114,6 +143,35 @@ class Location(EpisodeSubrecord):
             return 'demographics'
 
 
+class Result(PatientSubrecord):
+    _icon = 'fa fa-crosshairs'
+
+    lab_number = models.CharField(max_length=255, blank=True, null=True)
+    profile_code = models.CharField(max_length=255, blank=True, null=True)
+    external_identifier = models.CharField(max_length=255, blank=True, null=True)
+    profile_description = models.CharField(max_length=255, blank=True, null=True)
+    request_datetime = models.DateTimeField(blank=True, null=True)
+    observation_datetime = models.DateTimeField(blank=True, null=True)
+    last_edited = models.DateTimeField(blank=True, null=True)
+    result_status = models.CharField(max_length=255, blank=True, null=True)
+    observations = JSONField(blank=True, null=True)
+
+    def update_from_dict(self, data, *args, **kwargs):
+        if "id" not in data:
+            if "patient_id" not in data:
+                raise ValueError("no patient id found for result in %s" % data)
+            if "external_identifier" in data and data["external_identifier"]:
+                existing = Result.objects.filter(
+                    external_identifier=data["external_identifier"],
+                    patient=data["patient_id"]
+                ).first()
+
+                if existing:
+                    data["id"] = existing.id
+
+        super(Result, self).update_from_dict(data, *args, **kwargs)
+
+
 class PresentingComplaint(EpisodeSubrecord):
     _title = 'Presenting Complaint'
     _icon = 'fa fa-stethoscope'
@@ -128,11 +186,12 @@ class PresentingComplaint(EpisodeSubrecord):
         pass
 
     def to_dict(self, user):
-        return dict(
-            symptoms=[i.name for i in self.symptoms.all()],
-            duration=self.duration,
-            details=self.details
-        )
+        field_names = self.__class__._get_fieldnames_to_serialize()
+        result = {
+            i: getattr(self, i) for i in field_names if not i == "symptoms"
+        }
+        result["symptoms"] = list(self.symptoms.values_list("name", flat=True))
+        return result
 
     @classmethod
     def _get_fieldnames_to_serialize(cls):
@@ -185,6 +244,7 @@ class Diagnosis(EpisodeSubrecord):
     _title = 'Diagnosis / Issues'
     _sort = 'date_of_diagnosis'
     _icon = 'fa fa-stethoscope'
+    _angular_service = 'Diagnosis'
 
     condition         = ForeignKeyOrFreeText(omodels.Condition)
     provisional       = models.NullBooleanField()
@@ -218,6 +278,7 @@ class GeneralNote(EpisodeSubrecord):
     _title = 'General Notes'
     _sort  = 'date'
     _icon = 'fa fa-info-circle'
+    _angular_service = 'GeneralNote'
 
     date    = models.DateField(null=True, blank=True)
     comment = models.TextField()
@@ -251,6 +312,7 @@ class Antimicrobial(EpisodeSubrecord):
     _sort = 'start_date'
     _icon = 'fa fa-flask'
     _modal = 'lg'
+    _angular_service = 'Antimicrobial'
 
     drug          = ForeignKeyOrFreeText(omodels.Antimicrobial)
     dose          = models.CharField(max_length=255, blank=True)
@@ -265,12 +327,26 @@ class Antimicrobial(EpisodeSubrecord):
     no_antimicrobials = models.NullBooleanField(default=False)
 
 
-class Allergies(PatientSubrecord):
+class Allergies(PatientSubrecord, ExternallySourcedModel):
     _icon = 'fa fa-warning'
 
     drug        = ForeignKeyOrFreeText(omodels.Antimicrobial)
     provisional = models.NullBooleanField()
     details     = models.CharField(max_length=255, blank=True)
+
+    # previously called drug this is the name of the problematic substance
+    allergy_description = models.CharField(max_length=255, blank=True)
+    allergy_type_description = models.CharField(max_length=255, blank=True)
+    certainty_id = models.CharField(max_length=255, blank=True)
+    certainty_description = models.CharField(max_length=255, blank=True)
+    allergy_reference_name = models.CharField(max_length=255, blank=True)
+    allergen_reference_system = models.CharField(max_length=255, blank=True)
+    allergen_reference = models.CharField(max_length=255, blank=True)
+    status_id = models.CharField(max_length=255, blank=True)
+    status_description = models.CharField(max_length=255, blank=True)
+    diagnosis_datetime = models.DateTimeField(null=True, blank=True)
+    allergy_start_datetime = models.DateTimeField(null=True, blank=True)
+    no_allergies = models.BooleanField(default=False)
 
     class Meta:
         verbose_name_plural = "Allergies"
@@ -282,11 +358,17 @@ class MicrobiologyInput(EpisodeSubrecord):
     _icon = 'fa fa-comments'
     _modal = 'lg'
     _list_limit = 3
+    _angular_service = 'MicrobiologyInput'
 
     when = models.DateTimeField(null=True, blank=True)
-    initials = models.CharField(max_length=255, blank=True)
+    initials = models.CharField(
+        max_length=255,
+        blank=True,
+        verbose_name="Advice given by"
+    )
     reason_for_interaction = ForeignKeyOrFreeText(
-        omodels.Clinical_advice_reason_for_interaction
+        omodels.Clinical_advice_reason_for_interaction,
+        verbose_name="Reason for clinical interaction"
     )
     clinical_discussion = models.TextField(blank=True)
     agreed_plan = models.TextField(blank=True)
@@ -304,7 +386,7 @@ class MicrobiologyInput(EpisodeSubrecord):
                 episode = Episode.objects.get(pk=data["episode_id"])
 
             existing = Tagging.objects.filter(
-                episode=episode, team__name=MICROHAEM_TEAM_NAME
+                episode=episode, value=MICROHAEM_TAG
             )
 
             if existing.exists():
@@ -312,7 +394,7 @@ class MicrobiologyInput(EpisodeSubrecord):
             else:
                 Tagging.objects.create(
                     episode=episode,
-                    team=Team.objects.get(name=MICROHAEM_TEAM_NAME)
+                    value=MICROHAEM_TAG
                 )
         self.reason_for_interaction = incoming_value
 
@@ -333,6 +415,7 @@ class MicrobiologyTest(EpisodeSubrecord):
     _sort = 'date_ordered'
     _icon = 'fa fa-crosshairs'
     _modal = 'lg'
+    _angular_service = 'Investigation'
 
     test                  = models.CharField(max_length=255)
     alert_investigation   = models.BooleanField(default=False)
@@ -343,21 +426,21 @@ class MicrobiologyTest(EpisodeSubrecord):
     sensitive_antibiotics = models.CharField(max_length=255, blank=True)
     resistant_antibiotics = models.CharField(max_length=255, blank=True)
     result                = models.CharField(max_length=255, blank=True)
-    igm                   = models.CharField(max_length=20, blank=True)
-    igg                   = models.CharField(max_length=20, blank=True)
-    vca_igm               = models.CharField(max_length=20, blank=True)
-    vca_igg               = models.CharField(max_length=20, blank=True)
-    ebna_igg              = models.CharField(max_length=20, blank=True)
-    hbsag                 = models.CharField(max_length=20, blank=True)
-    anti_hbs              = models.CharField(max_length=20, blank=True)
-    anti_hbcore_igm       = models.CharField(max_length=20, blank=True)
-    anti_hbcore_igg       = models.CharField(max_length=20, blank=True)
-    rpr                   = models.CharField(max_length=20, blank=True)
-    tppa                  = models.CharField(max_length=20, blank=True)
+    igm                   = models.CharField(max_length=20, blank=True, verbose_name="IgM")
+    igg                   = models.CharField(max_length=20, blank=True, verbose_name="IgG")
+    vca_igm               = models.CharField(max_length=20, blank=True, verbose_name="IgM")
+    vca_igg               = models.CharField(max_length=20, blank=True, verbose_name="IgG")
+    ebna_igg              = models.CharField(max_length=20, blank=True, verbose_name="EBNA IgG")
+    hbsag                 = models.CharField(max_length=20, blank=True, verbose_name="HBsAg")
+    anti_hbs              = models.CharField(max_length=20, blank=True, verbose_name="anti-HbS")
+    anti_hbcore_igm       = models.CharField(max_length=20, blank=True, verbose_name="anti-HbCore IgM")
+    anti_hbcore_igg       = models.CharField(max_length=20, blank=True, verbose_name="anti-HbCore IgG")
+    rpr                   = models.CharField(max_length=20, blank=True, verbose_name="RPR")
+    tppa                  = models.CharField(max_length=20, blank=True, verbose_name="TPPA")
     viral_load            = models.CharField(max_length=20, blank=True)
     parasitaemia          = models.CharField(max_length=20, blank=True)
-    hsv                   = models.CharField(max_length=20, blank=True)
-    vzv                   = models.CharField(max_length=20, blank=True)
+    hsv                   = models.CharField(max_length=20, blank=True, verbose_name="HSV")
+    vzv                   = models.CharField(max_length=20, blank=True, verbose_name="VZV")
     syphilis              = models.CharField(max_length=20, blank=True)
     c_difficile_antigen   = models.CharField(max_length=20, blank=True)
     c_difficile_toxin     = models.CharField(max_length=20, blank=True)
@@ -378,183 +461,45 @@ class MicrobiologyTest(EpisodeSubrecord):
     giardia               = models.CharField(max_length=20, blank=True)
     entamoeba_histolytica = models.CharField(max_length=20, blank=True)
     cryptosporidium       = models.CharField(max_length=20, blank=True)
-    hiv_declined          = ForeignKeyOrFreeText(Hiv_no)
-    spotted_fever_igm     = models.CharField(max_length=20, blank=True)
-    spotted_fever_igg     = models.CharField(max_length=20, blank=True)
-    typhus_group_igm      = models.CharField(max_length=20, blank=True)
-    typhus_group_igg      = models.CharField(max_length=20, blank=True)
-    scrub_typhus_igm      = models.CharField(max_length=20, blank=True)
-    scrub_typhus_igg      = models.CharField(max_length=20, blank=True)
-
-"""
-Begin OPAT specific fields.
-"""
-
-
-class HaemChemotherapyType(lookuplists.LookupList):
-    class Meta:
-        verbose_name = "Chemotherapy type"
-
-
-class HaemTransplantType(lookuplists.LookupList):
-    class Meta:
-        verbose_name = "Transplant Type"
-
-
-class HaemInformationType(lookuplists.LookupList):
-    pass
-
-
-class EpisodeOfNeutropenia(PatientSubrecord):
-    _icon = 'fa fa-info-circle'
-    _sort = 'start'
-    _title = 'Episode of Neutropenia'
-    start = models.DateField(blank=True, null=True)
-    stop = models.DateField(blank=True, null=True)
-
-    class Meta:
-        ordering = ['-start']
-
-    @property
-    def icon(self):
-        return self._icon
-
-
-class HaemInformation(PatientSubrecord):
-    _icon = 'fa fa-info-circle'
-    _title = 'Haematology Background Information'
-
-    patient_type = ForeignKeyOrFreeText(HaemInformationType)
-    date_of_transplant = models.DateField(blank=True, null=True)
-    neutropenia_onset = models.DateField(blank=True, null=True)
-    type_of_transplant = ForeignKeyOrFreeText(HaemTransplantType)
-    type_of_chemotherapy = ForeignKeyOrFreeText(HaemChemotherapyType)
-    date_of_chemotherapy = models.DateField(blank=True, null=True)
-    count_recovery = models.DateField(blank=True, null=True)
-    details = models.TextField(blank=True, null=True)
-
-    @property
-    def icon(self):
-        return self._icon
-
-
-class Unplanned_stop(lookuplists.LookupList):
-    class Meta:
-        verbose_name = "Unplanned stop"
-
-
-class Opat_rvt(lookuplists.LookupList):
-    class Meta:
-        verbose_name = "OPAT RVT"
-
-
-class OPATMeta(EpisodeSubrecord):
-    review_date           = models.DateField(blank=True, null=True)
-    reason_for_stopping   = models.CharField(max_length=200, blank=True, null=True)
-    unplanned_stop_reason = ForeignKeyOrFreeText(Unplanned_stop)
-    stopping_iv_details   = models.CharField(max_length=200, blank=True, null=True)
-    treatment_outcome     = models.CharField(max_length=200, blank=True, null=True)
-    deceased              = models.NullBooleanField(default=False)
-    death_category        = models.CharField(max_length=200, blank=True, null=True)
-    cause_of_death        = models.CharField(max_length=200, blank=True, null=True)
-    readmitted            = models.NullBooleanField(default=False)
-    readmission_cause     = models.CharField(max_length=200, blank=True, null=True)
-    notes                 = models.TextField(blank=True, null=True)
-
-
-    class Meta:
-        verbose_name = "OPAT meta"
-
-
-class OPATOutcome(EpisodeSubrecord):
-    """
-    This captures the final data for an OAPT episode - it is much the
-    same as OPAT meta data, but captured on the ward round and interrogated
-    differently.
-    """
-    _title            = "OPAT Outcome"
-
-    outcome_stage         = models.CharField(max_length=200, blank=True, null=True)
-    treatment_outcome     = models.CharField(max_length=200, blank=True, null=True)
-    patient_outcome       = models.CharField(max_length=200, blank=True, null=True)
-    opat_outcome          = models.CharField(max_length=200, blank=True, null=True)
-    deceased              = models.NullBooleanField(default=False)
-    death_category        = models.CharField(max_length=200, blank=True, null=True)
-    cause_of_death        = models.CharField(max_length=200, blank=True, null=True)
-    readmitted            = models.NullBooleanField(default=False)
-    readmission_cause     = models.CharField(max_length=200, blank=True, null=True)
-    notes                 = models.TextField(blank=True, null=True)
-    patient_feedback      = models.NullBooleanField(default=False)
-    infective_diagnosis   = ForeignKeyOrFreeText(opatmodels.OPATInfectiveDiagnosis)
-
-    class Meta:
-        verbose_name = "OPAT outcome"
-
-
-class OPATRejection(EpisodeSubrecord):
-
-    decided_by            = models.CharField(max_length=255, blank=True, null=True)
-    patient_choice        = models.NullBooleanField(default=False)
-    oral_available        = models.NullBooleanField(default=False)
-    not_needed            = models.NullBooleanField(default=False)
-    patient_suitability   = models.NullBooleanField(default=False)
-    not_fit_for_discharge = models.NullBooleanField(default=False)
-    non_complex_infection = models.NullBooleanField(default=False)
-    no_social_support     = models.NullBooleanField(default=False)
-    reason                = models.CharField(max_length=255, blank=True, null=True)
-    date                  = models.DateField(blank=True, null=True)
-
-    class Meta:
-        verbose_name = "OPAT rejection"
+    hiv_declined          = ForeignKeyOrFreeText(
+        Hiv_no, verbose_name="Reason not done"
+    )
+    spotted_fever_igm     = models.CharField(
+        max_length=20, blank=True, verbose_name="Spotted Fever Group IgM"
+    )
+    spotted_fever_igg     = models.CharField(
+        max_length=20, blank=True, verbose_name="Spotted Fever Group IgG"
+    )
+    typhus_group_igm      = models.CharField(
+        max_length=20, blank=True, verbose_name="Typhus Group IgM"
+    )
+    typhus_group_igg      = models.CharField(
+        max_length=20, blank=True, verbose_name="Typhus Group IgG"
+    )
+    scrub_typhus_igm      = models.CharField(
+        max_length=20, blank=True, verbose_name="Scrub Typhus IgM"
+    )
+    scrub_typhus_igg      = models.CharField(
+        max_length=20, blank=True, verbose_name="Scrub Typhus IgG"
+    )
 
 
 class Line(EpisodeSubrecord):
     _sort = 'insertion_datetime'
     _icon = 'fa fa-bolt'
+    _angular_service = 'Line'
 
     line_type            = ForeignKeyOrFreeText(omodels.Line_type)
     site                 = ForeignKeyOrFreeText(omodels.Line_site)
     insertion_datetime   = models.DateTimeField(blank=True, null=True)
     inserted_by          = models.CharField(max_length=255, blank=True, null=True)
-    external_length      = models.CharField(max_length=255, blank=True, null=True)
+    external_length      = models.CharField(
+        max_length=255, blank=True, null=True, verbose_name="External Length When Inserted"
+    )
     removal_datetime     = models.DateTimeField(blank=True, null=True)
     complications        = ForeignKeyOrFreeText(omodels.Line_complication)
     removal_reason       = ForeignKeyOrFreeText(omodels.Line_removal_reason)
     special_instructions = models.TextField()
-
-
-class OPATReview(EpisodeSubrecord):
-    _sort = 'datetime'
-    _title = 'OPAT Review'
-    _icon = 'fa fa-comments'
-    _list_limit = 1
-    _modal = 'lg'
-
-    datetime                = models.DateTimeField(null=True, blank=True)
-    initials                = models.CharField(max_length=255, blank=True)
-    rv_type                 = ForeignKeyOrFreeText(Opat_rvt)
-    discussion              = models.TextField(blank=True, null=True)
-    opat_plan               = models.TextField(blank=True)
-    next_review             = models.DateField(blank=True, null=True)
-    dressing_changed        = models.NullBooleanField(default=False)
-    bung_changed            = models.NullBooleanField(default=False)
-    medication_administered = models.TextField(blank=True, null=True)
-    adverse_events          = ForeignKeyOrFreeText(omodels.Antimicrobial_adverse_event)
-
-    class Meta:
-        verbose_name = "OPAT review"
-
-
-class OPATOutstandingIssues(EpisodeSubrecord):
-    _title = 'Outstanding Issues'
-    _icon = 'fa fa-th-list'
-    _advanced_searchable = False
-
-    details = models.TextField(blank=True)
-
-    class Meta:
-        verbose_name = "OPAT outstanding issue"
-
 
 class Appointment(EpisodeSubrecord):
     _title = 'Upcoming Appointments'
@@ -563,235 +508,17 @@ class Appointment(EpisodeSubrecord):
     _advanced_searchable = False
 
     appointment_type = models.CharField(max_length=200, blank=True, null=True)
-    appointment_with = models.CharField(max_length=200, blank=True, null=True)
+    appointment_with = models.CharField(max_length=200, blank=True, null=True, verbose_name="With")
     date             = models.DateField(blank=True, null=True)
 
 
-class OPATLineAssessment(EpisodeSubrecord):
-    _title = 'OPAT Line Assessment'
-    _icon = 'fa fa-check-square-o'
+@receiver(post_save, sender=Episode)
+def get_information_from_gloss(sender, **kwargs):
+    from elcid import gloss_api
 
-    line                   = models.CharField(max_length=200, blank=True, null=True)
-    assessment_date        = models.DateField(blank=True, null=True)
-    vip_score              = models.IntegerField(blank=True, null=True)
-    dressing_type          = models.CharField(max_length=200, blank=True, null=True)
-    dressing_change_date   = models.DateField(blank=True, null=True)
-    dressing_change_reason = models.CharField(max_length=200, blank=True, null=True)
-    next_bionector_date    = models.DateField(blank=True, null=True)
-    bionector_change_date  = models.DateField(blank=True, null=True)
-    comments               = models.TextField(blank=True, null=True)
-    dressing_intact        = models.NullBooleanField(default=False)
-    lumen_flush_ok         = models.NullBooleanField(default=False)
-    blood_drawback_seen    = models.NullBooleanField(default=False)
-    cm_from_exit_site      = models.FloatField(default=False)
-
-    class Meta:
-        verbose_name = "OPAT line assessment"
-
-
-"""
-Fields for UCLH - specific Research studies.
-"""
-
-""" RiD RTI (http://www.rid-rti.eu/ ) """
-class Specimin(lookuplists.LookupList):
-    _advanced_searchable = False
-
-    class Meta:
-        verbose_name = "Specimen"
-
-class LabtestDetails(lookuplists.LookupList):
-    _advanced_searchable = False
-
-class Organism_details(lookuplists.LookupList):
-    _advanced_searchable = False
-
-    class Meta:
-        verbose_name_plural = "Organism details"
-
-
-class Checkpoints_assay(lookuplists.LookupList):
-    _advanced_searchable = False
-
-    class Meta:
-        verbose_name = "Checkpoints assay values"
-        verbose_name_plural = "Checkpoints assay values"
-
-
-class Antimicrobial_susceptability(lookuplists.LookupList):
-    _advanced_searchable = False
-
-    class Meta:
-        verbose_name = "Antimicrobial susceptability"
-        verbose_name_plural = "Antimicrobial susceptibilities"
-
-
-class Specimin_appearance(lookuplists.LookupList):
-    _advanced_searchable = False
-
-    class Meta:
-        verbose_name = "Specimen appearance"
-
-
-class LabSpecimin(EpisodeSubrecord):
-    _advanced_searchable = False
-
-    class Meta:
-        verbose_name = "Lab specimen appearance"
-
-    _title = 'Lab Specimen'
-    _sort = 'date_collected'
-    _icon = 'fa fa-flask'
-
-    specimin_type     = ForeignKeyOrFreeText(Specimin)
-    date_collected    = models.DateField(blank=True, null=True)
-    volume            = models.CharField(max_length=200, blank=True, null=True)
-    appearance        = ForeignKeyOrFreeText(Specimin_appearance)
-    epithelial_cell   = models.CharField(max_length=200, blank=True, null=True)
-    white_blood_cells = models.CharField(max_length=200, blank=True, null=True)
-    date_tested       = models.DateField(blank=True, null=True)
-    external_id       = models.CharField(max_length=200, blank=True, null=True)
-    biobanking        = models.NullBooleanField(default=False)
-    biobanking_box    = models.CharField(max_length=200, blank=True, null=True)
-    date_biobanked    = models.DateField(blank=True, null=True)
-    volume_biobanked  = models.CharField(max_length=200, blank=True, null=True)
-
-
-# This is based on the investigations record type from elCID
-class LabTest(EpisodeSubrecord):
-    _sort = 'date_ordered'
-    _icon = 'fa fa-crosshairs'
-    _advanced_searchable = False
-
-    test                         = models.CharField(max_length=255)
-    date_ordered                 = models.DateField(null=True, blank=True)
-    details                      = models.CharField(max_length=255, blank=True)
-    result                       = models.CharField(max_length=255, blank=True)
-    significant_organism         = models.NullBooleanField(default=False)
-    organism_details             = ForeignKeyOrFreeText(Organism_details)
-    antimicrobials_susceptible   = ForeignKeyOrFreeText(Antimicrobial_susceptability,
-                                                        related_name='susceptible')
-    antimicrobials_intermediate  = ForeignKeyOrFreeText(Antimicrobial_susceptability,
-                                                        related_name='intermediate')
-    antimicrobials_resistant     = ForeignKeyOrFreeText(Antimicrobial_susceptability,
-                                                        related_name='resistant')
-    retrieved                    = models.NullBooleanField(default=False)
-    date_retrieved               = models.DateField(null=True, blank=True)
-    sweep_biobanked              = models.NullBooleanField(default=False)
-    organism_biobanked           = models.NullBooleanField(default=False)
-    freezer_box_number           = models.CharField(max_length=200, blank=True, null=True)
-    esbl                         = models.NullBooleanField(default=False)
-    carbapenemase                = models.NullBooleanField(default=False)
-
-
-class RidRTIStudyDiagnosis(EpisodeSubrecord):
-    """
-    The RidRTI study Diagnosis.
-    """
-    diagnosis = models.CharField(max_length=255)
-
-
-class RidRTITest(EpisodeSubrecord):
-    """
-    Results of the actual RiD RTI test !
-    """
-    _advanced_searchable = False
-
-    test            = models.CharField(max_length=200, blank=True, null=True)
-    notes           = models.TextField(blank=True, null=True)
-    # HAP/VAP results
-    pseudomonas_aeruginosa = models.NullBooleanField(default=False)
-    acinetobacter_baumannii = models.NullBooleanField(default=False)
-    senotophomonas_maltophilia = models.NullBooleanField(default=False)
-    klebsiella_spp = models.NullBooleanField(default=False)
-    enterobacter_spp = models.NullBooleanField(default=False)
-    staphylococcus_aureus = models.NullBooleanField(default=False)
-    staphylococcus_mrsa = models.NullBooleanField(default=False)
-    ctx_m = models.NullBooleanField(default=False)
-    shv_esbl = models.NullBooleanField(default=False)
-    tem_esbl = models.NullBooleanField(default=False)
-    vim = models.NullBooleanField(default=False)
-    imp = models.NullBooleanField(default=False)
-    ndm = models.NullBooleanField(default=False)
-    kpc = models.NullBooleanField(default=False)
-    oxa_48 = models.NullBooleanField(default=False)
-    meca = models.NullBooleanField(default=False)
-    # CAP results
-    mycoplasma_pneumoniae = models.NullBooleanField(default=False)
-    chlamydophila_pneumoniae = models.NullBooleanField(default=False)
-    legionella_pneumophila = models.NullBooleanField(default=False)
-    # (Mycobacterium tuberculosis complex) = models.NullBooleanField(default=False)
-    mtc = models.NullBooleanField(default=False)
-    haemophilus_influenzae = models.NullBooleanField(default=False)
-    streptococcus_pneumoniae = models.NullBooleanField(default=False)
-    rsva = models.NullBooleanField(default=False)
-    rsvb = models.NullBooleanField(default=False)
-    influenza_a = models.NullBooleanField(default=False)
-    influenza_b      = models.NullBooleanField(default=False)
-    cap_coronavirus_oc43 = models.NullBooleanField(default=False)
-    cap_coronavirus_hku1 = models.NullBooleanField(default=False)
-    cap_coronavirus_nl63 = models.NullBooleanField(default=False)
-    cap_coronavirus_229e = models.NullBooleanField(default=False)
-    # ORTI results
-    nocardia_spp = models.NullBooleanField(default=False)
-    rhodococcus_equi = models.NullBooleanField(default=False)
-    # (Aspergillus spp Cryptococcus neoformans)
-    aspergillus_spp = models.NullBooleanField(default=False)
-    cryptococcus_neoformans = models.NullBooleanField(default=False)
-    pneumocystis_jiroveci = models.NullBooleanField(default=False)
-    orti_coronavirus_oc43 = models.NullBooleanField(default=False)
-    orti_coronavirus_hku1 = models.NullBooleanField(default=False)
-    orti_coronavirus_nl63 = models.NullBooleanField(default=False)
-    orti_coronavirus_229e = models.NullBooleanField(default=False)
-
-    class Meta:
-        verbose_name = "RiD-RTI"
-
-class CheckpointsAssay(EpisodeSubrecord):
-    _is_singleton = True
-    _advanced_searchable = False
-
-    acc = models.NullBooleanField(default=False)
-    act_mir = models.NullBooleanField(default=False)
-    bel = models.NullBooleanField(default=False)
-    cmy_i_mox = models.NullBooleanField(default=False)
-    cmy_ii = models.NullBooleanField(default=False)
-    ctx_m_1_group = models.NullBooleanField(default=False)
-    ctx_m_1_like = models.NullBooleanField(default=False)
-    ctx_m_15_like = models.NullBooleanField(default=False)
-    ctx_m_2_group = models.NullBooleanField(default=False)
-    ctx_m_3_like = models.NullBooleanField(default=False)
-    ctx_m_32_like = models.NullBooleanField(default=False)
-    ctx_m_8_25_group = models.NullBooleanField(default=False)
-    ctx_m_9_group = models.NullBooleanField(default=False)
-    dha = models.NullBooleanField(default=False)
-    fox = models.NullBooleanField(default=False)
-    ges = models.NullBooleanField(default=False)
-    gim = models.NullBooleanField(default=False)
-    imp = models.NullBooleanField(default=False)
-    kpc = models.NullBooleanField(default=False)
-    ndm = models.NullBooleanField(default=False)
-    oxa_23_like = models.NullBooleanField(default=False)
-    oxa_24_like = models.NullBooleanField(default=False)
-    oxa_48_like = models.NullBooleanField(default=False)
-    oxa_58_like = models.NullBooleanField(default=False)
-    per = models.NullBooleanField(default=False)
-    shv_e240k = models.NullBooleanField(default=False)
-    shv_g238a = models.NullBooleanField(default=False)
-    shv_g238s = models.NullBooleanField(default=False)
-    shv_wt = models.NullBooleanField(default=False)
-    spm = models.NullBooleanField(default=False)
-    tem_e104k = models.NullBooleanField(default=False)
-    tem_g238s = models.NullBooleanField(default=False)
-    tem_r164c = models.NullBooleanField(default=False)
-    tem_r164h = models.NullBooleanField(default=False)
-    tem_r164s = models.NullBooleanField(default=False)
-    tem_wt = models.NullBooleanField(default=False)
-    veb = models.NullBooleanField(default=False)
-    vim = models.NullBooleanField(default=False)
-
-    negative = models.NullBooleanField(default=False)
-    comments = models.TextField(blank=True, null=True)
-
-    class Meta:
-        verbose_name = "Checkpoints assay"
+    episode = kwargs.pop("instance")
+    created = kwargs.pop("created")
+    if created and settings.GLOSS_ENABLED:
+        hospital_number = episode.patient.demographics_set.first().hospital_number
+        gloss_api.subscribe(hospital_number)
+        gloss_api.patient_query(hospital_number, episode=episode)

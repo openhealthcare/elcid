@@ -10,7 +10,8 @@
     <div class="panel-heading">
       <h2>
          <i class="fa fa-user"></i>
-        [[patient.name]]
+        [[patient.first_name]]
+        [[patient.surname]]
         [[patient.hospital_number]]
         <small>
           <span class="white-text" ng-show="patient.date_of_birth">
@@ -40,8 +41,8 @@
                     <div class="col-md-12 text-center">
                         <a class="orange-link" ng-href="[[ getEpisodeLink(episode) ]]">
                             <span ng-show="episode.active">Current </span>
-                            <span ng-show="episode.category === 'inpatient'">Inpatient Admission</span>
-                            <span ng-show="episode.category !== 'inpatient'">[[ episode.category | title ]] Episode</span>
+                            <span ng-show="episode.category_name === 'inpatient'">Inpatient Admission</span>
+                            <span ng-show="episode.category_name !== 'inpatient'">[[ episode.category_name | title ]] Episode</span>
                             <span ng-show="episode.date_of_admission">
                                 [[ episode.date_of_admission | shortDate ]]
                                 <span ng-show="episode.date_of_admission"> - [[ episode.discharge_date | shortDate ]]</span>
@@ -120,7 +121,7 @@
                     </div>
                     <div class="col-md-6">
                         <span ng-if="$first">
-                          {% record_panel models.HaemInformation title="Haematology Background Information" angular_filter="isRecentHaemInformation" %}
+                          {% record_panel models.HaemInformation title="Haematology Background Information" angular_filter="isRecentHaemInformation(item)" %}
                           {% record_panel models.EpisodeOfNeutropenia title="Episodes of Neutropenia"  %}
                         </span>
                         {% record_panel models.Antimicrobial editable="firstEpisode.id === episode.id" %}

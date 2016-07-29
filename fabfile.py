@@ -1,4 +1,5 @@
-from fabric.api import env, task, local, lcd
+from fabric.api import env, task, local, lcd, run, prefix
+from fabric.operations import prompt
 from fabric.context_managers import warn_only
 import os
 
@@ -6,6 +7,7 @@ import os
 env.hosts = ["elcid-uch-test.openhealthcare.org.uk"]
 env.user = "ubuntu"
 project_name = "elcid"
+virtual_env_name = "elcid"
 fabfile_dir = os.path.realpath(os.path.dirname(__file__))
 
 
@@ -67,22 +69,20 @@ def checkout(package_name_version):
                 return
 
             for package_name, version in package_name_version.iteritems():
-                if package_name in existing_packages:
-                    with lcd(package_name):
-                        print "checking out {0} to {1}".format(
-                            package_name, version
-                        )
-                        local("git checkout {}".format(version))
-                        local("python setup.py develop")
-                else:
+                if package_name not in existing_packages:
                     print "cloning {}".format(package_name)
                     local("git clone {}".format(package_name))
                     with lcd(package_name):
                         print "checking out {0} to {1}".format(
                             package_name, version
                         )
-                        local("git checkout {}".format(version))
-                        local("python setup.py develop")
+                else:
+                    local("git fetch")
+
+                with lcd(package_name):
+                    local("git checkout {}".format(version))
+                    local("git pull origin {}".format(version))
+                    local("python setup.py develop")
 
 
 def db_commands(username):
@@ -159,3 +159,42 @@ def create_db(username):
 
         for db_command in db_commands(username):
             local(db_command)
+
+@task
+def deploy(key_file_name="../ec2.pem"):
+    env.key_filename = key_file_name
+    changes = local("git status --porcelain", capture=True)
+    if len(changes):
+        print " {}".format(changes)
+        proceed = prompt(
+            "you have uncommited changes, do you want to proceed",
+            default=False,
+            validate=bool
+        )
+
+        if not proceed:
+            return
+
+
+    git_branch_name = local('git rev-parse --abbrev-ref HEAD', capture=True)
+    with prefix(". /usr/share/virtualenvwrapper/virtualenvwrapper.sh"):
+        with prefix("workon {}".format(virtual_env_name)):
+            run("git fetch")
+            run("git checkout {}".format(git_branch_name))
+            run("git pull origin {}".format(git_branch_name))
+            run("pip install -r requirements.txt")
+            run("python manage.py migrate")
+            run("python manage.py collectstatic --noinput")
+            run("supervisorctl -c etc/test.conf restart gunicorn")
+            run("supervisorctl -c etc/test.conf restart celery")
+
+
+@task
+def restart_all(key_file_name="../ec2.pem"):
+    env.key_filename = key_file_name
+    with prefix(". /usr/share/virtualenvwrapper/virtualenvwrapper.sh"):
+        with prefix("workon {}".format(virtual_env_name)):
+            run("supervisorctl -c etc/test.conf restart gunicorn")
+            run("supervisorctl -c etc/test.conf restart celery")
+            run("supervisorctl -c etc/test.conf restart gloss")
+            run("supervisorctl -c etc/test.conf restart gloss_flask")

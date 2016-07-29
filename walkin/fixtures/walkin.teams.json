@@ -1,0 +1,54 @@
+[
+    {
+        "fields": {
+            "active": true, 
+            "direct_add": false, 
+            "name": "walkin", 
+            "order": null, 
+            "parent": null, 
+            "title": "Walk-in", 
+            "useful_numbers": []
+        }, 
+        "model": "opal.team", 
+        "pk": 25
+    }, 
+    {
+        "fields": {
+            "active": true, 
+            "direct_add": false, 
+            "name": "walkin_triage", 
+            "order": null, 
+            "parent": 25, 
+            "title": "Nurse Triage", 
+            "useful_numbers": []
+        }, 
+        "model": "opal.team", 
+        "pk": 26
+    }, 
+    {
+        "fields": {
+            "active": true, 
+            "direct_add": false, 
+            "name": "walkin_doctor", 
+            "order": null, 
+            "parent": 25, 
+            "title": "Doctor", 
+            "useful_numbers": []
+        }, 
+        "model": "opal.team", 
+        "pk": 27
+    }, 
+    {
+        "fields": {
+            "active": true, 
+            "direct_add": false, 
+            "name": "walkin_review", 
+            "order": null, 
+            "parent": 25, 
+            "title": "Review", 
+            "useful_numbers": []
+        }, 
+        "model": "opal.team", 
+        "pk": 28
+    }
+]

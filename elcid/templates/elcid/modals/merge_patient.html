@@ -1,0 +1,19 @@
+<div class="modal-header">
+  <button type="button" class="close" ng-click="cancel()">×</button>
+  <h3>
+    <i class="glyphicon glyphicon-plus"></i>
+    Add Patient
+  </h3>
+</div>
+<div class="modal-body">
+  <p class="lead text-center">
+    We've found this patient's records have been merged with another patient
+    [[ merged.demographics[0].first_name ]] [[ merged.demographics[0].surname ]] ([[ merged.demographics[0].hospital_number ]])
+  </p>
+  <center>
+    <button class="btn btn-primary" ng-click="nextStage()">Add [[ merged.demographics[0].first_name ]] [[ merged.demographics[0].surname ]]</button>
+  </center>
+</div>
+<div class="modal-footer">
+    <button class="btn" ng-click="cancel()">Cancel</button>
+</div>

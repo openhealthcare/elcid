@@ -1,0 +1,6 @@
+{% load forms %}
+{% input "autofocus" field="Travel.destination" lookuplist="destination_list" %}
+{% input field="Travel.dates" %}
+{% select field="Travel.reason_for_travel" %}
+{% input field="Travel.specific_exposures" %}
+{% checkbox label="No travel in the last 12 months" field="Travel.did_not_travel" %}

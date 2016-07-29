@@ -1,0 +1,30 @@
+{% load forms %}
+
+<div class="row">
+  <div class="col-md-8">
+      {% datetimepicker field="MicrobiologyInput.when" %}
+      {% input field="MicrobiologyInput.initials" %}
+      {% select field="MicrobiologyInput.reason_for_interaction" %}
+      {% textarea field="MicrobiologyInput.clinical_discussion" macros=True %}
+      {% input field="MicrobiologyInput.discussed_with" %}
+    <div class="row">
+      <div class="col-md-6">
+        {% checkbox field="MicrobiologyInput.clinical_advice_given" label="Clinical advice given?" %}
+      </div>
+      <div class="col-md-6">
+        {% checkbox field="MicrobiologyInput.change_in_antibiotic_prescription" label="Change in antibiotic prescription?" %}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        {% checkbox field="MicrobiologyInput.infection_control_advice_given" label="Infection control advice given?" %}
+      </div>
+      <div class="col-md-6">
+        {% checkbox field="MicrobiologyInput.referred_to_opat" label="Referred to OPAT?" model="editing.microbiology_input.referred_to_opat" %}
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    {% include 'modals/_allergies_sidebar.html' %}
+  </div>
+</div>

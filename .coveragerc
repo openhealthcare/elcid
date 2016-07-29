@@ -1,0 +1,22 @@
+[run]
+source =
+       elcid
+       microhaem
+       infectiousdiseases
+       opat
+       research
+       walkin
+
+omit =
+    */migrations/*
+    elcid/test/*
+    elcid/wsgi*
+    microhaem/tests/*
+    opat/tests/*
+    research/tests/*
+    walkin/tests/*
+
+[report]
+
+exclude_lines =
+    def __unicode__

@@ -1,0 +1,13 @@
+{% load forms %}
+<div
+   class="checkbox checkbox-primary"
+   ng-repeat="cp in checkpoints_assay_list"
+   >
+  <input type="checkbox"
+         ng-model="editing.checkpoints_assay.[cp.replace('-', '_').toLowerCase().replace('/', '_').replace('-', '_'). replace(' ', '_').replace(' ', '').replace('-', '').replace('&', '').replace(' ', '_')]"
+         id="checkbox_[[ $index ]]"
+         >
+  <label for="checkbox_[[ $index ]]">[[ cp ]]</label>
+</div>
+{% checkbox field="CheckpointsAssay.negative" label="Negative?" %}
+{% textarea field="CheckpointsAssay.comments" %}

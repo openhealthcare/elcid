@@ -1,0 +1,72 @@
+<p>
+  Re: [[ episode.demographics[0].first_name ]] [[ episode.demographics[0].surname ]]<span ng-show="episode.demographics[0].date_of_birth"> -
+    [[episode.demographisc[0].date_of_birth | shortDate]] ([[ episode.demographisc[0].date_of_birth | age ]])<br />
+    [[ episode.demographics[0].hospital_number ]]
+  </span>
+</p>
+
+<p>
+  We saw your patient on [[ episode.date_of_episode | shortDate ]] at the Hospital for Tropical Diseases walk-in clinic.
+</p>
+
+
+<p><b>Travel:</b></p>
+<p ng-repeat="travel in episode.travel">
+  [[ travel.destination ]] - [[ travel.dates ]]
+  <span ng-show="travel.specific_exposures">(specific exposures: [[ travel.specific_exposures ]])
+  </span>
+</p>
+
+
+<p><b>Presenting complaint:</b></p>
+<p>
+  The patient reported a
+  <span ng-show="episode.symptom[0].duration == '3 days or less' || episode.symptom[0] == '4-10 days'">short</span>
+  <span ng-show="episode.symptom[0].duration == '11-21 days' || episode.symptom[0] == '22 days to 3 months'">sub-acute</span>
+  <span ng-show="episode.symptom[0].duration == 'over 3 months'">long</span>
+  history of [[ episode.symptom[0].symptom ]]
+</p>
+<p>
+ <b>On examination:</b>
+</p>
+<p>
+  Temperature [[episode.observation[0].temperature]]
+  Blood Pressure [[episode.observation[0].bp_systolic]]/[[episode.observation[0].bp_diastolic]]
+  Pulse [[episode.observation[0].pulse]]
+  Respiratory Rate [[episode.observation[0].resp_rate]]
+  Sp02 [[episode.observation[0].sp02]]
+</p>
+<p>[[ episode.walkin_nurse_led_care[0].treatment ]]</p>
+<p>[[ episode.walkin_nurse_led_care[0].reason ]]</p>
+<div ng-show="episode.microbiology_test.length">
+  <p><b>Investigations:</b></p>
+  <div class="content-offset-below-10 zero-padded-list" ng-repeat="item in episode.microbiology_test">
+    {% include 'records/microbiology_test.html' %}
+  </div>
+</div>
+
+<p><b>Management:</b></p>
+<p>
+  The most likely diagnosis was [[ episode.diagnosis[0].condition ]]
+</p>
+<p ng-show="episode.management[0].advice">
+  <b>Advice:</b>
+</p>
+<p ng-show="episode.management[0].advice">
+  [[ episode.management[0].advice ]]
+</p>
+<div ng-show="episode.antimicrobial.length > 0">
+  <p>The patient was prescribed:</p>
+  <p ng-repeat="drug in episode.antimicrobial">
+    [[ drug.drug ]] [[drug.dose]]
+  </p>
+</div>
+<p ng-show="episode.management[0].follow_up == 'Admitted to Ward'">
+  The patient was admitted to the ward
+</p>
+<p ng-show="episode.management[0].follow_up.indexOf('Follow-Up in clinic') != -1 ">
+  We have booked follow-up in [[ episode.management[0].follow_up_clinic ]]
+</p>
+<p ng-show="episode.management[0].follow_up.indexOf('No Follow-up') != -1 ">
+  We have not booked a follow-up clinic.
+</p>

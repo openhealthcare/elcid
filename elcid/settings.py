@@ -23,11 +23,11 @@ except ImportError:
         }
     }
 
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    ('David Miller', 'david@openhealthcare.org.uk'),
+    ('Support', 'support@openhealthcare.org.uk',),
 )
 
 MANAGERS = ADMINS
@@ -103,7 +103,6 @@ STATICFILES_FINDERS = (
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'hq6wg27$1pnjvuesa-1%-wiqrpnms_kx+w4g&&o^wr$5@stjbu'
 
-
 # This should be over written by local settings in the development environment
 TEMPLATE_LOADERS = (
     ('django.template.loaders.cached.Loader', (
@@ -111,6 +110,7 @@ TEMPLATE_LOADERS = (
         'django.template.loaders.app_directories.Loader',
         )),
 )
+
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
@@ -146,6 +146,7 @@ TEMPLATE_CONTEXT_PROCESSORS= (
     'django.core.context_processors.tz',
     'django.contrib.messages.context_processors.messages',
     'opal.context_processors.settings',
+    'opal.context_processors.models'
 )
 
 INSTALLED_APPS = (
@@ -159,6 +160,7 @@ INSTALLED_APPS = (
     'reversion',
     'opal',
     'rest_framework',
+    'rest_framework.authtoken',
     'compressor',
     'opal.core.search',
     'elcid',
@@ -168,6 +170,8 @@ INSTALLED_APPS = (
     'walkin',
     'research',
     'wardround',
+    'microhaem',
+    'infectiousdiseases',
     'referral',
     'dashboard',
 #    'opal.core.collaborative',
@@ -179,7 +183,20 @@ INSTALLED_APPS = (
 
 if 'test' in sys.argv:
     INSTALLED_APPS += ('opal.tests',)
-
+    PASSWORD_HASHERS = (
+        'django.contrib.auth.hashers.MD5PasswordHasher',
+    )
+    MIGRATION_MODULES = {
+        'opal': 'opal.nomigrations',
+        'elcid': 'elcid.nomigrations',
+        'guidelines': 'guidelines.nomigrations',
+        'walkin': 'walkin.nomigrations',
+        'research': 'research.nomigrations',
+        'opat': 'opat.nomigrations',
+        'microhaem': 'microhaem.nomigrations',
+        'iframeapi': 'iframeapi.nomigrations',
+        'obs': 'obs.nomigrations'
+    }
 
 LOGGING = {
     'version': 1,
@@ -196,14 +213,14 @@ LOGGING = {
             'class': 'logging.StreamHandler'
         },
         'mail_admins': {
-            'level': 'CRITICAL',
+            'level': 'ERROR',
             'filters': ['require_debug_false'],
-            'class': 'django.utils.log.AdminEmailHandler'
+            'class': 'elcid.log.ConfidentialEmailer'
         }
     },
     'loggers': {
         'django.request': {
-            'handlers': ['console'],
+            'handlers': ['console', 'mail_admins'],
             'level': 'ERROR',
             'propagate': True,
         },
@@ -219,8 +236,10 @@ LOGGING = {
 # (Heroku requirement)
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-DATE_FORMAT = 'Y-m-d'
-DATE_INPUT_FORMATS = ['Y-m-d']
+DATE_FORMAT = 'd/m/Y'
+DATE_INPUT_FORMATS = ['%d/%m/%Y']
+DATETIME_FORMAT = 'd/m/Y H:i:s'
+DATETIME_INPUT_FORMATS = ['%d/%m/%Y %H:%M:%S']
 
 CSRF_COOKIE_NAME = 'XSRF-TOKEN'
 APPEND_SLASH = False
@@ -234,6 +253,7 @@ OPAL_OPTIONS_MODULE = 'elcid.options'
 OPAL_BRAND_NAME = 'elCID'
 OPAL_LOG_OUT_MINUTES = 15
 OPAL_LOG_OUT_DURATION = OPAL_LOG_OUT_MINUTES*60*1000
+OPAL_FLOW_SERVICE = 'elCIDFlow'
 
 # Do we need this at all ?
 OPAL_EXTRA_HEADER = 'elcid/print_header.html'
@@ -258,7 +278,8 @@ else:
     EMAIL_HOST = 'localhost'
 
 
-VERSION_NUMBER = '0.5.5'
+
+VERSION_NUMBER = '0.6.1'
 #TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 #TEST_RUNNER = 'django_test_coverage.runner.CoverageTestSuiteRunner'
 
@@ -268,21 +289,36 @@ COVERAGE_EXCLUDE_MODULES = ('elcid.migrations', 'elcid.tests',
                             'opal.migrations', 'opal.tests',
                             'opal.wsgi')
 
-# Research settings
-LIST_SCHEMA_RESEARCH_PRACTITIONER = "elcid.schema.list_columns_research_practitioner"
-LIST_SCHEMA_SCIENTIST = "elcid.schema.list_columns_scientist"
 
 INTEGRATING = False
 GLOSSOLALIA_URL = 'http://localhost:5000/'
 GLOSSOLALIA_NAME = 'elcid'
 
-try:
-    from local_settings import *
-except:
-    pass
+
+GLOSS_ENABLED = False
+
+if GLOSS_ENABLED:
+    OPAL_SEARCH_BACKEND = "elcid.search.GlossQuery"
+    GLOSS_URL_BASE = "http://0.0.0.0:6767"
+    GLOSS_USERNAME = "override_this"
+    GLOSS_PASSWORD = "and_override_this"
+
+EXTRACT_ASYNC = True
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    )
+}
+
+if 'test' not in sys.argv:
+    try:
+        from local_settings import *
+    except ImportError:
+        pass
 
 # #DEBUG_TOOLBAR_PATCH_SETTINGS = False
 # MIDDLEWARE_CLASSES = MIDDLEWARE_CLASSES + ('debug_toolbar.middleware.DebugToolbarMiddleware',)
 # INSTALLED_APPS = INSTALLED_APPS + ('debug_toolbar',)
 # #INTERNAL_IPS = ('127.0.0.1',)
-EXTRACT_ASYNC = True

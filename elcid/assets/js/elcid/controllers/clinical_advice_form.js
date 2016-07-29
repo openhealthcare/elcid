@@ -1,9 +1,12 @@
 angular.module('opal.controllers').controller(
-    'ClinicalAdviceForm', function($rootScope, $scope, $window,
-                                 recordLoader, ngProgressLite, $q,
-                                 $cookieStore
-                                    ){
+    'ClinicalAdviceForm',
+    function(
+        $rootScope, $scope, $window,
+            recordLoader, ngProgressLite, $q,
+            $cookieStore
+            ){
         "use strict";
+
         var REASON_FOR_INTERACTION_COOKIE = "patientNotes-reasonForInteraction";
         var DISCUSSED_WITH_COOKIE = "patientNotes-discussedWith";
         /*
@@ -12,8 +15,6 @@ angular.module('opal.controllers').controller(
         function getCopy(item){
             var copy = item.makeCopy();
             var defaults = _.clone({
-                when: new Date(),
-                initials: $window.initials,
                 reason_for_interaction: $cookieStore.get(REASON_FOR_INTERACTION_COOKIE),
                 discussed_with: $cookieStore.get(DISCUSSED_WITH_COOKIE)
             });

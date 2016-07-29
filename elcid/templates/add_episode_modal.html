@@ -3,59 +3,23 @@
 {% block icon_name %}glyphicon glyphicon-plus{% endblock %}
 {% block title %}Add Patient{% endblock %}
 {% block modal_body %}
-  <form class="form-horizontal" name="newEpisodeForm">
-    <div class="form-group">
-      <label class="control-label col-sm-3">Hospital number</label>
-      <div class="col-sm-8"><label>[[editing.demographics.hospital_number]]</label></div>
-    </div>
-
-    {% input "autofocus" label="Name" model="editing.demographics.name" enter="save()"%}
-
-    <div class="form-group">
-      <label class="control-label col-sm-3">Date of birth</label>
-      <div class="col-sm-8">
-	<input type="text" class="form-control"
-               name="date_of_birth"
-         ng-model-options="{ updateOn: 'blur' }"
-	       ng-model="editing.demographics.date_of_birth"
-	       ng-pattern="/^(0?[1-9]|[12][0-9]|3[01])\/(0?[1-9]|1[012])\/(\d{4})$/"
-	       placeholder="dd/mm/yyyy" />
-        <span class="help-block" ng-show="newEpisodeForm.date_of_birth.$invalid">
-          Date of Birth must be dd/mm/yyyy
-        </span>
-      </div>
-    </div>
-
-    {% select label="Gender" model="editing.demographics.gender" lookuplist="gender_list" %}
-    {% select label="Hospital" model="editing.location.hospital" lookuplist="hospital_list" %}
-
-    {% select label="Ward" model="editing.location.ward" lookuplist="ward_list" %}
-    {% input label="Bed" model="editing.location.bed" %}
-
-    {% datepicker label="Date of admission" model="editing.date_of_admission" %}
-
+  <form class="form-horizontal" name="form">
+    {% include 'partials/_core_demographics.html' %}
     {% if teams %}
-      <div class="row">
-        <div class="col-md-6 col-md-offset-3">
-          <h4>Teams</h4>
-          {% with tagging="editing.tagging[0]" %}
-            {% include 'partials/_teams_form.html' %}
-          {% endwith %}
-        </div>
-      </div>
+      {% include 'partials/_teams_select.html' %}
     {% endif %}
-
   </form>
 
 {% endblock %}
 
 <div class="modal-footer">
-  <button class="btn btn-primary"
+  <button class="btn btn-lg btn-primary"
+          one-click-only
           ng-click="save()"
-          ng-disabled="newEpisodeForm.date_of_birth.$invalid"
+          ng-disabled="form.date_of_birth.$invalid && !editing.demographics.external_system"
           >
     <i class="fa fa-save"></i>
     Save record
   </button>
-  <button class="btn" ng-click="cancel()">Cancel</button>
+  <button class="btn btn-lg" ng-click="cancel()">Cancel</button>
 </div>

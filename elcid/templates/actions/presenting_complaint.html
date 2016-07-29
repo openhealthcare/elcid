@@ -1,19 +1,17 @@
 <p
   ng-hide="!listView || (episode.presenting_complaint[0].symptoms || episode.presenting_complaint[0].duration || episode.presenting_complaint[0].details) || (!episode.tagging[0].tropical_diseases && !episode.tagging[0].id_inpatients && !episode.tagging[0].immune_inpatients)"
-  ng-show=""
-  ng-click="editNamedItem(episode, 'presenting_complaint', 0)"
+  ng-click="episode.recordEditor.editItem('presenting_complaint', 0)"
   ng-dblclick=""
   ng-class="{selected: false}">
-  <button class="screen-only btn btn-primary btn-sm"
+  <button class="screen-only btn btn-primary btn"
     ng-show="!profile.readonly">
     <i class="glyphicon glyphicon-plus"></i> Symptoms
   </button>
 </p>
 
-<p ng-hide="!ward_round || episode.primary_diagnosis[0].confirmed || episode.category != 'inpatient' ">
-  <button class="screen-only btn btn-primary btn-sm"
-          ng-click="open_modal('DiagnosisDischargeCtrl', '/templates/elcid/modals/diagnosis_discharge.html', '', {episode: episode, options: options, tags: {}, schema: {}})">
-    <i class="glyphicon glyphicon-ok"></i>
-    Confirm Final Diagnosis
+<p ng-hide="!ward_round || episode.primary_diagnosis[0].confirmed || episode.category_name != 'Inpatient' ">
+  <button class="screen-only btn btn-primary"
+          ng-click="open_modal('DiagnosisDischargeCtrl', '/templates/elcid/modals/diagnosis_discharge.html', '', {episode: episode, referencedata: referencedata, tags: {}, schema: {}})">
+      <i class="glyphicon glyphicon-ok"></i> Confirm Final Diagnosis
   </button>
 </p>

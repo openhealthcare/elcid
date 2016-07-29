@@ -1,0 +1,74 @@
+{% extends 'modal_base.html' %}
+{% load forms %}
+{% block icon_name %}glyphicon glyphicon-plus{% endblock %}
+{% block title %}OPAT Referral{% endblock %}
+{% block modal_body %}
+<!-- Initial State -->
+<div ng-show="message">
+  <p class="lead text-center">[[ message ]]</p>
+</div>
+<div ng-show="!patient">
+  <form class="form-horizontal" ng-hide="message">
+    <div class="form-group">
+      <label class="control-label col-sm-3">Hospital number</label>
+      <div class="col-sm-8">
+	<input class="form-control"
+               ng-model="model.hospital_number"
+               ng-keypress="$event.keyCode == 13 && find_by_hospital_number()"
+               autofocus>
+      </div>
+    </div>
+  </form>
+  {% if GLOSS_ENABLED %}
+  <div ng-show="result && !result.demographics.length">
+    <p class="lead text-center">
+      We couldn't find any patients with this hospital number.
+    </p>
+    <p class="lead text-center">
+      <b>Please check you have entered the hospital number correctly</b>
+    </p>
+    <p class="lead text-center">
+      If this is the correct number and the patient is currently at a different hospital or in the community you can add them as an elCID only patient
+    </p>
+    <div class="text-center">
+      <button ng-click="newPatient()" class="btn btn-secondary">
+        <i class="fa fa-user"></i>Create New Patient
+      </button>
+    </div>
+  </div>
+  <div ng-show="result.merged.length">
+    <p class="lead text-center">
+      We've found this patient's records have been <b>merged</b> with another patient.
+    </p>
+    <p class="lead text-center">
+      The correct patient for this hospital number is
+      <b>[[ result.merged[0].demographics[0].first_name ]] [[ result.merged[0].demographics[0].surname ]] ([[ result.merged[0].demographics[0].hospital_number ]])</b>
+    </p>
+    <div class="text-center">
+      <button ng-click="newForPatient(result.merged[0])" class="btn btn-secondary">
+        <i class="fa fa-user"></i> Create An Episode For [[ result.merged[0].demographics[0].first_name ]] [[ result.merged[0].demographics[0].surname ]]
+      </button>
+    </div>
+  </div>
+</div>
+{% else %}
+  <div ng-show="result && !result.demographics.length" >
+    <p class="lead text-center">
+      We've been unable to find this patient, would you like to
+      create a new patient?
+    </p>
+    <div class="text-center">
+      <button ng-click="newPatient()" class="btn btn-secondary">
+        <i class="fa fa-user"></i> Create New Patient
+      </button>
+    </div>
+  </div>
+{% endif %}
+{% endblock %}
+{% block modal_save %}
+<button class="btn btn-primary" one-click-only ng-click="find_by_hospital_number()" ng-hide="message">
+  <i class="fa fa-search"></i>
+  Search
+</button>
+{% endblock %}
+{% block modal_another %}{% endblock %}

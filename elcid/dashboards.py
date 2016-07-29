@@ -2,14 +2,17 @@
 elCID Dashboards
 """
 import datetime
+
+from django.utils.functional import cached_property
+from django.core.urlresolvers import reverse
 from urllib import urlencode
+
 
 from dashboard import Dashboard, widgets
 from django.db.models import Count
-from django.core.urlresolvers import reverse
 from opal.models import Episode
-from django.utils.functional import cached_property
 from elcid.models import Diagnosis, Consultant
+
 
 
 class NumberOfDiagnoses(widgets.Number):
@@ -105,15 +108,3 @@ class UsageDashboard(Dashboard):
             NumberOfDiagnoses,
             CurrentPatients,
         ]
-
-
-class ConfirmedDiagnosis(Dashboard):
-    """
-    Dashboard relaying stats about the number of patients discharged
-    by named consultants
-    """
-    name = "Consultant Review Dashboard"
-    description = "Statistics about the number of discharged patients with confirmed diagnoses"
-
-    def get_widgets(user):
-        return [ConfirmedDiagnosisByConsultant]

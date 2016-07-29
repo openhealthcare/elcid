@@ -1,0 +1,34 @@
+{% load forms %}
+<input type="hidden" ng-init="editing.opat_outcome.outcome_stage = editing.opat_outcome.outcome_stage || 'OPAT Review'" ng-model="editing.opat_outcome.outcome_stage" />
+
+{% select field="OPATOutcome.patient_outcome" lookuplist="['Cure', 'Improved', 'Failure']" help="opat/_patient_outcome_help.html" %}
+{% select field="OPATOutcome.opat_outcome" lookuplist="['Success', 'Partial Success', 'Failure of OPAT', 'Intermidiate Outcome']" help="opat/_opat_outcome_help.html" %}
+{% select field="OPATOutcome.infective_diagnosis" label="Primary Infective Diagnosis" other=True %}
+
+
+{% checkbox field="OPATOutcome.deceased" label="Died?"  %}
+<div class="form-group" ng-show="editing.deceased">
+  <label class="control-label col-sm-3">Death Category</label>
+  <div class="col-sm-8">
+    <select class="form-control" ng-model="editing.opat_outcome.death_category">
+      <option>Death due the infection for which OPAT was initiated'</option>
+      <option>Death due to a complication of OPAT</option>
+      <option>Death due to pathology unrelated to OPAT or indication for OPAT</option>
+    </select>
+  </div>
+</div>
+{% input field="OPATOutcome.cause_of_death" show="editing.died"%}
+{% checkbox field="OPATOutcome.readmitted" label="Readmitted?" %}
+<div class="form-group" ng-show="editing.readmitted">
+  <label class="control-label col-sm-3">Readmission Cause</label>
+  <div class="col-sm-8">
+    <select class="form-control" ng-model="editing.opat_outcome.readmission_cause">
+      <option>Relapse of the infection for which they had received OPAT</option>
+      <option>New infection</option>
+      <option>Planned procedure</option>
+      <option>Unrelated to infection</option>
+    </select>
+  </div>
+</div>
+{% textarea field="OPATOutcome.notes" %}
+{% checkbox field="OPATOutcome.patient_feedback" label="Patient survey sent?" %}

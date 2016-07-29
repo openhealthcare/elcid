@@ -83,7 +83,7 @@
         "pk": 1,
         "model": "opal.team",
         "fields": {
-            "name": "team 2",
+            "name": "team_2",
             "title": "Team 2"
         }
     },
@@ -91,7 +91,7 @@
         "pk": 2,
         "model": "opal.team",
         "fields": {
-            "name": "team 1",
+            "name": "team_1",
             "title": "Team 1"
         }
     },
@@ -101,7 +101,8 @@
         "fields": {
             "consistency_token": "12345678",
             "patient": 1,
-            "name": "John Smith",
+            "first_name": "John",
+            "surname": "Smith",
             "hospital_number": "AA1111",
             "date_of_birth": "1972-06-20"
         }
@@ -222,7 +223,7 @@
         "fields": {
             "consistency_token": "12345678",
             "episode": 1,
-            "when": "2013-07-25 10:00",
+            "when": "2013-07-25T10:00+00:00",
             "initials": "ABC",
             "reason_for_interaction_ft": "",
             "reason_for_interaction_fk": null,

@@ -1,0 +1,163 @@
+{% load forms %}
+<div class="modal-header">
+  <button type="button" class="close" ng-click="cancel()">×</button>
+  <h3>
+    <i class="glyphicon glyphicon-ok"></i> &nbsp;
+    <span ng-show="episode.hasTag('walkin_triage')" >Next</span>
+    <span ng-show="episode.hasTag('walkin_doctor')" >End of appointment</span>
+    <span ng-show="episode.hasTag('walkin_review')" >Results actioned</span>
+    ([[ episode.demographics[0].first_name ]] [[ episode.demographics[0].surname ]])
+  </h3>
+</div>
+<div class="modal-body">
+
+  <!-- Initial State Walkin triage -->
+  <div ng-show="episode.tagging[0].walkin_triage == true && meta.accepted == null && qc.fails()">
+    <div ng-hide="qc.hiv()">
+      <p class="lead text-center">This patient has <b>no result</b> for a HIV Point of Care Test?</p>
+      <center>
+        <button class="btn btn-primary btn-lg" ng-click="cancel()">Add result</button>
+        <button class="btn btn-secondary btn-lg"  ng-click="qc.ignore_hiv = true">Continue anyway</button>
+      </center>
+    </div>
+    <div ng-hide="qc.obs() || (qc.obs && ! qc.hiv() )">
+      <p class="lead text-center">This patient has <b>no observations</b></p>
+      <center>
+        <button class="btn btn-primary btn-lg" ng-click="add_some_obs()">{% icon "fa-plus" %}Add observations</button>
+        <button class="btn btn-secondary btn-lg"  ng-click="qc.ignore_obs = true">Continue anyway</button>
+      </center>
+    </div>
+  </div>
+
+
+  <!-- Walkin triage passes QC -->
+  <div ng-show="episode.tagging[0].walkin_triage == true && meta.accepted == null && qc.passes()">
+    <p class="lead text-center">Accept onto walk-in service?</p>
+    <center>
+      <button class="btn btn-primary btn-lg" ng-click="meta.accepted = true">Doctor-led care</button>
+      <button class="btn btn-primary btn-lg"  ng-click="meta.accepted = false">Nurse-led care</button>
+    </center>
+  </div>
+
+  <!-- Triage -> Doctor led care -->
+  <div ng-show="episode.tagging[0].walkin_triage == true && meta.accepted == true">
+    <p class="text-center lead">Are you sure?</p>
+    <center>
+      <button class="btn btn-primary btn-lg"  ng-click="move_to_doctor()">Move to doctor</button>
+    </center>
+  </div>
+
+  <!-- Triage -> Nurse Led care  -->
+  <div ng-show="episode.tagging[0].walkin_triage == true && meta.accepted == false">
+    <form class="form-horizontal">
+      {% select label="Reason" model="meta.nurse_reason" lookuplist="wi_nurse_reason_list" %}
+      {% input label="Diagnosis" model="meta.diagnosis" lookuplist="condition_list" %}
+      {% textarea label="Treatment" model="meta.treatment" %}
+    </form>
+    <center>
+      <button class="btn btn-primary btn-lg"  ng-click="nurse_led_care()">Remove from list</button>
+    </center>
+  </div>
+
+  <!-- Initial state Doctor led care, what's next -->
+  <div ng-show="episode.tagging[0].walkin_doctor == true && meta.next == null">
+    <p class="lead">
+      It's the end of the Walk-in appointment for <b>[[ episode.demographics[0].first_name ]] [[ episode.demographics[0].surname ]]</b>.
+    </p>
+    <p class="lead">
+      What's the <b>next</b> stage?
+    </p>
+    <center>
+      <button class="btn btn-primary" ng-click="meta.next = 'review'">
+        <i class="fa fa-clock-o"></i> Move to review
+      </button>
+      <button class="btn btn-primary"  ng-click="meta.next = 'admit'">
+        <i class="fa fa-bed"></i> Admit to ward
+      </button>
+    </center>
+  </div>
+
+  <!-- Review but no management -> add management -->
+  <div ng-show="episode.tagging[0].walkin_doctor == true && meta.next == 'review' && meta.follow_up == null">
+    <p class="lead">What is the <b>follow up</b> for [[ episode.demographics[0].first_name ]] [[ episode.demographics[0].surname ]]?</p>
+
+    <form class="form-horizontal">
+      {% radio label="Follow-up" model="meta.management.follow_up" lookuplist="['Discharged from clinic: No Follow-Up', 'Discharged from clinic: Follow-Up in clinic']"%}
+
+      <div ng-show="meta.management.follow_up == 'Discharged from clinic: Follow-Up in clinic'">
+        {% input model="meta.management.follow_up_clinic" label="Follow-up clinic" lookuplist="management_clinics_list" %}
+        {% datepicker model="meta.management.date_of_appointment" label="Date of appointment" %}
+      </div>
+    </form>
+    <center>
+      <button class="btn btn-primary btn-lg"  ng-click="save_follow_up()">
+        {% icon "fa-save" %}
+        Save
+      </button>
+    </center>
+  </div>
+
+  <!-- Review, has management -> remove from list  -->
+  <div ng-show="episode.tagging[0].walkin_doctor == true && meta.next == 'review' && meta.follow_up != null">
+
+    <p class="lead">Move [[ episode.demographics[0].first_name ]] [[ episode.demographics[0].surname ]] to review?</p>
+    <center>
+      <button class="btn btn-primary btn-lg"  ng-click="move_to_review()">Move to review</button>
+    </center>
+  </div>
+
+  <div ng-show="episode.tagging[0].walkin_doctor == true && meta.next == 'admit'">
+    <p class="lead">Which team should [[ episode.demographics[0].first_name ]] [[ episode.demographics[0].surname ]] be <b>admitted</b> to?</p>
+    <form class="form form-horizontal">
+      <div class="form-group">
+        <label class="control-label col-sm-3">Team:</label>
+        <div class="col-sm-8">
+          <select class="form-control" ng-model="meta.target_team">
+            <option value="">---------</option>
+            {% for team in teams %}{% if not team.parent %}{% if team.direct_add %}
+            {% if team.has_subteams %}
+            {% for subteam in team.team_set.all %}
+            <option value="{{subteam.name}}">{{ team.title }} / {{ subteam.title }}</option>
+            {% endfor %}
+            {% else %}
+            <option value="{{team.name}}">{{team.title}}</option>
+            {% endif %}
+            {% endif %}{% endif %}{% endfor %}
+          </select>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- TODO -> Start here -->
+
+  <!-- Initial state for Results actioned -->
+  <div ng-show="episode.tagging[0].walkin_review == true && meta.results_actioned == null">
+    <!-- make sure diagnosis has been added -->
+    <div ng-show="!episode.diagnosis.length && !qc.ignore_diagnosis">
+      <p class="lead text-center">This patient has <b>no diagnosis</b>?</p>
+      <center>
+        <button class="btn btn-primary btn-lg" ng-click="add_some_diagnosis()">Add a diagnosis</button>
+        <button class="btn btn-secondary btn-lg"  ng-click="qc.ignore_diagnosis = true">Continue anyway</button>
+      </center>
+    </div>
+    <div ng-hide="!episode.diagnosis.length && !qc.ignore_diagnosis">
+      <p class="lead text-center">
+        Are all results for [[ episode.demographics[0].first_name ]] [[ episode.demographics[0].surname ]] actioned and/or patient has appropriate follow up ?
+      </p>
+      <center>
+        <button class="btn btn-primary btn-lg"  ng-click="remove_from_list()">
+          <i class="fa fa-remove"></i> Remove from list
+        </button>
+      </center>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <span ng-show="episode.tagging[0].walkin_doctor == true && meta.next == 'admit'">
+      <button class="btn btn-primary" ng-click="admit_to_ward()">
+        <i class="fa fa-bed"></i> Admit to ward
+      </button>
+    </span>
+    <button class="btn" ng-click="cancel()">Cancel</button>
+  </div>

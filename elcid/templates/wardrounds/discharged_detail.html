@@ -1,7 +1,8 @@
 {% extends 'layouts/two_column.html' %}
 {% load panels %}
 {% block heading %}
-  [[episode.demographics[0].name]]
+  [[episode.demographics[0].first_name]]
+  [[episode.demographics[0].surname]]
 {% endblock %}
 {% block subheading %}
   ([[ ward_round.name]])

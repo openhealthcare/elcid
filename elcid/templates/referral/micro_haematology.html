@@ -1,7 +1,7 @@
-{% extends "referral/referral.html" %}
+{% extends "referral/elcid_base_referral.html" %}
 {% load forms %}
 {% block additional_models_title %}
-<p class="lead" ng-show="state=='diagnosis'">
+<p class="lead text-center" ng-show="state=='diagnosis'">
   Please enter [[ patient.demographics[0].name ]]'s diagnosis
 </p>
 {% endblock %}
@@ -33,13 +33,8 @@
 
 {% endblock %}
 
-{% block has_demographics_buttons %}
-  <span ng-show="state == 'has_demographics'">
-    {% include "referral/_includes/back_button.html" %}
-    <button class="btn btn-lg btn-primary pull-right"
-            ng-click="refer()">
-        <i class="fa fa-arrow-right"></i>
-        [[ route.verb ]] to [[ route.name ]]
-    </button>
-  </span>
-{% endblock has_demographics_buttons %}
+{% block success_title %}
+  <i class="fa fa-check"></i>
+  We've created a <a href="[[ success_link ]]">Micro-Haematology record</a> for
+  this patient
+{% endblock success_title %}

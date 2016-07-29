@@ -11,11 +11,10 @@ controllers.controller(
         $location,
         growl,
         Flow,
-        tags, schema, options, episode, DischargePatientService){
+        tags, referencedata, episode, DischargePatientService){
 
         $scope.tags = tags;
         $scope.episode = episode;
-        $scope.saving = false;
 
         $scope.steps = [
           "diagnosis"
@@ -278,8 +277,8 @@ controllers.controller(
         $scope.goToNextStep = function(form, model){
             var require_all, nextStep;
             if($scope.step === "diagnosis"){
-                if(!form.editing_primary_diagnosis_condition.$valid){
-                    form.editing_primary_diagnosis_condition.$setDirty();
+                if(!form.primary_diagnosis_condition.$valid){
+                    form.primary_diagnosis_condition.$setDirty();
                     return;
                 }
 
@@ -300,14 +299,14 @@ controllers.controller(
                 with ngRequired. It might be better to set each model as a different form
                 */
                 if(!model.presenting_complaint.symptoms.length){
-                    form.editing_presenting_complaint_symptoms.$setValidity("required", false);
-                    form.editing_presenting_complaint_symptoms.$setDirty();
+                    form.presenting_complaint_symptoms.$setValidity("required", false);
+                    form.presenting_complaint_symptoms.$setDirty();
                     return;
                 }
             }
             if($scope.step === "consultant_at_discharge"){
-                if(!form.editing_consultant_at_discharge_consultant.$valid){
-                    form.editing_consultant_at_discharge_consultant.$setDirty();
+                if(!form.consultant_at_discharge_consultant.$valid){
+                    form.consultant_at_discharge_consultant.$setDirty();
                     return;
                 }
             }
@@ -350,15 +349,7 @@ controllers.controller(
         //
         $scope.discharged = false;
 
-        //
-        // We only really need one lookuplist.
-        // TODO: put these into a nicer service.
-        //
-      	for (var name in options) {
-      	    if (name.indexOf('micro_test') !== 0) {
-            		$scope[name + '_list'] = _.uniq(options[name]);
-      	    }
-      	}
+        _.extend($scope, referencedata.toLookuplists());
 
         //
         // We should deal with the case where we're confirming discharge
@@ -420,7 +411,6 @@ controllers.controller(
         $scope.save = function() {
             var to_save;
             var primary = episode.primary_diagnosis[0];
-            $scope.saving = true;
 
             if($scope.confirming){
                 $scope.editing.primary_diagnosis.confirmed = true;
@@ -485,11 +475,10 @@ controllers.controller(
 
             dischargePatientService.discharge(episode, $scope.editing, tags).then(function(){
                 $q.all(saves).then(function(){
-                    $scope.saving = false;
                     if($scope.confirming){
                         growl.success('Final Diagnosis approved.');
                     }else{
-                        growl.success($scope.episode.demographics[0].name + ' discharged.');
+                        growl.success($scope.episode.demographics[0].first_name + ' ' + $scope.episode.demographics[0].surname + ' discharged.');
                     }
                     $scope.discharged = true;
                     $modalInstance.close('discharged');

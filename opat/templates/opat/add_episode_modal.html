@@ -1,0 +1,24 @@
+{% load forms %}
+<div class="modal-header">
+  <button type="button" class="close" ng-click="cancel()">×</button>
+  <h3>
+    <i class="glyphicon glyphicon-plus"></i>
+    Add Patient
+  </h3>
+</div>
+<div class="modal-body">
+  <form class="form-horizontal" name="form">
+    {% include 'partials/_core_demographics.html' %}
+    {% select model="editing.location.opat_referral_team" label="Referring Team" lookuplist="speciality_list" %}
+    {% input model="editing.location.opat_referral_consultant" label="Referring Consultant" %}
+  </form>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-primary" ng-click="save()"
+          one-click-only
+          ng-disabled="form.date_of_birth.$invalid && !editing.demographics.external_system">
+    <i class="fa fa-save"></i>
+    Save record
+  </button>
+  <button class="btn" ng-click="cancel()">Cancel</button>
+</div>

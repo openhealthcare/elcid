@@ -1,0 +1,127 @@
+<p>
+  Re: [[ episode.demographics[0].first_name ]] [[ episode.demographics[0].surname ]] <span ng-show="episode.demographisc[0].date_of_birth"> -
+    [[episode.demographisc[0].date_of_birth | shortDate]] ([[ episode.demographisc[0].date_of_birth | age ]])<br />
+  </span>
+</p>
+
+<p>
+  We saw your patient on [[ episode.date_of_episode | shortDate ]] at the Hospital for Tropical Diseases walk-in clinic.
+</p>
+
+
+<p><b>Travel:</b></p>
+<p ng-repeat="travel in episode.travel">
+  [[ travel.destination ]] - [[ travel.dates ]]
+  <span ng-show="travel.specific_exposures">(specific exposures: [[ travel.specific_exposures ]])
+  </span>
+</p>
+
+
+<p><b>Presenting complaint:</b></p>
+<p ng-repeat="walkinSymptom in episode.symptom">
+  The patient reported a
+  <span ng-show="walkinSymptom.duration == '3 days or less' || walkinSymptom == '4-10 days'">short</span>
+  <span ng-show="walkinSymptom.duration == '11-21 days' || walkinSymptom == '22 days to 3 months'">sub-acute</span>
+  <span ng-show="walkinSymptom.duration == 'over 3 months'">long</span>
+  history of
+  <span ng-repeat="symptom in walkinSymptom.symptoms">[[ symptom.toLowerCase() ]][[ $last ? '' : $index + 2 === episode.symptom[0].symptoms.length ? ' and ' : ', ']]</span>
+</p>
+<p>
+  <b>On examination:</b>
+</p>
+<p>
+  Temperature [[episode.observation[0].temperature]]
+  Blood Pressure [[episode.observation[0].bp_systolic]]/[[episode.observation[0].bp_diastolic]]
+  Pulse [[episode.observation[0].pulse]]
+  Respiratory Rate [[episode.observation[0].resp_rate]]
+  Sp02 [[episode.observation[0].sp02]]
+</p>
+<div ng-repeat="exam in episode.clinical_findings">
+  <p ng-show="exam.lympadenopathy == 'yes'">
+    There was [[ exam.lympadenopathy_details ]] lymphadenopathy.
+  </p>
+  <p ng-hide="exam.lympadenopathy == 'yes'">
+    There was no lymphadenopathy.
+  </p>
+  <p ng-show="exam.jaundice == 'yes'">
+    The patient was clinically jaundiced.
+  </p>
+  <p ng-show="exam.dehydrated == 'yes'">
+    The patient was clinically dehydrated.
+  </p>
+  <p ng-show="exam.rash == 'yes'">
+    There was a [[ exam.rash_type ]] rash over the [[ exam.rash_distribution ]].
+  </p>
+  <p ng-show="exam.cardiovascular == 'NAD'">
+    Cardiovascular examination was normal.
+  </p>
+  <p ng-show="exam.cardiovascular != 'NAD' && exam.cardiovascular">
+    Examination of the cardiovascular system revealed [[ exam.cardiovascular ]].
+  </p>
+  <p ng-show="exam.respiratory == 'NAD'">
+    Respiratory examination was normal.
+  </p>
+  <p ng-show="exam.respiratory != 'NAD' && exam.respiratory">
+    Examination of the respiratory system revealed [[ exam.respiratory ]].
+  </p>
+  <p ng-show="exam.abdominal == 'NAD'">
+    Abdominal examination was normal.
+  </p>
+  <p ng-show="exam.abdominal != 'NAD' && exam.abdominal">
+    Examination of the abdominal system revealed [[ exam.abdominal ]].
+  </p>
+  <p ng-show="exam.neurological == 'NAD'">
+    Neurological examination was normal.
+  </p>
+  <p ng-show="exam.neurological != 'NAD' && exam.neurological">
+    Examination of the neurological system revealed [[ exam.neurological ]].
+  </p>
+  <p ng-show="exam.oropharnyx == 'NAD'">
+    Oropharnyx examination was normal.
+  </p>
+  <p ng-show="exam.oropharnyx != 'NAD' && exam.oropharnyx">
+    Examination of the oropharnyx system revealed [[ exam.oropharnyx ]].
+  </p>
+  <p ng-show="exam.other_findings != 'NAD' && exam.other_findings">
+    [[ exam.other_findings ]] were also noted.
+  </p>
+</div>
+<div ng-show="episode.microbiology_test.length">
+  <p><b>Investigations:</b></p>
+  <div class="content-offset-below-10 zero-padded-list" ng-repeat="item in episode.microbiology_test">
+    {% include 'records/microbiology_test.html' %}
+  </div>
+</div>
+<p><b>Management:</b></p>
+<p>
+  The most likely diagnosis was [[ episode.diagnosis[0].condition ]]
+</p>
+<p ng-show="episode.management[0].advice">
+  <b>Advice:</b>
+</p>
+<p ng-show="episode.management[0].advice">
+  [[ episode.management[0].advice ]]
+</p>
+<div ng-show="episode.antimicrobial.length > 0">
+  <p>The patient was prescribed:</p>
+  <p ng-repeat="drug in episode.antimicrobial">
+    [[ drug.drug ]] [[drug.dose]]
+  </p>
+</div>
+<p ng-show="episode.management[0].follow_up == 'Admitted to Ward'">
+  The patient was admitted to the ward
+</p>
+<p ng-show="episode.management[0].follow_up.indexOf('Follow-Up in clinic') != -1 ">
+  We have booked follow-up in [[ episode.management[0].follow_up_clinic ]]
+</p>
+<p ng-show="episode.management[0].follow_up.indexOf('No Follow-up') != -1 ">
+  We have not booked a follow-up clinic.
+</p>
+<div ng-show="episode.microbiology_input && episode.microbiology_input.length > 0">
+  <p>
+    <b>Advice Given in Clinic / Telephone Discussion:</b>
+  </p>
+  <p ng-repeat="ca in episode.microbiology_input">
+    [[ ca.clinical_discussion ]]
+  </p>
+</div>

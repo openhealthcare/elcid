@@ -1,3 +1,16 @@
-<b class="text-danger">[[ item.drug ]]</b>
-<span ng-show="item.provisional">?</span>
-<span ng-show="item.details">([[item.details]])</span>
+<div ng-hide="item.external_system">
+  <b class="text-danger">[[ item.drug ]]</b>
+  <span ng-show="item.provisional">?</span>
+</div>
+<div ng-show="item.external_system">
+  <div ng-show="item.no_allergies">
+    <b class="text-danger">The patient has no allergies</b>
+  </div>
+  <div ng-hide="item.no_allergies">
+    <b class="text-danger">
+      <span ng-show="item.allergy_description">[[ item.allergy_description  ]]</span>
+      <span ng-show="item.certainty_description">([[ item.certainty_description  ]])</span>
+    </b>
+  </div>
+</div>
+<span ng-show="item.details">[[item.details]]</span>

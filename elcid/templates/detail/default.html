@@ -2,8 +2,11 @@
 {% load panels %}
 
 {% block left_column %}
-  {% include 'detail/_demographics_location_panels.html' %}
+  {% include "partials/current_location.html" %}
   {% record_panel models.Allergies %}
+  {% if GLOSS_ENABLED %}
+    {% record_panel models.InpatientAdmission editable=False %}
+  {% endif %}
   {% record_panel models.PastMedicalHistory %}
   {% record_panel models.Travel %}
   {% record_panel models.MicrobiologyInput %}

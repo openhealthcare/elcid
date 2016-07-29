@@ -1,0 +1,37 @@
+{% load panels %}
+<div class="col-md-12">
+  <div class="panel panel-active">
+    <div class="panel-heading text-center">
+      <h3>
+        OPAT Care
+        [[ episode.location[0].opat_referral | shortDate]]
+      </h3>
+    </div>
+    <div class="panel-body text-center">
+      {% include 'actions/next_stage.html' %}
+    </div>
+  </div>
+</div>
+<div class="col-md-6"> <!-- Detail panels col 1 -->
+  {% teams_panel %}
+  {% record_panel models.ContactDetails %}
+  {% record_panel models.Carers %}
+  {% record_panel models.Allergies noentries="No known allergies"%}
+  {% include 'obs/detail_panel.html' %}
+  {% record_panel models.PastMedicalHistory %}
+  {% record_panel models.Travel %}
+  {% record_panel models.Appointment %}
+  {% record_panel models.MicrobiologyInput %}
+</div>                 <!-- Ends Detail panels col 1 -->
+<div class="col-md-6"> <!-- Detail panels col 2 -->
+  {% record_panel models.OPATOutcome %}
+  {% record_panel models.Diagnosis %}
+  {% record_panel models.Antimicrobial %}
+  {% record_panel models.MicrobiologyTest %}
+  {% record_panel models.Line %}
+  {% record_panel models.OPATLineAssessment %}
+  {% record_panel models.OPATOutstandingIssues %}
+</div>
+<div class="col-md-12">
+  {% record_timeline models.OPATReview "datetime" %}
+</div>
