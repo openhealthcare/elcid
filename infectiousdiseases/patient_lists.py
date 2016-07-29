@@ -1,4 +1,4 @@
-from opal.core.patient_lists import TaggedPatientList
+from opal.core.patient_lists import PatientList, TaggedPatientList
 from elcid import models
 
 generic_infectious_diseases_list = [
@@ -95,3 +95,21 @@ class Tropical(TaggedPatientList):
     tag = "tropical_diseases"
     schema = generic_infectious_diseases_list
     order = 5
+
+
+class Weekend(PatientList):
+    """
+    On the weekend a single team handles the work of three regular teams.
+    """
+    display_name = 'Weekend'
+    order = 99
+    schema = generic_infectious_diseases_list
+
+    def get_queryset(self):
+        from opal.models import Episode # Avoid circular import from opal.models
+        return Episode.objects.filter(
+            tagging__archived=False,
+            tagging__value__in=[
+                'tropical_diseases', 'immune_inpatients', 'id_inpatients'
+            ]
+        )
