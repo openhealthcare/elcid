@@ -26,8 +26,16 @@ angular.module('opal.controllers')
     }
 
     $scope.save = function() {
-      var dob, doa;
+      var doa;
+      // TODO is this used anywhere?
+      doa = $scope.editing.date_of_admission;
+      if (doa) {
+        if(!angular.isString(doa)){
+          doa = moment(doa).format(DATE_FORMAT);
+        }
+      }
       var toSave = FieldTranslater.jsToPatient($scope.editing);
+      toSave.date_of_admission = doa;
 
       // this is not good
       toSave.tagging = [toSave.tagging];
