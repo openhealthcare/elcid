@@ -2,7 +2,7 @@ angular.module('opal.controllers')
 .controller('DiagnosisAddEpisodeCtrl', function($scope, $http, $cookieStore, $q,
   $timeout, $modal,
   $modalInstance, Episode,
-  TagService, referencedata,
+  referencedata, metadata,
   tags, demographics) {
     var DATE_FORMAT = 'DD/MM/YYYY';
 
@@ -16,25 +16,21 @@ angular.module('opal.controllers')
       },
       demographics: demographics,
     };
-    var currentTags = [];
+    $scope.editing.tagging = {};
 
-    if(tags){
-      if(tags.subtag.length){
-        currentTags = [tags.subtag];
-      }
-      else{
-        currentTags = [tags.tag];
-      }
+    if(tags.tag){
+      $scope.editing.tagging[tags.tag] = true;
     }
 
+    if(tags.subtag){
+      $scope.editing.tagging[tags.subtag] = true;
+    }
 
-    $scope.tagService = new TagService(currentTags);
-
+    $scope.metadata = metadata;
 
     $scope.save = function() {
       var dob, doa;
 
-      $scope.editing.tagging = [$scope.tagService.toSave()];
       // This is a bit mucky but will do for now
       doa = $scope.editing.date_of_admission;
       if (doa) {
