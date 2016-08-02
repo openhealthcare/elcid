@@ -1,9 +1,8 @@
 angular.module('opal.controllers')
 .controller('DiagnosisAddEpisodeCtrl', function($scope, $http, $cookieStore, $q,
-  $timeout, $modal,
+  $timeout, $modal, FieldTranslater,
   $modalInstance, Episode,
-  referencedata, metadata,
-  tags, demographics) {
+  referencedata, tags, demographics) {
     var DATE_FORMAT = 'DD/MM/YYYY';
 
     _.extend($scope, referencedata.toLookuplists());
@@ -26,29 +25,14 @@ angular.module('opal.controllers')
       $scope.editing.tagging[tags.subtag] = true;
     }
 
-    $scope.metadata = metadata;
-
     $scope.save = function() {
       var dob, doa;
+      var toSave = FieldTranslater.jsToPatient($scope.editing);
 
-      // This is a bit mucky but will do for now
-      doa = $scope.editing.date_of_admission;
-      if (doa) {
-        if(!angular.isString(doa)){
-          doa = moment(doa).format(DATE_FORMAT);
-        }
-        $scope.editing.date_of_admission = doa;
-      }
+      // this is not good
+      toSave.tagging = [toSave.tagging];
 
-      dob = $scope.editing.demographics.date_of_birth;
-      if (dob) {
-        if(!angular.isString(dob)){
-          dob = moment(dob).format(DATE_FORMAT);
-        }
-      }
-      $scope.editing.demographics.date_of_birth = dob;
-
-      $http.post('/api/v0.1/episode/', $scope.editing).success(function(episode) {
+      $http.post('/api/v0.1/episode/', toSave).success(function(episode) {
         $scope.episode = new Episode(episode);
         $scope.presenting_complaint();
       });

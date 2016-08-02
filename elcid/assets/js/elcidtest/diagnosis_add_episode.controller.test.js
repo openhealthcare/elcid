@@ -2,8 +2,7 @@ describe('DiagnosisAddEpisodeCtrl', function() {
     "use strict";
 
     var $rootScope, $scope, $modal, $httpBackend, $controller;
-    var modalInstance, tags, demographics, tagServiceSpy;
-    var mockTagService, tagServiceToSave;
+    var modalInstance, tags, demographics;
 
 
     var fields = {
@@ -39,10 +38,6 @@ describe('DiagnosisAddEpisodeCtrl', function() {
 
         $scope = $rootScope.$new();
         modalInstance = $modal.open({template: 'notatemplate'});
-        tagServiceToSave = jasmine.createSpy('toSave').and.returnValue({"inpatients": true});
-        mockTagService = jasmine.createSpy('TagService').and.returnValue(
-            {toSave: tagServiceToSave}
-        );
 
         $controller('DiagnosisAddEpisodeCtrl', {
             $scope         : $scope,
@@ -50,7 +45,6 @@ describe('DiagnosisAddEpisodeCtrl', function() {
             referencedata  : referencedata,
             tags           : tags,
             demographics   : demographics,
-            TagService: mockTagService,
             Episode: function(x){ return {
               newItem: function(){},
               presenting_complaint: [{}],
@@ -76,9 +70,8 @@ describe('DiagnosisAddEpisodeCtrl', function() {
             $scope.editing.date_of_admission = "10/02/2000";
             $scope.editing.demographics.date_of_birth = "10/02/1990";
             $scope.save();
-            expect(tagServiceToSave).toHaveBeenCalled();
             $httpBackend.expectPOST('/api/v0.1/episode/', {
-              "tagging":[{"inpatients": true}],
+              "tagging":[{"tropical":true, "inpatients":true}],
               "location":{"hospital":"UCLH"},
               "demographics":{
                 "patient_id":123,
