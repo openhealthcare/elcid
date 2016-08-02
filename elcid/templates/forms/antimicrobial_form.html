@@ -6,7 +6,7 @@
 {% input field="Antimicrobial.dose" %}
 {% input field="Antimicrobial.route" %}
 {% select field="Antimicrobial.frequency" %}
-<div ng-show="episode_category_name == 'OPAT'" >
+<div ng-show="episode.category_name == 'OPAT'" >
   {% select field="Antimicrobial.delivered_by" %}
   {% select field="Antimicrobial.adverse_event" other=True %}
   {% select field="Antimicrobial.reason_for_stopping" %}
