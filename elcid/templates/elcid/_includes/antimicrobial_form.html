@@ -7,7 +7,7 @@
     {% input label="Dose" model="editing.antimicrobial.dose" %}
     {% input label="Route" model="editing.antimicrobial.route" lookuplist="antimicrobial_route_list" %}
     {% select label="Frequency" model="editing.antimicrobial.frequency" lookuplist="antimicrobial_frequency_list" %}
-    <div ng-show="episode_category_name == 'OPAT'" >
+    <div ng-show="episode.category_name == 'OPAT'" >
       {% select label="Delivered by" model="editing.antimicrobial.delivered_by" lookuplist="drug_delivered_list" %}
       {% select label="Adverse events" model="editing.antimicrobial.adverse_event" lookuplist="antimicrobial_adverse_event_list" other=True %}
       {% select label="Reason for Stopping" model="editing.antimicrobial.reason_for_stopping" lookuplist="iv_stop_list" %}
