@@ -101,7 +101,7 @@ class Weekend(PatientList):
     """
     On the weekend a single team handles the work of three regular teams.
     """
-    display_name = 'Weekend'
+    display_name = 'Weekend HTD'
     order = 99
     schema = generic_infectious_diseases_list
 
