@@ -56,7 +56,7 @@
 
   <!-- Rejected state -->
   <div ng-show="episode.tagging[0].opat_referrals == true && meta.accepted == false">
-    <p class="lead text-center">[[ episode.demographics[0].first_name ]] [[ episode.demographics[0].surname ]] will be <b>rejected</b> from the OPAT service.</p>
+    <p class="lead text-center">[[ episode.demographics[0].first_name ]] [[ episode.demographics[0].surname ]] will be <b>refused</b> from the OPAT service.</p>
     <form class="form-horizontal">
 
       <div class="form-group">
@@ -88,7 +88,7 @@
         <button class="btn btn-secondary btn-lg"
                 ng-click="reject()">
           {% icon "fa-close" %}
-          Reject
+          Refuse
         </button>
       </p>
     </center>
