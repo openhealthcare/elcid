@@ -7,8 +7,11 @@ class ConfidentialEmailer(AdminEmailHandler):
         super(ConfidentialEmailer, self).__init__(*args, **kwargs)
         self.include_html = False
 
+    def get_brand_name(self):
+        return getattr(settings, "OPAL_BRAND_NAME", "unnamed opal app")
+
     def format_subject(self, subject):
-        return "{} error".format(settings.OPAL_BRAND_NAME)
+        return "{} error".format(self.get_brand_name())
 
     def emit(self, record):
         record.msg = 'censored'
@@ -22,7 +25,7 @@ class ConfidentialEmailer(AdminEmailHandler):
 
             detail = "sent to host {0}  on application {1} from user {2} with {3}".format(
                 record.request.META.get("HTTP_HOST"),
-                settings.OPAL_BRAND_NAME,
+                self.get_brand_name(),
                 user,
                 record.request.META.get("REQUEST_METHOD"),
             )

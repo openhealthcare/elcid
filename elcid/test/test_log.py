@@ -1,6 +1,7 @@
 import logging
 import mock
 from django.test import override_settings
+from django.conf import settings
 from opal.core.test import OpalTestCase
 from elcid.log import ConfidentialEmailer
 
@@ -76,3 +77,12 @@ class LogOutputTestCase(OpalTestCase):
         logger = logging.getLogger('django.request')
         logger.info('%s error', "confidential")
         self.assertFalse(send_mail.called)
+
+    def handle_brand_name(self, emitter, send_mail, stream_handler):
+        del settings.OPAL_BRAND_NAME
+        logger = logging.getLogger('django.request')
+        logger.error('confidential error')
+        self.assertTrue(send_mail.called)
+        expected_subject = "unamed opal app error"
+        call_args = send_mail.call_args
+        self.assertEqual(expected_subject, call_args[0][0])
