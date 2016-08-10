@@ -1,4 +1,5 @@
 from django.utils.log import AdminEmailHandler
+from django.conf import settings
 
 
 class ConfidentialEmailer(AdminEmailHandler):
@@ -13,9 +14,16 @@ class ConfidentialEmailer(AdminEmailHandler):
         record.msg = 'censored'
         record.args = []
         detail = ""
-        if hasattr(record, "request"):
-            detail = "{0} {1}".format(
+        if hasattr(record, "request") and record.request:
+            if record.request.user.is_authenticated():
+                user = record.request.user.username
+            else:
+                user = "anonymous"
+
+            detail = "sent to host {0}  on application {1} from user {2} with {3}".format(
                 record.request.META.get("HTTP_HOST"),
+                settings.OPAL_BRAND_NAME,
+                user,
                 record.request.META.get("REQUEST_METHOD"),
             )
         record.request = None
