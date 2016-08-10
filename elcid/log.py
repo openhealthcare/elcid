@@ -8,7 +8,7 @@ class ConfidentialEmailer(AdminEmailHandler):
         self.include_html = False
 
     def format_subject(self, subject):
-        return "elCID error"
+        return "{} error".format(settings.OPAL_BRAND_NAME)
 
     def emit(self, record):
         record.msg = 'censored'
