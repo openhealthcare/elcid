@@ -1747,6 +1747,10 @@
       "synonyms": []
     },
     {
+      "name": "Aseptic Meningitis",
+      "synonyms": []
+    },
+    {
       "name": "Asthma",
       "synonyms": []
     },
@@ -2179,6 +2183,10 @@
       "synonyms": [
         "Diffuse large B cell lymphoma"
       ]
+    },
+    {
+      "name": "Drug Reaction",
+      "synonyms": []
     },
     {
       "name": "Drug induced psychosis",
