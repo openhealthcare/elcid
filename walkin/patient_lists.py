@@ -33,6 +33,7 @@ class WalkinNurseTriage(TaggedPatientList):
     schema = [
         models.Demographics,
         models.Location,
+        models.Allergies,
         models.Travel,
         wimodels.Symptom,
         models.MicrobiologyTest,

@@ -1747,6 +1747,10 @@
       "synonyms": []
     },
     {
+      "name": "Aseptic Meningitis",
+      "synonyms": []
+    },
+    {
       "name": "Asthma",
       "synonyms": []
     },
@@ -2075,10 +2079,6 @@
       "synonyms": []
     },
     {
-      "name": "Crimean-congo Haemorrhagic fever",
-      "synonyms": []
-    },
-    {
       "name": "Crohn's Disease",
       "synonyms": []
     },
@@ -2183,6 +2183,10 @@
       "synonyms": [
         "Diffuse large B cell lymphoma"
       ]
+    },
+    {
+      "name": "Drug Reaction",
+      "synonyms": []
     },
     {
       "name": "Drug induced psychosis",
@@ -3698,6 +3702,10 @@
       "synonyms": []
     },
     {
+      "name": "VP shunt infection",
+      "synonyms": []
+    },
+    {
       "name": "Von Willebrand's disease",
       "synonyms": []
     },
@@ -3842,10 +3850,6 @@
     },
     {
       "name": "Hepatic Encephalopathy",
-      "synonyms": []
-    },
-    {
-      "name": "Mycobacterium Avium Intracellulare ",
       "synonyms": []
     },
     {
@@ -5827,22 +5831,6 @@
       ]
     },
     {
-      "name": "CSF AFB microscopy & TB culture",
-      "synonyms": []
-    },
-    {
-      "name": "Sputum AFB microscopy & TB culture",
-      "synonyms": []
-    },
-    {
-      "name": "Tissue AFB microscopy & TB culture",
-      "synonyms": []
-    },
-    {
-      "name": "Urine AFB microscopy & TB culture",
-      "synonyms": []
-    },
-    {
       "name": "MSU",
       "synonyms": [
         "Mid stream urine"
@@ -6565,18 +6553,6 @@
       "synonyms": []
     },
     {
-      "name": "Clostridium difficile",
-      "synonyms": []
-    },
-    {
-      "name": "Enterococcus faecalis",
-      "synonyms": []
-    },
-    {
-      "name": "Enterococcus faecium",
-      "synonyms": []
-    },
-    {
       "name": "Group C Streptococcus",
       "synonyms": []
     },
@@ -6593,31 +6569,7 @@
       "synonyms": []
     },
     {
-      "name": "Mycobacterium avium intracellulare",
-      "synonyms": []
-    },
-    {
-      "name": "Mycobacterium tuberculosis",
-      "synonyms": []
-    },
-    {
-      "name": "Neisseria gonorrheae",
-      "synonyms": []
-    },
-    {
-      "name": "Neisseria meningitidis",
-      "synonyms": []
-    },
-    {
       "name": "Proteus",
-      "synonyms": []
-    },
-    {
-      "name": "Streptococcus agalactiae",
-      "synonyms": []
-    },
-    {
-      "name": "Streptococcus pyogenes",
       "synonyms": []
     },
     {

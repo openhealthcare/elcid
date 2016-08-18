@@ -1,0 +1,14 @@
+{% load forms %}
+
+{% input "autofocus" field="Antimicrobial.drug" %}
+{% datepicker field="Antimicrobial.start_date" %}
+{% datepicker field="Antimicrobial.end_date" %}
+{% input field="Antimicrobial.dose" %}
+{% input field="Antimicrobial.route" %}
+{% select field="Antimicrobial.frequency" %}
+<div ng-show="episode.category_name == 'OPAT'" >
+  {% select field="Antimicrobial.delivered_by" %}
+  {% select field="Antimicrobial.adverse_event" other=True %}
+  {% select field="Antimicrobial.reason_for_stopping" %}
+  {% textarea field="Antimicrobial.comments" %}
+</div>

@@ -23,15 +23,10 @@ class ResearchStudy(models.Model):
     """
     name           = models.CharField(max_length=200)
     active         = models.BooleanField(default=False)
-    clinical_lead  = models.ManyToManyField(User, blank=True, null=True,
-                                            related_name='clinical_lead_user')
-    researcher     = models.ManyToManyField(User, blank=True, null=True,
-                                            related_name='researcher_user')
-    research_nurse = models.ManyToManyField(User, blank=True, null=True,
-                                            verbose_name='Research Practitioner',
-                                            related_name='research_nurse_user')
-    scientist      = models.ManyToManyField(User, blank=True, null=True,
-                                            related_name='scientist_user')
+    clinical_lead  = models.ManyToManyField(User, related_name='clinical_lead_user')
+    researcher     = models.ManyToManyField(User, related_name='researcher_user')
+    research_nurse = models.ManyToManyField(User, verbose_name='Research Practitioner', related_name='research_nurse_user')
+    scientist      = models.ManyToManyField(User, related_name='scientist_user')
 
     def __unicode__(self):
         return unicode(self.name)

@@ -6,16 +6,7 @@
 <form class="form-horizontal">
   {% datetimepicker field="MicrobiologyInput.when" %}
   {% input field="MicrobiologyInput.initials" %}
-
   {% select label="Type Of Advice" field="MicrobiologyInput.reason_for_interaction" lookuplist="['Appointment discussion', 'Phone consultation']" %}
   {% textarea field="MicrobiologyInput.clinical_discussion" macros=True %}
 </form>
 {% endblock %}
-{% block modal_save %}
-<button     class="btn btn-primary" ng-click="save('save')">
-  <i class="fa fa-save"></i>
-  Save
-</button>
-{% endblock %}
-{% block modal_another %}{% endblock %}
-{% block modal_cancel %}<button class="btn" ng-click="cancel()">Close</button>{% endblock %}
