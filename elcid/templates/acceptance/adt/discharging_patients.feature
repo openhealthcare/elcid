@@ -19,5 +19,5 @@ Then I should be able to confirm the discharge
 Given a patient added to the ID Liason list
 Given that I am on the ID Liason list
 Given that that patient is selected
-I click discharge, the patient should be removed from the ID Liason
+When I click discharge, the patient should be removed from the ID Liason
 list.
