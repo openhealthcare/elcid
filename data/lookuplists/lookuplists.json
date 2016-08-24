@@ -1747,6 +1747,10 @@
       "synonyms": []
     },
     {
+      "name": "Atypical Pneumonia",
+      "synonyms": []
+    },
+    {
       "name": "Aseptic Meningitis",
       "synonyms": []
     },
@@ -3265,6 +3269,10 @@
     },
     {
       "name": "Rabies",
+      "synonyms": []
+    },
+    {
+      "name": "Rash of Unknown Aetiology",
       "synonyms": []
     },
     {
