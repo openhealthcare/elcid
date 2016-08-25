@@ -34,7 +34,7 @@ class ViewsTest(OpalTestCase):
                 'ward': 'T13',
                 'bed': 10
                 },
-            'tagging': [{}]
+            'tagging': {}
             }
         response = self.post_json('/api/v0.1/episode/', data)
         self.assertEqual(201, response.status_code)
@@ -53,7 +53,7 @@ class ViewsTest(OpalTestCase):
                 'ward': 'T13',
                 'bed': 10
                 },
-            'tagging': [{}]
+            'tagging': {}
             }
         response = self.post_json('/api/v0.1/episode/', data)
         self.assertEqual(201, response.status_code)
@@ -72,7 +72,7 @@ class ViewsTest(OpalTestCase):
                 'ward': 'T13',
                 'bed': 10
                 },
-            'tagging': [{}]
+            'tagging': {}
             }
         response = self.post_json('/api/v0.1/episode/', data)
         self.assertEqual(201, response.status_code)
