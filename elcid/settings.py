@@ -219,13 +219,6 @@ LOGGING = {
             'filters': ['require_debug_false'],
             'class': 'elcid.log.ConfidentialEmailer'
         },
-        'session': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': os.path.join(
-                PROJECT_PATH, "..", "..", "log", "session.log"
-            )
-        }
     },
     'loggers': {
         'django.request': {
@@ -239,12 +232,25 @@ LOGGING = {
             'propagate': True,
         },
         'elcid.sessionLogger': {
-            'handlers': ['session'],
+            'handlers': ['console'],
             'level': 'INFO',
             'propagate': False,
         }
     }
 }
+
+if 'test' not in sys.argv:
+    # lets not log to files on travis
+    LOGGING["handlers"]["session"] = {
+        'level': 'DEBUG',
+        'class': 'logging.FileHandler',
+        'filename': os.path.join(
+            PROJECT_PATH, "..", "..", "log", "session.log"
+        )
+    }
+    LOGGING["loggers"]["elcid.sessionLogger"]["handlers"] = ['session']
+
+
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 # (Heroku requirement)
