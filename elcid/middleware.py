@@ -29,6 +29,16 @@ class SessionMiddleware(object):
         self.logger.info('expiry {}'.format(expiry))
 
     def process_response(self, request, response):
+        username = 'anonymous'
+        path = request.path
+
+        if request.user.is_authenticated():
+            username = request.user.username
+
+        self.logger.info('responding to a request with user {0} for {1}'.format(
+            username, path
+        ))
+
         if request.user.is_authenticated():
             if 'expired_token' in request.session:
                 self.logger.info(
@@ -47,6 +57,7 @@ class SessionMiddleware(object):
                     )
                 )
                 request.session["expired_token"] = expiration_id
+
         return response
 
 

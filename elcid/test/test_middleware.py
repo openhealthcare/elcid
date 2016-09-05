@@ -69,14 +69,24 @@ class SessionMiddlewareTestCase(OpalTestCase):
         """ if the user is now logged in, clear the expiry token
         """
         self.request.user.is_authenticated.return_value = True
+        self.request.user.username = "someone"
         self.request.session.__contains__.return_value = True
         self.request.session.__getitem__.return_value = 1231212
         response = self.middleware.process_response(
             self.request, "some response"
         )
-        self.middleware.logger.info.assert_called_once_with(
+        call_args = self.middleware.logger.info.call_args_list
+
+        self.assertEqual(
+            call_args[0][0][0],
+            'responding to a request with user someone for /'
+        )
+
+        self.assertEqual(
+            call_args[1][0][0],
             'now logged in, clearing 1231212'
         )
+
         self.assertEqual(response, "some response")
         self.request.session.__contains__.assert_called_once_with("expired_token")
         self.request.session.__getitem__.assert_called_once_with("expired_token")
@@ -91,9 +101,19 @@ class SessionMiddlewareTestCase(OpalTestCase):
         self.middleware.process_response(
             self.request, "some response"
         )
-        self.middleware.logger.info.called_once_with(
+
+        call_args = self.middleware.logger.info.call_args
+
+        self.assertEqual(
+            call_args[0][0][0],
+            'responding to a request with anonymous someone for /'
+        )
+
+        self.assertEqual(
+            call_args[1][0][0],
             'no session token found, setting expiry to 20'
         )
+
         self.request.session.__setitem__.assert_called_once_with(
             "expired_token", 20
         )

@@ -1,8 +1,6 @@
 ## 0.6.2.1 Release
 
-Adds an additional session logger that logs session information. Adds back in
-location and date of admission to the inpatient add patient modal which was removed
-in v0.6.0
+Adds an additional session logger that logs session information.
 
 
 ## 0.6.2 Release
