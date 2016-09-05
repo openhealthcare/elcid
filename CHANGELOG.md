@@ -1,3 +1,8 @@
+## 0.6.2.1 Release
+
+Adds an additional session logger that logs session information.
+
+
 ## 0.6.2 Release
 
 Updates to the email logger providing system information.
