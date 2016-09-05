@@ -122,6 +122,7 @@ MIDDLEWARE_CLASSES = (
     'opal.middleware.DjangoReversionWorkaround',
     'reversion.middleware.RevisionMiddleware',
     'axes.middleware.FailedLoginMiddleware',
+    'elcid.middleware.SessionMiddleware',
     'elcid.middleware.LoggingMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -217,6 +218,13 @@ LOGGING = {
             'level': 'ERROR',
             'filters': ['require_debug_false'],
             'class': 'elcid.log.ConfidentialEmailer'
+        },
+        'session': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(
+                PROJECT_PATH, "..", "..", "log", "session.log"
+            )
         }
     },
     'loggers': {
@@ -230,6 +238,11 @@ LOGGING = {
             'level': 'INFO',
             'propagate': True,
         },
+        'elcid.sessionLogger': {
+            'handlers': ['session'],
+            'level': 'INFO',
+            'propagate': False,
+        }
     }
 }
 
