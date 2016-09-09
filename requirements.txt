@@ -8,7 +8,7 @@ psycopg2==2.5
 wsgiref==0.1.2
 dj-static==0.0.6
 django-reversion==1.8.7
-django-axes==1.4.0
+django-axes==1.7.0
 ffs==0.0.8.1
 letter==0.4.1
 supervisor==3.0
@@ -23,7 +23,7 @@ django-compressor==1.5
 jsonfield==1.0.3
 pycrypto==2.6.1
 
--e git+https://github.com/openhealthcare/opal.git@v0.7.0#egg=opal
+-e git+https://github.com/openhealthcare/opal.git@v0.8.0#egg=opal
 -e git+https://github.com/openhealthcare/opal-observations.git@v0.2.0#egg=opal_observations
 
 

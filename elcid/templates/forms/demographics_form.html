@@ -1,17 +1,21 @@
 {% load forms %}
-{% input "autofocus" field="Demographics.hospital_number" static="editing.demographics.external_system" %}
-{% input field="Demographics.nhs_number" label="NHS Number" static="editing.demographics.external_system" %}
-<div class="form-group">
-  <span ng-show="editing.demographics.external_system">
-    <label class="control-label col-sm-3">
-      Name
-    </label>
-    <p class="form-control-static col-sm-8">
-      [[ editing.demographics.title ]]
-      [[ editing.demographics.first_name ]]
-      [[ editing.demographics.surname ]]
-    </p>
-  </span>
+<div ng-show="editing.demographics.external_system">
+  {% static "Demographics.hospital_number" %}
+  {% static "Demographics.nhs_number" %}
+</div>
+<div ng-hide="editing.demographics.external_system">
+  {% input "autofocus" field="Demographics.hospital_number" %}
+  {% input field="Demographics.nhs_number" label="NHS Number" %}
+</div>
+<div class="form-group" ng-show="editing.demographics.external_system">
+  <label class="control-label col-sm-3">
+    Name
+  </label>
+  <p class="form-control-static col-sm-8">
+    [[ editing.demographics.title ]]
+    [[ editing.demographics.first_name ]]
+    [[ editing.demographics.surname ]]
+  </p>
 </div>
 <span ng-show="editing.demographics.external_system">
   {% static "Demographics.date_of_birth" %}
