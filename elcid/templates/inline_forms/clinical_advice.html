@@ -1,69 +1,74 @@
 {% load forms %}
 
 <div ng-controller="ClinicalAdviceForm as clinicalAdviceForm" class="panel panel-default">
-    <div class="panel-heading"><h3>
-        <i class="fa fa-comments"></i> Clinical Advice
-    </div></h3>
-      <div class="panel-body">
-          <div class="row">
-            <div class="col-md-12">
+  <div class="panel-heading"><h3>
+      <i class="fa fa-comments"></i> Clinical Advice
+  </div></h3>
+  <div class="panel-body">
+    <div class="row">
 
-              <form class="form-horizontal">
-                <div class="form-group">
-                  <label class="control-label col-sm-3">Date</label>
-                  <div class="col-sm-9">
-            	    <input class="form-control" data-date-type="date" data-autoclose="1" type="text" placeholder="Date" ng-model="clinicalAdviceForm.editing.when" bs-datepicker>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="control-label col-sm-3">Time</label>
-                  <div class="col-sm-9">
-                  <input type="text" size="8" class="form-control" ng-model="clinicalAdviceForm.editing.when"
-                         data-autoclose="1" placeholder="Time" bs-timepicker>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="control-label col-sm-3">Advice given by</label>
-                  <div class="col-sm-9">
-        	    <input class="form-control" type="text" ng-model="clinicalAdviceForm.editing.initials">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="control-label col-sm-3">Reason for clinical interaction</label>
-                  <div class="col-sm-9">
-                    <select class="form-control" ng-model="clinicalAdviceForm.editing.reason_for_interaction">
-                      <option ng-repeat="reason in options.clinical_advice_reason_for_interaction">[[reason]]</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="control-label col-sm-3">Clinical discussion</label>
-                  <div class="col-sm-9">
-        	    <textarea autofocus
-                       class="form-control"
-                       ng-model="clinicalAdviceForm.editing.clinical_discussion"
-                       rows="5"
-                       {% include 'partials/_mentio_edit_item.html' %}
-                       ></textarea>
+      <div class="col-md-12">
 
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="control-label col-sm-3">Discussed with</label>
-                  <div class="col-sm-9">
-        	    <input class="form-control" type="text" ng-model="clinicalAdviceForm.editing.discussed_with">
-                  </div>
-                </div>
-              </form>
+        <form class="form-horizontal">
+
+          <div class="form-group">
+            <label class="control-label col-sm-3">Date</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" uib-datepicker-popup="'yyyy/MM/dd"
+                     ng-model="clinicalAdviceForm.editing.when" is-open="clinicalAdviceForm.whenopen"
+                     ng-blur="" ng-focus="clinicalAdviceForm.whenopen = true"
+                     close-text="Close" />
+
             </div>
-        </div>
-      <div class="row">
-          <div class="col-md-12 text-right">
-              <button class="btn btn-primary" ng-click="clinicalAdviceForm.save('save')">
-              <i class="fa fa-save"></i>
-              Save
-              </button>
           </div>
+          <div class="form-group">
+            <label class="control-label col-sm-3">Time</label>
+            <div class="col-sm-9">
+              <uib-timepicker ng-model="clinicalAdviceForm.editing.when" ></uib-timepicker>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-3">Advice given by</label>
+            <div class="col-sm-9">
+              <input class="form-control" type="text" ng-model="clinicalAdviceForm.editing.initials">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-3">Reason for clinical interaction</label>
+            <div class="col-sm-9">
+              <select class="form-control" ng-model="clinicalAdviceForm.editing.reason_for_interaction">
+                <option ng-repeat="reason in options.clinical_advice_reason_for_interaction">[[reason]]</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-3">Clinical discussion</label>
+            <div class="col-sm-9">
+              <textarea autofocus
+                        class="form-control"
+                        ng-model="clinicalAdviceForm.editing.clinical_discussion"
+                        rows="5"
+                        {% include 'partials/_mentio_edit_item.html' %}
+                        ></textarea>
+
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-3">Discussed with</label>
+            <div class="col-sm-9">
+              <input class="form-control" type="text" ng-model="clinicalAdviceForm.editing.discussed_with">
+            </div>
+          </div>
+        </form>
       </div>
-     </div>
- </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 text-right">
+        <button class="btn btn-primary" ng-click="clinicalAdviceForm.save('save')">
+          <i class="fa fa-save"></i>
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
