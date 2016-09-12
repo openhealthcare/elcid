@@ -18,8 +18,8 @@ class SessionMiddleware(object):
 
         if request.user.is_authenticated():
             username = request.user.username
-        self.logger.info('received a request with user {0} for {1}'.format(
-            username, path
+        self.logger.info('{0} received a request with user {1} for {2}'.format(
+            datetime.now().strftime('%d/%m/%Y %H:%M:%S'), username, path
         ))
         self.logger.info('cookies')
         self.logger.info(request.COOKIES)

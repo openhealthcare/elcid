@@ -17,9 +17,11 @@ class SessionMiddlewareTestCase(OpalTestCase):
         self.request.session.get_expiry_date = MagicMock()
         self.request.COOKIES = "cookies information"
 
-    def test_anonymous_process_request(self):
+    @patch('elcid.middleware.datetime')
+    def test_anonymous_process_request(self, dt):
         """ if the user is not logged in, log all the information
         """
+        dt.now.return_value = datetime.datetime(2015, 9, 5, 11, 14, 3, 529434)
         self.request.user.is_authenticated.return_value = False
         self.request.session.items.return_value = {}
         self.request.session.get_expiry_date.return_value = datetime.datetime(
@@ -30,7 +32,7 @@ class SessionMiddlewareTestCase(OpalTestCase):
         self.assertEqual(call_args[0][0][0], '')
         self.assertEqual(
             call_args[1][0][0],
-            'received a request with user anonymous for /'
+            '05/09/2015 11:14:03 received a request with user anonymous for /'
         )
         self.assertEqual(
             call_args[2][0][0],
@@ -53,16 +55,20 @@ class SessionMiddlewareTestCase(OpalTestCase):
             'expiry 2016-09-05T11:14:03.529434'
         )
 
-    def test_logged_in_process_request(self):
+    @patch('elcid.middleware.datetime')
+    def test_logged_in_process_request(self, dt):
         """ if the user is logged in, just log the request normally
         """
+        dt.now.return_value = datetime.datetime(
+            2015, 9, 5, 11, 14, 3, 529434
+        )
         self.request.user.is_authenticated.return_value = True
         self.request.user.username = "someone"
         self.middleware.process_request(self.request)
         call_args = self.middleware.logger.info.call_args_list
         self.assertEqual(
             call_args[1][0][0],
-            'received a request with user someone for /'
+            '05/09/2015 11:14:03 received a request with user someone for /'
         )
 
     def test_logged_in_process_response(self):
