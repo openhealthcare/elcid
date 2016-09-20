@@ -122,6 +122,7 @@ MIDDLEWARE_CLASSES = (
     'opal.middleware.DjangoReversionWorkaround',
     'reversion.middleware.RevisionMiddleware',
     'axes.middleware.FailedLoginMiddleware',
+    'elcid.middleware.SessionMiddleware',
     'elcid.middleware.LoggingMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -217,7 +218,7 @@ LOGGING = {
             'level': 'ERROR',
             'filters': ['require_debug_false'],
             'class': 'elcid.log.ConfidentialEmailer'
-        }
+        },
     },
     'loggers': {
         'django.request': {
@@ -230,8 +231,26 @@ LOGGING = {
             'level': 'INFO',
             'propagate': True,
         },
+        'elcid.sessionLogger': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': False,
+        }
     }
 }
+
+if 'test' not in sys.argv:
+    # lets not log to files on travis
+    LOGGING["handlers"]["session"] = {
+        'level': 'DEBUG',
+        'class': 'logging.FileHandler',
+        'filename': os.path.join(
+            PROJECT_PATH, "..", "..", "log", "session.log"
+        )
+    }
+    LOGGING["loggers"]["elcid.sessionLogger"]["handlers"] = ['session']
+
+
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 # (Heroku requirement)
@@ -279,7 +298,7 @@ else:
     EMAIL_HOST = 'localhost'
 
 
-VERSION_NUMBER = '0.6.2'
+VERSION_NUMBER = '0.6.2.1'
 #TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 #TEST_RUNNER = 'django_test_coverage.runner.CoverageTestSuiteRunner'
 

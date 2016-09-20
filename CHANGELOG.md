@@ -1,3 +1,14 @@
+## 0.6.2.1 Release
+
+Adds an additional session logger that logs session information.
+
+
+## 0.6.2 Release
+
+Updates to the email logger providing system information.
+
+The Weekend patient list, allowing the doctors covering weekends to have a patient list covering patients from multiple departments.
+
 ## 0.6.1 Release
 We now use the field='modelName.field' api for all our forms, this lets us infer attributes such as max length
 
