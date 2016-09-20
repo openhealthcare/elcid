@@ -5,6 +5,12 @@
 {% block modal_body %}
   <form class="form-horizontal" name="form">
     {% include 'partials/_core_demographics.html' %}
+    <div ng-show="!editing.demographics.external_system">
+      {% datepicker label="Date of admission" model="editing.date_of_admission" %}
+      {% select label="Hospital" model="editing.location.hospital" lookuplist="hospital_list" %}
+      {% select label="Ward" model="editing.location.ward" lookuplist="ward_list" %}
+      {% input label="Bed" model="editing.location.bed" %}
+    </div>
     {% if teams %}
       {% include 'partials/_teams_select.html' %}
     {% endif %}
