@@ -2450,6 +2450,10 @@
       ]
     },
     {
+      "name": "Heart failure",
+      "synonyms": []
+    },
+    {
       "name": "Henoch-Sch\u00f6nlein purpura",
       "synonyms": []
     },
@@ -2935,10 +2939,14 @@
       ]
     },
     {
-      "name": "Neutropenic sepsis",
+      "name": "Sepsis (neutropaenic)",
       "synonyms": [
         "Neutropaenic sepsis"
       ]
+    },
+    {
+      "name": "Sepsis (non-neutropaenic)",
+      "synonyms": []
     },
     {
       "name": "Non-Hodgkins Lymphoma",
@@ -3018,7 +3026,7 @@
     },
     {
       "name": "Osteoarthritis",
-      "synonyms": []
+      "synonyms": ["OA"]
     },
     {
       "name": "Osteomyelitis",
@@ -3401,6 +3409,10 @@
     },
     {
       "name": "Secondary Syphilis",
+      "synonyms": []
+    },
+    {
+      "name": "Sepsis",
       "synonyms": []
     },
     {
