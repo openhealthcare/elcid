@@ -3246,6 +3246,10 @@
       "synonyms": []
     },
     {
+      "name": "Psoriatic arthritis",
+      "synonyms": []
+    },
+    {
       "name": "Pulmonary Fibrosis",
       "synonyms": []
     },
@@ -3338,10 +3342,6 @@
       "synonyms": [
         "RA"
       ]
-    },
-    {
-      "name": "Rheumatoid Arthtitis",
-      "synonyms": []
     },
     {
       "name": "Rickettsialpox",
@@ -3444,6 +3444,10 @@
       "synonyms": [
         "Infected Bursitis"
       ]
+    },
+    {
+      "name": "Seronegative inflammatory arthritis",
+      "synonyms": []
     },
     {
       "name": "Severe falciparum malaria",
