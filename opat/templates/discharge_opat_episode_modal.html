@@ -124,15 +124,8 @@
   <!-- OPAT completed therapy -->
   <div ng-show="episode.tagging[0].opat_current && meta.completed">
     <p class="lead text-center">[[ episode.demographics[0].first_name ]] [[ episode.demographics[0].surname ]] will be <b>discharged</b></p>
-
     <form class="form-horizontal">
-      <div class="form-group">
-        <label class="control-label col-sm-3">OPAT Review date</label>
-        <div class="col-sm-8">
-	  <input class="form-control" type="text" ng-model="meta.review_date"
-                 bs-datepicker data-autoclose="true" />
-        </div>
-      </div>
+      {% datepicker model="meta.review_date" label="OPAT Review date"%}
       {% include 'opat/_stopped_antibiotics.html' %}
       {% include 'opat/_finished_opat.html' %}
     </form>
@@ -171,13 +164,7 @@
     <p>[[ episode.demographics[0].first_name ]] [[ episode.demographics[0].surname ]] will be discharged</p>
 
     <form class="form-horizontal">
-      <div class="form-group">
-        <label class="control-label col-sm-3">OPAT Review date</label>
-        <div class="col-sm-8">
-	  <input class="form-control" type="text" ng-model="meta.review_date"
-                 bs-datepicker data-autoclose="true" />
-        </div>
-      </div>
+      {% datepicker model="meta.review_date" label="OPAT Review date" %}
       {% include 'opat/_stopped_antibiotics.html' %}
       {% include 'opat/_finished_opat.html' %}
     </form>
