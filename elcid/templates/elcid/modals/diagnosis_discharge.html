@@ -26,7 +26,7 @@
         Alternatively email us at <a target="_blank" href="mailto:elcid@openhealthcare.org.uk?Subject=New%20Condition%20For%20[[ episode.demographics[0].hospital_number ]]">elcid@openhealthcare.org.uk</a> with the correct diagnosis
         </p>
       </span>
-      {% select "autofocus" name="primary_diagnosis" label="Primary Diagnosis" model="editing.primary_diagnosis.condition" lookuplist="condition_list" required="Primary Diagnosis is required." formname="dischargeDiagnosis" %}
+      {% select "autofocus" name="primary_diagnosis" label="Primary Diagnosis" model="editing.primary_diagnosis.condition" lookuplist="condition_list" required=True formname="dischargeDiagnosis" %}
     </span>
     <span ng-if="!confirming">
       {% input "autofocus" tagging=True name="primary_diagnosis" label="Primary Diagnosis" model="editing.primary_diagnosis.condition" lookuplist="condition_list" required="Primary Diagnosis is required." formname="dischargeDiagnosis" %}
