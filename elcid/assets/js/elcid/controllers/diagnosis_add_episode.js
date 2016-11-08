@@ -60,7 +60,6 @@ angular.module('opal.controllers')
       modal = $modal.open({
         templateUrl: '/templates/modals/presenting_complaint.html/',
         controller: 'EditItemCtrl',
-        size: 'lg',
         resolve: {
           item: function() { return item; },
           referencedata: function(Referencedata) { return Referencedata; },
