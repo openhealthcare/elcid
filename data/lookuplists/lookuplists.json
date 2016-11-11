@@ -1747,6 +1747,10 @@
       "synonyms": []
     },
     {
+      "name": "Atypical Pneumonia",
+      "synonyms": []
+    },
+    {
       "name": "Aseptic Meningitis",
       "synonyms": []
     },
@@ -2446,6 +2450,10 @@
       ]
     },
     {
+      "name": "Heart failure",
+      "synonyms": []
+    },
+    {
       "name": "Henoch-Sch\u00f6nlein purpura",
       "synonyms": []
     },
@@ -2586,6 +2594,10 @@
     },
     {
       "name": "Hypokalaemia",
+      "synonyms": []
+    },
+    {
+      "name": "Hyponatraemia",
       "synonyms": []
     },
     {
@@ -2931,10 +2943,14 @@
       ]
     },
     {
-      "name": "Neutropenic sepsis",
+      "name": "Sepsis (neutropaenic)",
       "synonyms": [
         "Neutropaenic sepsis"
       ]
+    },
+    {
+      "name": "Sepsis (non-neutropaenic)",
+      "synonyms": []
     },
     {
       "name": "Non-Hodgkins Lymphoma",
@@ -3014,7 +3030,7 @@
     },
     {
       "name": "Osteoarthritis",
-      "synonyms": []
+      "synonyms": ["OA"]
     },
     {
       "name": "Osteomyelitis",
@@ -3218,6 +3234,10 @@
       "synonyms": []
     },
     {
+      "name": "Psoriatic arthritis",
+      "synonyms": []
+    },
+    {
       "name": "Pulmonary Fibrosis",
       "synonyms": []
     },
@@ -3268,6 +3288,10 @@
       "synonyms": []
     },
     {
+      "name": "Rash of Unknown Aetiology",
+      "synonyms": []
+    },
+    {
       "name": "Rat-bite fever",
       "synonyms": []
     },
@@ -3306,10 +3330,6 @@
       "synonyms": [
         "RA"
       ]
-    },
-    {
-      "name": "Rheumatoid Arthtitis",
-      "synonyms": []
     },
     {
       "name": "Rickettsialpox",
@@ -3396,6 +3416,10 @@
       "synonyms": []
     },
     {
+      "name": "Sepsis",
+      "synonyms": []
+    },
+    {
       "name": "Septicaemia",
       "synonyms": []
     },
@@ -3408,6 +3432,10 @@
       "synonyms": [
         "Infected Bursitis"
       ]
+    },
+    {
+      "name": "Seronegative inflammatory arthritis",
+      "synonyms": []
     },
     {
       "name": "Severe falciparum malaria",
@@ -3435,6 +3463,10 @@
     },
     {
       "name": "Sickle-cell trait",
+      "synonyms": []
+    },
+    {
+      "name": "Sinusitis",
       "synonyms": []
     },
     {
@@ -4101,6 +4133,10 @@
     {
       "name": "Erythema Nodosum",
       "synonyms": []
+    },
+    {
+      "name": "Uterine fibroid",
+      "synonyms": []
     }
   ],
   "consultant": [
@@ -4165,7 +4201,7 @@
       "synonyms": []
     },
     {
-      "name": "Victoria Johnson",
+      "name": "Victoria Johnston",
       "synonyms": []
     }
   ],
