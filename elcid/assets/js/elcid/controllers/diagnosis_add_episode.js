@@ -2,7 +2,7 @@ angular.module('opal.controllers')
 .controller('DiagnosisAddEpisodeCtrl', function($scope, $http, $cookieStore, $q,
   $timeout, $modal,
   $modalInstance, Episode,
-  TagService, referencedata,
+  referencedata,
   tags, demographics) {
     var DATE_FORMAT = 'DD/MM/YYYY';
 
@@ -10,31 +10,24 @@ angular.module('opal.controllers')
 
     // TODO - this is no longer the way location/admission date works.
     $scope.editing = {
-      tagging: [{}],
+      tagging: {},
       location: {
         hospital: 'UCLH'
       },
       demographics: demographics,
     };
-    var currentTags = [];
 
-    if(tags){
-      if(tags.subtag.length){
-        currentTags = [tags.subtag];
-      }
-      else{
-        currentTags = [tags.tag];
-      }
+    if(tags.tag){
+      $scope.editing.tagging[tags.tag] = true;
     }
 
-
-    $scope.tagService = new TagService(currentTags);
-
+    if(tags.subtag){
+      $scope.editing.tagging[tags.subtag] = true;
+    }
 
     $scope.save = function() {
       var dob, doa;
 
-      $scope.editing.tagging = [$scope.tagService.toSave()];
       // This is a bit mucky but will do for now
       doa = $scope.editing.date_of_admission;
       if (doa) {
