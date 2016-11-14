@@ -183,7 +183,6 @@ INSTALLED_APPS = (
     'guidelines',
     'dischargesummary',
     'djcelery',
-    'taskrunner',
 )
 
 if ON_TEST:
