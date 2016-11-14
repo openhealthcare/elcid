@@ -34,4 +34,3 @@ pycrypto==2.6.1
 -e git+https://github.com/openhealthcare/opal-guidelines.git@#egg=opal_guidelines
 -e git+https://github.com/openhealthcare/opal-iframe-api.git@#egg=opal-iframe-api
 -e git+https://github.com/srosro/django-test-coverage#egg=django-test-coverage
--e git+https://github.com/openhealthcare/opal-taskrunner.git@#egg=opal_taskrunner
