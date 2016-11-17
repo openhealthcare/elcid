@@ -1,3 +1,8 @@
+## 0.6.2.2 Release
+
+Adds back in date of admission into the add episode modal
+
+
 ## 0.6.2.1 Release
 
 Adds an additional session logger that logs session information.
