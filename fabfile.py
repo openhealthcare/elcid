@@ -121,14 +121,6 @@ def create_heroku_instance(name, username):
         git_url = "https://git.heroku.com/{}.git".format(name)
         local("git remote add {0} {1}".format(name, git_url))
         push_to_heroku(name)
-        with warn_only():
-            # heroku somtimes has memory issues doing migrate
-            # it seems to work fine if we just migrate opal first
-            # it will later fail because content types haven't
-            # been migrated, but that's fine we'll do that later
-            local("heroku run --app {0} python manage.py migrate opal".format(
-                name
-            ))
         for db_command in db_commands(username):
             local("heroku run --app {0} {1}".format(name, db_command))
 
