@@ -20,14 +20,13 @@
     {% datepicker label="Date of diagnosis" model="additionalModelsData.diagnosis.date_of_diagnosis" %}
   </form>
 
-  <button class="btn btn-lg btn-primary pull-right" ng-click="nextStep()">
-    <i class="fa fa-arrow-right"></i>
-    <span ng-show="!getNextStep()">
+  <button one-click-only ng-if="!getNextStep()" ng-click="nextStep()" class="btn btn-lg btn-primary pull-right">
+      <i class="fa fa-arrow-right"></i>
       [[ route.verb ]] to [[ route.name ]]
-    </span>
-    <span ng-show="getNextStep()">
+  </button>
+  <button ng-if="getNextStep()" ng-click="nextStep()" class="btn btn-lg btn-primary pull-right">
+      <i class="fa fa-arrow-right"></i>
       [[ getNextStep().display_name ]]
-    </span>
   </button>
 </div>
 
