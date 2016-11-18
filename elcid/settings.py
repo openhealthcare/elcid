@@ -4,9 +4,12 @@ import os
 import sys
 
 PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
+ON_HEROKU = False
+ON_TEST = 'test' in sys.argv
 
 try:
     import dj_database_url
+    ON_HEROKU = True
 
     DATABASES = {
         'default': dj_database_url.config(default='sqlite:///' + PROJECT_PATH + '/opal.sqlite')
@@ -97,7 +100,7 @@ STATICFILES_FINDERS = (
 )
 
 # STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.CachedStaticFilesStorage'
-# if 'test' in sys.argv:
+# if ON_TEST
 #     STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
 # Make this unique, and don't share it with anybody.
@@ -179,10 +182,9 @@ INSTALLED_APPS = (
     'guidelines',
     'dischargesummary',
     'djcelery',
-    'taskrunner',
 )
 
-if 'test' in sys.argv:
+if ON_TEST:
     INSTALLED_APPS += ('opal.tests',)
     PASSWORD_HASHERS = (
         'django.contrib.auth.hashers.MD5PasswordHasher',
@@ -238,7 +240,7 @@ LOGGING = {
     }
 }
 
-if 'test' not in sys.argv:
+if not ON_TEST and not ON_HEROKU:
     # lets not log to files on travis
     LOGGING["handlers"]["session"] = {
         'level': 'DEBUG',
@@ -331,7 +333,7 @@ REST_FRAMEWORK = {
     )
 }
 
-if 'test' not in sys.argv:
+if not ON_TEST:
     try:
         from local_settings import *
     except ImportError:
