@@ -1,9 +1,0 @@
-{% extends 'form_modal_base.html' %}
-{% block modal_body %}
-{% load forms %}
-{% block icon %}<i class="fa fa-map-marker"></i>{% endblock %}
-{% block modal_body %}
-  <form class="form-horizontal">
-    {% datepicker label="Date of appointment" model="episode.date_of_episode" %}
-  </form>
-{% endblock %}
