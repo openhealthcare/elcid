@@ -1,12 +1,7 @@
-{% extends 'modal_base.html' %}
-{% load forms %}
-
-{% block icon_name %}fa fa-comments{% endblock %}
-{% block modal_body %}
-<form class="form-horizontal">
+{% extends 'base_templates/form_modal_base.html' %}
+{% block form %}
   {% datetimepicker field="MicrobiologyInput.when" %}
   {% input field="MicrobiologyInput.initials" %}
   {% select label="Type Of Advice" field="MicrobiologyInput.reason_for_interaction" lookuplist="['Appointment discussion', 'Phone consultation']" %}
   {% textarea field="MicrobiologyInput.clinical_discussion" macros=True %}
-</form>
 {% endblock %}

@@ -1,14 +1,4 @@
-{% extends 'modal_base.html' %}
-{% block icon %}<i class="fa fa-flask"></i>{% endblock %}
-{% block modal_body %}
-  <div class="row">
-    <div class="col-md-8">
-      <form class="form-horizontal">
-        {% include models.Antimicrobial.get_form_template %}
-      </form>
-    </div>
-    <div class="col-md-4">
-      {% include 'modals/_allergies_sidebar.html' %}
-    </div>
-  </div>
+{% extends 'base_templates/two_column_form_modal_base.html' %}
+{% block side_column %}
+  {% include 'modals/_allergies_sidebar.html' %}
 {% endblock %}
