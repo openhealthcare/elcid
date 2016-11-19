@@ -12,3 +12,4 @@ opal.sqlite.*
 *.DS_Store
 .coveragerc
 *#
+node_modules/*
