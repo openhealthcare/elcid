@@ -10,7 +10,7 @@ from jsonfield import JSONField
 import opal.models as omodels
 
 from opal.models import (
-    EpisodeSubrecord, PatientSubrecord, Episode, Team,
+    EpisodeSubrecord, PatientSubrecord, Episode,
     Tagging, ExternallySourcedModel
 )
 from opal.core.fields import ForeignKeyOrFreeText

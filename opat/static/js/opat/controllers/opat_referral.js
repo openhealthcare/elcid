@@ -105,7 +105,7 @@ controllers.controller(
 	    // Show user the form for creating a new episode,
             // with the hospital number pre-populated
 	    modal = $modal.open({
-  		templateUrl: '/opat/templates/modals/add_episode.html/',
+  		templateUrl: '/opat/templates/modals/add_episode.html',
   		controller: 'AddEpisodeCtrl',
                 size: 'lg',
 		resolve: {
@@ -196,7 +196,7 @@ controllers.controller(
             var demographics = patient.demographics[0];
 
 	    modal = $modal.open({
-		templateUrl: '/opat/templates/modals/add_episode.html/',
+		templateUrl: '/opat/templates/modals/add_episode.html',
 		controller: 'AddEpisodeCtrl',
                 size: 'lg',
 		resolve: {

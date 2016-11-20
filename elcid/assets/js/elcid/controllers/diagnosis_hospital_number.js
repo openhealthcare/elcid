@@ -51,7 +51,7 @@ angular.module('opal.controllers').controller(
             modal = $modal.open({
                 backdrop: 'static',
                 size: 'lg',
-                templateUrl: '/templates/modals/add_episode.html/',
+                templateUrl: '/templates/modals/add_episode.html',
                 controller: 'DiagnosisAddEpisodeCtrl',
                 resolve: {
                     referencedata: function(Referencedata) { return Referencedata; },
@@ -113,7 +113,7 @@ angular.module('opal.controllers').controller(
             demographics = patient.demographics[0];
 
             modal = $modal.open({
-                templateUrl: '/templates/modals/add_episode.html/',
+                templateUrl: '/templates/modals/add_episode.html',
                 controller: 'DiagnosisAddEpisodeCtrl',
                 size: 'lg',
                 resolve: {
