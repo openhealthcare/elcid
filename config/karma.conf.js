@@ -24,7 +24,6 @@ module.exports =  function(config){
     preprocessors[__dirname + '/../elcid/assets/js/elcid/services/*'] = 'coverage';
     preprocessors[__dirname + '/../elcid/assets/js/elcid/services/records/*'] = 'coverage';
     preprocessors[__dirname + '/../opat/static/js/opat/controllers/*'] = 'coverage';
-    preprocessors[__dirname + '/../research/static/js/research/controllers/*'] = 'coverage';
     preprocessors[__dirname + '/../walkin/static/js/walkin/controllers/*'] = 'coverage';
 
     config.set({
