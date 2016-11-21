@@ -1,4 +1,4 @@
-{% extends 'modal_base.html' %}
+{% extends 'base_templates/modal_base.html' %}
 {% load forms %}
 {% block icon %}<i class="fa fa-plane"></i>{% endblock %}
 {% block modal_body %}
@@ -10,6 +10,6 @@
     {% checkbox label="Malaria Prohylaxis" model="editing.travel.malaria_prophylaxis" %}
     {% input label="Drug" model="editing.travel.malaria_drug" lookuplist="antimicrobial_list" show="editing.travel.malaria_prophylaxis" %}
     {% select label="Compliance" model="editing.travel.malaria_compliance" lookuplist="['Complete', 'Incomplete']" show="editing.travel.malaria_prophylaxis" %}
-    {% checkbox label="Did not travel" model="editing.travel.did_not_travel" %}    
+    {% checkbox label="Did not travel" model="editing.travel.did_not_travel" %}
   </form>
 {% endblock %}
