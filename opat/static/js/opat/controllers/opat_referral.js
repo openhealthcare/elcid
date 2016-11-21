@@ -107,8 +107,7 @@ controllers.controller(
 	    modal = $modal.open({
   		templateUrl: '/opat/templates/modals/add_episode.html/',
   		controller: 'AddEpisodeCtrl',
-                size: 'lg',
-		resolve: {
+  		resolve: {
                     referencedata: function(Referencedata) { return Referencedata; },
 		    demographics: function() {
 			return { hospital_number: $scope.model.hospital_number }
@@ -198,7 +197,6 @@ controllers.controller(
 	    modal = $modal.open({
 		templateUrl: '/opat/templates/modals/add_episode.html/',
 		controller: 'AddEpisodeCtrl',
-                size: 'lg',
 		resolve: {
                     referencedata: function(Referencedata) { return Referencedata; },
 		    demographics: function() { return demographics; },
