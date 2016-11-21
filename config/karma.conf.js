@@ -1,5 +1,6 @@
 module.exports =  function(config){
     var browsers, basePath, coverageReporter;
+    var additionalDependencies;
 
     if(process.env.TRAVIS){
         browsers = ["Firefox"];
@@ -8,6 +9,7 @@ module.exports =  function(config){
             type: 'lcovonly', // lcov or lcovonly are required for generating lcov.info files
             dir: __dirname + '/../coverage/',
         };
+        additionalDependencies = require('/home/travis/virtualenv/python2.7/src/opal/config/karma_dependencies.js');
     }
     else{
         browsers = ['PhantomJS'];
@@ -16,6 +18,7 @@ module.exports =  function(config){
             type : 'html',
             dir : __dirname + '/../htmlcov/js/'
         };
+        additionalDependencies = require('../../opal/config/karma_dependencies.js');
     }
 
     var preprocessors = {};
@@ -31,60 +34,25 @@ module.exports =  function(config){
         browsers: browsers,
         basePath:  basePath,
 
-        files: [
-            //JASMINE,
-            //JASMINE_ADAPTER,
-            "lib/bower_components/angular/angular.js",
-            "lib/bower_components/angular-route/angular-route.js",
-            "lib/bower_components/angular-resource/angular-resource.js",
-            "lib/bower_components/angular-cookies/angular-cookies.js",
-            "lib/bower_components/angular-mocks/angular-mocks.js",
+        files: additionalDependencies().concat([
+          'opal/app.js',
+          // Our application
 
-            'lib/angular-ui-utils-0.1.0/ui-utils.js',
-            "lib/ui-bootstrap-tpls-0.14.3.js",
-
-            "lib/angulartics-0.17.2/angulartics.min.js",
-            "lib/angulartics-0.17.2/angulartics-ga.min.js",
-            'lib/ngprogress-lite/ngprogress-lite.js',
-            'lib/jquery-1.11.3/jquery-1.11.3.js',
-            'lib/utils/underscore.js',
-            'lib/utils/showdown.js',
-            'lib/utils/moment.js',
-            'lib/bower_components/angular-growl-v2/build/angular-growl.js',
-            'lib/bower_components/ment.io/dist/mentio.js',
-            'lib/bower_components/ment.io/dist/templates.js',
-            'lib/bower_components/angular-ui-select/dist/select.js',
-            "lib/bower_components/angular-local-storage/dist/angular-local-storage.js",
-
-            'opal/utils.js',
-            'opal/directives.js',
-            'opal/filters.js',
-            'opal/services_module.js',
-            'opal/services/*.js',
-            'opal/controllers_module.js',
-            'opal/controllers/*.js',
-            'opal/app.js',
-            '../../core/search/static/js/search/controllers/*',
-            '../../core/search/static/js/search/services/*',
+          __dirname + '/../elcid/assets/js/elcid/*.js',
+          __dirname + '/../elcid/assets/js/elcid/controllers/*.js',
+          __dirname + '/../elcid/assets/js/elcid/services/*.js',
+          __dirname + '/../elcid/assets/js/elcid/services/records/*.js',
+          __dirname + '/../opat/static/js/opat/controllers/*.js',
+          __dirname + '/../research/static/js/research/controllers/*.js',
+          __dirname + '/../walkin/static/js/walkin/controllers/*.js',
 
 
-            // Our application
-
-            __dirname + '/../elcid/assets/js/elcid/*.js',
-            __dirname + '/../elcid/assets/js/elcid/controllers/*.js',
-            __dirname + '/../elcid/assets/js/elcid/services/*.js',
-            __dirname + '/../elcid/assets/js/elcid/services/records/*.js',
-            __dirname + '/../opat/static/js/opat/controllers/*.js',
-            __dirname + '/../research/static/js/research/controllers/*.js',
-            __dirname + '/../walkin/static/js/walkin/controllers/*.js',
-
-
-            // The tests
-            __dirname + '/../elcid/assets/js/elcidtest/*.js',
-            __dirname + '/../opat/static/js/test/*.js',
-            __dirname + '/../research/static/js/test/*.js',
-            __dirname + '/../walkin/static/js/walkintest/*.js',
-        ],
+          // The tests
+          __dirname + '/../elcid/assets/js/elcidtest/*.js',
+          __dirname + '/../opat/static/js/test/*.js',
+          __dirname + '/../research/static/js/test/*.js',
+          __dirname + '/../walkin/static/js/walkintest/*.js',
+        ]),
 
         preprocessors: preprocessors,
 
