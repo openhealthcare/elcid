@@ -31,7 +31,6 @@ class OPATReview(EpisodeSubrecord):
     _title = 'OPAT Review'
     _icon = 'fa fa-comments'
     _list_limit = 1
-    _modal = 'lg'
     _angular_service = 'OPATReview'
 
     datetime                = models.DateTimeField(null=True, blank=True)
