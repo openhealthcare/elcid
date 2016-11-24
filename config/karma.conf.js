@@ -8,7 +8,7 @@ module.exports = function(config){
     opalPath = '../../opal';
   }
   var karmaDefaults = require(opalPath + '/config/karma_defaults.js');
-  var karmaDir = __dirname;
+  var baseDir = '../' + __dirname;
   var coverageFiles = [
     __dirname + '/../elcid/assets/js/elcid/*',
     __dirname + '/../elcid/assets/js/elcid/controllers/*',
@@ -37,6 +37,6 @@ module.exports = function(config){
     __dirname + '/../walkin/static/js/walkintest/*.js'
   ];
 
-  var defaultConfig = karmaDefaults(karmaDir, coverageFiles, includedFiles);
+  var defaultConfig = karmaDefaults(includedFiles, baseDir, coverageFiles);
   config.set(defaultConfig);
 };
