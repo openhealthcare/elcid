@@ -8,7 +8,7 @@ module.exports = function(config){
     opalPath = '../../opal';
   }
   var karmaDefaults = require(opalPath + '/config/karma_defaults.js');
-  var baseDir = '../' + __dirname;
+  var baseDir = __dirname + '/..';
   var coverageFiles = [
     __dirname + '/../elcid/assets/js/elcid/*',
     __dirname + '/../elcid/assets/js/elcid/controllers/*',
