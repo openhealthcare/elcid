@@ -164,7 +164,6 @@ controllers.controller(
                     var modal = $modal.open({
                         templateUrl: '/dischargesummary/modals/walkinnurse/',
                         controller: 'ModalDischargeSummaryCtrl',
-                        size: 'lg',
                         resolve: {episode: episode}
                     });
                     $modalInstance.close(deferred.promise);

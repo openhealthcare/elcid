@@ -3,8 +3,7 @@ source =
        elcid
        microhaem
        infectiousdiseases
-       opat
-       research
+       opat       
        walkin
 
 omit =

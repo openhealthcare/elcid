@@ -311,7 +311,6 @@ class Antimicrobial(EpisodeSubrecord):
     _title = 'Antimicrobials'
     _sort = 'start_date'
     _icon = 'fa fa-flask'
-    _modal = 'lg'
     _angular_service = 'Antimicrobial'
 
     drug          = ForeignKeyOrFreeText(omodels.Antimicrobial)
@@ -356,7 +355,6 @@ class MicrobiologyInput(EpisodeSubrecord):
     _title = 'Clinical Advice'
     _sort = 'when'
     _icon = 'fa fa-comments'
-    _modal = 'lg'
     _list_limit = 3
     _angular_service = 'MicrobiologyInput'
 
@@ -414,7 +412,6 @@ class MicrobiologyTest(EpisodeSubrecord):
     _title = 'Investigations'
     _sort = 'date_ordered'
     _icon = 'fa fa-crosshairs'
-    _modal = 'lg'
     _angular_service = 'Investigation'
 
     test                  = models.CharField(max_length=255)

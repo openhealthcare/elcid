@@ -50,7 +50,6 @@ angular.module('opal.controllers').controller(
             // with the hospital number pre-populated
             modal = $modal.open({
                 backdrop: 'static',
-                size: 'lg',
                 templateUrl: '/templates/modals/add_episode.html/',
                 controller: 'DiagnosisAddEpisodeCtrl',
                 resolve: {
@@ -115,7 +114,6 @@ angular.module('opal.controllers').controller(
             modal = $modal.open({
                 templateUrl: '/templates/modals/add_episode.html/',
                 controller: 'DiagnosisAddEpisodeCtrl',
-                size: 'lg',
                 resolve: {
                     referencedata: function(Referencedata) { return Referencedata; },
                     demographics: function() { return demographics; },
