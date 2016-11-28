@@ -7,7 +7,7 @@ angular.module('opal.records')
         return function(record){
             if(!record.id){
                 if(!record.date_of_diagnosis){
-                    record.date_of_diagnosis = moment().toDate();
+                    record.date_of_diagnosis = moment();
                 }
             }
 
