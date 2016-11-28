@@ -13,8 +13,13 @@
           <div class="form-group">
             <label class="control-label col-sm-3">Date</label>
             <div class="col-sm-9">
-              <input type="text" class="form-control" uib-datepicker-popup="'yyyy/MM/dd"
-                     ng-model="clinicalAdviceForm.editing.when" is-open="clinicalAdviceForm.whenopen"
+              <input type="text" class="form-control"
+                     uib-datepicker-popup="dd/MM/yyyy"
+                     show-button-bar="false"
+                     show-weeks="false"
+                     datepicker-options="{startingDay: 1}"
+                     ng-model="clinicalAdviceForm.editing.when"
+                     is-open="clinicalAdviceForm.whenopen"
                      ng-blur="" ng-focus="clinicalAdviceForm.whenopen = true"
                      close-text="Close" />
 
