@@ -178,7 +178,6 @@ INSTALLED_APPS = (
     'infectiousdiseases',
     'referral',
     'dashboard',
-    'iframeapi',
 #    'opal.core.collaborative',
     'guidelines',
     'dischargesummary',
@@ -300,7 +299,7 @@ else:
     EMAIL_HOST = 'localhost'
 
 
-VERSION_NUMBER = '0.6.2.3'
+VERSION_NUMBER = '0.6.2.2'
 #TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 #TEST_RUNNER = 'django_test_coverage.runner.CoverageTestSuiteRunner'
 
