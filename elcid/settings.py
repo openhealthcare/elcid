@@ -178,7 +178,6 @@ INSTALLED_APPS = (
     'infectiousdiseases',
     'referral',
     'dashboard',
-    'iframeapi',
 #    'opal.core.collaborative',
     'guidelines',
     'dischargesummary',
