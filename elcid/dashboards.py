@@ -97,7 +97,7 @@ class UsageDashboard(Dashboard):
     """
     Dashboard relaying core usage statistics for elCID
     """
-    name        = 'elCID Metrics'
+    display_name        = 'elCID Metrics'
     description = 'Core metrics for the elCID service.'
 
     def get_widgets(user):
