@@ -47,6 +47,7 @@ class WalkinReview(TaggedPatientList):
     tag = "walkin"
     subtag = "walkin_review"
     order = 13
+    comparator_service = 'WalkinReviewComparators'
     schema = [
         models.Demographics,
         models.Location,

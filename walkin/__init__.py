@@ -13,7 +13,8 @@ class WalkinPlugin(plugins.OpalPlugin):
             'js/walkin/controllers/walkin_hospital_number.js',
             'js/walkin/controllers/walkin_discharge.js',
             'js/walkin/controllers/nurse_investigation.js',
-            'js/walkin/controllers/zika.js'
+            'js/walkin/controllers/zika.js',
+            'js/walkin/services/walkin_review_comparators.js'
         ]
     }
     actions = [
