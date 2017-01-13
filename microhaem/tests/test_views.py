@@ -25,4 +25,4 @@ class ViewsTest(OpalTestCase):
         self.assertStatusCode(url, 404)
 
     def test_add_patient_template_view(self):
-        self.assertStatusCode('/templates/modals/add_episode.html/', 200)
+        self.assertStatusCode('/templates/modals/add_episode.html', 200)
