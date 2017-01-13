@@ -1,10 +1,14 @@
-from elcid import models
+"""
+Patient Lists for the Walkin service
+"""
 from obs import models as obsmodels
+from opal.core import patient_lists
+
+from elcid import models
+
 from walkin import models as wimodels
-from opal.core.patient_lists import TaggedPatientList
 
-
-class WalkinDoctor(TaggedPatientList):
+class WalkinDoctor(patient_lists.TaggedPatientList):
     display_name = 'Walkin Doctor'
     direct_add = False
     tag = "walkin"
@@ -24,7 +28,7 @@ class WalkinDoctor(TaggedPatientList):
     ]
 
 
-class WalkinNurseTriage(TaggedPatientList):
+class WalkinNurseTriage(patient_lists.TaggedPatientList):
     display_name = 'Walkin Nurse Triage'
     direct_add = False
     tag = "walkin"
@@ -41,7 +45,7 @@ class WalkinNurseTriage(TaggedPatientList):
     ]
 
 
-class WalkinReview(TaggedPatientList):
+class WalkinReview(patient_lists.TaggedPatientList):
     display_name = 'Walkin Review'
     direct_add = False
     tag = "walkin"
@@ -59,4 +63,11 @@ class WalkinReview(TaggedPatientList):
         models.Antimicrobial,
         models.MicrobiologyInput,
         wimodels.Management
+    ]
+
+class WalkinListGroup(patient_lists.TabbedPatientListGroup):
+    member_lists = [
+        WalkinNurseTriage,
+        WalkinDoctor,
+        WalkinReview
     ]
