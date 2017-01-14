@@ -7,7 +7,7 @@ from django.core.urlresolvers import reverse
 import ffs
 
 from opal.core.test import OpalTestCase
-from opal.models import Patient, Team
+from opal.models import Patient
 from opal.core.subrecords import subrecords
 
 from elcid.test.test_models import AbstractEpisodeTestCase
@@ -80,9 +80,6 @@ class ViewsTest(OpalTestCase):
     def test_try_to_update_nonexistent_demographics_subrecord(self):
         response = self.put_json('/api/v0.1/demographics/1234/', {})
         self.assertEqual(404, response.status_code)
-
-    def test_episode_list_template_view(self):
-        self.assertStatusCode('/templates/patient_list.html/team_1', 200)
 
     def test_episode_detail_template_view(self):
         self.assertStatusCode('/templates/episode_detail.html/1', 200)
