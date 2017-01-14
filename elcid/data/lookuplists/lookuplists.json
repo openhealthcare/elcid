@@ -39,6 +39,10 @@
       "synonyms": []
     },
     {
+      "name": "Aspergillosis",
+      "synonyms": []
+    },
+    {
       "name": "Atazanavir",
       "synonyms": []
     },
@@ -1752,6 +1756,10 @@
     },
     {
       "name": "Aseptic Meningitis",
+      "synonyms": []
+    },
+    {
+      "name": "Aspergillosis",
       "synonyms": []
     },
     {
@@ -3680,6 +3688,10 @@
       "synonyms": []
     },
     {
+      "name": "Urinary retention",
+      "synonyms": []
+    },
+    {
       "name": "URTI",
       "synonyms": [
         "Upper Respiratory Tract Infection"
@@ -4068,6 +4080,10 @@
     },
     {
       "name": "HIV Encephalitis",
+      "synonyms": []
+    },
+    {
+      "name": "HIV Encephalopathy",
       "synonyms": []
     },
     {
@@ -7237,6 +7253,10 @@
     },
     {
       "name": "Chest Pain",
+      "synonyms": []
+    },
+    {
+      "name": "Colitis",
       "synonyms": []
     },
     {

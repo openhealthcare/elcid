@@ -178,7 +178,6 @@ INSTALLED_APPS = (
     'infectiousdiseases',
     'referral',
     'dashboard',
-    'iframeapi',
 #    'opal.core.collaborative',
     'guidelines',
     'dischargesummary',
@@ -333,6 +332,8 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     )
 }
+
+AUTOCOMPLETE_SEARCH = True
 
 if not ON_TEST:
     try:
