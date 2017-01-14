@@ -53,7 +53,7 @@ class ConfirmedDiagnosis(Dashboard):
     Dashboard relaying stats about the number of patients discharged
     by named consultants
     """
-    name = "Consultant Review Dashboard"
+    display_name = "Consultant Review Dashboard"
     description = "Statistics about the number of discharged patients with confirmed diagnoses"
 
     def get_widgets(user):

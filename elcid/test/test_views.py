@@ -7,14 +7,25 @@ from django.core.urlresolvers import reverse
 import ffs
 
 from opal.core.test import OpalTestCase
-from opal.models import Patient, Team
+from opal.models import Patient
 from opal.core.subrecords import subrecords
 
+from elcid import views
 from elcid.test.test_models import AbstractEpisodeTestCase
 from microhaem import constants
 
 HERE = ffs.Path.here()
 TEST_DATA = HERE/'test_data'
+
+
+class TempPasswordTestCase(OpalTestCase):
+
+    def test_temp_pw(self):
+        pw = views.temp_password()
+        int_section, word_section = int(pw[:2]), pw[2:]
+        self.assertTrue(int_section < 100)
+        self.assertTrue(int_section > 9)
+        self.assertIn(word_section, ['womble', 'bananas', 'flabbergasted', 'kerfuffle'])
 
 
 class ViewsTest(OpalTestCase):
@@ -80,9 +91,6 @@ class ViewsTest(OpalTestCase):
     def test_try_to_update_nonexistent_demographics_subrecord(self):
         response = self.put_json('/api/v0.1/demographics/1234/', {})
         self.assertEqual(404, response.status_code)
-
-    def test_episode_list_template_view(self):
-        self.assertStatusCode('/templates/patient_list.html/team_1', 200)
 
     def test_episode_detail_template_view(self):
         self.assertStatusCode('/templates/episode_detail.html/1', 200)

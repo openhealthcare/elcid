@@ -25,39 +25,9 @@ POSTIE = letter.DjangoPostman()
 
 
 def temp_password():
-    num = random.randint(1, 100)
+    num = random.randint(10, 99)
     word = random.choice(['womble', 'bananas', 'flabbergasted', 'kerfuffle'])
     return '{0}{1}'.format(num, word)
-
-
-class FeedbackForm(EmailForm):
-    """
-    Form for our feedback submissions.
-    """
-    email = forms.EmailField(required=False)
-
-    def body(self):
-        return u"Feedback-form from: {0}\n\n{1}".format(
-            u'{0} <{1}>'.format(
-                u(self.cleaned_data.get('name', '')),
-                u(self.cleaned_data.get('email', ''))),
-            u(self.cleaned_data.get('message', '')))
-
-    def subject(self):
-        return u'eLCID - Feedback Form'
-
-    def reply_to(self):
-        return u(self.cleaned_data.get('email', ''))
-
-
-class FeedbackView(EmailView):
-    template_name = 'feedback.html'
-    form_class    = FeedbackForm
-    success_url   = '/feedback/sent'
-
-
-class FeedbackSentView(TemplateView):
-    template_name = 'feedback_sent.html'
 
 
 class Error500View(View):

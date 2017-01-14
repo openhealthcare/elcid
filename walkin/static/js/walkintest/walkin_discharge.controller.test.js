@@ -6,7 +6,10 @@ describe('WalkinDischargeCtrl', function(){
     var today = new Date();
     var today_string = moment(today).format('DD/MM/YYYY');
 
-    var referencedata = {toLookuplists: function(){ return {} }}
+    var referencedata = {
+        toLookuplists: function(){ return {"ward_list": ["1q"]}; }
+    };
+    var metadata = {"tags": ["someTags"]};
 
     beforeEach(module('opal.controllers'));
 
@@ -100,6 +103,7 @@ describe('WalkinDischargeCtrl', function(){
             $modalInstance : $modalInstance,
             growl          : growl,
             referencedata  : referencedata,
+            metadata       : metadata,
             tags           : tags,
             episode        : episode,
         });
@@ -215,6 +219,15 @@ describe('WalkinDischargeCtrl', function(){
             expect($modalInstance.close).toHaveBeenCalled();
         });
 
+    });
+    describe('set up', function(){
+        it('should hoist reference data onto the scope', function(){
+          expect($scope.ward_list).toEqual(["1q"]);
+        });
+
+        it('should hoise metadata onto the scope', function(){
+          expect($scope.metadata).toEqual(metadata);
+        });
     });
 
     describe('admit_to_ward()', function (){

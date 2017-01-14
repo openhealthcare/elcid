@@ -114,15 +114,7 @@
         <div class="col-sm-8">
           <select class="form-control" ng-model="meta.target_team">
             <option value="">---------</option>
-            {% for team in teams %}{% if not team.parent %}{% if team.direct_add %}
-            {% if team.has_subteams %}
-            {% for subteam in team.team_set.all %}
-            <option value="{{subteam.name}}">{{ team.title }} / {{ subteam.title }}</option>
-            {% endfor %}
-            {% else %}
-            <option value="{{team.name}}">{{team.title}}</option>
-            {% endif %}
-            {% endif %}{% endif %}{% endfor %}
+            <option ng-show="v.direct_add" value="[[ i ]]" ng-repeat="(i, v) in metadata.tags">[[ v.display_name ]]</option>
           </select>
         </div>
       </div>
