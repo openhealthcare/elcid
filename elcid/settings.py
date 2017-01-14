@@ -333,8 +333,6 @@ REST_FRAMEWORK = {
     )
 }
 
-AUTOCOMPLETE_SEARCH = True
-
 if not ON_TEST:
     try:
         from local_settings import *
