@@ -1,3 +1,7 @@
+## 0.6.3 Release
+
+Adds tabbed list groups for OPAT and Walkin teams
+
 ## 0.6.2.2 Release
 
 Adds back in date of admission into the add episode modal
