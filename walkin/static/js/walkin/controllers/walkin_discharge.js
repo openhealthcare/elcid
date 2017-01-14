@@ -3,8 +3,10 @@
 //
 controllers.controller(
     'WalkinDischargeCtrl',
-    function($scope, $modalInstance, $modal, $rootScope, $q,
-             growl, Item, CopyToCategory, UserProfile, referencedata, episode, tags){
+    function(
+        $scope, $modalInstance, $modal, $rootScope, $q,
+        growl, Item, CopyToCategory, UserProfile, metadata, referencedata, episode, tags
+    ){
 
         "use strict";
 
@@ -54,6 +56,7 @@ controllers.controller(
 
         if($scope.meta.management.follow_up){ $scope.meta.follow_up = true; }
 
+        $scope.metadata = metadata;
 
         _.extend($scope, referencedata.toLookuplists());
 
