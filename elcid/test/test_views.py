@@ -10,11 +10,22 @@ from opal.core.test import OpalTestCase
 from opal.models import Patient
 from opal.core.subrecords import subrecords
 
+from elcid import views
 from elcid.test.test_models import AbstractEpisodeTestCase
 from microhaem import constants
 
 HERE = ffs.Path.here()
 TEST_DATA = HERE/'test_data'
+
+
+class TempPasswordTestCase(OpalTestCase):
+
+    def test_temp_pw(self):
+        pw = views.temp_password()
+        int_section, word_section = int(pw[:2]), pw[2:]
+        self.assertTrue(int_section < 100)
+        self.assertTrue(int_section > 9)
+        self.assertIn(word_section, ['womble', 'bananas', 'flabbergasted', 'kerfuffle'])
 
 
 class ViewsTest(OpalTestCase):
