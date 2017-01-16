@@ -11,8 +11,7 @@ from opal.models import Patient
 from opal.core.subrecords import subrecords
 
 from elcid import views
-from elcid.test.test_models import AbstractEpisodeTestCase
-from microhaem import constants
+
 
 HERE = ffs.Path.here()
 TEST_DATA = HERE/'test_data'
@@ -143,30 +142,38 @@ class ExtractSchemaViewTest(OpalTestCase):
         self.assertEqual(expected_status_code, response.status_code)
 
 
-class MicrobiologyInputViewTest(OpalTestCase, AbstractEpisodeTestCase):
+class BulkCreateUserViewTestCase(OpalTestCase):
     def setUp(self):
-        super(MicrobiologyInputViewTest, self).setUp()
-        self.url = "/api/v0.1/microbiology_input/"
-        self.assertTrue(self.client.login(username=self.user.username,
-                                          password=self.PASSWORD))
+        self.url = reverse("bulk-create-users")
 
-        self.args = {
-            "clinical_discussion": "something interesting",
-            "discussed_with": "Jane",
-            "episode_id": self.episode.id,
-            "initials": "Jane Doe",
-            "reason_for_interaction": constants.MICROHAEM_CONSULTATIONS[0],
-            "when": datetime.datetime(2015, 10, 7, 23,30)
-        }
+    def test_form(self):
+        self.assertTrue(
+            self.client.login(
+                username=self.user.username,
+                password=self.PASSWORD
+            )
+        )
+        response = self.client.post(self.url)
+        self.assertFalse(response.context_data["form"].is_valid())
+        self.assertEqual(response.status_code, 200)
 
-    def test_add_microbiology_input(self):
-        tags = self.episode.get_tag_names(self.user)
-        self.assertEqual(len(tags), 0)
-        self.post_json(self.url, self.args)
-        updated_tags = self.episode.get_tag_names(self.user)
-        self.assertEqual([str(i) for i in updated_tags], [constants.MICROHAEM_TAG])
-        self.post_json(self.url, self.args)
+    def test_authenticated(self):
+        response = self.client.post(self.url, follow=True)
+        login = reverse('admin:login')
+        self.assertEqual(response.request["PATH_INFO"], login)
 
-        # make sure tags don't get applied twice if run twice
-        updated_tags = self.episode.get_tag_names(self.user)
-        self.assertEqual([str(i) for i in updated_tags], [constants.MICROHAEM_TAG])
+    def test_authenticated_staff(self):
+        user = User.objects.create(
+            username="someone",
+        )
+        user.set_password("someone")
+        user.save()
+        self.assertTrue(
+            self.client.login(
+                username="someone",
+                password="someone"
+            )
+        )
+        response = self.client.post(self.url, follow=True)
+        login = reverse('admin:login')
+        self.assertEqual(response.request["PATH_INFO"], login)
