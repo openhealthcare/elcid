@@ -2,7 +2,7 @@
 {% load forms %}
 {% block icon_name %}[[ steps_details[step].icon ]]{% endblock %}
 {% block title %}
-[[ steps_details[step].title ]]
+[[ steps_details[step].display_name ]]
 {% endblock %}
 {% block process_steps %}
 <div ng-show="processSteps.length > 1" class="discharge-process-steps" style="width: [[ 100 - (10 * (6 - processSteps.length)) ]]%">
