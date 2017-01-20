@@ -1,1 +1,3 @@
-[[ item.drug ]] [[item.dose]] [[ item|totalDays ]]D [[item.start_date|shortDate]]<span ng-show="item.end_date">&ndash;[[item.end_date|shortDate]]</span> [[ item.delivered_by ]]
+<span ng-class="{'text-muted': item.end_date && (item.end_date | past) }">
+  [[ item.drug ]] [[item.dose]] [[ item|totalDays ]]D [[item.start_date|shortDate]]<span ng-show="item.end_date">&ndash;[[item.end_date|shortDate]]</span> [[ item.delivered_by ]]
+</span>
