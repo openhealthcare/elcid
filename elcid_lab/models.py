@@ -207,6 +207,7 @@ class HBVSerology(ElcidLabTest):
 class HIVSerologyObservation(lmodels.Observation):
     class Meta:
         proxy = True
+        auto_created = True
 
     RESULT_CHOICES = (
         ("antibody positive", "antibody +ve"),
