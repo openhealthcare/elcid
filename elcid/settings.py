@@ -163,6 +163,8 @@ INSTALLED_APPS = (
     'axes',
     'reversion',
     'opal',
+    'lab',
+    'elcid_lab',
     'rest_framework',
     'rest_framework.authtoken',
     'compressor',
