@@ -41,7 +41,7 @@
             <label class="control-label col-sm-3">Reason for clinical interaction</label>
             <div class="col-sm-9">
               <select class="form-control" ng-model="clinicalAdviceForm.editing.reason_for_interaction">
-                <option ng-repeat="reason in options.clinical_advice_reason_for_interaction">[[reason]]</option>
+                <option ng-repeat="reason in clinicalAdviceForm.clinical_advice_reason_for_interaction_list">[[reason]]</option>
               </select>
             </div>
           </div>
