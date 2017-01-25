@@ -7,7 +7,10 @@ class ElcidLabTest(lmodels.LabTest, AbstractBase):
 
 
 class PosNegEquivicalNotDoneTest(ElcidLabTest, AbstractBase):
-    result = lmodels.PosNegEquivicalNotDone()
+    psnednt_result = lmodels.PosNegEquivicalNotDone(
+        default="pending",
+        verbose_name="result"
+    )
 
 
 class AmoebicSerology(PosNegEquivicalNotDoneTest):
@@ -66,32 +69,35 @@ class HIVPointOfCare(PosNegEquivicalNotDoneTest):
 class StoolParasitologyPCR(ElcidLabTest):
     _title = "Stool Parasitology PCR"
 
-    giardia = lmodels.PendingPosNeg()
+    giardia = lmodels.PendingPosNeg(default="pending")
     entamoeba_histolytica = lmodels.PendingPosNeg(
-        verbose_name="Entamoeba Histolytica"
+        verbose_name="Entamoeba Histolytica",
+        default="pending"
     )
-    cryptosporidium = lmodels.PendingPosNeg()
+    cryptosporidium = lmodels.PendingPosNeg(default="pending")
 
 
 class RespiratoryVirusPCR(ElcidLabTest):
     _title = "Respiratory Virus PCR"
     _synonyms = ["Viral Throat Swab", "Flu swab"]
-    influenza_a = lmodels.PendingPosNeg()
-    influenza_b = lmodels.PendingPosNeg()
-    parainfluenza = lmodels.PendingPosNeg()
-    metapneumovirus = lmodels.PendingPosNeg()
-    rsv = lmodels.PendingPosNeg()
-    adenovirus = lmodels.PendingPosNeg()
+    influenza_a = lmodels.PendingPosNeg(default="pending")
+    influenza_b = lmodels.PendingPosNeg(default="pending")
+    parainfluenza = lmodels.PendingPosNeg(default="pending")
+    metapneumovirus = lmodels.PendingPosNeg(default="pending")
+    rsv = lmodels.PendingPosNeg(default="pending")
+    adenovirus = lmodels.PendingPosNeg(default="pending")
 
 
 class Cdiff(ElcidLabTest):
     _title = "C diff"
     _synonyms = ["Clostridium difficile"]
     c_difficile_antigen = lmodels.PendingPosNeg(
-        verbose_name="C. difficile antigen"
+        verbose_name="C. difficile antigen",
+        default="pending"
     )
     c_difficile_toxin = lmodels.PendingPosNeg(
-        verbose_name="C. difficile toxin"
+        verbose_name="C. difficile toxin",
+        default="pending"
     )
 
 
@@ -119,9 +125,18 @@ class EBVSerology(ElcidLabTest):
     _title = "EBV Serology"
     _synonyms = "Epstein Barr Serology"
 
-    vca_igm = lmodels.PosNegEquivicalNotDone(verbose_name="IgM")
-    vca_igm = lmodels.PosNegEquivicalNotDone(verbose_name="IgG")
-    ebnah_igg = lmodels.PosNegEquivicalNotDone(verbose_name="EBNA IgG")
+    vca_igm = lmodels.PosNegEquivicalNotDone(
+        default="pending",
+        verbose_name="IgM"
+    )
+    vca_igm = lmodels.PosNegEquivicalNotDone(
+        default="pending",
+        verbose_name="IgG"
+    )
+    ebnah_igg = lmodels.PosNegEquivicalNotDone(
+        default="pending",
+        verbose_name="EBNA IgG"
+    )
 
 
 class ViralLoad(ElcidLabTest, AbstractBase):
@@ -175,12 +190,14 @@ class BKPCRViralLoad(ViralLoad):
 
 class CSFPCR(ElcidLabTest):
     _title = "CSF PCR"
-    hsv1 = lmodels.PendingPosNeg(verbose_name="HSV 1")
-    hsv2 = lmodels.PendingPosNeg(verbose_name="HSV 2")
-    enterovirus = lmodels.PendingPosNeg(verbose_name="Enterovirus")
-    cmv = lmodels.PendingPosNeg(verbose_name="CMV")
-    ebv = lmodels.PendingPosNeg(verbose_name="EBV")
-    vzv = lmodels.PendingPosNeg(verbose_name="VZV")
+    hsv1 = lmodels.PendingPosNeg(verbose_name="HSV 1", default="pending")
+    hsv2 = lmodels.PendingPosNeg(verbose_name="HSV 2", default="pending")
+    enterovirus = lmodels.PendingPosNeg(
+        verbose_name="Enterovirus", default="pending"
+    )
+    cmv = lmodels.PendingPosNeg(verbose_name="CMV", default="pending")
+    ebv = lmodels.PendingPosNeg(verbose_name="EBV", default="pending")
+    vzv = lmodels.PendingPosNeg(verbose_name="VZV", default="pending")
 
 
 class HBVSerology(ElcidLabTest):
@@ -191,16 +208,16 @@ class HBVSerology(ElcidLabTest):
         "Hepatitis B Serology",
     ]
     hbsag = lmodels.PosNegEquivicalNotDone(
-        verbose_name="HBsAg"
+        verbose_name="HBsAg", default="pending"
     )
     antihbs = lmodels.PosNegEquivicalNotDone(
-        verbose_name="anti-HbS"
+        verbose_name="anti-HbS", default="pending"
     )
     antihbcoreigm = lmodels.PosNegEquivicalNotDone(
-        verbose_name="anti-HbCore IgM"
+        verbose_name="anti-HbCore IgM", default="pending"
     )
     antihbcoreigg = lmodels.PosNegEquivicalNotDone(
-        verbose_name="anti-HbCore IgG"
+        verbose_name="anti-HbCore IgG", default="pending"
     )
 
 
@@ -219,13 +236,17 @@ class HIVSerologyObservation(lmodels.Observation):
 
 class HIVSerology(ElcidLabTest):
     _title = "HIV Serology"
-    result = HIVSerologyObservation()
+    hiv_result = HIVSerologyObservation(
+        default="pending", verbose_name="result"
+    )
 
 
 class AbstractLeishmaniasisPCR(ElcidLabTest, AbstractBase):
-
     species = lmodels.GenericInput()
-    result = lmodels.PendingPosNeg()
+    pcr_result = lmodels.PendingPosNeg(
+        default="pending",
+        verbose_name="result"
+    )
 
 
 class LeishmaniasisPCR(ElcidLabTest):
@@ -460,9 +481,8 @@ class Mycology(OtherAbstractTest):
 
 
 class AbstractSerologyTest(ElcidLabTest, AbstractBase):
-
-    igm = lmodels.PosNegEquivicalNotDone(verbose_name="IgM")
-    igg = lmodels.PosNegEquivicalNotDone(verbose_name="IgG")
+    igm = lmodels.PosNegEquivicalNotDone(default="pending", verbose_name="IgM")
+    igg = lmodels.PosNegEquivicalNotDone(default="pending", verbose_name="IgG")
 
 
 class CMVSerology(AbstractSerologyTest):
@@ -536,8 +556,9 @@ class Chikungunya(AbstractSerologyTest):
 
 
 class AbstractSinglePosNeg(ElcidLabTest, AbstractBase):
-
-    result = lmodels.PendingPosNeg()
+    single_result = lmodels.PendingPosNeg(
+        verbose_name="result", default="pending"
+    )
 
 
 class CRAG(AbstractSinglePosNeg):
@@ -608,21 +629,53 @@ class MRSAPCR(AbstractSinglePosNeg):
 class StoolPCR(ElcidLabTest):
     _title = "Stool PCR"
 
-    norovirus = lmodels.PendingPosNeg()
-    rotavirus = lmodels.PendingPosNeg()
-    adenovirus = lmodels.PendingPosNeg()
+    norovirus = lmodels.PendingPosNeg(default="pending")
+    rotavirus = lmodels.PendingPosNeg(default="pending")
+    adenovirus = lmodels.PendingPosNeg(default="pending")
 
 
 class SwabPCR(ElcidLabTest):
     _title = "Swab PCR"
 
-    hsv = lmodels.PendingPosNeg(verbose_name="HSV")
-    vsv = lmodels.PendingPosNeg()
-    syphilis = lmodels.PendingPosNeg()
+    hsv = lmodels.PendingPosNeg(default="pending", verbose_name="HSV")
+    vsv = lmodels.PendingPosNeg(default="pending")
+    syphilis = lmodels.PendingPosNeg(default="pending")
 
 
 class SyphilisSerology(ElcidLabTest):
     _title = "Syphilis Serology"
 
     rpr = lmodels.GenericInput(verbose_name="RPR")
-    tppa = lmodels.PendingPosNeg(verbose_name="TPPA")
+    tppa = lmodels.PendingPosNeg(default="pending", verbose_name="TPPA")
+
+
+class AbstractMicroSingleIGGTest(ElcidLabTest, AbstractBase):
+    igg = lmodels.PosNegEquivicalNotDone(default="pending", verbose_name="IgG")
+
+
+class HHV6Serology(AbstractMicroSingleIGGTest):
+    _title = "HHV-6 Serology"
+
+
+class HHV7Serology(AbstractMicroSingleIGGTest):
+    _title = "HHV-7 Serology"
+
+
+class HTLVSerology(AbstractMicroSingleIGGTest):
+    _title = "HTLV Serology"
+
+
+class HepDSerology(AbstractMicroSingleIGGTest):
+    _title = "Hep D Serology"
+    _synonyms = [
+        "Hepatitis D Serology",
+        "HDV Serology"
+    ]
+
+
+class HepCSerology(AbstractMicroSingleIGGTest):
+    _title = "Hep C Serology"
+    _synonyms = [
+        "Hepatitis C Serology",
+        "HCV Serology"
+    ]
