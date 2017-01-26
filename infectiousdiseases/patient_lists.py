@@ -97,6 +97,13 @@ class Tropical(TaggedPatientList):
     order = 5
 
 
+class TropicalLiason(TaggedPatientList):
+    display_name = 'Tropical Liason'
+    tag = "tropical_liason"
+    schema = generic_infectious_diseases_list
+    order = 6
+
+
 class Weekend(PatientList):
     """
     On the weekend a single team handles the work of three regular teams.
