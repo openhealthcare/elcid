@@ -1,0 +1,24 @@
+{% extends 'modal_base.html' %}
+{% load forms %}
+{% block icon_name %}glyphicon glyphicon-plus{% endblock %}
+{% block title %}Add Patient{% endblock %}
+{% block modal_body %}
+  <form class="form-horizontal" name="form">
+    {% input field="Demographics.first_name"%}
+    {% input field="Demographics.surname" %}
+    {% date_of_birth_field %}
+    {% include models.ExternalLiasonContactDetails.get_form_template %}
+  </form>
+{% endblock %}
+
+<div class="modal-footer">
+  <button class="btn btn-lg btn-primary"
+          one-click-only
+          ng-click="save()"
+          ng-disabled="form.date_of_birth.$invalid"
+          >
+    <i class="fa fa-save"></i>
+    Save record
+  </button>
+  <button class="btn btn-lg" ng-click="cancel()">Cancel</button>
+</div>

@@ -3,6 +3,10 @@ from django.db import models
 
 
 class ExternalLiasonContactDetails(EpisodeSubrecord):
+    _title = "Contact Details"
+    _icon = 'fa fa-phone'
+    _is_singleton = True
+
     # required
     external_hospital_number = models.CharField(
         max_length=256,
