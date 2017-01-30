@@ -10,6 +10,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+        ('opal', '0023_auto_20160630_1340'),
         ('infectiousdiseases', '0001_initial'),
     ]
 

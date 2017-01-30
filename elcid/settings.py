@@ -199,6 +199,7 @@ if ON_TEST:
         'opat': 'opat.nomigrations',
         'microhaem': 'microhaem.nomigrations',
         'iframeapi': 'iframeapi.nomigrations',
+        'infectiousdiseases': 'infectiousdiseases.nomigrations',
         'obs': 'obs.nomigrations'
     }
 

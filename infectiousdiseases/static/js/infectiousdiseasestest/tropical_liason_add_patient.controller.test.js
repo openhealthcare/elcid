@@ -51,7 +51,7 @@ describe('TropicalLiasonAddPatient', function(){
     $scope.editing.demographics = {
       first_name: "Pete"
     };
-    var someEpisode = {};
+    var someEpisode = {external_liason_contact_details: [{id: 1}]};
 
     $httpBackend.expectPOST(
       '/api/v0.1/episode/',
@@ -80,8 +80,9 @@ describe('TropicalLiasonAddPatient', function(){
     $scope.editing.external_liason_contact_details = {
       external_hospital_number: "123"
     };
-    var someEpisode = {};
-    spyOn(item, "save").and.returnValue({then: function(fn){fn();}})
+    var liason = {id: 1, save: function(){}}
+    var someEpisode = {external_liason_contact_details: [liason]};
+    spyOn(liason, "save").and.returnValue({then: function(fn){fn();}})
 
     $httpBackend.expectPOST(
       '/api/v0.1/episode/',
@@ -96,7 +97,7 @@ describe('TropicalLiasonAddPatient', function(){
 
     $httpBackend.flush();
     expect($modalInstance.close).toHaveBeenCalled();
-    expect(item.save).toHaveBeenCalledWith($scope.editing.external_liason_contact_details)
+    expect(liason.save).toHaveBeenCalledWith($scope.editing.external_liason_contact_details)
 
     $httpBackend.verifyNoOutstandingExpectation();
     $httpBackend.verifyNoOutstandingRequest();
