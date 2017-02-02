@@ -35,7 +35,7 @@ class TestMinePatientList(OpalTestCase):
 
         patient_list = PatientList.get("mine")()
         self.assertEqual(
-            [self.episode_1], [i for i in patient_list.get_queryset()]
+            [self.episode_1], [i for i in patient_list.get_queryset(self.user)]
         )
         serialized = patient_list.to_dict(self.user)
         self.assertEqual(len(serialized), 1)
