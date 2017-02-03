@@ -123,6 +123,16 @@ describe('DiagnosisDischarge', function() {
 
     });
 
+    describe('processSteps', function(){
+        it('should set the processSteps attribute', function(){
+           expect(!!$scope.processSteps.length).toBe(true);
+           _.each($scope.processSteps, function(step){
+             expect(!!step.display_name).toBe(true);
+             expect(!!step.icon).toBe(true);
+           });
+        });
+    });
+
     describe('goToNextStep()', function() {
         var form, model;
 
@@ -142,7 +152,6 @@ describe('DiagnosisDischarge', function() {
                 $scope.goToNextStep(form, model);
                 expect(form.primary_diagnosis_condition.$setDirty).toHaveBeenCalledWith();
             });
-
         });
 
         describe('presenting_complaint', function() {
