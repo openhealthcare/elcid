@@ -1,4 +1,4 @@
-# Django settings for elcid project.
+# Django settings for elcid project.SY
 import commands
 import os
 import sys
@@ -174,7 +174,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'opat',
     'walkin',
-    'research',
+    # 'research',
     'wardround',
     'microhaem',
     'infectiousdiseases',
@@ -192,17 +192,18 @@ if ON_TEST:
     PASSWORD_HASHERS = (
         'django.contrib.auth.hashers.MD5PasswordHasher',
     )
-    MIGRATION_MODULES = {
-        'opal': 'opal.nomigrations',
-        'elcid': 'elcid.nomigrations',
-        'guidelines': 'guidelines.nomigrations',
-        'walkin': 'walkin.nomigrations',
-        'research': 'research.nomigrations',
-        'opat': 'opat.nomigrations',
-        'microhaem': 'microhaem.nomigrations',
-        'iframeapi': 'iframeapi.nomigrations',
-        'obs': 'obs.nomigrations'
-    }
+MIGRATION_MODULES = {
+    'opal': 'opal.nomigrations',
+    'elcid': 'elcid.nomigrations',
+    'guidelines': 'guidelines.nomigrations',
+    'walkin': 'walkin.nomigrations',
+    'research': 'research.nomigrations',
+    'opat': 'opat.nomigrations',
+    'microhaem': 'microhaem.nomigrations',
+    'iframeapi': 'iframeapi.nomigrations',
+    'obs': 'obs.nomigrations',
+    'lab': 'lab.nomigrations'
+}
 
 LOGGING = {
     'version': 1,
@@ -327,7 +328,7 @@ if GLOSS_ENABLED:
     GLOSS_USERNAME = "override_this"
     GLOSS_PASSWORD = "and_override_this"
 
-EXTRACT_ASYNC = True
+EXTRACT_ASYNC = False
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
