@@ -30,9 +30,9 @@ class Mine(PatientList):
         if tag and "mine" == tag.lower():
             return klass
 
-    def get_queryset(self):
+    def get_queryset(self, *args, **kwargs):
         return Episode.objects.filter(tagging__value='mine')
 
     def to_dict(self, user):
-        qs = self.get_queryset().filter(tagging__user=user)
+        qs = self.get_queryset(user).filter(tagging__user=user)
         return qs.serialised_active(user)

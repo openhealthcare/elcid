@@ -105,7 +105,7 @@ class Weekend(PatientList):
     order = 99
     schema = generic_infectious_diseases_list
 
-    def get_queryset(self):
+    def get_queryset(self, *args, **kwargs):
         from opal.models import Episode # Avoid circular import from opal.models
         return Episode.objects.filter(
             tagging__archived=False,
