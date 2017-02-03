@@ -2,7 +2,11 @@
 {% load forms %}
 {% block icon_name %}[[ steps_details[step].icon ]]{% endblock %}
 {% block title %}
+<<<<<<< HEAD
 [[ steps_details[step].display_name ]]
+=======
+[[ steps_details[step].title ]] <span ng-show="episode.demographics[0].first_name || episode.demographics[0].surname">([[ episode.demographics[0].first_name ]] [[ episode.demographics[0].surname ]])</span>
+>>>>>>> v0.6.2.4
 {% endblock %}
 {% block process_steps %}
 <div ng-show="processSteps.length > 1" class="discharge-process-steps" style="width: [[ 100 - (10 * (6 - processSteps.length)) ]]%">
