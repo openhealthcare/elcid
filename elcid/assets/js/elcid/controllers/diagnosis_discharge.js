@@ -23,38 +23,38 @@ controllers.controller(
         $scope.steps_details = {
             discharge: {
                 icon: "fa fa-home",
-                dispay_name: "Discharge",
+                display_name: "Discharge",
                 subtitle: undefined,
                 done: false
             },
             diagnosis: {
                 icon: "fa fa-stethoscope",
-                dispay_name: "Diagnosis",
+                display_name: "Diagnosis",
                 subtitle: undefined,
                 status: 'disabled',
                 done: false
             },
             presenting_complaint: {
                 icon: "fa fa-heartbeat",
-                dispay_name: "Presenting Complaint",
+                display_name: "Presenting Complaint",
                 subtitle: "Please enter one or more symptoms",
                 done: false
             },
             antimicrobial: {
                 icon: "fa fa-flask",
-                dispay_name: "Antimicrobial",
+                display_name: "Antimicrobial",
                 subtitle: "Please enter the <strong>drug name</strong> and the <strong>start and end dates</strong> or state that the patient was <strong>not on antimicrobials</strong>.",
                 done: false
             },
             travel: {
                 icon: "fa fa-plane",
-                dispay_name: "Travel",
+                display_name: "Travel",
                 subtitle: "Please enter a <strong>travel destination</strong> and <strong>dates</strong>, or state that the patient <strong>did not travel</strong>.",
                 done: false
             },
             consultant_at_discharge: {
                 icon: "fa fa-user-md",
-                dispay_name: "Consultant At Discharge",
+                display_name: "Consultant At Discharge",
                 subtitle: "Please record the <strong>consultant</strong> at discharge.",
                 done: false
             }
