@@ -1,7 +1,7 @@
-<p>
+<p ng-show="currentTag === 'tropical_liason'">
   <button
      ng-hide="profile.readonly"
-     ng-click="open_modal('TropicalLiasonEndLiason', '/templates/infectiousdiseases/tropical_liason_discharge.html', 'lg', {episode: episode})"
+     ng-click="dischargeEpisode(episode)"
      class="btn btn-primary">
      End Liason
   </button>

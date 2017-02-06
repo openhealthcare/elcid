@@ -5,12 +5,13 @@ controllers.controller(
              DischargePatientService) {
 
        "use strict";
-        var tags = {tropical_liason: true};
+        var tags = {tag: "tropical_liason", subtag: ""};
         var dischargePatientService = new DischargePatientService();
         $scope.editing = dischargePatientService.getEditing(episode);
 
         $scope.discharge = function(){
             dischargePatientService.discharge(episode, $scope.editing, tags).then(function(){
+                $scope.discharged = true;
                 $modalInstance.close('discharged');
             });
         };
