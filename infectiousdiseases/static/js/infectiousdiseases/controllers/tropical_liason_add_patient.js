@@ -15,7 +15,6 @@ controllers.controller('TropicalLiasonAddPatient', function(
     $http.post('/api/v0.1/episode/', toSave).success(function(episode) {
       episode = new Episode(episode);
       var tropicalLiason = $scope.editing.external_liason_contact_details;
-      var tropicalLiasonItem = episode.external_liason_contact_details[0];
       if(_.size(tropicalLiason)){
         var liasonContactDetails = episode.external_liason_contact_details[0];
         tropicalLiason.id = liasonContactDetails.id;
