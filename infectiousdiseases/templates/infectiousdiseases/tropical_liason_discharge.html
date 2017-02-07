@@ -1,7 +1,7 @@
 {% extends 'modal_base.html' %}
 {% load forms %}
 {% block icon_name %}fa fa-home{% endblock %}
-{% block title %}Discharge {% endblock %}
+{% block title %}End Liaison {% endblock %}
 {% block modal_body %}
   <form name="form" class="form form-horizontal">
   {% datepicker label="Liason ended" model="editing.discharge_date" hide="currentCategory=='Discharged'" mindate="[[editing.date_of_admission]]"%}
@@ -10,7 +10,7 @@
 {% block modal_save %}
   <button class="btn btn-primary" ng-click="discharge()">
     <i class="fa fa-home"></i>
-    Discharge
+    End Liaison
   </button>
 {% endblock %}
 {% block modal_another %}{% endblock %}
