@@ -69,6 +69,12 @@ def checkout(package_name_version):
                 return
 
             for package_name, version in package_name_version.iteritems():
+                if not version:
+                    print "found NO VERSION for {} using master".format(
+                        package_name
+                    )
+                    version = "master"
+
                 if package_name not in existing_packages:
                     print "cloning {}".format(package_name)
                     local("git clone {}".format(package_name))
