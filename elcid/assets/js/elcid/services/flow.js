@@ -66,17 +66,17 @@ angular.module('opal.services').factory('elCIDFlow', function($routeParams){
                 }
             }
         },
-        TropicalLiason: {
+        TropicalLiaison: {
             enter: function(){
                 return {
-                    controller: "TropicalLiasonAddPatient",
-                    template: '/templates/infectiousdiseases/tropical_liason_admission.html'
+                    controller: "TropicalLiaisonAddPatient",
+                    template: '/templates/infectiousdiseases/tropical_liaison_admission.html'
                 }
             },
             exit: function(episode){
                 return {
                     'controller': 'ElcidDischargeEpisodeCtrl',
-                    'template'  : '/templates/infectiousdiseases/tropical_liason_discharge.html'
+                    'template'  : '/templates/infectiousdiseases/tropical_liaison_discharge.html'
                 }
             }
         }
@@ -91,15 +91,15 @@ angular.module('opal.services').factory('elCIDFlow', function($routeParams){
                 }else if ($routeParams.slug.indexOf('walkin') == 0){
                     episode_type = 'Walkin';
                 }
-                else if($routeParams.slug === 'tropical_liason'){
-                    episode_type = 'TropicalLiason';
+                else if($routeParams.slug === 'tropical_liaison'){
+                    episode_type = 'TropicalLiaison';
                 }
             }
             return categories[episode_type]['enter']();
         },
         exit: function(episode){
-            if($routeParams.slug === 'tropical_liason'){
-              return categories.TropicalLiason.exit(episode);
+            if($routeParams.slug === 'tropical_liaison'){
+              return categories.TropicalLiaison.exit(episode);
             }
             return categories[episode.category_name]['exit'](episode);
         }

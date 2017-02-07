@@ -1,4 +1,4 @@
-describe('TropicalLiasonEndLiason', function(){
+describe('TropicalLiaisonEndLiaison', function(){
   var $rootScope, $scope, $modalInstance, episode;
   var $controller, dischargePatientService;
 
@@ -21,7 +21,7 @@ describe('TropicalLiasonEndLiason', function(){
       return dischargePatientService;
     };
     spyOn(dischargePatientService, "getEditing").and.returnValue({
-      external_liason_contact_details: {
+      external_liaison_contact_details: {
         hospitalNumber: '123'
       }
     });
@@ -29,7 +29,7 @@ describe('TropicalLiasonEndLiason', function(){
       then: function(fn){fn();}
     });
     episode = {};
-    controller = $controller('TropicalLiasonEndLiason', {
+    controller = $controller('TropicalLiaisonEndLiason', {
         $scope : $scope,
         $modalInstance: $modalInstance,
         DischargePatientService: getDischargePatientService,
@@ -39,7 +39,7 @@ describe('TropicalLiasonEndLiason', function(){
   });
 
   it('should set up editing', function(){
-    expect($scope.editing.external_liason_contact_details.hospitalNumber).toEqual("123");
+    expect($scope.editing.external_liaison_contact_details.hospitalNumber).toEqual("123");
   });
 
   it('should allow the user to cancel an appointment', function(){

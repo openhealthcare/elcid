@@ -1,4 +1,4 @@
-describe('TropicalLiasonAddPatient', function(){
+describe('TropicalLiaisonAddPatient', function(){
   var $rootScope, $scope, $httpBackend, $modalInstance, $modal;
   var controller, $controller, Episode, item;
 
@@ -33,7 +33,7 @@ describe('TropicalLiasonAddPatient', function(){
     }
 
     $scope = $rootScope.$new();
-    controller = $controller('TropicalLiasonAddPatient', {
+    controller = $controller('TropicalLiaisonAddPatient', {
         $scope : $scope,
         $modalInstance: $modalInstance,
         $q: $q,
@@ -44,21 +44,21 @@ describe('TropicalLiasonAddPatient', function(){
   });
 
   it('should add tags to the scope', function(){
-    expect($scope.editing.tagging.tropical_liason).toBe(true);
+    expect($scope.editing.tagging.tropical_liaison).toBe(true);
   });
 
-  it('should save an episode, but not tropical liason if it doesnt exist', function(){
+  it('should save an episode, but not tropical liaison if it doesnt exist', function(){
     $scope.editing.demographics = {
       first_name: "Pete"
     };
-    var someEpisode = {external_liason_contact_details: [{id: 1}]};
+    var someEpisode = {external_liaison_contact_details: [{id: 1}]};
 
     $httpBackend.expectPOST(
       '/api/v0.1/episode/',
       {
-        category_name: "Tropical Liason",
+        category_name: "Tropical Liaison",
         demographics: {first_name: "Pete"},
-        tagging: {tropical_liason: true}
+        tagging: {tropical_liaison: true}
       }
     ).respond(someEpisode);
 
@@ -72,24 +72,24 @@ describe('TropicalLiasonAddPatient', function(){
 
   });
 
-  it('should save an episode and tropical liason if available', function(){
+  it('should save an episode and tropical liaison if available', function(){
     $scope.editing.demographics = {
       first_name: "Pete"
     };
 
-    $scope.editing.external_liason_contact_details = {
+    $scope.editing.external_liaison_contact_details = {
       external_hospital_number: "123"
     };
-    var liason = {id: 1, save: function(){}}
-    var someEpisode = {external_liason_contact_details: [liason]};
-    spyOn(liason, "save").and.returnValue({then: function(fn){fn();}})
+    var liaison = {id: 1, save: function(){}}
+    var someEpisode = {external_liaison_contact_details: [liaison]};
+    spyOn(liaison, "save").and.returnValue({then: function(fn){fn();}})
 
     $httpBackend.expectPOST(
       '/api/v0.1/episode/',
       {
-        category_name: "Tropical Liason",
+        category_name: "Tropical Liaison",
         demographics: {first_name: "Pete"},
-        tagging: {tropical_liason: true}
+        tagging: {tropical_liaison: true}
       }
     ).respond(someEpisode);
 
@@ -97,7 +97,7 @@ describe('TropicalLiasonAddPatient', function(){
 
     $httpBackend.flush();
     expect($modalInstance.close).toHaveBeenCalled();
-    expect(liason.save).toHaveBeenCalledWith($scope.editing.external_liason_contact_details)
+    expect(liaison.save).toHaveBeenCalledWith($scope.editing.external_liaison_contact_details)
 
     $httpBackend.verifyNoOutstandingExpectation();
     $httpBackend.verifyNoOutstandingRequest();

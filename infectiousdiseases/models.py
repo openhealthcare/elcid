@@ -2,7 +2,7 @@ from opal.models import EpisodeSubrecord
 from django.db import models
 
 
-class ExternalLiasonContactDetails(EpisodeSubrecord):
+class ExternalLiaisonContactDetails(EpisodeSubrecord):
     _title = "Contact Details"
     _icon = 'fa fa-phone'
     _is_singleton = True

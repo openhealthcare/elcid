@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='TropicalLiasonMeta',
+            name='TropicalLiaisonMeta',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('created', models.DateTimeField(null=True, blank=True)),
@@ -26,9 +26,9 @@ class Migration(migrations.Migration):
                 ('hospital_contact', models.CharField(max_length=256)),
                 ('contact_telephone_number', models.CharField(max_length=256)),
                 ('contact_email_address', models.CharField(max_length=256)),
-                ('created_by', models.ForeignKey(related_name='created_infectiousdiseases_tropicalliasonmeta_subrecords', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
+                ('created_by', models.ForeignKey(related_name='created_infectiousdiseases_tropicalliaisonmeta_subrecords', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
                 ('episode', models.ForeignKey(to='opal.Episode')),
-                ('updated_by', models.ForeignKey(related_name='updated_infectiousdiseases_tropicalliasonmeta_subrecords', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
+                ('updated_by', models.ForeignKey(related_name='updated_infectiousdiseases_tropicalliaisonmeta_subrecords', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
             ],
             options={
                 'abstract': False,

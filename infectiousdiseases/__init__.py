@@ -10,13 +10,13 @@ class InfectiousDiseasesPlugin(plugins.OpalPlugin):
     """
     javascripts = {
         'opal.controllers': [
-            'js/infectiousdiseases/controllers/tropical_liason_add_patient.js',
-            'js/infectiousdiseases/controllers/tropical_liason_end_liason.js',
+            'js/infectiousdiseases/controllers/tropical_liaison_add_patient.js',
+            'js/infectiousdiseases/controllers/tropical_liaison_end_liaison.js',
         ]
     }
 
     actions = (
-        'actions/end_tropical_liason.html',
+        'actions/end_tropical_liaison.html',
     )
 
     def restricted_teams(self, user):

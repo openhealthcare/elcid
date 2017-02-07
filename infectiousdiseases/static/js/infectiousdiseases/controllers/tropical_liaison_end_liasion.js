@@ -1,11 +1,11 @@
 controllers.controller(
-    'TropicalLiasonEndLiason',
+    'TropicalLiaisonEndLiason',
     function($scope,
              $modalInstance, episode,
              DischargePatientService) {
 
        "use strict";
-        var tags = {tag: "tropical_liason", subtag: ""};
+        var tags = {tag: "tropical_liaison", subtag: ""};
         var dischargePatientService = new DischargePatientService();
         $scope.editing = dischargePatientService.getEditing(episode);
 

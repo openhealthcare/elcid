@@ -4,7 +4,7 @@
     <div class="panel-heading text-center">
       <h3>
         {% block title %}
-        Tropical Liason
+        Tropical Liaison
         [[ episode.date_of_admission | shortDate]]
           <span ng-show="episode.discharge_date"> - [[ episode.discharge_date | shortDate ]]</span>
         {% endblock title %}
@@ -26,7 +26,7 @@
 </div>
 
 <div class="col-md-6"> <!-- Detail panels col 1 -->
-  {% record_panel models.ExternalLiasonContactDetails %}
+  {% record_panel models.ExternalLiaisonContactDetails %}
   {% record_panel models.Allergies noentries="No known allergies"%}
   {% record_panel models.PastMedicalHistory %}
   {% record_panel models.Travel %}

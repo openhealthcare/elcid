@@ -13,9 +13,9 @@ generic_infectious_diseases_list = [
     models.Todo
 ]
 
-tropical_liason_list = [
+tropical_liaison_list = [
     models.Demographics,
-    id_models.ExternalLiasonContactDetails,
+    id_models.ExternalLiaisonContactDetails,
     models.Diagnosis,
     models.PastMedicalHistory,
     models.Antimicrobial,
@@ -109,10 +109,11 @@ class Tropical(TaggedPatientList):
     order = 5
 
 
-class TropicalLiason(TaggedPatientList):
-    display_name = 'Tropical Liason'
-    tag = "tropical_liason"
-    schema = tropical_liason_list
+class TropicalLiaison(TaggedPatientList):
+    display_name = 'Tropical Liaison'
+    tag = "tropical_liaison"
+    schema = tropical_liaison_list
+    direct_add = False
     order = 6
 
 
