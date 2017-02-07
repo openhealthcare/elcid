@@ -90,6 +90,7 @@ module.exports =  function(config){
             __dirname + '/../opat/static/js/opat/controllers/*.js',
             __dirname + '/../research/static/js/research/controllers/*.js',
             __dirname + '/../walkin/static/js/walkin/controllers/*.js',
+            __dirname + '/../infectiousdiseases/static/js/infectiousdiseases/controllers/*.js',
 
 
             // The tests
@@ -97,6 +98,7 @@ module.exports =  function(config){
             __dirname + '/../opat/static/js/test/*.js',
             __dirname + '/../research/static/js/test/*.js',
             __dirname + '/../walkin/static/js/walkintest/*.js',
+            __dirname + '/../infectiousdiseases/static/js/infectiousdiseasestest/*.js',
         ],
 
         preprocessors: preprocessors,

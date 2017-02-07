@@ -1,5 +1,6 @@
 from opal.core.patient_lists import PatientList, TaggedPatientList
 from elcid import models
+from infectiousdiseases import models as id_models
 
 generic_infectious_diseases_list = [
     models.Demographics,
@@ -10,6 +11,17 @@ generic_infectious_diseases_list = [
     models.MicrobiologyTest,
     models.GeneralNote,
     models.Todo
+]
+
+tropical_liaison_list = [
+    models.Demographics,
+    id_models.ExternalLiaisonContactDetails,
+    models.Diagnosis,
+    models.PastMedicalHistory,
+    models.Antimicrobial,
+    models.MicrobiologyTest,
+    models.MicrobiologyInput,
+    models.GeneralNote
 ]
 
 
@@ -32,7 +44,7 @@ class MicroOrtho(TaggedPatientList):
     display_name = 'Micro Ortho'
     tag = "microbiology"
     subtag = "micro_ortho"
-    order = 6
+    order = 7
     schema = [
         models.Demographics,
         models.Location,
@@ -95,6 +107,14 @@ class Tropical(TaggedPatientList):
     tag = "tropical_diseases"
     schema = generic_infectious_diseases_list
     order = 5
+
+
+class TropicalLiaison(TaggedPatientList):
+    display_name = 'Tropical Liaison'
+    tag = "tropical_liaison"
+    schema = tropical_liaison_list
+    direct_add = False
+    order = 6
 
 
 class Weekend(PatientList):
