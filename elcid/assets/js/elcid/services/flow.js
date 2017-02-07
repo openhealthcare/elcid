@@ -65,6 +65,20 @@ angular.module('opal.services').factory('elCIDFlow', function($routeParams){
                     'template'  : '/opat/templates/modals/discharge_opat_episode.html/'
                 }
             }
+        },
+        TropicalLiaison: {
+            enter: function(){
+                return {
+                    controller: "TropicalLiaisonAddPatient",
+                    template: '/templates/infectiousdiseases/tropical_liaison_admission.html'
+                }
+            },
+            exit: function(episode){
+                return {
+                    'controller': 'ElcidDischargeEpisodeCtrl',
+                    'template'  : '/templates/infectiousdiseases/tropical_liaison_discharge.html'
+                }
+            }
         }
     }
 
@@ -77,10 +91,16 @@ angular.module('opal.services').factory('elCIDFlow', function($routeParams){
                 }else if ($routeParams.slug.indexOf('walkin') == 0){
                     episode_type = 'Walkin';
                 }
+                else if($routeParams.slug === 'tropical_liaison'){
+                    episode_type = 'TropicalLiaison';
+                }
             }
             return categories[episode_type]['enter']();
         },
         exit: function(episode){
+            if($routeParams.slug === 'tropical_liaison'){
+              return categories.TropicalLiaison.exit(episode);
+            }
             return categories[episode.category_name]['exit'](episode);
         }
     }
