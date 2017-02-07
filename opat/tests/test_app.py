@@ -3,7 +3,7 @@ Unittests for opat
 """
 from django.test import TestCase
 
-from opat import OpatPlugin
+from opat.plugin import OpatPlugin
 
 class ApplicationTestCase(TestCase):
     def test_flows(self):

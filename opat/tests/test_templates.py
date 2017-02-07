@@ -4,7 +4,7 @@ Test that the templates we need are here
 from django.contrib.auth.models import User
 from django.test import TestCase
 
-from opat import OpatPlugin
+from opat.plugin import OpatPlugin
 
 class FlowTemplatesTestCase(TestCase):
 
