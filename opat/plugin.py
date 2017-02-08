@@ -54,9 +54,3 @@ class OpatPlugin(plugins.OpalPlugin):
             'OPAT': flows
         }
 
-    def roles(self, user):
-        """
-        Given a (Django) USER object, return any extra roles defined
-        by our plugin.
-        """
-        return {}
