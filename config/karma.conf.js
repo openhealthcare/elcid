@@ -15,7 +15,8 @@ module.exports = function(config){
     __dirname + '/../elcid/assets/js/elcid/services/*',
     __dirname + '/../elcid/assets/js/elcid/services/records/*',
     __dirname + '/../opat/static/js/opat/controllers/*',
-    __dirname + '/../walkin/static/js/walkin/controllers/*'
+    __dirname + '/../walkin/static/js/walkin/controllers/*',
+    __dirname + '/../infectiousdiseases/static/js/infectiousdiseases/controllers/*.js',
   ];
   var includedFiles = [
     'opal/app.js',
@@ -28,13 +29,16 @@ module.exports = function(config){
     __dirname + '/../opat/static/js/opat/controllers/*.js',
     __dirname + '/../research/static/js/research/controllers/*.js',
     __dirname + '/../walkin/static/js/walkin/controllers/*.js',
+    __dirname + '/../infectiousdiseases/static/js/infectiousdiseases/controllers/*.js',
 
 
     // The tests
     __dirname + '/../elcid/assets/js/elcidtest/*.js',
     __dirname + '/../opat/static/js/test/*.js',
     __dirname + '/../research/static/js/test/*.js',
-    __dirname + '/../walkin/static/js/walkintest/*.js'
+      __dirname + '/../walkin/static/js/walkintest/*.js',
+    __dirname + '/../infectiousdiseases/static/js/infectiousdiseasestest/*.js',
+
   ];
 
   var defaultConfig = karmaDefaults(includedFiles, baseDir, coverageFiles);
