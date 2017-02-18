@@ -178,8 +178,6 @@ INSTALLED_APPS = (
     'infectiousdiseases',
     'referral',
     'dashboard',
-    'iframeapi',
-#    'opal.core.collaborative',
     'guidelines',
     'dischargesummary',
     'djcelery',
@@ -198,7 +196,6 @@ if ON_TEST:
         'research': 'research.nomigrations',
         'opat': 'opat.nomigrations',
         'microhaem': 'microhaem.nomigrations',
-        'iframeapi': 'iframeapi.nomigrations',
         'infectiousdiseases': 'infectiousdiseases.nomigrations',
         'obs': 'obs.nomigrations'
     }

@@ -1,6 +1,7 @@
 ## 0.6.3 Release
 
 Adds tabbed list groups for OPAT and Walkin teams
+Remove unused Iframeapi plugin
 
 ## 0.6.2.2 Release
 
