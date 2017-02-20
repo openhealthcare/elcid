@@ -1,0 +1,21 @@
+{% extends 'base_templates/form_modal_base.html' %}
+{% load forms %}
+{% block icon_name %}glyphicon glyphicon-plus{% endblock %}
+{% block title %}Confirm Addition{% endblock %}
+{% block modal_body %}
+  <form class="form-horizontal text-center" name="form">
+    <p class="lead">
+      The Patient is already on the list, awaiting follow up tasks from their discharge.
+    </p>
+    <p class="lead">
+      Would you like to close this episode of care and readmit the patient?
+    </p>
+    <span ng-show="form">
+      <button one-click-only class="btn btn-primary" ng-click="confirm()">
+        <i class="fa fa-save"></i>
+        Confirm
+      </button>
+    </span>
+  </form>
+{% endblock %}
+{% block modal_save %}{% endblock %}

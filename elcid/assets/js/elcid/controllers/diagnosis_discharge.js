@@ -481,7 +481,7 @@ controllers.controller(
                         growl.success($scope.episode.demographics[0].first_name + ' ' + $scope.episode.demographics[0].surname + ' discharged.');
                     }
                     $scope.discharged = true;
-                    $modalInstance.close('discharged');
+                    $modalInstance.close('discharged', episode);
                 });
             });
 

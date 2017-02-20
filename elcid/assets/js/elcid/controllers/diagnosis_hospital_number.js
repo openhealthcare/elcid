@@ -8,10 +8,11 @@ angular.module('opal.controllers').controller(
              $q,
              Episode,
              tags,
+             context,
              hospital_number
           ){
 
-        $scope.model = {}
+        $scope.model = {};
         if(hospital_number){
             $scope.model.hospitalNumber = hospital_number;
         }
@@ -88,24 +89,44 @@ angular.module('opal.controllers').controller(
                 return $scope.addForPatient(patient);
             }
 
-            if (episode.tagging[0][$scope.tags.tag] &&
-                ($scope.tags.subtag === "" ||
-                 episode.tagging[0][$scope.tags.subtag])) {
-                // There is already an active episode for this patient
-                // with the current tag
-                $modalInstance.close(episode);
-            } else {
-                // There is already an active episode for this patient but
-                // it doesn't have the current tag.
-                // Add the current Tag.
-                episode.tagging[0][$scope.tags.tag] = true;
-                if($scope.tags.subtag !== ""){
-                    episode.tagging[0][$scope.tags.subtag] = true;
-                }
-                episode.tagging[0].save(episode.tagging[0].makeCopy()).then(
-                    function(){
-                        $modalInstance.close(episode);
-                    });
+            if(episode.location[0].category == 'Followup'){
+              modal = $modal.open({
+                  templateUrl: '/templates/modals/confirm_discharge.html',
+                  controller: 'ConfirmDischargeCtrl',
+                  resolve: {
+                      patient: function() { return patient; },
+                      episode: function() { return episode; },
+                      tags: function(){ return $scope.tags; },
+                      context: function(){ return context; }
+                  }
+              }).result.then(
+                  function(result){
+                      $modalInstance.close(result);
+                  },
+                  function(result){
+                      $modalInstance.close(result);
+                });
+            }
+            else{
+              if (episode.tagging[0][$scope.tags.tag] &&
+                  ($scope.tags.subtag === "" ||
+                   episode.tagging[0][$scope.tags.subtag])) {
+                  // There is already an active episode for this patient
+                  // with the current tag
+                  $modalInstance.close(episode);
+              } else {
+                  // There is already an active episode for this patient but
+                  // it doesn't have the current tag.
+                  // Add the current Tag.
+                  episode.tagging[0][$scope.tags.tag] = true;
+                  if($scope.tags.subtag !== ""){
+                      episode.tagging[0][$scope.tags.subtag] = true;
+                  }
+                  episode.tagging[0].save(episode.tagging[0].makeCopy()).then(
+                      function(){
+                          $modalInstance.close(episode);
+                      });
+              }
             }
         };
 

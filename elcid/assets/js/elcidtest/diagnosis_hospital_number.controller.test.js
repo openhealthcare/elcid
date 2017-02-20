@@ -23,7 +23,8 @@ describe('DiagnosisHospitalNumber', function(){
             $scope         : $scope,
             $modalInstance : modalInstance,
             tags           : {},
-            hospital_number: hospital_number
+            hospital_number: hospital_number,
+            context: {ctx: 'some context'}
         });
     });
 
@@ -81,6 +82,9 @@ describe('DiagnosisHospitalNumber', function(){
                       hospital_number: "1",
                       patient_id: "1",
                   }],
+                  location: [{
+                      category: "Discharged"
+                  }],
                   category_name: "Inpatient"
             }},
             demographics: [{
@@ -121,6 +125,17 @@ describe('DiagnosisHospitalNumber', function(){
             spyOn($scope, "addForPatient");
             $scope.newForPatientWithActiveEpisode(patient);
             expect($scope.addForPatient).toHaveBeenCalled();
+        });
+        fit('if the patient is marked for follow up we should call the confirm discharge modal', function(){
+            var patient = angular.copy(patientData);
+            patient.episodes['1'].location[0].category = "Followup";
+            spyOn($modal, "open").and.returnValue({result: {then: function(x, y){}}});
+            $scope.newForPatientWithActiveEpisode(patient);
+            expect($modal.open).toHaveBeenCalled();
+            var modalArgs = $modal.open.calls.argsFor(0)[0];
+            expect(modalArgs.templateUrl).toBe('/templates/modals/confirm_discharge.html');
+            expect(modalArgs.controller).toBe('ConfirmDischargeCtrl');
+            expect(modalArgs.resolve.context()).toEqual({ctx: 'some context'});
         });
     });
 
