@@ -4,8 +4,7 @@ describe('DiagnosisHospitalNumber', function(){
     var $rootScope, $scope, $modal, $httpBackend, $controller;
     var modalInstance, tags, hospital_number, $q;
 
-    beforeEach(module('opal.controllers', function($provide){
-    }));
+    beforeEach(module('opal.controllers'));
 
     beforeEach(function(){
         inject(function($injector){

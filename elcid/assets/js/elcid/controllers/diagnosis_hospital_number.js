@@ -93,11 +93,13 @@ angular.module('opal.controllers').controller(
               modal = $modal.open({
                   templateUrl: '/templates/modals/confirm_discharge.html',
                   controller: 'ConfirmDischargeCtrl',
+                  size: 'lg',
                   resolve: {
                       patient: function() { return patient; },
                       episode: function() { return episode; },
                       tags: function(){ return $scope.tags; },
-                      context: function(){ return context; }
+                      context: function(){ return context; },
+                      nextStepController: function(){ return 'DiagnosisAddEpisodeCtrl';}
                   }
               }).result.then(
                   function(result){

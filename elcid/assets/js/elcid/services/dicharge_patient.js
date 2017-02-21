@@ -78,11 +78,17 @@ angular.module('opal.services').factory('DischargePatientService', function($q) 
                       }
             }
 
-            return tagging.save(taggingAttrs).then(function(){
+            var deferred = $q.defer();
+
+            tagging.save(taggingAttrs).then(function(){
                 location.save(locationAttrs).then(function(){
-                    episode.save(episodeAttrs);
+                    episode.save(episodeAttrs).then(function(result){
+                      deferred.resolve(result);
+                    });
                 });
             });
+
+            return deferred.promise;
         };
     };
 

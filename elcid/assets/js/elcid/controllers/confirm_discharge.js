@@ -3,7 +3,7 @@
 */
 angular.module('opal.controllers').controller('ConfirmDischargeCtrl', function(
   $scope, $modal, $modalInstance, DischargePatientService,
-  patient, episode, tags, context
+  patient, episode, tags, context, nextStepController
 ){
     $scope.newPatient = function(result){
         // There is no patient with this hospital number
@@ -12,7 +12,8 @@ angular.module('opal.controllers').controller('ConfirmDischargeCtrl', function(
         modal = $modal.open({
             backdrop: 'static',
             templateUrl: '/templates/modals/add_episode.html',
-            controller: 'DiagnosisAddEpisodeCtrl',
+            controller: nextStepController,
+            size: 'lg',
             resolve: {
                 referencedata: function(Referencedata) { return Referencedata; },
                 demographics: function() {
@@ -35,7 +36,7 @@ angular.module('opal.controllers').controller('ConfirmDischargeCtrl', function(
    $scope.confirm = function(){
      var dischargePatientService = new DischargePatientService();
      dischargePatientService.discharge(episode, {category: "Discharged"}, tags).then(function(){
-       context.removeFromList(episode.id);
+       context.removeFromList(episode);
        $scope.newPatient(patient);
      });
    };
