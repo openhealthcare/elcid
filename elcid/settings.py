@@ -180,6 +180,7 @@ INSTALLED_APPS = (
     'dashboard',
     'guidelines',
     'dischargesummary',
+    'pathway',
     'djcelery',
 )
 
