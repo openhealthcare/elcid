@@ -1,4 +1,4 @@
-from opal.core.patient_lists import PatientList
+from opal.core.patient_lists import PatientList, TabbedPatientListGroup, TaggedPatientList
 from elcid import models
 from opal.models import Episode
 
@@ -36,3 +36,46 @@ class Mine(PatientList):
     def to_dict(self, user):
         qs = self.get_queryset(user).filter(tagging__user=user)
         return qs.serialised_active(user)
+
+positive_schema = [
+    models.Demographics,
+    models.Location,
+    models.MicrobiologyTest,
+    models.MicrobiologyInput
+]
+appeals_schema = [
+    models.Demographics,
+    models.Location,
+]
+
+class ToxinPos(TaggedPatientList):
+    display_name = 'C.Diff Toxin pos'
+    direct_add = True
+    tag = 'cdiff'
+    subtag = 'toxinpos'
+    order = 202
+    schema = positive_schema
+
+
+class AntigenPos(TaggedPatientList):
+    display_name = 'C.Diff Antigen pos'
+    direct_add = True
+    tag = 'cdiff'
+    subtag = 'antigenpos'
+    order = 203
+    schema = positive_schema
+
+class CCGAppeals(TaggedPatientList):
+    display_name = 'C.Diff CCG Appeals'
+    direct_add = True
+    tag = 'cdiff'
+    subtag = 'appeals'
+    order = 205
+    schema = appeals_schema
+
+class CDiffGroup(TabbedPatientListGroup):
+    member_lists = [
+        ToxinPos,
+        AntigenPos,
+        CCGAppeals,
+    ]

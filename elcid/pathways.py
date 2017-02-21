@@ -12,11 +12,11 @@ class CDiffAddPatient(pathways.WizardPathway):
         pathways.Step(
             template_url='/templates/cdiff_ass.html',
             display_name='New Diagnosis Assessment',
-            icon='fa fa-doctor'
+            icon='fa fa-user-md'
         ),
         pathways.Step(
             display_name='Confirm',
-            icon='fa fa-ok',
+            icon='fa fa-check',
             template_url='/templates/cdiff_confirm.html'
         )
     ]

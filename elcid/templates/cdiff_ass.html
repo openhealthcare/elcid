@@ -1,3 +1,154 @@
 {% load forms %}
+<form class="form form-horizontal">
 
-{% select model="editing.no" label="Stool frequency" lookuplist="['<3/d', '3-5/d', 'Unreliable']" %}
+  <table class="table table-striped">
+    <tr>
+      <th colspan="4" class="text-center">
+        Severity Assessment
+      </th>
+    </tr>
+    <tr>
+      <td>
+      </td>
+      <td>
+        Mild
+      </td>
+      <td>
+        Mod
+      </td>
+      <td>
+        Severe
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Stool frequency
+      </td>
+      <td>
+        <label class="radio-inline">
+          <input class="" type="radio" name="" value="<3/d">
+          <3/d
+        </label>
+      </td>
+      <td>
+        <label class="radio-inline">
+          <input class="" type="radio" name="" value="3-5/d">
+          3-5/d
+        </label>
+      </td>
+      <td>
+        <label class="radio-inline">
+          <input class="" type="radio" name="" value="Unreliable">
+          Unreliable
+        </label>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        WCC
+      </td>
+      <td>
+        <label class="radio-inline">
+          <input class="" type="radio" name="" value="Normal">
+          Normal
+        </label>
+      </td>
+      <td>
+        <label class="radio-inline">
+          <input class="" type="radio" name="" value="Elevated but <15">
+          Elevated but <15
+        </label>
+      </td>
+      <td>
+        <label class="radio-inline">
+          <input class="" type="radio" name="" value=">15">
+          >15
+        </label>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Creat(baseline)
+      </td>
+      <td colspan="2">
+        <label class="radio-inline" style="margin-left: 75px;">
+          <input class="" type="radio" name="" value="<50% > baseline">
+          <50% > baseline
+        </label>
+      </td>
+      <td>
+        <label class="radio-inline">
+          <input class="" type="radio" name="" value="50% +> baseline">
+          50% +> baseline
+        </label>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Fever (C)
+      </td>
+      <td colspan="2">
+        <label class="radio-inline" style="margin-left: 75px;">
+          <input class="" type="radio" name="" value="<38.5">
+          <38.5
+        </label>
+      </td>
+      <td>
+        <label class="radio-inline">
+          <input class="" type="radio" name="" value=">38.5">
+          >38.5
+        </label>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Evidence severe colitis
+      </td>
+      <td colspan="2">
+        <label class="radio-inline" style="margin-left: 75px;">
+          <input class="" type="radio" name="" value="No">
+          No
+        </label>
+      </td>
+      <td>
+        <label class="radio-inline">
+          <input class="" type="radio" name="" value="Yes">
+          Yes
+        </label>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Overall
+      </td>
+      <td>
+      </td>
+      <td class="text-center">
+        <h3><span class="label label-danger">Severe</span></h3>
+      </td>
+      <td>
+      </td>
+    </tr>
+  </table>
+
+
+      <div class="col-md-6 col-md-offset-3">
+        <h4 class="">Treatment Plan</h4>
+      </div>
+      <div class="clearfix"></div>
+      {% checkbox model="editing.metr_plan" label="Metronidazole - Iv/PO" %}
+      {% checkbox model="editing.vanc_plan" label="Vancomycin" %}
+      {% input model="editing.vanc_dose" label="Vancomycin Dose" %}
+  {% textarea model="editing.other_plan" label="Other Plan" %}
+
+      <div class="col-md-6 col-md-offset-3">
+      <p>
+        Tick to confirm ICN aware & following advice given:
+        <br />
+        isolate pt, rationalize antibiotics, avoid laxatives/antimotility agents, review
+        PPI, correct electrolytes, review fluid balance, nutrition & response to treatment
+        daily
+      </p>
+      </div>
+      {% checkbox model="editing.vanc_plan" label="Advice given" %}
+</form>

@@ -1,6 +1,9 @@
-<b>
-  [[item.when | shortDate]]
-  <b ng-show="item.initials && item.initials.trim().length">
-  ([[item.initials]]<span ng-show="item.discussed_with"> with [[item.discussed_with]]</span>)
+
+  <b>
+    [[item.when | shortDate]]
   [[item.reason_for_interaction]]
-</b>
+  </b>
+
+<div markdown="clinical_discussion"></div>
+
+<hr />
