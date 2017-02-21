@@ -88,8 +88,9 @@ angular.module('opal.controllers').controller(
             if(episode.category_name !== 'Inpatient'){ // It's the wrong category - add new
                 return $scope.addForPatient(patient);
             }
+            var tag = $scope.tags.tag ||  $scope.tags.subtag;
 
-            if(episode.location[0].category == 'Followup'){
+            if(episode.location[0].category == 'Followup' && episode.hasTag(tag)){
               modal = $modal.open({
                   templateUrl: '/templates/modals/confirm_discharge.html',
                   controller: 'ConfirmDischargeCtrl',

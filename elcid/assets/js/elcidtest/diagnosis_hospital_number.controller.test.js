@@ -21,7 +21,7 @@ describe('DiagnosisHospitalNumber', function(){
         $controller('DiagnosisHospitalNumberCtrl', {
             $scope         : $scope,
             $modalInstance : modalInstance,
-            tags           : {},
+            tags           : {"someTag": true},
             hospital_number: hospital_number,
             context: {ctx: 'some context'}
         });
@@ -63,7 +63,7 @@ describe('DiagnosisHospitalNumber', function(){
             spyOn(modalInstance, 'close');
             $scope.newPatient({hospital_number: '555-123'});
             var resolvers = $modal.open.calls.mostRecent().args[0].resolve
-            expect(resolvers.tags()).toEqual({});
+            expect(resolvers.tags()).toEqual({"someTag": true});
             expect(modalInstance.close).toHaveBeenCalled();
         });
     });
@@ -125,9 +125,10 @@ describe('DiagnosisHospitalNumber', function(){
             $scope.newForPatientWithActiveEpisode(patient);
             expect($scope.addForPatient).toHaveBeenCalled();
         });
-        fit('if the patient is marked for follow up we should call the confirm discharge modal', function(){
+        it('if the patient is marked for follow up we should call the confirm discharge modal', function(){
             var patient = angular.copy(patientData);
             patient.episodes['1'].location[0].category = "Followup";
+            $scope.tags = {tag: "infectious_diseases"};
             spyOn($modal, "open").and.returnValue({result: {then: function(x, y){}}});
             $scope.newForPatientWithActiveEpisode(patient);
             expect($modal.open).toHaveBeenCalled();
@@ -167,7 +168,7 @@ describe('DiagnosisHospitalNumber', function(){
           var resolves = $modal.open.calls.mostRecent().args[0].resolve;
           var expected_demographics = angular.copy(patientData.demographics[0]);
           expect(resolves.demographics()).toEqual(expected_demographics);
-          expect(resolves.tags()).toEqual({});
+          expect(resolves.tags()).toEqual({someTag: true});
       });
 
     });

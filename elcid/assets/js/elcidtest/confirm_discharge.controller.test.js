@@ -2,37 +2,111 @@ describe('ConfirmDischargeCtrl', function(){
     "use strict";
 
     var $rootScope, $scope, $modal, $httpBackend, $controller;
-    var modalInstance, tags, hospital_number, $q;
+    var modalInstance, tags, hospital_number, $q, controller;
+    var DischargePatientService, context, episode, demographics;
+    var patient, discharge, tags, modalResult;
 
     beforeEach(module('opal.controllers'));
 
     beforeEach(function(){
         inject(function($injector){
-            $scope = $injector.get('$scope');
+            $rootScope = $injector.get('$rootScope');
             $modal = $injector.get('$modal');
-            DischargePatientService = $injector.get('DischargePatientService');
             $controller = $injector.get('$controller');
         });
 
         $scope = $rootScope.$new();
         modalInstance = $modal.open({template: 'notatemplate'});
+        modalResult = jasmine.createSpy();
+        spyOn($modal, 'open').and.callFake(function(){
+            return {
+              result: {
+                then: function(fn){
+                  fn(modalResult());
+                }
+              }
+            }
+        });
+
+        spyOn(modalInstance, 'close').and.returnValue({
+          result: {
+            then: modalResult
+          }
+        });
+        context = {removeFromList: function(){}};
+        DischargePatientService = jasmine.createSpy();
+        discharge = jasmine.createSpy().and.returnValue({
+          then: function(fn){fn();}
+        })
+        DischargePatientService.and.returnValue({
+          discharge: discharge
+        });
+
+        demographics = [{
+            hospital_number: "1",
+            patient_id: "1"
+        }];
+
+        episode = {
+            tagging: [{
+              infectious_diseases: true,
+              id_inpatients: true
+            }],
+            demographics: demographics,
+            location: [{
+                category: "Discharged"
+            }],
+            category_name: "Inpatient"
+        };
+
+        patient = {
+            active_episode_id: "1",
+            episodes: {
+                1: episode
+            },
+            demographics: demographics
+        }
+        tags = {someTag: 'or other'},
+
 
         $controller('ConfirmDischargeCtrl', {
             $scope         : $scope,
             $modalInstance : modalInstance,
             hospital_number: hospital_number,
-            context: {ctx: 'some context'},
-            patient: {},
-            episode: {},
-            tags: {someTag: 'or other'},
-            context: {"some context": "useful"}
+            DischargePatientService: DischargePatientService,
+            context: context,
+            patient: patient,
+            episode: episode,
+            tags: tags,
+            nextStepController: "nextStep"
         });
     });
 
     it('should open the next modal with the controller passed in', function(){
-
+      spyOn(context, 'removeFromList');
+      spyOn($scope, 'newPatient');
+      $scope.confirm();
+      expect(discharge).toHaveBeenCalledWith(episode, {category: "Discharged"}, tags);
+      expect(context.removeFromList).toHaveBeenCalledWith(episode);
+      expect($scope.newPatient).toHaveBeenCalledWith(patient);
     });
 
-    it('')
+    it('show open the next step with the controller passed in', function(){
+      modalResult.and.returnValue('some result');
+      $scope.newPatient(patient);
+      expect($modal.open).toHaveBeenCalled();
+      var callArgs = $modal.open.calls.argsFor(0)[0];
+      expect(callArgs.controller).toEqual('nextStep');
+      expect(modalInstance.close).toHaveBeenCalledWith('some result');
+    });
+
+    it('resolve a promisse if the modal returns a promise', function(){
+      modalResult.and.returnValue({then: function(fn){ fn('some result') }});
+      $scope.newPatient(patient);
+      expect($modal.open).toHaveBeenCalled();
+      var callArgs = $modal.open.calls.argsFor(0)[0];
+      expect(callArgs.controller).toEqual('nextStep');
+      expect(modalInstance.close).toHaveBeenCalledWith('some result');
+    });
 
 });

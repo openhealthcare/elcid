@@ -5,7 +5,7 @@ angular.module('opal.controllers').controller('ConfirmDischargeCtrl', function(
   $scope, $modal, $modalInstance, DischargePatientService,
   patient, episode, tags, context, nextStepController
 ){
-    $scope.newPatient = function(result){
+    $scope.newPatient = function(patient){
         // There is no patient with this hospital number
         // Show user the form for creating a new episode,
         // with the hospital number pre-populated
@@ -21,14 +21,14 @@ angular.module('opal.controllers').controller('ConfirmDischargeCtrl', function(
                 },
                 tags: function(){ return tags; }
             }
-        }).result.then(function(result) {
+        }).result.then(function(patient) {
             // The user has created the episode, or cancelled
-            if(result.then){
-                result.then(function(r){
+            if(patient.then){
+                patient.then(function(r){
                   $modalInstance.close(r);
                 });
             }else{
-                $modalInstance.close(result);
+                $modalInstance.close(patient);
             }
         });
     };

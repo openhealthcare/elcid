@@ -80,13 +80,14 @@ angular.module('opal.controllers').controller(
         };
 
         $scope.newForPatientWithActiveEpisode = function(patient){
-			episode = new Episode(patient.episodes[patient.active_episode_id])
+      			episode = new Episode(patient.episodes[patient.active_episode_id])
 
             if(episode.category_name != 'Inpatient'){ // It's the wrong category - add new
                 return $scope.addForPatient(patient);
             }
+            var tag = $scope.tags.subtag || $scope.tags.tag;
 
-            if(episode.location[0].category == 'Followup'){
+            if(episode.location[0].category == 'Followup' && episode.hasTag(tag)){
               modal = $modal.open({
                   templateUrl: '/templates/modals/confirm_discharge.html',
                   controller: 'ConfirmDischargeCtrl',
