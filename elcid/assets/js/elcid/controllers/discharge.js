@@ -14,9 +14,20 @@ controllers.controller(
         $scope.currentCategory = episode.location[0].category;
 
         $scope.discharge = function(){
+          if($scope.editing.category == "Followup"){
+            /*
+            * if a patient is marked as follow up, we leave them on the list
+            * view
+            */
+            dischargePatientService.discharge(episode, $scope.editing, tags).then(function(){
+                $modalInstance.close('followup');
+            });
+          }
+          else{
             dischargePatientService.discharge(episode, $scope.editing, tags).then(function(){
                 $modalInstance.close('discharged');
             });
+          }
         };
 
         $scope.cancel = function() {
