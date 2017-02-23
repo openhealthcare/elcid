@@ -32,6 +32,8 @@ angular.module('opal.controllers').controller('ConfirmDischargeCtrl', function(
             }
         });
     };
+  var demographics = patient.demographics[0];
+  $scope.patientName = demographics.first_name + " " + demographics.surname;
 
    $scope.confirm = function(){
      var dischargePatientService = new DischargePatientService();

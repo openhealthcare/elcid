@@ -4,7 +4,7 @@ describe('ConfirmDischargeCtrl', function(){
     var $rootScope, $scope, $modal, $httpBackend, $controller;
     var modalInstance, tags, hospital_number, $q, controller;
     var DischargePatientService, context, episode, demographics;
-    var patient, discharge, tags, modalResult;
+    var patient, discharge, modalResult;
 
     beforeEach(module('opal.controllers'));
 
@@ -44,7 +44,9 @@ describe('ConfirmDischargeCtrl', function(){
 
         demographics = [{
             hospital_number: "1",
-            patient_id: "1"
+            patient_id: "1",
+            first_name: "Susan",
+            surname: "Smith"
         }];
 
         episode = {
@@ -80,6 +82,10 @@ describe('ConfirmDischargeCtrl', function(){
             tags: tags,
             nextStepController: "nextStep"
         });
+    });
+
+    it("should put the patient's name on scope", function(){
+      expect($scope.patientName).toBe("Susan Smith");
     });
 
     it('should open the next modal with the controller passed in', function(){
