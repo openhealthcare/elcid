@@ -23,6 +23,7 @@ describe('DiagnosisHospitalNumber', function(){
             $modalInstance : modalInstance,
             tags           : {"someTag": true},
             hospital_number: hospital_number,
+            episode: "some episode",
             context: {ctx: 'some context'}
         });
     });
@@ -73,6 +74,7 @@ describe('DiagnosisHospitalNumber', function(){
             active_episode_id: "1",
             episodes: {
                 1: {
+                  id: 1,
                   tagging: [{
                     infectious_diseases: true,
                     id_inpatients: true
@@ -136,6 +138,14 @@ describe('DiagnosisHospitalNumber', function(){
             expect(modalArgs.templateUrl).toBe('/templates/modals/confirm_discharge.html');
             expect(modalArgs.controller).toBe('ConfirmDischargeCtrl');
             expect(modalArgs.resolve.context()).toEqual({ctx: 'some context'});
+            expect(modalArgs.resolve.patient()).toEqual(patient);
+            expect(modalArgs.resolve.episode().id).toEqual(1);
+            expect(modalArgs.resolve.nextStepController()).toEqual(
+              'DiagnosisAddEpisodeCtrl'
+            );
+            expect(modalArgs.resolve.tags()).toEqual(
+              {tag: "infectious_diseases"}
+            );
         });
     });
 
