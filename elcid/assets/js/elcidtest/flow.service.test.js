@@ -27,13 +27,17 @@ describe('elCIDFlow', function() {
         'controller': 'DiagnosisDischargeCtrl',
         'template'  : '/templates/elcid/modals/diagnosis_discharge.html'
     };
-    var opat_exit =  {
-        'controller': 'OPATDischargeCtrl',
-        'template'  : '/opat/templates/modals/discharge_opat_episode.html/'
+    var virology_enter = {
+        'controller': 'VirologyHospitalNumberCtrl',
+        'template'  : '/templates/modals/hospital_number.html/'
     };
     var opat_enter = {
         'controller': 'OPATReferralCtrl',
         'template'  : '/opat/templates/modals/opat_referral.html/'
+    };
+    var opat_exit =  {
+        'controller': 'OPATDischargeCtrl',
+        'template'  : '/opat/templates/modals/discharge_opat_episode.html/'
     };
 
     beforeEach(function(){
@@ -95,6 +99,11 @@ describe('elCIDFlow', function() {
                     $routeParams.slug = slug;
                     expect(Flow.exit({category_name: 'Inpatient'})).toEqual(diagnosis_exit);
                 });
+            });
+
+            it('enter should fetch the diagnosis flow', function() {
+                $routeParams.slug = 'virology';
+                expect(Flow.enter()).toEqual(virology_enter);
             });
 
 

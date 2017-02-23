@@ -71,18 +71,24 @@ angular.module('opal.services').factory('DischargePatientService', function($q) 
             }
 
             if (editing.category != 'Followup') {
-                      if(currentSubTag != ''){
-                          taggingAttrs[currentSubTag] = false;
-                      }else{
-                          taggingAttrs[currentTag] = false;
-                      }
+              if(currentSubTag != ''){
+                  taggingAttrs[currentSubTag] = false;
+              }else{
+                  taggingAttrs[currentTag] = false;
+              }
             }
 
-            return tagging.save(taggingAttrs).then(function(){
+            var deferred = $q.defer();
+
+            tagging.save(taggingAttrs).then(function(){
                 location.save(locationAttrs).then(function(){
-                    episode.save(episodeAttrs);
+                    episode.save(episodeAttrs).then(function(result){
+                      deferred.resolve(result);
+                    });
                 });
             });
+
+            return deferred.promise;
         };
     };
 
