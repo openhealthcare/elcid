@@ -13,7 +13,7 @@ describe('ElcidDischargeEpisodeCtrl', function() {
         $controller  = $injector.get('$controller');
       });
 
-      var dischargePatientService = {
+      dischargePatientService = {
         getEditing: function(){ return {some: "editing"}; },
         discharge: function(){
           return {
@@ -22,14 +22,12 @@ describe('ElcidDischargeEpisodeCtrl', function() {
         }
       };
       spyOn(dischargePatientService, "getEditing").and.callThrough();
+      spyOn(dischargePatientService, "discharge").and.callThrough();
 
-      var DischargePatientService = function(){
-        return dischargePatientService;
-      };
+      var DischargePatientService = function(){};
+      DischargePatientService.prototype = dischargePatientService;
 
-      $modalInstance = {
-        close: function(){}
-      };
+      $modalInstance = jasmine.createSpyObj(["close"]);
 
       tags = {some: "tags"};
       episode = {location: [{category: "someCategory"}]};
@@ -51,17 +49,24 @@ describe('ElcidDischargeEpisodeCtrl', function() {
 
     describe('discharge', function(){
       it('should do close the modal with follow up', function(){
-
+        $scope.editing.category = "Followup";
+        $scope.discharge();
+        expect(dischargePatientService.discharge).toHaveBeenCalled();
+        expect($modalInstance.close).toHaveBeenCalledWith('followup');
       });
 
       it('should do close the modal with discharge', function(){
-
+        $scope.editing.category = "Discharged";
+        $scope.discharge();
+        expect(dischargePatientService.discharge).toHaveBeenCalled();
+        expect($modalInstance.close).toHaveBeenCalledWith('discharged');
       });
     });
 
     describe('cancel', function(){
       it('should do close the modal with cancel', function(){
-
+        $scope.cancel();
+        expect($modalInstance.close).toHaveBeenCalledWith('cancel');
       });
     });
 });
