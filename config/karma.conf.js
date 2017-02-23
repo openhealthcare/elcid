@@ -26,6 +26,7 @@ module.exports =  function(config){
     preprocessors[__dirname + '/../opat/static/js/opat/controllers/*'] = 'coverage';
     preprocessors[__dirname + '/../research/static/js/research/controllers/*'] = 'coverage';
     preprocessors[__dirname + '/../walkin/static/js/walkin/controllers/*'] = 'coverage';
+    preprocessors[__dirname + '/../infectiousdiseases/static/js/infectiousdiseases/controllers/*'] = 'coverage';
 
     config.set({
         frameworks: ['jasmine'],
