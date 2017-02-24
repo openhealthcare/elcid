@@ -10,6 +10,7 @@ class Application(application.OpalApplication):
     javascripts = [
         'js/elcid/routes.js',
         'js/elcid/controllers/discharge.js',
+        'js/elcid/controllers/confirm_discharge.js',
         'js/elcid/controllers/diagnosis_hospital_number.js',
         'js/elcid/controllers/diagnosis_add_episode.js',
         'js/elcid/controllers/diagnosis_discharge.js',

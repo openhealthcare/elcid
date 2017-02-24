@@ -33,6 +33,12 @@ angular.module('opal.services').factory('elCIDFlow', function($routeParams){
                         'template'  : '/templates/modals/hospital_number.html/'
                     }
                 }
+                if($routeParams.slug && $routeParams.slug === 'virology'){
+                  return {
+                      'controller': 'VirologyHospitalNumberCtrl',
+                      'template'  : '/templates/modals/hospital_number.html/'
+                  }
+                }
                 return {
                     'controller': 'HospitalNumberCtrl',
                     'template'  : '/templates/modals/hospital_number.html/'
@@ -45,6 +51,7 @@ angular.module('opal.services').factory('elCIDFlow', function($routeParams){
                         'template'  : '/templates/elcid/modals/diagnosis_discharge.html'
                     }
                 }
+
                 return {
                     'controller': 'ElcidDischargeEpisodeCtrl',
                     'template'  : '/templates/modals/discharge_episode.html/'
