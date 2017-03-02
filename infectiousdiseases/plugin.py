@@ -11,6 +11,7 @@ class InfectiousDiseasesPlugin(plugins.OpalPlugin):
         'opal.controllers': [
             'js/infectiousdiseases/controllers/tropical_liaison_add_patient.js',
             'js/infectiousdiseases/controllers/tropical_liaison_end_liaison.js',
+            'js/infectiousdiseases/controllers/virology_hospital_number.js',
         ]
     }
 
