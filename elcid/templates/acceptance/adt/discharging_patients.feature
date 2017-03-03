@@ -21,3 +21,14 @@ Given that I am on the ID Liason list
 Given that that patient is selected
 When I click discharge, the patient should be removed from the ID Liason
 list.
+
+
+As a Doctor
+I need to be able to discharge patients with follow up
+So that I can enter test results even after the patient they've left
+
+Given that I am on the virology list
+When I click discharge, a modal pops up that gives me the radio option "Discharged - Outstanding Results for Follow-Up"
+When I choose this and click the 'Discharge' button
+The patient is still on the list, but marked in the Location column as
+'Discharged with Follow up'
