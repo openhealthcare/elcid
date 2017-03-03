@@ -481,7 +481,16 @@ controllers.controller(
                         growl.success($scope.episode.demographics[0].first_name + ' ' + $scope.episode.demographics[0].surname + ' discharged.');
                     }
                     $scope.discharged = true;
-                    $modalInstance.close('discharged');
+                    if($scope.editing.category === "Followup"){
+                      /*
+                      * if a patient is marked as follow up, we leave them on the list
+                      * view
+                      */
+                      $modalInstance.close('followup');
+                    }
+                    else{
+                      $modalInstance.close('discharged');
+                    }
                 });
             });
 
