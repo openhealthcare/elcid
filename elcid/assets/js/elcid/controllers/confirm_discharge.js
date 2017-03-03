@@ -38,7 +38,7 @@ angular.module('opal.controllers').controller('ConfirmDischargeCtrl', function(
    $scope.confirm = function(){
      var dischargePatientService = new DischargePatientService();
      dischargePatientService.discharge(episode, {category: "Discharged"}, tags).then(function(){
-       context.removeFromList(episode);
+       context.removeFromList(episode.id);
        $scope.newPatient(patient);
      });
    };

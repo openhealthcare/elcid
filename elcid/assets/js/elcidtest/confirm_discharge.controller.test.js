@@ -50,6 +50,7 @@ describe('ConfirmDischargeCtrl', function(){
         }];
 
         episode = {
+            id: 1,
             tagging: [{
               infectious_diseases: true,
               id_inpatients: true
@@ -93,7 +94,7 @@ describe('ConfirmDischargeCtrl', function(){
       spyOn($scope, 'newPatient');
       $scope.confirm();
       expect(discharge).toHaveBeenCalledWith(episode, {category: "Discharged"}, tags);
-      expect(context.removeFromList).toHaveBeenCalledWith(episode);
+      expect(context.removeFromList).toHaveBeenCalledWith(episode.id);
       expect($scope.newPatient).toHaveBeenCalledWith(patient);
     });
 
