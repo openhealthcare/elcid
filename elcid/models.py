@@ -18,30 +18,9 @@ from opal.core import lookuplists
 from microhaem.constants import MICROHAEM_CONSULTATIONS, MICROHAEM_TAG
 
 
-class Demographics(PatientSubrecord, ExternallySourcedModel):
+class Demographics(omodels.Demographics, omodels.ExternallySourcedModel):
     _is_singleton = True
     _icon = 'fa fa-user'
-
-    hospital_number = models.CharField(max_length=255, blank=True)
-    nhs_number = models.CharField(max_length=255, blank=True, null=True)
-
-    surname = models.CharField(max_length=255, blank=True)
-    first_name = models.CharField(max_length=255, blank=True)
-    middle_name = models.CharField(max_length=255, blank=True, null=True)
-    title = ForeignKeyOrFreeText(omodels.Title)
-    date_of_birth = models.DateField(null=True, blank=True)
-    marital_status = ForeignKeyOrFreeText(omodels.MaritalStatus)
-    religion = models.CharField(max_length=255, blank=True, null=True)
-    date_of_death = models.DateField(null=True, blank=True)
-    post_code = models.CharField(max_length=20, blank=True, null=True)
-    gp_practice_code = models.CharField(max_length=20, blank=True, null=True)
-    birth_place = ForeignKeyOrFreeText(omodels.Destination)
-    ethnicity = ForeignKeyOrFreeText(omodels.Ethnicity)
-    death_indicator = models.BooleanField(default=False)
-
-    # not strictly correct, but it will be updated when opal core models
-    # are updated
-    sex = ForeignKeyOrFreeText(omodels.Gender)
 
     pid_fields       = (
         'hospital_number', 'nhs_number', 'surname', 'first_name',
@@ -57,6 +36,7 @@ class Demographics(PatientSubrecord, ExternallySourcedModel):
             return super(Demographics, cls).get_form_template(patient_list=None, episode_type=None)
         else:
             return "forms/demographics_form_pre_gloss.html"
+
 
 class ContactDetails(PatientSubrecord):
     _is_singleton = True
@@ -102,14 +82,7 @@ class DuplicatePatient(PatientSubrecord):
         return self._icon
 
 
-class Location(EpisodeSubrecord):
-    _is_singleton = True
-    _icon = 'fa fa-map-marker'
-
-    category                   = models.CharField(max_length=255, blank=True)
-    hospital                   = models.CharField(max_length=255, blank=True)
-    ward                       = models.CharField(max_length=255, blank=True)
-    bed                        = models.CharField(max_length=255, blank=True)
+class Location(omodels.Location):
     # This is completely the wrong place for these - they need to go in their
     # own OPATReferral model. The ticket for that work is currently
     # opal-ideas#21
@@ -236,20 +209,12 @@ class SecondaryDiagnosis(EpisodeSubrecord):
         verbose_name_plural = "Secondary diagnoses"
 
 
-class Diagnosis(EpisodeSubrecord):
+class Diagnosis(omodels.Diagnosis):
     """
     This is a working-diagnosis list, will often contain things that are
     not technically diagnoses, but is for historical reasons, called diagnosis.
     """
-    _title = 'Diagnosis / Issues'
-    _sort = 'date_of_diagnosis'
-    _icon = 'fa fa-stethoscope'
     _angular_service = 'Diagnosis'
-
-    condition         = ForeignKeyOrFreeText(omodels.Condition)
-    provisional       = models.NullBooleanField()
-    details           = models.CharField(max_length=255, blank=True)
-    date_of_diagnosis = models.DateField(blank=True, null=True)
 
     def __unicode__(self):
         return u'Diagnosis of {0} - {1}'.format(
@@ -261,17 +226,8 @@ class Diagnosis(EpisodeSubrecord):
         verbose_name_plural = "Diagnoses"
 
 
-class PastMedicalHistory(EpisodeSubrecord):
-    _title = 'PMH'
-    _sort = 'year'
-    _icon = 'fa fa-history'
-
-    condition = ForeignKeyOrFreeText(omodels.Condition)
-    year      = models.CharField(max_length=200, blank=True)
-    details   = models.CharField(max_length=255, blank=True)
-
-    class Meta:
-        verbose_name_plural = "Past medical histories"
+class PastMedicalHistory(omodels.PastMedicalHistory):
+    pass
 
 
 class GeneralNote(EpisodeSubrecord):
@@ -326,13 +282,7 @@ class Antimicrobial(EpisodeSubrecord):
     no_antimicrobials = models.NullBooleanField(default=False)
 
 
-class Allergies(PatientSubrecord, ExternallySourcedModel):
-    _icon = 'fa fa-warning'
-
-    drug        = ForeignKeyOrFreeText(omodels.Antimicrobial)
-    provisional = models.NullBooleanField()
-    details     = models.CharField(max_length=255, blank=True)
-
+class Allergies(omodels.Allergies, ExternallySourcedModel):
     # previously called drug this is the name of the problematic substance
     allergy_description = models.CharField(max_length=255, blank=True)
     allergy_type_description = models.CharField(max_length=255, blank=True)
@@ -408,56 +358,13 @@ class Hiv_no(lookuplists.LookupList):
         verbose_name = "HIV refusal reason"
 
 
-class MicrobiologyTest(EpisodeSubrecord):
+class MicrobiologyTest(omodels.Investigation):
     _title = 'Investigations'
     _sort = 'date_ordered'
     _icon = 'fa fa-crosshairs'
     _angular_service = 'Investigation'
 
-    test                  = models.CharField(max_length=255)
     alert_investigation   = models.BooleanField(default=False)
-    date_ordered          = models.DateField(null=True, blank=True)
-    details               = models.CharField(max_length=255, blank=True)
-    microscopy            = models.CharField(max_length=255, blank=True)
-    organism              = models.CharField(max_length=255, blank=True)
-    sensitive_antibiotics = models.CharField(max_length=255, blank=True)
-    resistant_antibiotics = models.CharField(max_length=255, blank=True)
-    result                = models.CharField(max_length=255, blank=True)
-    igm                   = models.CharField(max_length=20, blank=True, verbose_name="IgM")
-    igg                   = models.CharField(max_length=20, blank=True, verbose_name="IgG")
-    vca_igm               = models.CharField(max_length=20, blank=True, verbose_name="IgM")
-    vca_igg               = models.CharField(max_length=20, blank=True, verbose_name="IgG")
-    ebna_igg              = models.CharField(max_length=20, blank=True, verbose_name="EBNA IgG")
-    hbsag                 = models.CharField(max_length=20, blank=True, verbose_name="HBsAg")
-    anti_hbs              = models.CharField(max_length=20, blank=True, verbose_name="anti-HbS")
-    anti_hbcore_igm       = models.CharField(max_length=20, blank=True, verbose_name="anti-HbCore IgM")
-    anti_hbcore_igg       = models.CharField(max_length=20, blank=True, verbose_name="anti-HbCore IgG")
-    rpr                   = models.CharField(max_length=20, blank=True, verbose_name="RPR")
-    tppa                  = models.CharField(max_length=20, blank=True, verbose_name="TPPA")
-    viral_load            = models.CharField(max_length=20, blank=True)
-    parasitaemia          = models.CharField(max_length=20, blank=True)
-    hsv                   = models.CharField(max_length=20, blank=True, verbose_name="HSV")
-    vzv                   = models.CharField(max_length=20, blank=True, verbose_name="VZV")
-    syphilis              = models.CharField(max_length=20, blank=True)
-    c_difficile_antigen   = models.CharField(max_length=20, blank=True)
-    c_difficile_toxin     = models.CharField(max_length=20, blank=True)
-    species               = models.CharField(max_length=20, blank=True)
-    hsv_1                 = models.CharField(max_length=20, blank=True)
-    hsv_2                 = models.CharField(max_length=20, blank=True)
-    enterovirus           = models.CharField(max_length=20, blank=True)
-    cmv                   = models.CharField(max_length=20, blank=True)
-    ebv                   = models.CharField(max_length=20, blank=True)
-    influenza_a           = models.CharField(max_length=20, blank=True)
-    influenza_b           = models.CharField(max_length=20, blank=True)
-    parainfluenza         = models.CharField(max_length=20, blank=True)
-    metapneumovirus       = models.CharField(max_length=20, blank=True)
-    rsv                   = models.CharField(max_length=20, blank=True)
-    adenovirus            = models.CharField(max_length=20, blank=True)
-    norovirus             = models.CharField(max_length=20, blank=True)
-    rotavirus             = models.CharField(max_length=20, blank=True)
-    giardia               = models.CharField(max_length=20, blank=True)
-    entamoeba_histolytica = models.CharField(max_length=20, blank=True)
-    cryptosporidium       = models.CharField(max_length=20, blank=True)
     hiv_declined          = ForeignKeyOrFreeText(
         Hiv_no, verbose_name="Reason not done"
     )
