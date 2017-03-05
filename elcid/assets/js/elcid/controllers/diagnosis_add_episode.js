@@ -12,7 +12,7 @@ angular.module('opal.controllers')
     $scope.editing = {
       tagging: {},
       location: {
-        hospital: 'UCLH'
+        hospital: 'UCH'
       },
       demographics: demographics,
     };
