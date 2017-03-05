@@ -86,9 +86,11 @@ controllers.controller(
                 templateUrl: '/templates/modals/add_episode_without_teams.html/',
                 controller: 'AddEpisodeCtrl',
                 resolve: {
-                    referencedata: function(Referencedata) { return Referencedata; },
+                    referencedata: function(Referencedata) {
+                      return Referencedata.load();
+                    },
                     demographics: function() {
-                        return { hospital_number: $scope.model.hospitalNumber }
+                        return { hospital_number: $scope.model.hospitalNumber };
                     },
                     tags: function(){ return {}; }
                 }
@@ -147,9 +149,11 @@ controllers.controller(
                 templateUrl: '/templates/modals/add_episode_without_teams.html/',
                 controller: 'AddEpisodeCtrl',
                 resolve: {
-                    referencedata: function(Referencedata) { return Referencedata; },
+                    referencedata: function(Referencedata) {
+                      return Referencedata.load();
+                    },
                     demographics: function() { return demographics; },
-                    tags: function(){ return {} }
+                    tags: function(){ return {}; }
                 }
             }).result.then(function(result) {
                 // The user has created the episode, or cancelled

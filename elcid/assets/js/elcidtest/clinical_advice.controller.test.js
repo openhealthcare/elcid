@@ -17,15 +17,19 @@ describe('ClinicalAdviceFormTest', function() {
 
   var mockReferenceData = {
     toLookuplists: function(){
-      return {some_list: []}
+      return {some_list: []};
     }
   };
 
-  var mockReferenceDataPromise = {
-    then: function(someFun){
-      return someFun(mockReferenceData);
+  var mockReferenceDataLoader = {
+    load: function(){
+      return {
+        then: function(someFun){
+          return someFun(mockReferenceData);
+        }
+      };
     }
-  }
+  };
 
   beforeEach(function(){
 
@@ -45,10 +49,10 @@ describe('ClinicalAdviceFormTest', function() {
       return $controller('ClinicalAdviceForm', {
         $rootScope: $rootScope,
         $scope: $scope,
-        Referencedata: mockReferenceDataPromise
+        Referencedata: mockReferenceDataLoader
       });
     };
-    $httpBackend.expectGET('/api/v0.1/userprofile/').respond({});
+    // $httpBackend.expectGET('/api/v0.1/userprofile/').respond({});
     $httpBackend.expectGET('/api/v0.1/record/').respond(recorddata);
   });
 

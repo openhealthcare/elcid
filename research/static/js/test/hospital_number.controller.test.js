@@ -1,7 +1,7 @@
 describe('ResearchHospitalNumberCtrl', function (){
     "use strict";
     var $controller, $scope, $httpBackend, $modalInstance, $modal, $rootScope;
-    var Item;
+    var Item, Episode;
     var controller, options, schema, tags;
 
     beforeEach(module('opal.controllers', function($provide){
@@ -46,7 +46,6 @@ describe('ResearchHospitalNumberCtrl', function (){
         beforeEach(function(){
             spyOn($modal, 'open').and.callThrough();
             $httpBackend.whenGET('/templates/modals/add_episode_without_teams.html/').respond('hi');
-            $httpBackend.expectGET('/api/v0.1/userprofile/').respond({});
             $httpBackend.expectGET('/api/v0.1/referencedata/').respond({});
         });
 

@@ -98,7 +98,7 @@ describe('OPATDischargeCtrl', function (){
             });
 
         });
-        $httpBackend.expectGET('/api/v0.1/userprofile/').respond({})
+        // $httpBackend.expectGET('/api/v0.1/userprofile/').respond({})
 
     });
 
@@ -109,7 +109,7 @@ describe('OPATDischargeCtrl', function (){
 
     it('Should set up state', function () {
         expect($scope.episode).toBe(episode);
-        $httpBackend.flush();
+        // $httpBackend.flush();
     });
 
 

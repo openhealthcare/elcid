@@ -35,7 +35,6 @@ describe('WalkinNurseInvestigationsCtrl', function (){
             episode        : episode
         });
 
-        $httpBackend.expectGET('/api/v0.1/userprofile/').respond({});
     }));
 
     it('Should set up an investigations object', function () {

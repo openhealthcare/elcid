@@ -15,7 +15,9 @@ angular.module('opal.controllers').controller('ConfirmDischargeCtrl', function(
             controller: nextStepController,
             size: 'lg',
             resolve: {
-                referencedata: function(Referencedata) { return Referencedata; },
+                referencedata: function(Referencedata) {
+                  return Referencedata.load();
+                },
                 demographics: function() {
                     return patient.demographics[0];
                 },
