@@ -3,8 +3,11 @@
 //
 controllers.controller(
     'WalkinDischargeCtrl',
-    function($scope, $modalInstance, $modal, $rootScope, $q,
-             growl, Item, CopyToCategory, UserProfile, referencedata, episode, tags){
+    function(
+      $scope, $modalInstance, $modal, $rootScope, $q,
+      growl, Item, CopyToCategory, UserProfile, referencedata, episode, tags,
+      $templateRequest
+    ){
 
         "use strict";
 
@@ -159,6 +162,13 @@ controllers.controller(
 
             $scope.episode.save(ep).then(function(resp){
                 $q.all(to_save).then(function(){
+                  // slight over engineering but...
+                  // we want the user to be discharged and then the discharge
+                  // summary to open.
+                  // This should be seamless for the user so we preCache
+                  // the discharge summary before moving to the next stage
+                  $templateRequest('/dischargesummary/modals/walkinnurse/').then(function(){
+                    $modalInstance.close('discharged');
                     growl.success('Removed from Walk-in lists');
                     var deferred = $q.defer();
                     var modal = $modal.open({
@@ -167,7 +177,7 @@ controllers.controller(
                         size: 'lg',
                         resolve: {episode: episode}
                     });
-                    $modalInstance.close(deferred.promise);
+                  });
                 });
             });
         };
@@ -198,6 +208,7 @@ controllers.controller(
 
             $q.all(to_save).then(function(){
                 growl.success('Removed from Walk-in lists');
+                debugger;
                 $modalInstance.close('discharged');
             });
         }
