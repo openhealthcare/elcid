@@ -208,7 +208,6 @@ controllers.controller(
 
             $q.all(to_save).then(function(){
                 growl.success('Removed from Walk-in lists');
-                debugger;
                 $modalInstance.close('discharged');
             });
         }
