@@ -2,7 +2,7 @@ describe('ClinicalAdviceFormTest', function() {
   "use strict";
 
   var $scope, $httpBackend, $rootScope, $controller;
-  var Episode;
+  var Episode, $cookies;
   var mkcontroller;
 
   var episodedata = {
@@ -30,6 +30,15 @@ describe('ClinicalAdviceFormTest', function() {
   beforeEach(function(){
 
     module('opal.controllers');
+    $cookies = jasmine.createSpyObj('$cookies', ['get', 'put']);
+    $cookies.get.and.callFake(function(x){
+        if(x === 'patientNotes-reasonForInteraction'){
+          return 'issues'
+        }
+        else{
+          return 'Dr Doctor'
+        }
+    });
 
     inject(function($injector){
       $httpBackend = $injector.get('$httpBackend');
@@ -45,7 +54,8 @@ describe('ClinicalAdviceFormTest', function() {
       return $controller('ClinicalAdviceForm', {
         $rootScope: $rootScope,
         $scope: $scope,
-        Referencedata: mockReferenceDataPromise
+        Referencedata: mockReferenceDataPromise,
+        $cookies: $cookies
       });
     };
     $httpBackend.expectGET('/api/v0.1/userprofile/').respond({});
@@ -70,8 +80,27 @@ describe('ClinicalAdviceFormTest', function() {
       $httpBackend.flush();
 
       expect(!!ctrl.editing).toBe(true);
-      expect(_.contains(_.keys(ctrl.editing), "reason_for_interaction")).toBe(true);
-      expect(_.contains(_.keys(ctrl.editing), "discussed_with")).toBe(true);
+      expect(ctrl.editing.reason_for_interaction).toBe('issues');
+      expect(ctrl.editing.discussed_with).toBe('Dr Doctor');
+    });
+
+    it('should save items and store them to cookies', function(){
+      var ctrl = mkcontroller();
+      $rootScope.$apply();
+      $httpBackend.flush();
+      ctrl.editing.reason_for_interaction = "no issues";
+      ctrl.editing.discussed_with = "Nurse Nurse";
+      $httpBackend.expectPOST('/api/v0.1/microbiology_input/', ctrl.editing).respond({});
+      ctrl.save();
+      $httpBackend.flush();
+      expect($cookies.put.calls.argsFor(0)).toEqual([
+        'patientNotes-reasonForInteraction',
+        "no issues"
+      ]);
+      expect($cookies.put.calls.argsFor(1)).toEqual([
+        'patientNotes-discussedWith',
+        "Nurse Nurse"
+      ]);
     });
   });
 });
