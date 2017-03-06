@@ -2,16 +2,25 @@ describe('WalkinDischargeCtrl', function(){
     "use strict";
 
     var $controller, $scope, $modalInstance, $httpBackend, $rootScope, $modal, $q, growl;
-    var Episode, episode, tags;
+    var Episode, episode, tags, templateRequest;
     var today = new Date();
     var today_string = moment(today).format('DD/MM/YYYY');
+    var templateRequestCallTime, modalCallTime, modalInstanceCallTime;
 
     var referencedata = {toLookuplists: function(){ return {} }}
 
     beforeEach(module('opal.controllers'));
 
     beforeEach(inject(function($injector){
-
+        templateRequest = jasmine.createSpy('$templateRequest');
+        templateRequest.and.callFake(function(){
+          templateRequestCallTime = new Date();
+          return {
+            then: function(fn){
+              fn();
+            }
+          };
+        });
         $rootScope   = $injector.get('$rootScope');
         $scope       = $rootScope.$new();
         $modal       = $injector.get('$modal');
@@ -21,7 +30,10 @@ describe('WalkinDischargeCtrl', function(){
         $q           = $injector.get('$q');
 
         $modalInstance = $modal.open({template: 'Not a real template'});
-        spyOn($modal, 'open').and.returnValue({});
+        spyOn($modal, 'open').and.callFake(function(){
+          modalCallTime = new Date();
+          return {};
+        })
         tags = {};
 
         $rootScope.fields = {
@@ -102,6 +114,7 @@ describe('WalkinDischargeCtrl', function(){
             referencedata  : referencedata,
             tags           : tags,
             episode        : episode,
+            $templateRequest: templateRequest
         });
     }));
 
@@ -160,16 +173,34 @@ describe('WalkinDischargeCtrl', function(){
             $httpBackend.expectPOST('/api/v0.1/management/').respond({});
             $httpBackend.expectPUT('/api/v0.1/tagging/555/').respond({});
             $httpBackend.expectPUT(
-                '/api/v0.1/episode/555/',
-                {id: 555, discharge_date: today_string }).respond({});
+              '/api/v0.1/episode/555/',
+              {id: 555, discharge_date: today_string }).respond({}
+            );
+
+            spyOn($modalInstance, "close").and.callFake(function(){
+              modalInstanceCallTime = new Date();
+            });
         });
 
         it('Should save the discharge date', function () {
             episode.tagging = [{walkin_triage: true, walkin: true}];
             $scope.nurse_led_care();
             $httpBackend.flush();
-            // The actual assertion comes from setting the 'today_string' in the
-            // $httpBackend expectation above
+            expect(templateRequest).toHaveBeenCalledWith(
+              "/dischargesummary/modals/walkinnurse/"
+            );
+            // make sure our ordering is correct
+            expect(templateRequestCallTime < modalInstanceCallTime < modalCallTime).toBe(true);
+            expect($modalInstance.close).toHaveBeenCalledWith('discharged');
+            expect(growl.success).toHaveBeenCalledWith('Removed from Walk-in lists');
+            expect($modal.open).toHaveBeenCalled();
+            var calls = $modal.open.calls.mostRecent().args;
+            expect(calls.length).toBe(1);
+            var call = calls[0];
+            expect(call.templateUrl).toBe('/dischargesummary/modals/walkinnurse/');
+            expect(call.controller).toBe('ModalDischargeSummaryCtrl');
+            expect(call.size).toBe('lg');
+            expect(!!call.resolve.episode).toBe(true);
         });
     });
 
