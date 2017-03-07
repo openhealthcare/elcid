@@ -73,7 +73,7 @@ describe('DiagnosisAddEpisodeCtrl', function() {
             $scope.save();
             $httpBackend.expectPOST('/api/v0.1/episode/', {
               "tagging":{inpatients: true, tropical: true},
-              "location":{"hospital":"UCLH"},
+              "location":{"hospital":"UCH"},
               "demographics":{
                 "patient_id":123,
                 "date_of_birth":"10/02/1990"
