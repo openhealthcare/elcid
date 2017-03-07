@@ -166,9 +166,14 @@ controllers.controller(
                         size: 'lg',
                         resolve: {episode: episode}
                     });
-                    modal.result.then(function(){
+                    modal.result.then(
+                      function(){
                         $modalInstance.close("discharged");
-                    });
+                      },
+                      function(){
+                        $modalInstance.close("discharged");
+                      }
+                  );
                 });
             });
         };

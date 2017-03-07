@@ -180,6 +180,21 @@
             expect(modalResolved).toHaveBeenCalled();
             expect($modalInstance.close).toHaveBeenCalledWith('discharged');
         });
+
+        it('Should save the discharge date', function () {
+            spyOn($modalInstance, "close");
+            $modal.open.and.returnValue({
+              result: {
+                then: function(successFn, failureFn){
+                  failureFn();
+                }
+              }
+            })
+            episode.tagging = [{walkin_triage: true, walkin: true}];
+            $scope.nurse_led_care();
+            $httpBackend.flush();
+            expect($modalInstance.close).toHaveBeenCalledWith('discharged');
+        });
     });
 
     describe('remove_from_list()', function (){
