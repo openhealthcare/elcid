@@ -1,8 +1,8 @@
-describe('WalkinDischargeCtrl', function(){
+  describe('WalkinDischargeCtrl', function(){
     "use strict";
 
     var $controller, $scope, $modalInstance, $httpBackend, $rootScope, $modal, $q, growl;
-    var Episode, episode, tags;
+    var Episode, episode, tags, modalResolved;
     var today = new Date();
     var today_string = moment(today).format('DD/MM/YYYY');
 
@@ -24,8 +24,16 @@ describe('WalkinDischargeCtrl', function(){
         $q           = $injector.get('$q');
 
         $modalInstance = $modal.open({template: 'Not a real template'});
-        spyOn($modal, 'open').and.returnValue({});
+        spyOn($modal, 'open').and.returnValue({
+          result: {
+            then: function(fn){
+              modalResolved();
+              fn();
+            }
+          }
+        });
         tags = {};
+        modalResolved = jasmine.createSpy();
 
         $rootScope.fields = {
             'walkin_nurse_led_care': {
@@ -169,11 +177,27 @@ describe('WalkinDischargeCtrl', function(){
         });
 
         it('Should save the discharge date', function () {
+            spyOn($modalInstance, "close");
             episode.tagging = [{walkin_triage: true, walkin: true}];
             $scope.nurse_led_care();
             $httpBackend.flush();
-            // The actual assertion comes from setting the 'today_string' in the
-            // $httpBackend expectation above
+            expect(modalResolved).toHaveBeenCalled();
+            expect($modalInstance.close).toHaveBeenCalledWith('discharged');
+        });
+
+        it('Should save the discharge date', function () {
+            spyOn($modalInstance, "close");
+            $modal.open.and.returnValue({
+              result: {
+                then: function(successFn, failureFn){
+                  failureFn();
+                }
+              }
+            })
+            episode.tagging = [{walkin_triage: true, walkin: true}];
+            $scope.nurse_led_care();
+            $httpBackend.flush();
+            expect($modalInstance.close).toHaveBeenCalledWith('discharged');
         });
     });
 
