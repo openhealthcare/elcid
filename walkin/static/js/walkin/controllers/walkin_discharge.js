@@ -163,13 +163,19 @@ controllers.controller(
             $scope.episode.save(ep).then(function(resp){
                 $q.all(to_save).then(function(){
                     growl.success('Removed from Walk-in lists');
-                    var deferred = $q.defer();
                     var modal = $modal.open({
                         templateUrl: '/dischargesummary/modals/walkinnurse/',
                         controller: 'ModalDischargeSummaryCtrl',
                         resolve: {episode: episode}
                     });
-                    $modalInstance.close(deferred.promise);
+                    modal.result.then(
+                      function(){
+                        $modalInstance.close("discharged");
+                      },
+                      function(){
+                        $modalInstance.close("discharged");
+                      }
+                  );
                 });
             });
         };

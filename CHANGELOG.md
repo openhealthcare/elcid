@@ -3,6 +3,8 @@
 Adds tabbed list groups for OPAT and Walkin teams
 Remove unused Iframeapi plugin
 
+Add episode is moved in to modals/add_episode to keep it inline with opal 0.8.1
+
 ## 0.6.2.2 Release
 
 Adds back in date of admission into the add episode modal

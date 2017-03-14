@@ -4,8 +4,7 @@ describe('DiagnosisHospitalNumber', function(){
     var $rootScope, $scope, $modal, $httpBackend, $controller;
     var modalInstance, tags, hospital_number, $q;
 
-    beforeEach(module('opal.controllers', function($provide){
-    }));
+    beforeEach(module('opal.controllers'));
 
     beforeEach(function(){
         inject(function($injector){
@@ -22,8 +21,10 @@ describe('DiagnosisHospitalNumber', function(){
         $controller('DiagnosisHospitalNumberCtrl', {
             $scope         : $scope,
             $modalInstance : modalInstance,
-            tags           : {},
-            hospital_number: hospital_number
+            tags           : {"someTag": true},
+            hospital_number: hospital_number,
+            episode: "some episode",
+            context: {ctx: 'some context'}
         });
     });
 
@@ -63,7 +64,7 @@ describe('DiagnosisHospitalNumber', function(){
             spyOn(modalInstance, 'close');
             $scope.newPatient({hospital_number: '555-123'});
             var resolvers = $modal.open.calls.mostRecent().args[0].resolve
-            expect(resolvers.tags()).toEqual({});
+            expect(resolvers.tags()).toEqual({"someTag": true});
             expect(modalInstance.close).toHaveBeenCalled();
         });
     });
@@ -73,6 +74,7 @@ describe('DiagnosisHospitalNumber', function(){
             active_episode_id: "1",
             episodes: {
                 1: {
+                  id: 1,
                   tagging: [{
                     infectious_diseases: true,
                     id_inpatients: true
@@ -80,6 +82,9 @@ describe('DiagnosisHospitalNumber', function(){
                   demographics: [{
                       hospital_number: "1",
                       patient_id: "1",
+                  }],
+                  location: [{
+                      category: "Discharged"
                   }],
                   category_name: "Inpatient"
             }},
@@ -122,6 +127,26 @@ describe('DiagnosisHospitalNumber', function(){
             $scope.newForPatientWithActiveEpisode(patient);
             expect($scope.addForPatient).toHaveBeenCalled();
         });
+        it('if the patient is marked for follow up we should call the confirm discharge modal', function(){
+            var patient = angular.copy(patientData);
+            patient.episodes['1'].location[0].category = "Followup";
+            $scope.tags = {tag: "infectious_diseases"};
+            spyOn($modal, "open").and.returnValue({result: {then: function(x, y){}}});
+            $scope.newForPatientWithActiveEpisode(patient);
+            expect($modal.open).toHaveBeenCalled();
+            var modalArgs = $modal.open.calls.argsFor(0)[0];
+            expect(modalArgs.templateUrl).toBe('/templates/modals/confirm_discharge.html');
+            expect(modalArgs.controller).toBe('ConfirmDischargeCtrl');
+            expect(modalArgs.resolve.context()).toEqual({ctx: 'some context'});
+            expect(modalArgs.resolve.patient()).toEqual(patient);
+            expect(modalArgs.resolve.episode().id).toEqual(1);
+            expect(modalArgs.resolve.nextStepController()).toEqual(
+              'DiagnosisAddEpisodeCtrl'
+            );
+            expect(modalArgs.resolve.tags()).toEqual(
+              {tag: "infectious_diseases"}
+            );
+        });
     });
 
     describe('addForPatient()', function() {
@@ -153,7 +178,7 @@ describe('DiagnosisHospitalNumber', function(){
           var resolves = $modal.open.calls.mostRecent().args[0].resolve;
           var expected_demographics = angular.copy(patientData.demographics[0]);
           expect(resolves.demographics()).toEqual(expected_demographics);
-          expect(resolves.tags()).toEqual({});
+          expect(resolves.tags()).toEqual({someTag: true});
       });
 
     });

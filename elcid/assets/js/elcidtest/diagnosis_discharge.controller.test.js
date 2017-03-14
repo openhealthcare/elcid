@@ -2,10 +2,10 @@ describe('DiagnosisDischarge', function() {
     "use strict";
 
     var $rootScope, $scope, $modal, $httpBackend, $controller;
-    var Episode;
-    var modalInstance, tags, episode, fieldData;
+    var Episode, $q, DischargePatientService, dischargePatientService;
+    var modalInstance, tags, episode, fieldData, growl;
 
-    var referencedata = {toLookuplists: function(){ return {} }}
+    var referencedata = {toLookuplists: function(){ return {}; }};
 
     fieldData = {
         'demographics': {
@@ -55,7 +55,17 @@ describe('DiagnosisDischarge', function() {
 
         $rootScope.fields = fieldData
         $scope = $rootScope.$new();
-        modalInstance = $modal.open({template: 'notatemplate'});
+        $q = {
+          all: function(){
+            return {
+              then: function(fn){
+                fn();
+              }
+            }
+          }
+        }
+
+        spyOn($q, "all").and.callThrough();
 
         episode = new Episode({
             demographics: [ { patient_id: 123} ],
@@ -68,12 +78,31 @@ describe('DiagnosisDischarge', function() {
             secondary_diagnosis: []
         });
 
+        dischargePatientService = {
+          getEditing: function(){ return {some: "editing"}; },
+          discharge: function(){
+            return {
+              then: function(fn){fn();}
+            };
+          }
+        };
+        spyOn(dischargePatientService, "getEditing").and.callThrough();
+        spyOn(dischargePatientService, "discharge").and.callThrough();
+
+        var DischargePatientService = function(){};
+        DischargePatientService.prototype = dischargePatientService;
+        growl = jasmine.createSpyObj(["success"]);
+        modalInstance = jasmine.createSpyObj(["close"]);
+
         $controller('DiagnosisDischargeCtrl', {
             $scope         : $scope,
             $modalInstance : modalInstance,
             referencedata  : referencedata,
             tags           : tags,
-            episode        : episode
+            episode        : episode,
+            growl          : growl,
+            $q             : $q,
+            DischargePatientService: DischargePatientService
         });
     });
 
@@ -155,7 +184,6 @@ describe('DiagnosisDischarge', function() {
         });
 
         describe('presenting_complaint', function() {
-
             it('should not allow invalid forms', function() {
                 model.presenting_complaint = {symptoms: []};
                 form.presenting_complaint_symptoms = {
@@ -166,15 +194,31 @@ describe('DiagnosisDischarge', function() {
                 expect(form.presenting_complaint_symptoms.$setValidity).toHaveBeenCalledWith("required", false);
                 expect(form.presenting_complaint_symptoms.$setDirty).toHaveBeenCalledWith();
             });
-
         });
 
+    });
+
+    describe('save', function(){
+      it('should close out with followup if category is followup', function(){
+        $scope.editing.category = "Followup";
+        $scope.save();
+        expect(dischargePatientService.discharge).toHaveBeenCalled();
+        expect($q.all).toHaveBeenCalled();
+        expect(modalInstance.close).toHaveBeenCalledWith('followup');
+      });
+
+      it('should close out with discharge if category is not followup', function(){
+        $scope.editing.category = "Discharged";
+        $scope.save();
+        expect(dischargePatientService.discharge).toHaveBeenCalled();
+        expect($q.all).toHaveBeenCalled();
+        expect(modalInstance.close).toHaveBeenCalledWith('discharged');
+      });
     });
 
     describe('cancel()', function(){
 
         it('should close with null', function(){
-            spyOn(modalInstance, 'close');
             $scope.cancel();
             expect(modalInstance.close).toHaveBeenCalledWith('cancel');
         });

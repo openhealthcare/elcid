@@ -1,5 +1,5 @@
 angular.module('opal.controllers')
-.controller('DiagnosisAddEpisodeCtrl', function($scope, $http, $cookieStore, $q,
+.controller('DiagnosisAddEpisodeCtrl', function($scope, $http, $q,
   $timeout, $modal,
   $modalInstance, Episode,
   referencedata,
@@ -12,7 +12,7 @@ angular.module('opal.controllers')
     $scope.editing = {
       tagging: {},
       location: {
-        hospital: 'UCLH'
+        hospital: 'UCH'
       },
       demographics: demographics,
     };
