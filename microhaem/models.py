@@ -21,6 +21,7 @@ class HaemInformationType(lookuplists.LookupList):
 
 
 class EpisodeOfNeutropenia(PatientSubrecord):
+    _advanced_searchable = False
     _icon = 'fa fa-info-circle'
     _sort = 'start'
     _title = 'Episode of Neutropenia'
@@ -38,6 +39,7 @@ class EpisodeOfNeutropenia(PatientSubrecord):
 class HaemInformation(PatientSubrecord):
     _icon = 'fa fa-info-circle'
     _title = 'Haematology Background Information'
+    _advanced_searchable = False
 
     patient_type = ForeignKeyOrFreeText(HaemInformationType, verbose_name="Type")
     date_of_transplant = models.DateField(blank=True, null=True)

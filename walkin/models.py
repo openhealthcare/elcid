@@ -37,7 +37,9 @@ class Symptom(omodels.EpisodeSubrecord):
     _title = 'Symptoms'
     _icon = 'fa fa-stethoscope'
 
-    symptoms = models.ManyToManyField(omodels.Symptom, related_name="walkin_symptoms")
+    symptoms = models.ManyToManyField(
+        omodels.Symptom, related_name="walkin_symptoms"
+    )
     duration = models.CharField(max_length=255, blank=True, null=True)
     details = models.TextField(blank=True, null=True)
 
@@ -61,8 +63,12 @@ class ClinicalFindings(omodels.EpisodeSubrecord):
     _title        = 'Clinical Findings'
     _icon         = 'fa fa-stethoscope'
 
-    lymphadenopathy         = models.CharField(max_length=20, blank=True, null=True)
-    lymphadenopathy_details = models.CharField(max_length=255, blank=True, null=True)
+    lymphadenopathy         = models.CharField(
+        max_length=20, blank=True, null=True
+    )
+    lymphadenopathy_details = models.CharField(
+        max_length=255, blank=True, null=True
+    )
     jaundice                = models.CharField(max_length=20, blank=True)
     dehydrated              = models.CharField(max_length=20, blank=True)
 
@@ -70,12 +76,25 @@ class ClinicalFindings(omodels.EpisodeSubrecord):
     rash_type               = ForeignKeyOrFreeText(Findings_rash_type)
     rash_distribution       = ForeignKeyOrFreeText(Findings_rash_distribution)
 
-    cardiovascular          = models.CharField(max_length=255, blank=True, null=True)
-    respiratory             = models.CharField(max_length=255, blank=True, null=True)
-    abdominal               = models.CharField(max_length=255, blank=True, null=True)
-    oropharnyx              = models.CharField(max_length=255, blank=True, null=True)
-    neurological            = models.CharField(max_length=255, blank=True, null=True)
-    other_findings          = models.CharField(max_length=255, blank=True, null=True)
+    cardiovascular          = models.CharField(
+        max_length=255, blank=True, null=True
+    )
+
+    respiratory             = models.CharField(
+        max_length=255, blank=True, null=True
+    )
+    abdominal               = models.CharField(
+        max_length=255, blank=True, null=True
+    )
+    oropharnyx              = models.CharField(
+        max_length=255, blank=True, null=True
+    )
+    neurological            = models.CharField(
+        max_length=255, blank=True, null=True
+    )
+    other_findings          = models.CharField(
+        max_length=255, blank=True, null=True
+    )
 
 
 class Management(omodels.EpisodeSubrecord):
@@ -85,8 +104,12 @@ class Management(omodels.EpisodeSubrecord):
     follow_up           = ForeignKeyOrFreeText(Management_follow_up)
     follow_up_clinic    = ForeignKeyOrFreeText(Management_clinics)
     date_of_appointment = models.DateField(null=True, blank=True)
-    advice              = models.CharField(max_length=255, blank=True, null=True)
-    results_actioned    = models.CharField(max_length=255, blank=True, null=True)
+    advice              = models.CharField(
+        max_length=255, blank=True, null=True
+    )
+    results_actioned    = models.CharField(
+        max_length=255, blank=True, null=True
+    )
 
     def __unicode__(self):
         return u'Management: {0}'.format(self.id)
@@ -99,8 +122,10 @@ class WalkinNurseLedCare(omodels.EpisodeSubrecord):
     reason    = ForeignKeyOrFreeText(Wi_nurse_reason)
     treatment = models.TextField(blank=True, null=True)
 
+
 class ZikaPathway(omodels.EpisodeSubrecord):
     _icon = 'fa fa-warning'
+    _advanced_searchable = False
 
     pregnant           = models.BooleanField(default=False)
     gestation          = models.CharField(max_length=255, blank=True, null=True)

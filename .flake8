@@ -1,0 +1,4 @@
+# -*- mode: conf -*-
+[flake8]
+ignore  = E203,E221,E226,E124
+exclude = migrations,elcid/tests,node_modules,setup.py
