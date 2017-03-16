@@ -149,9 +149,21 @@ class PresentingComplaint(EpisodeSubrecord):
     _title = 'Presenting Complaint'
     _icon = 'fa fa-stethoscope'
 
+    DURATION_CHOICES = (
+        ('3 days or less', '3 days or less',),
+        ('4-10 days', '4-10 days',),
+        ('11-21 days', '11-21 days',),
+        ('22 days to 3 months', '22 days to 3 months',),
+        ('over 3 months', 'over 3 months',)
+    )
+
     symptom = ForeignKeyOrFreeText(omodels.Symptom)
-    symptoms = models.ManyToManyField(omodels.Symptom, related_name="presenting_complaints")
-    duration = models.CharField(max_length=255, blank=True, null=True)
+    symptoms = models.ManyToManyField(
+        omodels.Symptom, related_name="presenting_complaints"
+    )
+    duration = models.CharField(
+        max_length=255, blank=True, null=True, choices=DURATION_CHOICES
+    )
     details = models.TextField(blank=True, null=True)
 
     def set_symptom(self, *args, **kwargs):
