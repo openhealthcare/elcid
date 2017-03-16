@@ -5,6 +5,7 @@
     var Episode, episode, tags, modalResolved;
     var today = new Date();
     var today_string = moment(today).format('DD/MM/YYYY');
+    var episodeData;
 
     var referencedata = {
         toLookuplists: function(){ return {"ward_list": ["1q"]}; }
@@ -100,11 +101,14 @@
         }
 
         growl = {success: jasmine.createSpy('growl.success')};
+        episodeData = {
+          id: 555,
+          management: [{}],
+          tagging: [{walkin: true}],
+          demographics: [{ patient_id: 1234 }]
+        };
 
-        episode = new Episode(
-            {id: 555, management: [{}], tagging: [{}],
-             demographics: [{ patient_id: 1234 }]}
-        );
+        episode = new Episode(episodeData);
 
         var controller = $controller('WalkinDischargeCtrl', {
             $scope         : $scope,
@@ -123,7 +127,8 @@
             $httpBackend.expectGET('/api/v0.1/userprofile/').respond({});
             $httpBackend.expectPUT(
                 '/api/v0.1/episode/555/',
-                {id: 555, discharge_date: today_string }).respond({});
+                {id: 555, discharge_date: today_string }
+            ).respond(episodeData);
             spyOn($modalInstance, 'close');
         });
 
@@ -131,14 +136,14 @@
             $httpBackend.expectPUT('/api/v0.1/tagging/555/').respond({});
             /// This is actually asserted by the PUT expectation for /episode/555 above
             $scope.move_to_review();
-            $httpBackend.flush()
+            $httpBackend.flush();
             $scope.$digest(); // Fire actual resolving
         });
 
         it('Should send a growl message', function () {
             $httpBackend.expectPUT('/api/v0.1/tagging/555/').respond({});
             $scope.move_to_review();
-            $httpBackend.flush()
+            $httpBackend.flush();
             $scope.$digest(); // Fire actual resolving
             expect(growl.success.calls.mostRecent().args[0])
                 .toBe('Moved to Review list');
@@ -147,7 +152,7 @@
         it('Should close the modal', function () {
             $httpBackend.expectPUT('/api/v0.1/tagging/555/').respond({});
             $scope.move_to_review();
-            $httpBackend.flush()
+            $httpBackend.flush();
             $scope.$digest(); // Fire actual resolving
             expect($modalInstance.close).toHaveBeenCalled();
         });
@@ -155,9 +160,9 @@
         it('Should update the tags', function () {
             $httpBackend.expectPUT(
                 '/api/v0.1/tagging/555/',
-                {id: 555, walkin_doctor: false, walkin_review: true}).respond({});
+                {id: 555, walkin: true, walkin_doctor: false, walkin_review: true}).respond({});
             $scope.move_to_review();
-            $httpBackend.flush()
+            $httpBackend.flush();
             $scope.$digest(); // Fire actual resolving
         });
 
@@ -208,7 +213,10 @@
             $httpBackend.expectPUT(
                 '/api/v0.1/tagging/555/', {
                     id: 555,
-                    walkin_triage: false, walkin_doctor: false, walkin_review: false
+                    walkin: true,
+                    walkin_triage: false,
+                    walkin_doctor: false,
+                    walkin_review: false
             }).respond({});
             spyOn($modalInstance, 'close');
             spyOn($scope, 'cancel').and.callThrough();
@@ -216,7 +224,7 @@
 
         it('Should set the discharge date if empty', function () {
             $httpBackend.expectPUT('/api/v0.1/episode/555/',
-                                   {id: 555, discharge_date: today_string }).respond({});
+                                   {id: 555, discharge_date: today_string }).respond(episodeData);
             $scope.remove_from_list();
             $httpBackend.flush();
         });
@@ -228,7 +236,7 @@
         });
 
         it('Should send a growl success message', function () {
-            $httpBackend.expectPUT('/api/v0.1/episode/555/').respond({});
+            $httpBackend.expectPUT('/api/v0.1/episode/555/').respond(episodeData);
             $scope.remove_from_list();
             $httpBackend.flush();
             expect(growl.success.calls.mostRecent().args[0])
@@ -236,7 +244,7 @@
         });
 
         it('Should close the modal', function () {
-            $httpBackend.expectPUT('/api/v0.1/episode/555/').respond({});
+            $httpBackend.expectPUT('/api/v0.1/episode/555/').respond(episodeData);
             $scope.remove_from_list();
             $httpBackend.flush();
             $scope.$digest(); // Fire actual resolving
