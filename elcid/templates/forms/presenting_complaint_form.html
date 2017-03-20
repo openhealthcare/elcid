@@ -1,4 +1,4 @@
 {% load forms %}
 {% select autofocus field="PresentingComplaint.symptoms" multiple=True tagging=False help_text="If a symptom isn't in the list, add it in the details box" %}
-{% select field="PresentingComplaint.duration" lookuplist="['3 days or less','4-10 days','11-21 days','22 days to 3 months','over 3 months']" %}
+{% select field="PresentingComplaint.duration" %}
 {% textarea field="PresentingComplaint.details" %}
