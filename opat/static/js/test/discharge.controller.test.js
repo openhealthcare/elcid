@@ -1,7 +1,7 @@
 describe('OPATDischargeCtrl', function (){
     "use strict"
     var $controller, $scope, $httpBackend, $modalInstance, $modal;
-    var Episode, Item, $rootScope, fields;
+    var Episode, Item, $rootScope, fields, episodeData;
     var controller, growl, columns;
     var episode, referencedata, tags;
 
@@ -83,7 +83,8 @@ describe('OPATDischargeCtrl', function (){
             $rootScope.fields = fields;
 
             $modalInstance = $modal.open({template: 'Not a real template'});
-            episode = new Episode({id: 33, tagging: [{opat: true}], demographics: [{patient_id: 20}]});
+            episodeData = {id: 33, tagging: [{opat: true}], demographics: [{patient_id: 20}]}
+            episode = new Episode(episodeData);
             referencedata = { toLookuplists: function(){ return {} }};
             tags    = {};
             growl   = {success: jasmine.createSpy('Growl.success')}
@@ -154,7 +155,7 @@ describe('OPATDischargeCtrl', function (){
               infective_diagnosis: metavars.infective_diagnosis,
               episode_id: 33
             };
-            $httpBackend.expectPUT('/api/v0.1/episode/33/', episode_data).respond({});
+            $httpBackend.expectPUT('/api/v0.1/episode/33/', episode_data).respond(episodeData);
             $httpBackend.expectPOST('/api/v0.1/opat_outcome/', expectedPost).respond({});
         });
 

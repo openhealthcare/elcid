@@ -1,7 +1,7 @@
 describe('ResearchHospitalNumberCtrl', function (){
     "use strict";
     var $controller, $scope, $httpBackend, $modalInstance, $modal, $rootScope;
-    var Item;
+    var Item, Episode;
     var controller, options, schema, tags;
 
     beforeEach(module('opal.controllers', function($provide){
