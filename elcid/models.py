@@ -118,6 +118,7 @@ class Location(omodels.Location):
 
 class Result(PatientSubrecord):
     _icon = 'fa fa-crosshairs'
+    _advanced_searchable = False
 
     lab_number = models.CharField(max_length=255, blank=True, null=True)
     profile_code = models.CharField(max_length=255, blank=True, null=True)

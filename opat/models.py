@@ -83,6 +83,7 @@ class OPATLineAssessment(EpisodeSubrecord):
 
 class OPATMeta(EpisodeSubrecord):
     _clonable = False
+    _title = "OPAT Episode"
 
     review_date           = models.DateField(blank=True, null=True)
     reason_for_stopping   = models.CharField(max_length=200, blank=True, null=True)
@@ -98,7 +99,7 @@ class OPATMeta(EpisodeSubrecord):
 
 
     class Meta:
-        verbose_name = "OPAT meta"
+        verbose_name = "OPAT episode"
 
 
 class OPATOutcome(EpisodeSubrecord):

@@ -49,6 +49,8 @@ class StudyParticipation(EpisodeSubrecord):
     """
     _is_singleton = True
     _icon = 'fa fa-book'
+    _advanced_searchable = False
+
 
     study_id = models.CharField(max_length=200, blank=True, null=True)
 
@@ -178,6 +180,7 @@ class RidRTIStudyDiagnosis(EpisodeSubrecord):
     """
     The RidRTI study Diagnosis.
     """
+    _advanced_searchable = False
     diagnosis = models.CharField(max_length=255)
 
 

@@ -6,6 +6,7 @@ class ExternalLiaisonContactDetails(EpisodeSubrecord):
     _title = "Contact Details"
     _icon = 'fa fa-phone'
     _is_singleton = True
+    _advanced_searchable = False
 
     # required
     external_hospital_number = models.CharField(
