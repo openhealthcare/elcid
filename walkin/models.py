@@ -36,11 +36,16 @@ class Findings_rash_distribution(lookuplists.LookupList):
 class Symptom(omodels.EpisodeSubrecord):
     _title = 'Symptoms'
     _icon = 'fa fa-stethoscope'
+    HELP_DURATION = "The duration for which the patient had been experiencing \
+these symptoms when recorded."
 
     symptoms = models.ManyToManyField(
         omodels.Symptom, related_name="walkin_symptoms"
     )
-    duration = models.CharField(max_length=255, blank=True, null=True)
+    duration = models.CharField(
+        max_length=255, blank=True, null=True,
+        help_text=HELP_DURATION
+    )
     details = models.TextField(blank=True, null=True)
 
     # deprecated fields 9/11/2015
@@ -100,6 +105,7 @@ class ClinicalFindings(omodels.EpisodeSubrecord):
 class Management(omodels.EpisodeSubrecord):
     _is_singleton = True
     _icon = 'fa fa-list-ol'
+    _title = 'Walkin Management'
 
     follow_up           = ForeignKeyOrFreeText(Management_follow_up)
     follow_up_clinic    = ForeignKeyOrFreeText(Management_clinics)

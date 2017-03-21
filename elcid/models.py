@@ -115,7 +115,7 @@ class Location(omodels.Location):
         except:
             return 'demographics'
 
-
+# TODO: Remove this - replace with Opal-lab
 class Result(PatientSubrecord):
     _icon = 'fa fa-crosshairs'
     _advanced_searchable = False
@@ -157,13 +157,16 @@ class PresentingComplaint(EpisodeSubrecord):
         ('22 days to 3 months', '22 days to 3 months',),
         ('over 3 months', 'over 3 months',)
     )
+    HELP_DURATION = "The duration for which the patient had been experiencing \
+these symptoms when recorded."
 
     symptom = ForeignKeyOrFreeText(omodels.Symptom)
     symptoms = models.ManyToManyField(
         omodels.Symptom, related_name="presenting_complaints"
     )
     duration = models.CharField(
-        max_length=255, blank=True, null=True, choices=DURATION_CHOICES
+        max_length=255, blank=True, null=True, choices=DURATION_CHOICES,
+        help_text=HELP_DURATION
     )
     details = models.TextField(blank=True, null=True)
 
@@ -194,7 +197,10 @@ class PrimaryDiagnosis(EpisodeSubrecord):
     _is_singleton = True
     _title = 'Primary Diagnosis'
 
-    condition = ForeignKeyOrFreeText(omodels.Condition)
+    condition = ForeignKeyOrFreeText(
+        omodels.Condition,
+        help_text="The diagnosis entered when discharged."
+    )
     confirmed = models.BooleanField(default=False)
 
     class Meta:
@@ -310,6 +316,13 @@ class Allergies(omodels.Allergies, ExternallySourcedModel):
     allergy_start_datetime = models.DateTimeField(null=True, blank=True)
     no_allergies = models.BooleanField(default=False)
 
+    @classmethod
+    def get_fieldnames_to_serialize(cls):
+        # Looks like we won't get these from the prescribing system
+        # in the short-med term, so
+        # for now at least, we want none of these.
+        return super(Allergies, cls).get_fieldnames_to_serialize()
+
     class Meta:
         verbose_name_plural = "Allergies"
 
@@ -417,6 +430,7 @@ class Line(EpisodeSubrecord):
     complications        = ForeignKeyOrFreeText(omodels.Line_complication)
     removal_reason       = ForeignKeyOrFreeText(omodels.Line_removal_reason)
     special_instructions = models.TextField()
+
 
 class Appointment(EpisodeSubrecord):
     _title = 'Upcoming Appointments'
