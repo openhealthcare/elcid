@@ -2,7 +2,7 @@
 elCID OPAL implementation
 """
 
-from opal.core import application
+from opal.core import application, menus
 
 
 class Application(application.OpalApplication):
@@ -37,3 +37,16 @@ class Application(application.OpalApplication):
     patient_view_forms = {
         "General Consultation": "inline_forms/clinical_advice.html",
     }
+
+
+    @classmethod
+    def get_menu_items(klass, user=None):
+        items = application.OpalApplication.get_menu_items(user=user)
+        if (user.profile.can_extract or user.is_superuser):
+            query = menus.MenuItem(
+                href="/#/extract/", activepattern="/#/extract/",
+                icon="fa-download", display="Extract",
+                index=-1
+            )
+            items.append(query)
+        return items
