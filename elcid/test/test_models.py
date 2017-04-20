@@ -208,6 +208,13 @@ class PresentingComplaintTest(OpalTestCase, AbstractEpisodeTestCase):
             expected_data, self.presenting_complaint.to_dict(self.user)
         )
 
+    def test_do_dict_with_fields(self):
+        expected_data = dict(id=self.presenting_complaint.id)
+        self.assertEqual(
+            expected_data,
+            self.presenting_complaint.to_dict(self.user, fields=["id"])
+        )
+
     def test_update_from_dict(self):
         data = {
             u'consistency_token': self.presenting_complaint.consistency_token,
