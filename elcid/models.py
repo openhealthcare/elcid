@@ -174,12 +174,15 @@ these symptoms when recorded."
         # ignore symptom for the time being
         pass
 
-    def to_dict(self, user):
-        field_names = self.__class__._get_fieldnames_to_serialize()
+    def to_dict(self, user, fields=None):
+        if not fields:
+            fields = self.__class__._get_fieldnames_to_serialize()
+
         result = {
-            i: getattr(self, i) for i in field_names if not i == "symptoms"
+            i: getattr(self, i) for i in fields if not i == "symptoms"
         }
-        result["symptoms"] = list(self.symptoms.values_list("name", flat=True))
+        if "symptoms" in fields:
+            result["symptoms"] = list(self.symptoms.values_list("name", flat=True))
         return result
 
     @classmethod
