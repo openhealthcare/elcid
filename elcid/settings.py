@@ -323,7 +323,7 @@ if GLOSS_ENABLED:
     GLOSS_USERNAME = "override_this"
     GLOSS_PASSWORD = "and_override_this"
 
-EXTRACT_ASYNC = True
+EXTRACT_ASYNC = False
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
