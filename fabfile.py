@@ -74,6 +74,7 @@ def checkout(package_name_version):
                         package_name
                     )
                     version = "master"
+                print "looking at {}".format(package_name)
 
                 if package_name not in existing_packages:
                     print "cloning {}".format(package_name)
@@ -83,7 +84,8 @@ def checkout(package_name_version):
                             package_name, version
                         )
                 else:
-                    local("git fetch")
+                    with lcd(package_name):
+                        local("git fetch")
 
                 with lcd(package_name):
                     local("git checkout {}".format(version))
