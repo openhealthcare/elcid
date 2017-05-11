@@ -38,10 +38,14 @@ def get_opat_acceptance_for_episode(episode_id):
                 result = row
                 break
     if not result["opat_acceptance"] or result["opat_acceptance"] == "None":
-        return
+        result["opat_acceptance"] = None
+    else:
+        result["opat_acceptance"] = dateutil.parser.parse(result["opat_acceptance"]).date()
 
-    result["opat_acceptance"] = dateutil.parser.parse(result["opat_acceptance"]).date()
-    # result["opat_referral"] = dateutil.parser.parse(result["opat_referral"]).date()
+    if not result["opat_referral"] or result["opat_referral"] == "None":
+        result["opat_referral"] = None
+    else:
+        result["opat_referral"] = dateutil.parser.parse(result["opat_referral"]).date()
     return result
 
 
@@ -82,7 +86,7 @@ def drugs_union(pid_rows):
             pid_row = get_row_from_episode_id(row["episode_id"], pid_rows)
             opat_acceptance = get_opat_acceptance_for_episode(row["episode_id"])
 
-            if not opat_acceptance:
+            if not opat_acceptance["opat_acceptance"]:
                 continue
 
             before_opat = (opat_acceptance["opat_acceptance"] - row["start_date"]).days
