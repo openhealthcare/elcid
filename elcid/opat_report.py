@@ -94,6 +94,9 @@ def drugs_union(pid_rows):
             if not row["duration"] > 0:
                 continue
 
+            if not row["episode_id"] in episodes_with_ivs:
+                continue
+
             # if they don't have a pid row skip it for the time being
             if pid_row:
                 row.update(pid_row)
@@ -151,6 +154,7 @@ def compare_with_file(result, file_name):
         reader = csv.DictReader(csv_file)
         for row_num, row in enumerate(reader):
             if not row == result[row_num]:
+                import ipdb; ipdb.set_trace()
                 return
 
 
