@@ -124,26 +124,29 @@ def drugs_union(pid_rows):
                         row["end_date"] = dateutil.parser.parse(row["end_date"]).date()
                         row["duration"] = (row["end_date"] - row["start_date"]).days + 1
 
-            if "duration" not in row:
-                continue
-
             row["had_iv"] = row["episode_id"] in episodes_with_ivs
             pid_row = get_row_from_episode_id(row["episode_id"], pid_rows)
 
             if not pid_row or not pid_row["opat_acceptance"]:
                 continue
 
-            before_opat = (pid_row["opat_acceptance"] - row["start_date"]).days
-            row["opat_acceptance"] = pid_row["opat_acceptance"]
+            if "duration" not in row:
+                row["duration"] = 0
+            else:
+                before_opat = (pid_row["opat_acceptance"] - row["start_date"]).days
+                row["opat_acceptance"] = pid_row["opat_acceptance"]
 
-            if before_opat > 0:
-                row["duration"] = row["duration"] - before_opat
+                if before_opat > 0:
+                    row["duration"] = row["duration"] - before_opat
 
-            if not row["duration"] > 0:
-                continue
+                if row["duration"] < 0:
+                    row["duration"] = 0
 
             if not row["episode_id"] in episodes_with_ivs:
                 continue
+
+            if not row["adverse_event"]:
+                row["adverse_event"] = "NA"
 
             # if they don't have a pid row skip it for the time being
             if pid_row:
@@ -166,6 +169,7 @@ def generate_anti_infectives():
     rows = generate_pid()
     rows = opat_acceptance_union(rows)
     rows = drugs_union(rows)
+    rows = [row for row in rows if row["duration"] != 0]
 
     def get_key(row):
         return (
@@ -179,6 +183,8 @@ def generate_anti_infectives():
     sliced_data = group_by(rows, get_key)
 
     for data_slice_key, value in sliced_data.items():
+        if data_slice_key[1] == "Bacteraemia" and data_slice_key[2] == "2016_2":
+            import ipdb; ipdb.set_trace()
         counter = str(len(set([i["episode_id"] for i in value])))
         result.append({
             "drug": data_slice_key[0],
@@ -214,6 +220,7 @@ def compare_with_file(result, file_name):
     with open(get_file_path(file_name), "rb") as csv_file:
         reader = csv.DictReader(csv_file)
         previous_rows = [previous_row for previous_row in reader]
+
         if len(previous_rows) != len(result):
             import ipdb; ipdb.set_trace()
         for row_num, row in enumerate(previous_rows):
@@ -405,11 +412,90 @@ def generate_line_adverse_events():
     )
 
 
-if __name__ == "__main__":
-    generate_anti_infectives()
-    generate_nors_outcomes_po_pid()
-    generage_nors_outcomes_po_ref()
+def generate_drugs_adverse_events():
+    rows = generate_pid()
+    rows = opat_acceptance_union(rows)
+    rows = drugs_union(rows)
+    rows = [row for row in rows if row["duration"] == 0]
 
-    generate_nors_outcomes_oo_pid()
-    generate_nors_outcomes_oo_ref()
-    generate_line_adverse_events()
+    def get_key(row):
+        return (
+            row["adverse_event"],
+            row["reportingperiod"]
+        )
+    sliced_data = group_by(rows, get_key)
+    result = []
+    for key, data in sliced_data.items():
+        count = str(len(data))
+        result.append({
+            "adverse_event": key[0],
+            "reportingperiod": key[1],
+            "count.max": count
+        })
+    result.sort(key=lambda x: (x["adverse_event"], x["reportingperiod"],))
+    compare_files_by_reporting_periods(
+        result,
+        "/Users/fredkingham/Downloads/opat_extract/drug_adverse_events_ {} .csv"
+    )
+
+
+def generate_primary_infective_diagnosis():
+    rows = generate_pid()
+    rows = opat_acceptance_union(rows)
+    rows = drugs_union(rows)
+    rows = [row for row in rows if row["route"] not in ["Oral", "PO"]]
+
+    def get_by_episode(row):
+        return (
+            row["reportingperiod"],
+            row["infective_diagnosis"],
+            row["episode_id"]
+        )
+
+    def get_key(row):
+        return (
+            row["reportingperiod"],
+            row["infective_diagnosis"],
+        )
+
+    sliced_by_episode = group_by(rows, get_by_episode)
+
+    aggregated_by_episode = {}
+    for key, data_slice in sliced_by_episode.items():
+        aggregated_by_episode[key] = sum(i["duration"] for i in data_slice)
+
+    aggregated_max_duration = defaultdict(int)
+
+    for key, summed_duration in aggregated_by_episode.items():
+        aggregated_max_duration[(key[0], key[1],)] = aggregated_max_duration[(key[0], key[1],)] + summed_duration
+
+    sliced_data = group_by(rows, get_key)
+    result = []
+    for key, data in sliced_data.items():
+        episode_count = str(len({i["episode_id"] for i in data}))
+
+        result.append({
+            "reportingperiod": key[0],
+            "infective_diagnosis": key[1],
+            "count.max": episode_count,
+            "totalopat.max": str(aggregated_max_duration[key]),
+        })
+    result.sort(key=lambda x: (x["infective_diagnosis"], x["reportingperiod"],))
+    compare_files_by_reporting_periods(
+        result,
+        "/Users/fredkingham/Downloads/opat_extract/Primary Infective Diagnosis_Patient Episode_Treatment_Days_ {} .csv"
+    )
+
+
+if __name__ == "__main__":
+    # generate_anti_infectives()
+    #
+    # generate_nors_outcomes_po_pid()
+    # generage_nors_outcomes_po_ref()
+    # generate_nors_outcomes_oo_pid()
+    # generate_nors_outcomes_oo_ref()
+    #
+    # generate_line_adverse_events()
+    # generate_drugs_adverse_events()
+
+    generate_primary_infective_diagnosis()
