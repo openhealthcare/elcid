@@ -1,6 +1,7 @@
 import csv
 import os
 import dateutil.parser
+import copy
 from collections import defaultdict, Counter
 
 
@@ -30,22 +31,54 @@ def get_reporting_period(pid_row):
         pid_row["reportingperiod"] = "{0}_{1}".format(year, quarter)
 
 
-def get_opat_acceptance_for_episode(episode_id):
+def get_opat_acceptance():
+    rows = []
     with open(get_file_path("location.csv"), "rb") as csv_file:
         reader = csv.DictReader(csv_file)
         for row in reader:
-            if row["episode_id"] == episode_id:
-                result = row
-                break
-    if not result["opat_acceptance"] or result["opat_acceptance"] == "None":
-        result["opat_acceptance"] = None
-    else:
-        result["opat_acceptance"] = dateutil.parser.parse(result["opat_acceptance"]).date()
+            if not row["opat_acceptance"] or row["opat_acceptance"] == "None":
+                row["opat_acceptance"] = None
+            else:
+                row["opat_acceptance"] = dateutil.parser.parse(row["opat_acceptance"]).date()
 
-    if not result["opat_referral"] or result["opat_referral"] == "None":
-        result["opat_referral"] = None
-    else:
-        result["opat_referral"] = dateutil.parser.parse(result["opat_referral"]).date()
+            if not row["opat_referral"] or row["opat_referral"] == "None":
+                row["opat_referral"] = None
+            else:
+                row["opat_referral"] = dateutil.parser.parse(row["opat_referral"]).date()
+            rows.append(row)
+    return rows
+
+
+def opat_acceptance_union(pid_rows):
+    opat_acceptance = get_opat_acceptance()
+
+    for row in pid_rows:
+        row.update(get_row_from_episode_id(row["episode_id"], opat_acceptance))
+    return pid_rows
+
+
+def get_lines():
+    rows = []
+    with open(get_file_path("line.csv"), "rb") as csv_file:
+        reader = csv.DictReader(csv_file)
+        for row in reader:
+            if not row["complications"]:
+                row["complications"] = "None"
+            rows.append(row)
+    return rows
+
+
+def line_union(pid_rows):
+    lines = get_lines()
+    result = []
+
+    for line in lines:
+        pid_row = get_row_from_episode_id(line["episode_id"], pid_rows)
+        if pid_row:
+            new_pid_row = copy.copy(pid_row)
+            new_pid_row.update(line)
+            result.append(new_pid_row)
+
     return result
 
 
@@ -58,18 +91,30 @@ def generate_reporting_periods(csv_rows):
     return result
 
 
-def drugs_union(pid_rows):
-    # get episodes ids that had iv and werenot delivered by the inpatient team
-    # we then do a union with opat eacceptences
-    result = []
-    episodes_with_ivs = {}
+def remove_iv(pid_rows):
+    episodes_with_ivs = set()
     with open(get_file_path("antimicrobial.csv"), "rb") as csv_file:
         reader = csv.DictReader(csv_file)
         ignore = set(["Inpatient Team", ""])
         rows = [row for row in reader if row["delivered_by"] not in ignore]
         for anitmicrobial_row in rows:
-            if row["route"] == "IV":
-                episodes_with_ivs.add(row["episode_id"])
+            if anitmicrobial_row["route"] == "IV":
+                episodes_with_ivs.add(anitmicrobial_row["episode_id"])
+    return [row for row in pid_rows if row["episode_id"] in episodes_with_ivs]
+
+
+def drugs_union(pid_rows):
+    # get episodes ids that had iv and werenot delivered by the inpatient team
+    # we then do a union with opat eacceptences
+    result = []
+    episodes_with_ivs = set()
+    with open(get_file_path("antimicrobial.csv"), "rb") as csv_file:
+        reader = csv.DictReader(csv_file)
+        ignore = set(["Inpatient Team", ""])
+        rows = [row for row in reader if row["delivered_by"] not in ignore]
+        for anitmicrobial_row in rows:
+            if anitmicrobial_row["route"] == "IV":
+                episodes_with_ivs.add(anitmicrobial_row["episode_id"])
 
         for row in rows:
             if row["start_date"] and row["end_date"]:
@@ -84,13 +129,12 @@ def drugs_union(pid_rows):
 
             row["had_iv"] = row["episode_id"] in episodes_with_ivs
             pid_row = get_row_from_episode_id(row["episode_id"], pid_rows)
-            opat_acceptance = get_opat_acceptance_for_episode(row["episode_id"])
 
-            if not opat_acceptance["opat_acceptance"]:
+            if not pid_row or not pid_row["opat_acceptance"]:
                 continue
 
-            before_opat = (opat_acceptance["opat_acceptance"] - row["start_date"]).days
-            row["opat_acceptance"] = opat_acceptance["opat_acceptance"]
+            before_opat = (pid_row["opat_acceptance"] - row["start_date"]).days
+            row["opat_acceptance"] = pid_row["opat_acceptance"]
 
             if before_opat > 0:
                 row["duration"] = row["duration"] - before_opat
@@ -109,12 +153,19 @@ def drugs_union(pid_rows):
     return result
 
 
+def group_by(rows, some_fun):
+    sliced_data = defaultdict(list)
+
+    for row in rows:
+        key = some_fun(row)
+        sliced_data[key].append(row)
+    return sliced_data
+
+
 def generate_anti_infectives():
     rows = generate_pid()
-
+    rows = opat_acceptance_union(rows)
     rows = drugs_union(rows)
-    defaultdict(list)
-    sliced_data = defaultdict(list)
 
     def get_key(row):
         return (
@@ -124,42 +175,50 @@ def generate_anti_infectives():
             row["reportingperiod"],
         )
 
-    for row in rows:
-        key = get_key(row)
-        sliced_data[key].append(row)
-
     result = []
+    sliced_data = group_by(rows, get_key)
 
     for data_slice_key, value in sliced_data.items():
-        counter = max(Counter(i["episode_id"] for i in value).values())
+        counter = str(len(set([i["episode_id"] for i in value])))
         result.append({
             "drug": data_slice_key[0],
             "infective_diagnosis": data_slice_key[1],
             "reportingperiod": data_slice_key[2],
             "duration.max": str(max(v["duration"] for v in value)),
-            "count.max": str(counter)
+            "count.max": counter
         })
-
-    reporting_periods = list(set(i["reportingperiod"] for i in result))
 
     result.sort(key=lambda x: x["infective_diagnosis"])
     result.sort(key=lambda x: x["drug"])
 
+    compare_files_by_reporting_periods(
+        result,
+        "/Users/fredkingham/Downloads/opat_extract/Anti-infectives by PID and Episodes_ {} .csv"
+    )
+
+
+def compare_files_by_reporting_periods(rows, file_name):
+    reporting_periods = list(set(i["reportingperiod"] for i in rows))
     for reporting_period in reporting_periods:
-        cut = [i for i in result if i["reportingperiod"] == reporting_period]
-        compare_with_file(
+        cut = [i for i in rows if i["reportingperiod"] == reporting_period]
+        result = compare_with_file(
             cut,
-            "/Users/fredkingham/Downloads/opat_extract/Anti-infectives by PID and Episodes_ {} .csv".format(reporting_period)
+            file_name.format(reporting_period)
         )
+
+        if result:
+            return result
 
 
 def compare_with_file(result, file_name):
     with open(get_file_path(file_name), "rb") as csv_file:
         reader = csv.DictReader(csv_file)
-        for row_num, row in enumerate(reader):
-            if not row == result[row_num]:
+        previous_rows = [previous_row for previous_row in reader]
+        if len(previous_rows) != len(result):
+            import ipdb; ipdb.set_trace()
+        for row_num, row in enumerate(previous_rows):
+            if row not in result:
                 import ipdb; ipdb.set_trace()
-                return
 
 
 def filter_unknown_categorised_infective_diagnosis(rows):
@@ -198,9 +257,159 @@ def generate_pid():
         episode_data = generate_reporting_periods(reader)
     rows = remove_duplicates(episode_data)
     rows = remove_rejected(rows)
+    rows = remove_iv(rows)
     rows = filter_unknown_categorised_infective_diagnosis(rows)
     rows = remove_those_who_have_not_completed(rows)
     return rows
 
+
+def generate_nors_outcomes_po_pid():
+    rows = generate_pid()
+    rows = remove_iv(rows)
+    rows = opat_acceptance_union(rows)
+
+    def get_key(row):
+        return (
+            row["infective_diagnosis"],
+            row["patient_outcome"],
+            row["reportingperiod"]
+        )
+    sliced_data = group_by(rows, get_key)
+    result = []
+    for key, data in sliced_data.items():
+        result.append({
+            "infective_diagnosis": key[0],
+            "patient_outcome": key[1],
+            "reportingperiod": key[2],
+            "count.max": str(len(data))
+        })
+    result.sort(key=lambda x: (x["infective_diagnosis"], x["patient_outcome"],))
+
+    to_append = []
+    unsorted_result = result
+    result = []
+    for row in unsorted_result:
+        if row["infective_diagnosis"] == "Other - Free Text":
+            to_append.append(row)
+        else:
+            result.append(row)
+    result.extend(to_append)
+
+    compare_files_by_reporting_periods(
+        result,
+        "/Users/fredkingham/Downloads/opat_extract/patient_outcomes_by_diagnosis_ {} .csv"
+    )
+
+
+def generage_nors_outcomes_po_ref():
+    rows = generate_pid()
+    rows = opat_acceptance_union(rows)
+
+    def get_key(row):
+        return (
+            row["opat_referral_team"],
+            row["patient_outcome"],
+            row["reportingperiod"]
+        )
+    sliced_data = group_by(rows, get_key)
+    result = []
+    for key, data in sliced_data.items():
+        result.append({
+            "opat_referral_team": key[0],
+            "patient_outcome": key[1],
+            "reportingperiod": key[2],
+            "count.max": str(len(data))
+        })
+    result.sort(key=lambda x: (x["opat_referral_team"], x["patient_outcome"],))
+    compare_files_by_reporting_periods(
+        result,
+        "/Users/fredkingham/Downloads/opat_extract/patient_outcomes_by_referrer_ {} .csv"
+    )
+
+
+def generate_nors_outcomes_oo_ref():
+    rows = generate_pid()
+    rows = opat_acceptance_union(rows)
+
+    def get_key(row):
+        return (
+            row["opat_referral_team"],
+            row["opat_outcome"],
+            row["reportingperiod"]
+        )
+    sliced_data = group_by(rows, get_key)
+    result = []
+    for key, data in sliced_data.items():
+        result.append({
+            "opat_referral_team": key[0],
+            "opat_outcome": key[1],
+            "reportingperiod": key[2],
+            "count.max": str(len(data))
+        })
+    result.sort(key=lambda x: (x["opat_referral_team"], x["opat_outcome"],))
+    compare_files_by_reporting_periods(
+        result,
+        "/Users/fredkingham/Downloads/opat_extract/opat_outcomes_by_referrer_ {} .csv"
+    )
+
+
+def generate_nors_outcomes_oo_pid():
+    rows = generate_pid()
+    rows = opat_acceptance_union(rows)
+
+    def get_key(row):
+        return (
+            row["infective_diagnosis"],
+            row["opat_outcome"],
+            row["reportingperiod"]
+        )
+    sliced_data = group_by(rows, get_key)
+    result = []
+    for key, data in sliced_data.items():
+        result.append({
+            "infective_diagnosis": key[0],
+            "opat_outcome": key[1],
+            "reportingperiod": key[2],
+            "count.max": str(len(data))
+        })
+    result.sort(key=lambda x: (x["infective_diagnosis"], x["opat_outcome"],))
+    compare_files_by_reporting_periods(
+        result,
+        "/Users/fredkingham/Downloads/opat_extract/opat_outcomes_by_diagnosis_ {} .csv"
+    )
+
+
+def generate_line_adverse_events():
+    rows = generate_pid()
+    rows = opat_acceptance_union(rows)
+    rows = line_union(rows)
+
+    def get_key(row):
+        return (
+            row["complications"],
+            row["reportingperiod"]
+        )
+    sliced_data = group_by(rows, get_key)
+    result = []
+    for key, data in sliced_data.items():
+        count = str(len(data))
+        result.append({
+            "complications": key[0],
+            "reportingperiod": key[1],
+            "count.max": count
+        })
+    result.sort(key=lambda x: (x["complications"], x["reportingperiod"],))
+    compare_files_by_reporting_periods(
+        result,
+        "/Users/fredkingham/Downloads/opat_extract/line_adverse_events_ {} .csv"
+    )
+
+
 if __name__ == "__main__":
     generate_anti_infectives()
+    generate_nors_outcomes_po_pid()
+    generage_nors_outcomes_po_ref()
+
+    generate_nors_outcomes_oo_pid()
+    generate_nors_outcomes_oo_ref()
+    generate_line_adverse_events()
