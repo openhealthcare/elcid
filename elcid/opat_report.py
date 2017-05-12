@@ -183,8 +183,6 @@ def generate_anti_infectives():
     sliced_data = group_by(rows, get_key)
 
     for data_slice_key, value in sliced_data.items():
-        if data_slice_key[1] == "Bacteraemia" and data_slice_key[2] == "2016_2":
-            import ipdb; ipdb.set_trace()
         counter = str(len(set([i["episode_id"] for i in value])))
         result.append({
             "drug": data_slice_key[0],
@@ -416,7 +414,7 @@ def generate_drugs_adverse_events():
     rows = generate_pid()
     rows = opat_acceptance_union(rows)
     rows = drugs_union(rows)
-    rows = [row for row in rows if row["duration"] == 0]
+    rows = [row for row in rows if row["duration"] != 0]
 
     def get_key(row):
         return (
@@ -425,6 +423,7 @@ def generate_drugs_adverse_events():
         )
     sliced_data = group_by(rows, get_key)
     result = []
+
     for key, data in sliced_data.items():
         count = str(len(data))
         result.append({
@@ -488,14 +487,14 @@ def generate_primary_infective_diagnosis():
 
 
 if __name__ == "__main__":
-    # generate_anti_infectives()
-    #
-    # generate_nors_outcomes_po_pid()
-    # generage_nors_outcomes_po_ref()
-    # generate_nors_outcomes_oo_pid()
-    # generate_nors_outcomes_oo_ref()
-    #
-    # generate_line_adverse_events()
-    # generate_drugs_adverse_events()
+    generate_anti_infectives()
+
+    generate_nors_outcomes_po_pid()
+    generage_nors_outcomes_po_ref()
+    generate_nors_outcomes_oo_pid()
+    generate_nors_outcomes_oo_ref()
+
+    generate_line_adverse_events()
+    generate_drugs_adverse_events()
 
     generate_primary_infective_diagnosis()
