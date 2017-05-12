@@ -438,6 +438,38 @@ def generate_drugs_adverse_events():
     )
 
 
+def generate_referring_speciality():
+    rows = generate_pid()
+    rows = opat_acceptance_union(rows)
+    rows = drugs_union(rows)
+    rows = [row for row in rows if row["route"] not in ["Oral", "PO"]]
+
+    def get_key(row):
+        return (
+            row["opat_referral_team"],
+            row["reportingperiod"]
+        )
+
+    sliced_data = group_by(rows, get_key)
+    result = []
+
+    for key, data in sliced_data.items():
+        totalopat = sum((i["duration"] for i in data))
+        count = len({i["episode_id"] for i in data})
+        str(len(data))
+        result.append({
+            "opat_referral_team": key[0],
+            "reportingperiod": key[1],
+            "totalopat.max": str(totalopat),
+            "count.max": str(count)
+        })
+
+    compare_files_by_reporting_periods(
+        result,
+        "/Users/fredkingham/Downloads/opat_extract/Referring Specialty_Patient Episode_Treatment_Days_ {} .csv"
+    )
+
+
 def generate_primary_infective_diagnosis():
     rows = generate_pid()
     rows = opat_acceptance_union(rows)
@@ -473,6 +505,7 @@ def generate_primary_infective_diagnosis():
     for key, data in sliced_data.items():
         episode_count = str(len({i["episode_id"] for i in data}))
 
+
         result.append({
             "reportingperiod": key[0],
             "infective_diagnosis": key[1],
@@ -498,3 +531,4 @@ if __name__ == "__main__":
     generate_drugs_adverse_events()
 
     generate_primary_infective_diagnosis()
+    generate_referring_speciality()
