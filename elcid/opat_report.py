@@ -478,9 +478,36 @@ def get_patient(episode_id):
             if row["id"] == episode_id:
                 patient_id = row["patient_id"]
 
-        if not patient_id:
-            import ipdb; ipdb.set_trace()
     return patient_id
+
+
+def get_opat_delivery_statistics():
+    rows = generate_pid()
+    rows = opat_acceptance_union(rows)
+    rows = drugs_union(rows)
+    rows = [row for row in rows if row["route"] not in ["Oral", "PO"]]
+
+    def get_key(row):
+        return (row["reportingperiod"], row["delivered_by"])
+
+    sliced_data = group_by(rows, get_key)
+    result = []
+
+    for key, data in sliced_data.items():
+        episodes = str(len(set({i["episode_id"] for i in data})))
+        # patients = str(len(set({get_patient(i["episode_id"]) for i in data})))
+        durations = sum((i["duration"] for i in data))
+        result.append({
+            "reportingperiod": key[0],
+            "delivered_by": key[1],
+            "count.max": episodes,
+            "totalopat.max": str(durations),
+        })
+
+    compare_files_by_reporting_periods(
+        result,
+        "/Users/fredkingham/Downloads/opat_extract/OPAT Delivery statistics per quarter {} .csv"
+    )
 
 
 def generate_quartersummary():
@@ -575,3 +602,4 @@ if __name__ == "__main__":
     generate_primary_infective_diagnosis()
     generate_referring_speciality()
     generate_quartersummary()
+    get_opat_delivery_statistics()
