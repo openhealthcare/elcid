@@ -1,6 +1,7 @@
 import tempfile
 import zipfile
 import copy
+import calendar
 from reporting import Report
 from opal.models import Episode
 from opal.core.search.extract import generate_files
@@ -9,12 +10,14 @@ import dateutil.parser
 import os
 import csv
 import datetime
+import json
 
 
 class OpatReport(Report):
     slug = "opat-report"
     display_name = "OPAT Report"
-    description = "data for the quarterly OPAT report"
+    description = "Data for the quarterly OPAT report"
+    template = "reports/opat/opat_report.html"
 
     def get_patient(self, episode_id):
         patient_id = None
@@ -91,6 +94,48 @@ class OpatReport(Report):
             self.get_reporting_period(row)
             result.append(row)
         return result
+
+    def get_reporting_periods(self):
+        """displays data to show reporting periods on the front end"""
+        start = None
+        for episode in Episode.objects.filter(tagging__value="opat").order_by("location__opat_acceptance"):
+            if episode.start:
+                start = episode.start
+                break
+
+        if not start:
+            return []
+
+        first_quarter = ((start.month-1)/3) + 1
+        first_year = start.year
+        today = datetime.date.today()
+
+        # we will exclude this last quarter
+        last_quarter = ((today.month-1)/3) + 1
+        last_year = today.year
+        result = []
+
+        for year in range(first_year, last_year + 1):
+            if year == first_year:
+                start = first_quarter
+            else:
+                start = 1
+
+            for quarter in xrange(start, 5):
+                if year == last_year and quarter == last_quarter:
+                    break
+                else:
+                    result.append({
+                        "display_name": "{0} {1}-{2} {3}".format(
+                            quarter,
+                            calendar.month_name[((quarter-1)*3+1)],
+                            calendar.month_name[((quarter)*3)],
+                            year
+                        ),
+                        "reporting_period": "{0}_{1}".format(year, quarter),
+                        "year": year
+                    })
+        return reversed(result)
 
     def get_reporting_period(self, pid_row):
         time_field = None

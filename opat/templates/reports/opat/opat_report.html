@@ -1,0 +1,53 @@
+{% extends "reporting/report_detail.html" %}
+{% block report_choices %}
+<div class="form-group">
+  <div class="row">
+    <div class="col-md-4 col-md-push-4">
+      <label class="control-label">
+        Reporting Period
+      </label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4 col-md-push-4">
+      <select class="form-control" ng-model="report.criteria.reporting_period">
+          {% for reporting_period in object.get_reporting_periods %}
+            <option value="{{ reporting_period.reporting_period }}">{{ reporting_period.display_name }}</option>
+          {% endfor %}
+      </select>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+
+{% block report_button %}
+  {% if EXTRACT_ASYNC %}
+    {# click to start the async process #}
+    <span ng-show="!report.asyncWaiting && !report.asyncReady">
+      <button ng-disabled="!report.criteria.reporting_period" ng-click="report.startAsynchronousTask()" class="btn btn-lg">Download this data</button>
+    </span>
+
+    {# while we're waiting #}
+    <span ng-show="report.asyncWaiting && !report.asyncReady">
+      <button disabled class="btn btn-lg">
+        <i class="fa fa-cog fa-spin" ></i>
+        Building your extract... this could take some time...
+      </button>
+    </span>
+
+    {# while we are go people #}
+    <span ng-show="!report.asyncWaiting && report.asyncReady">
+      <button ng-click="report.downloadAsynchronously()" class="btn btn-lg">
+        <i class="glyphicon glyphicon-download"></i>
+        Ready - Download your extract
+      </button>
+    </span>
+  {% else %}
+  <form action="[[ report.download_link ]]" method="post" target="_blank">
+    {% csrf_token %}
+    <input name="criteria" type="hidden" value="[[ JSON.stringify(report.criteria) ]]">
+    <button ng-disabled="!report.criteria.reporting_period" type="submit" class="btn btn-lg">Download this data</button>
+  </form>
+  {% endif %}
+{% endblock %}
