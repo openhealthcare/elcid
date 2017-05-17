@@ -181,6 +181,7 @@ INSTALLED_APPS = (
     'guidelines',
     'dischargesummary',
     'djcelery',
+    'reporting',
 )
 
 if ON_TEST:

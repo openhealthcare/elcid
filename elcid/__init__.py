@@ -38,7 +38,6 @@ class Application(application.OpalApplication):
         "General Consultation": "inline_forms/clinical_advice.html",
     }
 
-
     @classmethod
     def get_menu_items(klass, user=None):
         items = application.OpalApplication.get_menu_items(user=user)
@@ -49,4 +48,10 @@ class Application(application.OpalApplication):
                 index=-1
             )
             items.append(query)
+            report = menus.MenuItem(
+                href="reporting/#/list", activepattern="reporting/#/",
+                icon="fa-file-zip-o", display="Reports",
+                index=-2
+            )
+            items.append(report)
         return items

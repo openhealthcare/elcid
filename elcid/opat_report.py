@@ -574,7 +574,6 @@ def generate_primary_infective_diagnosis():
     for key, data in sliced_data.items():
         episode_count = str(len({i["episode_id"] for i in data}))
 
-
         result.append({
             "reportingperiod": key[0],
             "infective_diagnosis": key[1],
