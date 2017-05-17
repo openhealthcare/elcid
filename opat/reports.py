@@ -603,11 +603,11 @@ class OpatReport(Report):
         return (self.write_csv(file_name, result), file_name,)
 
     def zip_archive_report_data(self, user=None, criteria=None):
-        reporting_period = "2015_1"
         self.from_tmp_file = tempfile.mkdtemp()
 
         self.to_tmp_file = tempfile.mkdtemp()
         self.generate_existing_csv_files(user)
+        reporting_period = criteria["reporting_period"]
 
         reports = [
             self.generate_anti_infectives(reporting_period),
