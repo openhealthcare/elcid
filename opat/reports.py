@@ -45,8 +45,12 @@ class OpatReport(Report):
     def get_file_path(self, file_name):
         return os.path.join(self.from_tmp_file, file_name)
 
-    def generate_existing_csv_files(self, user):
-        episodes = Episode.objects.filter(tagging__value="opat")
+    def generate_existing_csv_files(self, user, from_date, to_date):
+        episodes = Episode.objects.filter(
+            tagging__value="opat",
+            location_set__opat_acceptance__gte=from_date,
+            location_set__opat_acceptance__lt=to_date
+        )
         generate_files(self.from_tmp_file, episodes, user)
 
     def group_by(self, rows, some_fun):
@@ -126,8 +130,7 @@ class OpatReport(Report):
                     break
                 else:
                     result.append({
-                        "display_name": "{0} {1}-{2} {3}".format(
-                            quarter,
+                        "display_name": "{0}-{1} {2}".format(
                             calendar.month_name[((quarter-1)*3+1)],
                             calendar.month_name[((quarter)*3)],
                             year
@@ -221,6 +224,10 @@ class OpatReport(Report):
                 result.append(new_pid_row)
 
         return result
+
+    def reporting_period_to_date_range(self, reporting_period):
+        """ The reporting period is of the form 1_
+        """
 
     def drugs_union(self, pid_rows):
         # get episodes ids that had iv and werenot delivered by the inpatient team
@@ -601,6 +608,22 @@ class OpatReport(Report):
                 })
 
         return (self.write_csv(file_name, result), file_name,)
+
+    def get_date_range_from_reporting_period(self, reporting_period):
+        """ returns from date(inc) to date (exc) from a reporting period
+        """
+        year, quarter = reporting_period.split("_")
+        year = int(year)
+        quarter = int(quarter)
+        month = ((quarter-1) * 3) + 1
+        from_date = datetime.date(year, month, 1)
+
+        to_month = month + 3
+        if to_month > 12:
+            to_month = to_month % 12
+            year += 1
+        to_date = datetime.date(year, to_month, 1)
+        return from_date, to_date
 
     def zip_archive_report_data(self, user=None, criteria=None):
         self.from_tmp_file = tempfile.mkdtemp()

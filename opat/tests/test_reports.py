@@ -1,14 +1,29 @@
 from datetime import date
 
 from opal.core.test import OpalTestCase
-from opat.models import OPATRejection
 from opat import reports
 from mock import patch
 
 
-class OpatReportTestCas(OpalTestCase):
+class OpatReportTestCase(OpalTestCase):
     def setUp(self):
         self.report = reports.OpatReport()
+
+    def test_get_date_range_from_reporting_period(self):
+        # beginning of the year
+        expected = date(2015, 1, 1), date(2015, 4, 1)
+        found = self.report.get_date_range_from_reporting_period("2015_1")
+        self.assertEqual(expected, found)
+
+        # middle of the year
+        expected = date(2015, 7, 1), date(2015, 10, 1)
+        found = self.report.get_date_range_from_reporting_period("2015_3")
+        self.assertEqual(expected, found)
+
+        # end of the year
+        expected = date(2015, 10, 1), date(2016, 1, 1)
+        found = self.report.get_date_range_from_reporting_period("2015_4")
+        self.assertEqual(expected, found)
 
     @patch("opat.reports.datetime")
     def test_get_reporting_periods(self, datetime):
@@ -17,35 +32,35 @@ class OpatReportTestCas(OpalTestCase):
         episode.set_tag_names(["opat"], None)
         episode.category_name = "opat"
         episode.save()
-        OPATRejection.objects.create(
-            episode=episode,
-            date=date(2016, 5, 1)
-        )
+        location = episode.location_set.get()
+        location.opat_acceptance = date(2016, 5, 1)
+        location.save()
+
         reporting_periods = [i for i in self.report.get_reporting_periods()]
         expected = [
             {
                 'reporting_period': '2017_2',
-                'display_name': '2 April-June 2017',
+                'display_name': 'April-June 2017',
                 'year': 2017
             },
             {
                 'reporting_period': '2017_1',
-                'display_name': '1 January-March 2017',
+                'display_name': 'January-March 2017',
                 'year': 2017
             },
             {
                 'reporting_period': '2016_4',
-                'display_name': '4 October-December 2016',
+                'display_name': 'October-December 2016',
                 'year': 2016
             },
             {
                 'reporting_period': '2016_3',
-                'display_name': '3 July-September 2016',
+                'display_name': 'July-September 2016',
                 'year': 2016
             },
             {
                 'reporting_period': '2016_2',
-                'display_name': '2 April-June 2016',
+                'display_name': 'April-June 2016',
                 'year': 2016
             }
         ]
