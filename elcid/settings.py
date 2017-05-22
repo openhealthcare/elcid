@@ -182,7 +182,6 @@ INSTALLED_APPS = (
     'dischargesummary',
     'djcelery',
     'reporting',
-    "ghettoq",
 )
 
 if ON_TEST:
