@@ -4,13 +4,12 @@ import copy
 import calendar
 from reporting import Report
 from opal.models import Episode
-from opal.core.search.extract import generate_files
+from opal.core.search.extract import generate_csv_files
 from collections import defaultdict
 import dateutil.parser
 import os
 import csv
 import datetime
-import json
 
 
 class OpatReport(Report):
@@ -48,10 +47,10 @@ class OpatReport(Report):
     def generate_existing_csv_files(self, user, from_date, to_date):
         episodes = Episode.objects.filter(
             tagging__value="opat",
-            location_set__opat_acceptance__gte=from_date,
-            location_set__opat_acceptance__lt=to_date
+            location__opat_acceptance__gte=from_date,
+            location__opat_acceptance__lt=to_date
         )
-        generate_files(self.from_tmp_file, episodes, user)
+        generate_csv_files(self.from_tmp_file, episodes, user)
 
     def group_by(self, rows, some_fun):
         sliced_data = defaultdict(list)
@@ -629,7 +628,10 @@ class OpatReport(Report):
         self.from_tmp_file = tempfile.mkdtemp()
 
         self.to_tmp_file = tempfile.mkdtemp()
-        self.generate_existing_csv_files(user)
+        from_date, to_date = self.get_date_range_from_reporting_period(
+            criteria["reporting_period"]
+        )
+        self.generate_existing_csv_files(user, from_date, to_date)
         reporting_period = criteria["reporting_period"]
 
         reports = [
