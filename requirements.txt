@@ -15,7 +15,7 @@ supervisor==3.0
 django-debug-toolbar==1.2.1
 mock==1.0.1
 requests==2.7.0
-python-dateutil==2.4.2
+python-dateutil==2.4.e
 djangorestframework==3.2.2
 celery==3.1.19
 django-celery==3.1.17
@@ -25,6 +25,7 @@ pycrypto==2.6.1
 
 -e git+https://github.com/openhealthcare/opal.git@v0.8.2#egg=opal
 -e git+https://github.com/openhealthcare/opal-observations.git@v0.3.0#egg=opal_observations
+-e git+https://github.com/openhealthcare/opal-reporting.git@v0.1#egg=opal_reporting
 
 -e git+https://github.com/openhealthcare/opal-wardround.git@v0.8.0#egg=opal_wardround
 -e git+https://github.com/openhealthcare/opal-referral.git@v0.3.0#egg=opal_referral
