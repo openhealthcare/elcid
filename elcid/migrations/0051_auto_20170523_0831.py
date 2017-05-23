@@ -13,7 +13,7 @@ def migrate_forwards(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('elcid', '0054_auto_20170321_1325'),
+        ('elcid', '0050_auto_20160725_1038'),
     ]
 
     operations = [
