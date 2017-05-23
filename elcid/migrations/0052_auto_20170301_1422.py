@@ -96,9 +96,4 @@ class Migration(migrations.Migration):
             name='vzv',
             field=models.CharField(max_length=20, blank=True),
         ),
-        migrations.AlterField(
-            model_name='pastmedicalhistory',
-            name='year',
-            field=models.CharField(max_length=4, blank=True),
-        ),
     ]
