@@ -8,6 +8,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('elcid', '0051_auto_20160725_1222'),
+        ('elcid', '0051_auto_20170523_0831'),
     ]
 
     operations = [
