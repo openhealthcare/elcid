@@ -248,8 +248,17 @@ class Diagnosis(omodels.Diagnosis):
         verbose_name_plural = "Diagnoses"
 
 
-class PastMedicalHistory(omodels.PastMedicalHistory):
-    pass
+class PastMedicalHistory(EpisodeSubrecord):
+    _title = 'PMH'
+    _sort = 'year'
+    _icon = 'fa fa-history'
+
+    condition = ForeignKeyOrFreeText(omodels.Condition)
+    year = models.CharField(max_length=200, blank=True)
+    details = models.CharField(max_length=255, blank=True)
+
+    class Meta:
+        verbose_name_plural = "Past medical histories"
 
 
 class GeneralNote(EpisodeSubrecord):
