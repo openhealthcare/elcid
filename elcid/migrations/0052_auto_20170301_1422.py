@@ -16,16 +16,6 @@ class Migration(migrations.Migration):
             options={},
         ),
         migrations.AlterField(
-            model_name='allergies',
-            name='drug_fk',
-            field=models.ForeignKey(blank=True, to='opal.Drug', null=True),
-        ),
-        migrations.AlterField(
-            model_name='allergies',
-            name='provisional',
-            field=models.BooleanField(default=False, verbose_name=b'Suspected?'),
-        ),
-        migrations.AlterField(
             model_name='demographics',
             name='gp_practice_code',
             field=models.CharField(max_length=20, null=True, verbose_name=b'GP Practice Code', blank=True),
