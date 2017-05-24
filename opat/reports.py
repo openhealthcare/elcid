@@ -200,7 +200,7 @@ class OpatReport(Report):
 
     def generate_pid(self):
         rows = []
-        with open(self.get_file_path("Opat Outcome.csv"), "rb") as csv_file:
+        with open(self.get_file_path("opat_outcome.csv"), "rb") as csv_file:
             reader = csv.DictReader(csv_file)
             episode_data = self.generate_reporting_periods(reader)
         rows = self.remove_duplicates(episode_data)
