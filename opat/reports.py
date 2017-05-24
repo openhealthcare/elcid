@@ -72,15 +72,15 @@ class OpatReport(Report):
         with open(self.get_file_path("location.csv"), "rb") as csv_file:
             reader = csv.DictReader(csv_file)
             for row in reader:
-                if not row["Opat Acceptance"] or row["Opat Acceptance"] == "None":
-                    row["Opat Acceptance"] = None
+                if not row["Date Of Acceptance To OPAT"] or row["Date Of Acceptance To OPAT"] == "None":
+                    row["Date Of Acceptance To OPAT"] = None
                 else:
-                    row["Opat Acceptance"] = dateutil.parser.parse(row["Opat Acceptance"]).date()
+                    row["Date Of Acceptance To OPAT"] = dateutil.parser.parse(row["Date Of Acceptance To OPAT"]).date()
 
-                if not row["Opat Referral"] or row["Opat Referral"] == "None":
-                    row["Opat Referral"] = None
+                if not row["Date Of Referral To OPAT"] or row["Date Of Referral To OPAT"] == "None":
+                    row["Date Of Referral To OPAT"] = None
                 else:
-                    row["Opat Referral"] = dateutil.parser.parse(row["Opat Referral"]).date()
+                    row["Date Of Referral To OPAT"] = dateutil.parser.parse(row["Date Of Referral To OPAT"]).date()
                 rows.append(row)
         return rows
 
@@ -265,14 +265,14 @@ class OpatReport(Report):
                 row["had_iv"] = row["Episode"] in episodes_with_ivs
                 pid_row = self.get_row_from_episode_id(row["Episode"], pid_rows)
 
-                if not pid_row or not pid_row["Opat Acceptance"]:
+                if not pid_row or not pid_row["Date Of Acceptance To OPAT"]:
                     continue
 
                 if "Duration" not in row:
                     row["Duration"] = 0
                 else:
-                    before_opat = (pid_row["Opat Acceptance"] - row["Start Date"]).days
-                    row["Opat Acceptance"] = pid_row["Opat Acceptance"]
+                    before_opat = (pid_row["Date Of Acceptance To OPAT"] - row["Start Date"]).days
+                    row["Date Of Acceptance To OPAT"] = pid_row["Date Of Acceptance To OPAT"]
 
                     if before_opat > 0:
                         row["Duration"] = row["Duration"] - before_opat
@@ -335,7 +335,7 @@ class OpatReport(Report):
 
         def get_key(row):
             return (
-                row["Opat Referral Team"],
+                row["Referring Team"],
                 row["Patient Outcome"],
                 row["reportingperiod"]
             )
@@ -344,12 +344,12 @@ class OpatReport(Report):
         for key, data in sliced_data.items():
             if key[2] == reporting_period:
                 result.append({
-                    "Opat Referral Team": key[0],
+                    "Referring Team": key[0],
                     "Patient Outcome": key[1],
                     "reportingperiod": key[2],
                     "count.max": str(len(data))
                 })
-        result.sort(key=lambda x: (x["Opat Referral Team"], x["Patient Outcome"],))
+        result.sort(key=lambda x: (x["Referring Team"], x["Patient Outcome"],))
         return (self.write_csv(file_name, result), file_name,)
 
     def generate_nors_outcomes_oo_ref(self, reporting_period):
@@ -361,7 +361,7 @@ class OpatReport(Report):
 
         def get_key(row):
             return (
-                row["Opat Referral Team"],
+                row["Referring Team"],
                 row["Opat Outcome"],
                 row["reportingperiod"]
             )
@@ -370,12 +370,12 @@ class OpatReport(Report):
         for key, data in sliced_data.items():
             if key[2] == reporting_period:
                 result.append({
-                    "Opat Referral Team": key[0],
+                    "Referring Team": key[0],
                     "Opat Outcome": key[1],
                     "reportingperiod": key[2],
                     "count.max": str(len(data))
                 })
-        result.sort(key=lambda x: (x["Opat Referral Team"], x["Opat Outcome"],))
+        result.sort(key=lambda x: (x["Referring Team"], x["Opat Outcome"],))
         return (self.write_csv(file_name, result), file_name,)
 
     def generate_nors_outcomes_oo_pid(self, reporting_period):
@@ -546,7 +546,7 @@ class OpatReport(Report):
 
         def get_key(row):
             return (
-                row["Opat Referral Team"],
+                row["Referring Team"],
                 row["reportingperiod"]
             )
 
@@ -559,7 +559,7 @@ class OpatReport(Report):
                 count = len({i["Episode"] for i in data})
                 str(len(data))
                 result.append({
-                    "Opat Referral Team": key[0],
+                    "Referring Team": key[0],
                     "reportingperiod": key[1],
                     "totalopat.max": str(totalopat),
                     "count.max": str(count)
