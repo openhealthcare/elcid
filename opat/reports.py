@@ -188,7 +188,7 @@ class OpatReport(Report):
     def filter_unknown_categorised_infective_diagnosis(self, rows):
         for row in rows:
             if row["Infective Diagnosis"]:
-                qs = opat_models.OPATInfectiveDiagnosis.filter(
+                qs = opat_models.OPATInfectiveDiagnosis.objects.filter(
                     name=row["Infective Diagnosis"]
                 )
                 if qs.exists():
