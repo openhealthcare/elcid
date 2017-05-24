@@ -19,13 +19,13 @@ class OpatReport(Report):
     description = "Data for the quarterly OPAT report"
     template = "reports/opat/opat_report.html"
 
-    def get_patient(self, Episode):
+    def get_patient(self, episode_id):
         patient_id = None
         with open(self.get_file_path("episodes.csv"), "rb") as csv_file:
             reader = csv.DictReader(csv_file)
             for row in reader:
-                if row["id"] == Episode:
-                    patient_id = row["patient_id"]
+                if row["ID"] == episode_id:
+                    patient_id = row["Patient"]
 
         return patient_id
 
@@ -283,8 +283,8 @@ class OpatReport(Report):
                 if not row["Episode"] in episodes_with_ivs:
                     continue
 
-                if not row["adverse_event"]:
-                    row["adverse_event"] = "NA"
+                if not row["Adverse Event"]:
+                    row["Adverse Event"] = "NA"
 
                 # if they don't have a pid row skip it for the time being
                 if pid_row:
