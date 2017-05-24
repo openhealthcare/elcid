@@ -85,10 +85,10 @@ class OpatReport(Report):
         return rows
 
     def opat_acceptance_union(self, pid_rows):
-        Opat Acceptance = self.get_opat_acceptance()
+        opat_acceptance = self.get_opat_acceptance()
 
         for row in pid_rows:
-            row.update(self.get_row_from_episode_id(row["Episode"], Opat Acceptance))
+            row.update(self.get_row_from_episode_id(row["Episode"], opat_acceptance))
         return pid_rows
 
     def generate_reporting_periods(self, csv_rows):
