@@ -98,7 +98,7 @@ class Location(omodels.Location):
         blank=True, null=True, verbose_name="Referring team address"
     )
     opat_referral              = models.DateField(blank=True, null=True, verbose_name="Date Of Referral To OPAT")
-    opat_acceptance            = models.DateField(blank=True, null=True, verbose_name="Referring Consultant")
+    opat_acceptance            = models.DateField(blank=True, null=True, verbose_name="Date Of Acceptance To OPAT")
     opat_discharge             = models.DateField(blank=True, null=True)
 
     def __unicode__(self):
