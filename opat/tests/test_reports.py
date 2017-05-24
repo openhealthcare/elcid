@@ -40,27 +40,27 @@ class OpatReportTestCase(OpalTestCase):
         expected = [
             {
                 'reporting_period': '2017_2',
-                'display_name': 'April-June 2017',
+                'display_name': 'Apr - Jun 2017',
                 'year': 2017
             },
             {
                 'reporting_period': '2017_1',
-                'display_name': 'January-March 2017',
+                'display_name': 'Jan - Mar 2017',
                 'year': 2017
             },
             {
                 'reporting_period': '2016_4',
-                'display_name': 'October-December 2016',
+                'display_name': 'Oct - Dec 2016',
                 'year': 2016
             },
             {
                 'reporting_period': '2016_3',
-                'display_name': 'July-September 2016',
+                'display_name': 'Jul - Sep 2016',
                 'year': 2016
             },
             {
                 'reporting_period': '2016_2',
-                'display_name': 'April-June 2016',
+                'display_name': 'Apr - Jun 2016',
                 'year': 2016
             }
         ]
