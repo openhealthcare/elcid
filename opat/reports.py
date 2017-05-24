@@ -5,6 +5,7 @@ import calendar
 from reporting import Report
 from opal.models import Episode
 from opal.core.search.extract import generate_csv_files
+from opat import models as opat_models
 from collections import defaultdict
 import dateutil.parser
 import os
@@ -18,12 +19,12 @@ class OpatReport(Report):
     description = "Data for the quarterly OPAT report"
     template = "reports/opat/opat_report.html"
 
-    def get_patient(self, episode_id):
+    def get_patient(self, Episode):
         patient_id = None
         with open(self.get_file_path("episodes.csv"), "rb") as csv_file:
             reader = csv.DictReader(csv_file)
             for row in reader:
-                if row["id"] == episode_id:
+                if row["id"] == Episode:
                     patient_id = row["patient_id"]
 
         return patient_id
@@ -60,9 +61,9 @@ class OpatReport(Report):
             sliced_data[key].append(row)
         return sliced_data
 
-    def get_row_from_episode_id(self, episode_id, rows):
+    def get_row_from_episode_id(self, Episode, rows):
         try:
-            return next(row for row in rows if row["episode_id"] == episode_id)
+            return next(row for row in rows if row["Episode"] == Episode)
         except StopIteration:
             return
 
@@ -71,23 +72,23 @@ class OpatReport(Report):
         with open(self.get_file_path("location.csv"), "rb") as csv_file:
             reader = csv.DictReader(csv_file)
             for row in reader:
-                if not row["opat_acceptance"] or row["opat_acceptance"] == "None":
-                    row["opat_acceptance"] = None
+                if not row["Opat Acceptance"] or row["Opat Acceptance"] == "None":
+                    row["Opat Acceptance"] = None
                 else:
-                    row["opat_acceptance"] = dateutil.parser.parse(row["opat_acceptance"]).date()
+                    row["Opat Acceptance"] = dateutil.parser.parse(row["Opat Acceptance"]).date()
 
-                if not row["opat_referral"] or row["opat_referral"] == "None":
-                    row["opat_referral"] = None
+                if not row["Opat Referral"] or row["Opat Referral"] == "None":
+                    row["Opat Referral"] = None
                 else:
-                    row["opat_referral"] = dateutil.parser.parse(row["opat_referral"]).date()
+                    row["Opat Referral"] = dateutil.parser.parse(row["Opat Referral"]).date()
                 rows.append(row)
         return rows
 
     def opat_acceptance_union(self, pid_rows):
-        opat_acceptance = self.get_opat_acceptance()
+        Opat Acceptance = self.get_opat_acceptance()
 
         for row in pid_rows:
-            row.update(self.get_row_from_episode_id(row["episode_id"], opat_acceptance))
+            row.update(self.get_row_from_episode_id(row["Episode"], Opat Acceptance))
         return pid_rows
 
     def generate_reporting_periods(self, csv_rows):
@@ -141,7 +142,7 @@ class OpatReport(Report):
 
     def get_reporting_period(self, pid_row):
         time_field = None
-        for field in ["created", "updated"]:
+        for field in ["Created", "Updated"]:
             if not time_field and len(pid_row[field].strip()) and not pid_row[field] == "None":
                 time_field = dateutil.parser.parse(pid_row[field])
 
@@ -156,7 +157,7 @@ class OpatReport(Report):
     def remove_duplicates(self, rows):
         result = {}
         for row in rows:
-            key = (row["episode_id"], row["outcome_stage"],)
+            key = (row["Episode"], row["Outcome Stage"],)
             if key not in result:
                 result[key] = row
 
@@ -166,32 +167,40 @@ class OpatReport(Report):
         episode_ids = set()
         with open(self.get_file_path("opat_rejection.csv"), "rb") as csv_file:
             reader = csv.DictReader(csv_file)
-            episode_ids = {i["episode_id"] for i in reader}
-        return [i for i in rows if i["episode_id"] not in episode_ids]
+            episode_ids = {i["Episode"] for i in reader}
+        return [i for i in rows if i["Episode"] not in episode_ids]
 
     def remove_iv(self, pid_rows):
         episodes_with_ivs = set()
         with open(self.get_file_path("antimicrobial.csv"), "rb") as csv_file:
             reader = csv.DictReader(csv_file)
             ignore = set(["Inpatient Team", ""])
-            rows = [row for row in reader if row["delivered_by"] not in ignore]
+            rows = [row for row in reader if row["Delivered By"] not in ignore]
             for anitmicrobial_row in rows:
-                if anitmicrobial_row["route"] == "IV":
-                    episodes_with_ivs.add(anitmicrobial_row["episode_id"])
-        return [row for row in pid_rows if row["episode_id"] in episodes_with_ivs]
+                if anitmicrobial_row["Route"] == "IV":
+                    episodes_with_ivs.add(anitmicrobial_row["Episode"])
+        return [row for row in pid_rows if row["Episode"] in episodes_with_ivs]
 
     def filter_unknown_categorised_infective_diagnosis(self, rows):
         for row in rows:
-            if row["infective_diagnosis_ft"] and len(row["infective_diagnosis_ft"]):
-                row["infective_diagnosis"] = "Other - Free Text"
+            if row["Infective Diagnosis"]:
+                qs = opat_models.OPATInfectiveDiagnosis.filter(
+                    name=row["Infective Diagnosis"]
+                )
+                if qs.exists():
+                    continue
+            row["Infective Diagnosis"] = "Other - Free Text"
+
         return rows
 
     def remove_those_who_have_not_completed(self, rows):
-        return [row for row in rows if row["outcome_stage"] == "Completed Therapy"]
+        return [
+            row for row in rows if row["Outcome Stage"] == "Completed Therapy"
+        ]
 
     def generate_pid(self):
         rows = []
-        with open(self.get_file_path("opat_outcome.csv"), "rb") as csv_file:
+        with open(self.get_file_path("Opat Outcome.csv"), "rb") as csv_file:
             reader = csv.DictReader(csv_file)
             episode_data = self.generate_reporting_periods(reader)
         rows = self.remove_duplicates(episode_data)
@@ -206,8 +215,8 @@ class OpatReport(Report):
         with open(self.get_file_path("line.csv"), "rb") as csv_file:
             reader = csv.DictReader(csv_file)
             for row in reader:
-                if not row["complications"]:
-                    row["complications"] = "None"
+                if not row["Complications"]:
+                    row["Complications"] = "None"
                 rows.append(row)
         return rows
 
@@ -216,7 +225,7 @@ class OpatReport(Report):
         result = []
 
         for line in lines:
-            pid_row = self.get_row_from_episode_id(line["episode_id"], pid_rows)
+            pid_row = self.get_row_from_episode_id(line["Episode"], pid_rows)
             if pid_row:
                 new_pid_row = copy.copy(pid_row)
                 new_pid_row.update(line)
@@ -236,38 +245,38 @@ class OpatReport(Report):
         with open(self.get_file_path("antimicrobial.csv"), "rb") as csv_file:
             reader = csv.DictReader(csv_file)
             ignore = set(["Inpatient Team", ""])
-            rows = [row for row in reader if row["delivered_by"] not in ignore]
+            rows = [row for row in reader if row["Delivered By"] not in ignore]
             for anitmicrobial_row in rows:
-                if anitmicrobial_row["route"] == "IV":
-                    episodes_with_ivs.add(anitmicrobial_row["episode_id"])
+                if anitmicrobial_row["Route"] == "IV":
+                    episodes_with_ivs.add(anitmicrobial_row["Episode"])
 
             for row in rows:
-                if row["start_date"] and row["end_date"]:
-                    if not row["end_date"] == "None":
-                        if not row["start_date"] == "None":
-                            row["start_date"] = dateutil.parser.parse(row["start_date"]).date()
-                            row["end_date"] = dateutil.parser.parse(row["end_date"]).date()
-                            row["duration"] = (row["end_date"] - row["start_date"]).days + 1
+                if row["Start Date"] and row["End Date"]:
+                    if not row["End Date"] == "None":
+                        if not row["Start Date"] == "None":
+                            row["Start Date"] = dateutil.parser.parse(row["Start Date"]).date()
+                            row["End Date"] = dateutil.parser.parse(row["End Date"]).date()
+                            row["Duration"] = (row["End Date"] - row["Start Date"]).days + 1
 
-                row["had_iv"] = row["episode_id"] in episodes_with_ivs
-                pid_row = self.get_row_from_episode_id(row["episode_id"], pid_rows)
+                row["had_iv"] = row["Episode"] in episodes_with_ivs
+                pid_row = self.get_row_from_episode_id(row["Episode"], pid_rows)
 
-                if not pid_row or not pid_row["opat_acceptance"]:
+                if not pid_row or not pid_row["Opat Acceptance"]:
                     continue
 
-                if "duration" not in row:
-                    row["duration"] = 0
+                if "Duration" not in row:
+                    row["Duration"] = 0
                 else:
-                    before_opat = (pid_row["opat_acceptance"] - row["start_date"]).days
-                    row["opat_acceptance"] = pid_row["opat_acceptance"]
+                    before_opat = (pid_row["Opat Acceptance"] - row["Start Date"]).days
+                    row["Opat Acceptance"] = pid_row["Opat Acceptance"]
 
                     if before_opat > 0:
-                        row["duration"] = row["duration"] - before_opat
+                        row["Duration"] = row["Duration"] - before_opat
 
-                    if row["duration"] < 0:
-                        row["duration"] = 0
+                    if row["Duration"] < 0:
+                        row["Duration"] = 0
 
-                if not row["episode_id"] in episodes_with_ivs:
+                if not row["Episode"] in episodes_with_ivs:
                     continue
 
                 if not row["adverse_event"]:
@@ -287,13 +296,13 @@ class OpatReport(Report):
         rows = self.generate_pid()
         rows = self.opat_acceptance_union(rows)
         rows = self.drugs_union(rows)
-        rows = [row for row in rows if row["duration"] != 0]
+        rows = [row for row in rows if row["Duration"] != 0]
 
         def get_key(row):
             return (
-                # row["duration"],
-                row["drug"],
-                row["infective_diagnosis"],
+                # row["Duration"],
+                row["Drug"],
+                row["Infective Diagnosis"],
                 row["reportingperiod"],
             )
 
@@ -302,12 +311,12 @@ class OpatReport(Report):
 
         for data_slice_key, value in sliced_data.items():
             if data_slice_key[2] == reporting_period:
-                counter = str(len(set([i["episode_id"] for i in value])))
+                counter = str(len(set([i["Episode"] for i in value])))
                 result.append({
-                    "drug": data_slice_key[0],
-                    "infective_diagnosis": data_slice_key[1],
+                    "Drug": data_slice_key[0],
+                    "Infective Diagnosis": data_slice_key[1],
                     "reportingperiod": data_slice_key[2],
-                    "duration.max": str(max(v["duration"] for v in value)),
+                    "Duration.max": str(max(v["Duration"] for v in value)),
                     "count.max": counter
                 })
 
@@ -322,8 +331,8 @@ class OpatReport(Report):
 
         def get_key(row):
             return (
-                row["opat_referral_team"],
-                row["patient_outcome"],
+                row["Opat Referral Team"],
+                row["Patient Outcome"],
                 row["reportingperiod"]
             )
         sliced_data = self.group_by(rows, get_key)
@@ -331,12 +340,12 @@ class OpatReport(Report):
         for key, data in sliced_data.items():
             if key[2] == reporting_period:
                 result.append({
-                    "opat_referral_team": key[0],
-                    "patient_outcome": key[1],
+                    "Opat Referral Team": key[0],
+                    "Patient Outcome": key[1],
                     "reportingperiod": key[2],
                     "count.max": str(len(data))
                 })
-        result.sort(key=lambda x: (x["opat_referral_team"], x["patient_outcome"],))
+        result.sort(key=lambda x: (x["Opat Referral Team"], x["Patient Outcome"],))
         return (self.write_csv(file_name, result), file_name,)
 
     def generate_nors_outcomes_oo_ref(self, reporting_period):
@@ -348,8 +357,8 @@ class OpatReport(Report):
 
         def get_key(row):
             return (
-                row["opat_referral_team"],
-                row["opat_outcome"],
+                row["Opat Referral Team"],
+                row["Opat Outcome"],
                 row["reportingperiod"]
             )
         sliced_data = self.group_by(rows, get_key)
@@ -357,12 +366,12 @@ class OpatReport(Report):
         for key, data in sliced_data.items():
             if key[2] == reporting_period:
                 result.append({
-                    "opat_referral_team": key[0],
-                    "opat_outcome": key[1],
+                    "Opat Referral Team": key[0],
+                    "Opat Outcome": key[1],
                     "reportingperiod": key[2],
                     "count.max": str(len(data))
                 })
-        result.sort(key=lambda x: (x["opat_referral_team"], x["opat_outcome"],))
+        result.sort(key=lambda x: (x["Opat Referral Team"], x["Opat Outcome"],))
         return (self.write_csv(file_name, result), file_name,)
 
     def generate_nors_outcomes_oo_pid(self, reporting_period):
@@ -374,8 +383,8 @@ class OpatReport(Report):
 
         def get_key(row):
             return (
-                row["infective_diagnosis"],
-                row["opat_outcome"],
+                row["Infective Diagnosis"],
+                row["Opat Outcome"],
                 row["reportingperiod"]
             )
         sliced_data = self.group_by(rows, get_key)
@@ -383,12 +392,12 @@ class OpatReport(Report):
         for key, data in sliced_data.items():
             if key[2] == reporting_period:
                 result.append({
-                    "infective_diagnosis": key[0],
-                    "opat_outcome": key[1],
+                    "Infective Diagnosis": key[0],
+                    "Opat Outcome": key[1],
                     "reportingperiod": key[2],
                     "count.max": str(len(data))
                 })
-        result.sort(key=lambda x: (x["infective_diagnosis"], x["opat_outcome"],))
+        result.sort(key=lambda x: (x["Infective Diagnosis"], x["Opat Outcome"],))
         return (self.write_csv(file_name, result), file_name,)
 
     def generate_nors_outcomes_po_pid(self, reporting_period):
@@ -401,8 +410,8 @@ class OpatReport(Report):
 
         def get_key(row):
             return (
-                row["infective_diagnosis"],
-                row["patient_outcome"],
+                row["Infective Diagnosis"],
+                row["Patient Outcome"],
                 row["reportingperiod"]
             )
         sliced_data = self.group_by(rows, get_key)
@@ -410,12 +419,12 @@ class OpatReport(Report):
         for key, data in sliced_data.items():
             if key[2] == reporting_period:
                 result.append({
-                    "infective_diagnosis": key[0],
-                    "patient_outcome": key[1],
+                    "Infective Diagnosis": key[0],
+                    "Patient Outcome": key[1],
                     "reportingperiod": key[2],
                     "count.max": str(len(data))
                 })
-        result.sort(key=lambda x: (x["infective_diagnosis"], x["patient_outcome"],))
+        result.sort(key=lambda x: (x["Infective Diagnosis"], x["Patient Outcome"],))
 
         return (self.write_csv(file_name, result), file_name,)
 
@@ -429,7 +438,7 @@ class OpatReport(Report):
 
         def get_key(row):
             return (
-                row["complications"],
+                row["Complications"],
                 row["reportingperiod"]
             )
         sliced_data = self.group_by(rows, get_key)
@@ -438,11 +447,11 @@ class OpatReport(Report):
             if key[1] == reporting_period:
                 count = str(len(data))
                 result.append({
-                    "complications": key[0],
+                    "Complications": key[0],
                     "reportingperiod": key[1],
                     "count.max": count
                 })
-        result.sort(key=lambda x: (x["complications"], x["reportingperiod"],))
+        result.sort(key=lambda x: (x["Complications"], x["reportingperiod"],))
         return (self.write_csv(file_name, result), file_name,)
 
     def generate_drugs_adverse_events(self, reporting_period):
@@ -452,11 +461,11 @@ class OpatReport(Report):
         rows = self.generate_pid()
         rows = self.opat_acceptance_union(rows)
         rows = self.drugs_union(rows)
-        rows = [row for row in rows if row["duration"] != 0]
+        rows = [row for row in rows if row["Duration"] != 0]
 
         def get_key(row):
             return (
-                row["adverse_event"],
+                row["Adverse Event"],
                 row["reportingperiod"]
             )
         sliced_data = self.group_by(rows, get_key)
@@ -466,11 +475,11 @@ class OpatReport(Report):
             if key[1] == reporting_period:
                 count = str(len(data))
                 result.append({
-                    "adverse_event": key[0],
+                    "Adverse Event": key[0],
                     "reportingperiod": key[1],
                     "count.max": count
                 })
-        result.sort(key=lambda x: (x["adverse_event"], x["reportingperiod"],))
+        result.sort(key=lambda x: (x["Adverse Event"], x["reportingperiod"],))
         return (self.write_csv(file_name, result), file_name,)
 
     def generate_primary_infective_diagnosis(self, reporting_period):
@@ -481,26 +490,26 @@ class OpatReport(Report):
         rows = self.generate_pid()
         rows = self.opat_acceptance_union(rows)
         rows = self.drugs_union(rows)
-        rows = [row for row in rows if row["route"] not in ["Oral", "PO"]]
+        rows = [row for row in rows if row["Route"] not in ["Oral", "PO"]]
 
         def get_by_episode(row):
             return (
                 row["reportingperiod"],
-                row["infective_diagnosis"],
-                row["episode_id"]
+                row["Infective Diagnosis"],
+                row["Episode"]
             )
 
         def get_key(row):
             return (
                 row["reportingperiod"],
-                row["infective_diagnosis"],
+                row["Infective Diagnosis"],
             )
 
         sliced_by_episode = self.group_by(rows, get_by_episode)
 
         aggregated_by_episode = {}
         for key, data_slice in sliced_by_episode.items():
-            aggregated_by_episode[key] = sum(i["duration"] for i in data_slice)
+            aggregated_by_episode[key] = sum(i["Duration"] for i in data_slice)
 
         aggregated_max_duration = defaultdict(int)
 
@@ -510,16 +519,16 @@ class OpatReport(Report):
         sliced_data = self.group_by(rows, get_key)
         result = []
         for key, data in sliced_data.items():
-            episode_count = str(len({i["episode_id"] for i in data}))
+            episode_count = str(len({i["Episode"] for i in data}))
             if key[0] == reporting_period:
                 result.append({
                     "reportingperiod": key[0],
-                    "infective_diagnosis": key[1],
+                    "Infective Diagnosis": key[1],
                     "count.max": episode_count,
                     "totalopat.max": str(aggregated_max_duration[key]),
                 })
         result.sort(
-            key=lambda x: (x["infective_diagnosis"], x["reportingperiod"],)
+            key=lambda x: (x["Infective Diagnosis"], x["reportingperiod"],)
         )
         return (self.write_csv(file_name, result), file_name,)
 
@@ -529,11 +538,11 @@ class OpatReport(Report):
         rows = self.generate_pid()
         rows = self.opat_acceptance_union(rows)
         rows = self.drugs_union(rows)
-        rows = [row for row in rows if row["route"] not in ["Oral", "PO"]]
+        rows = [row for row in rows if row["Route"] not in ["Oral", "PO"]]
 
         def get_key(row):
             return (
-                row["opat_referral_team"],
+                row["Opat Referral Team"],
                 row["reportingperiod"]
             )
 
@@ -542,11 +551,11 @@ class OpatReport(Report):
 
         for key, data in sliced_data.items():
             if key[1] == reporting_period:
-                totalopat = sum((i["duration"] for i in data))
-                count = len({i["episode_id"] for i in data})
+                totalopat = sum((i["Duration"] for i in data))
+                count = len({i["Episode"] for i in data})
                 str(len(data))
                 result.append({
-                    "opat_referral_team": key[0],
+                    "Opat Referral Team": key[0],
                     "reportingperiod": key[1],
                     "totalopat.max": str(totalopat),
                     "count.max": str(count)
@@ -558,7 +567,7 @@ class OpatReport(Report):
         rows = self.generate_pid()
         rows = self.opat_acceptance_union(rows)
         rows = self.drugs_union(rows)
-        rows = [row for row in rows if row["route"] not in ["Oral", "PO"]]
+        rows = [row for row in rows if row["Route"] not in ["Oral", "PO"]]
 
         def get_key(row):
             return (row["reportingperiod"],)
@@ -568,9 +577,9 @@ class OpatReport(Report):
 
         for key, data in sliced_data.items():
             if key[0] == reporting_period:
-                episodes = str(len(set({i["episode_id"] for i in data})))
-                patients = str(len(set({self.get_patient(i["episode_id"]) for i in data})))
-                durations = sum((i["duration"] for i in data))
+                episodes = str(len(set({i["Episode"] for i in data})))
+                patients = str(len(set({self.get_patient(i["Episode"]) for i in data})))
+                durations = sum((i["Duration"] for i in data))
                 result.append({
                     "reportingperiod": key[0],
                     "patients.max": patients,
@@ -587,21 +596,21 @@ class OpatReport(Report):
         rows = self.generate_pid()
         rows = self.opat_acceptance_union(rows)
         rows = self.drugs_union(rows)
-        rows = [row for row in rows if row["route"] not in ["Oral", "PO"]]
+        rows = [row for row in rows if row["Route"] not in ["Oral", "PO"]]
 
         def get_key(row):
-            return (row["reportingperiod"], row["delivered_by"])
+            return (row["reportingperiod"], row["Delivered By"])
 
         sliced_data = self.group_by(rows, get_key)
         result = []
 
         for key, data in sliced_data.items():
             if key[0] == reporting_period:
-                episodes = str(len(set({i["episode_id"] for i in data})))
-                durations = sum((i["duration"] for i in data))
+                episodes = str(len(set({i["Episode"] for i in data})))
+                durations = sum((i["Duration"] for i in data))
                 result.append({
                     "reportingperiod": key[0],
-                    "delivered_by": key[1],
+                    "Delivered By": key[1],
                     "count.max": episodes,
                     "totalopat.max": str(durations),
                 })
