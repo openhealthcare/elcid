@@ -165,10 +165,14 @@ class OpatReport(Report):
 
     def remove_rejected(self, rows):
         episode_ids = set()
-        with open(self.get_file_path("opat_rejection.csv"), "rb") as csv_file:
-            reader = csv.DictReader(csv_file)
-            episode_ids = {i["Episode"] for i in reader}
-        return [i for i in rows if i["Episode"] not in episode_ids]
+        file_name = self.get_file_path("opat_rejection.csv")
+        if not os.path.exists(file_name):
+            return rows
+        else:
+            with open(file_name, "rb") as csv_file:
+                reader = csv.DictReader(csv_file)
+                episode_ids = {i["Episode"] for i in reader}
+            return [i for i in rows if i["Episode"] not in episode_ids]
 
     def remove_iv(self, pid_rows):
         episodes_with_ivs = set()
