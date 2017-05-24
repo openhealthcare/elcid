@@ -131,8 +131,8 @@ class OpatReport(Report):
                 else:
                     result.append({
                         "display_name": "{0} - {1} {2}".format(
-                            calendar.month_name[((quarter-1)*3+1)],
-                            calendar.month_name[((quarter)*3)],
+                            calendar.month_name[((quarter-1)*3+1)][:3],
+                            calendar.month_name[((quarter)*3)][:3],
                             year
                         ),
                         "reporting_period": "{0}_{1}".format(year, quarter),
