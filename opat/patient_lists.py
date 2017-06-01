@@ -1,7 +1,4 @@
-"""
-Patient Lists for the OPAT service
-"""
-from opal.core import patient_lists
+from opal.core.patient_lists import TaggedPatientList
 from opat import models as opat_models
 from elcid import models
 
@@ -18,36 +15,31 @@ list_columns_opat = [
 ]
 
 
-class OPATReferral(patient_lists.TaggedPatientList):
+class OPATReferral(TaggedPatientList):
     display_name = 'OPAT Referrals'
     direct_add = False
     tag = "opat"
     subtag = "opat_referrals"
     schema = list_columns_opat
     order = 8
+    allow_edit_teams = False
 
 
-class OPATFollowUp(patient_lists.TaggedPatientList):
+class OPATFollowUp(TaggedPatientList):
     display_name = 'OPAT Follow up'
     direct_add = False
     tag = "opat"
     subtag = "opat_followup"
     schema = list_columns_opat
     order = 10
+    allow_edit_teams = False
 
 
-class OPATCurrent(patient_lists.TaggedPatientList):
+class OPATCurrent(TaggedPatientList):
     display_name = 'OPAT Current'
     direct_add = False
     tag = "opat"
     subtag = "opat_current"
     schema = list_columns_opat
     order = 9
-
-
-class OPATListGroup(patient_lists.TabbedPatientListGroup):
-    member_lists = [
-        OPATReferral,
-        OPATCurrent,
-        OPATFollowUp,
-    ]
+    allow_edit_teams = False
