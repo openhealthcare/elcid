@@ -1,3 +1,6 @@
+"""
+Patient Lists for the OPAT service
+"""
 from opal.core import patient_lists
 from opat import models as opat_models
 from elcid import models
