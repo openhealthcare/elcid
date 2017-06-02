@@ -1,4 +1,4 @@
-describe('DiagnosisAddEpisodeCtrl', function() {
+fdescribe('DiagnosisAddEpisodeCtrl', function() {
     "use strict";
 
     var $rootScope, $scope, $modal, $httpBackend, $controller;
@@ -45,6 +45,7 @@ describe('DiagnosisAddEpisodeCtrl', function() {
             $modalInstance : modalInstance,
             referencedata  : referencedata,
             tags           : tags,
+            $modal         : $modal,
             demographics   : demographics,
             Episode: function(x){ return {
               newItem: function(){},
@@ -61,6 +62,23 @@ describe('DiagnosisAddEpisodeCtrl', function() {
             expect(modalInstance.close).toHaveBeenCalledWith(null);
         });
 
+    });
+
+    describe('presenting_complaint', function(){
+      beforeEach(function(){
+        spyOn($modal, "open").and.returnValue({
+          result: {then: function(x){x(); } }
+        });
+      });
+
+      it('should resolve arguments', function(){
+        $scope.episode = jasmine.createSpyObj
+        $scope.presenting_complaint();
+
+        console.error($modal.open.calls.mostRecent());
+        var resolve = $modal.open.calls.mostRecent().args[0].resolve;
+        expect(resolve.referencedata()).toBe(referencedata);
+      });
     });
 
     describe('save', function(){

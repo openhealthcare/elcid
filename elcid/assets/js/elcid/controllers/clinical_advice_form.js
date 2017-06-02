@@ -25,7 +25,7 @@ angular.module('opal.controllers').controller(
 
         var self = this;
 
-        Referencedata.then(function(referencedata){
+        Referencedata.load().then(function(referencedata){
           _.extend(self, referencedata.toLookuplists());
         });
 
