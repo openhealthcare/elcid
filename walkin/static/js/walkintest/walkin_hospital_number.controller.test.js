@@ -54,9 +54,6 @@ describe('WalkinHospitalNumberCtrl', function (){
             options        : options,
             tags           : tags
         });
-
-        $httpBackend.expectGET('/api/v0.1/userprofile/').respond({});
-
     }));
 
     describe('tag_and_close()', function (){

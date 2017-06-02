@@ -4,13 +4,7 @@ describe('ResearchHospitalNumberCtrl', function (){
     var Item, Episode;
     var controller, options, schema, tags;
 
-    beforeEach(module('opal.controllers', function($provide){
-        $provide.service('Options', function(){
-          return {
-            then: function(x){ x({}); }
-          };
-        });
-    }));
+    beforeEach(module('opal.controllers'));
 
     beforeEach(inject(function($injector){
         $rootScope   = $injector.get('$rootScope');
@@ -23,15 +17,10 @@ describe('ResearchHospitalNumberCtrl', function (){
 
         $modalInstance = $modal.open({template: 'Not a real template'});
 
-        options = {};
-        schema = {};
-
         controller = $controller('ResearchStudyHospitalNumberCtrl', {
             $scope        : $scope,
             $modalInstance: $modalInstance,
-            $modal        : $modal,
-            options       : options,
-            schema        : schema,
+            $modal        : $modal
         });
 
     }));
@@ -46,7 +35,6 @@ describe('ResearchHospitalNumberCtrl', function (){
         beforeEach(function(){
             spyOn($modal, 'open').and.callThrough();
             $httpBackend.whenGET('/templates/modals/add_episode_without_teams.html/').respond('hi');
-            $httpBackend.expectGET('/api/v0.1/userprofile/').respond({});
             $httpBackend.expectGET('/api/v0.1/referencedata/').respond({});
         });
 

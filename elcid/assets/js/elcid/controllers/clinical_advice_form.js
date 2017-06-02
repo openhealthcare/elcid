@@ -29,7 +29,7 @@ angular.module('opal.controllers').controller(
           _.extend(self, referencedata.toLookuplists());
         });
 
-        recordLoader.then(function(){
+        recordLoader.load().then(function(){
             var item = $scope.episode.newItem("microbiology_input", {column: $rootScope.fields.microbiology_input});
             self.editing = getCopy(item);
 
