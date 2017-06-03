@@ -1,3 +1,9 @@
+## 0.6.4 Release
+
+Advanced Search interface rewrite
+
+Updates to Opal 0.8.2
+
 ## 0.6.3 Release
 
 Adds tabbed list groups for OPAT and Walkin teams

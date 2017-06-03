@@ -248,8 +248,17 @@ class Diagnosis(omodels.Diagnosis):
         verbose_name_plural = "Diagnoses"
 
 
-class PastMedicalHistory(omodels.PastMedicalHistory):
-    pass
+class PastMedicalHistory(EpisodeSubrecord):
+    _title = 'PMH'
+    _sort = 'year'
+    _icon = 'fa fa-history'
+
+    condition = ForeignKeyOrFreeText(omodels.Condition)
+    year = models.CharField(max_length=200, blank=True)
+    details = models.CharField(max_length=255, blank=True)
+
+    class Meta:
+        verbose_name_plural = "Past medical histories"
 
 
 class GeneralNote(EpisodeSubrecord):
@@ -304,7 +313,13 @@ class Antimicrobial(EpisodeSubrecord):
     no_antimicrobials = models.NullBooleanField(default=False)
 
 
-class Allergies(omodels.Allergies, ExternallySourcedModel):
+class Allergies(PatientSubrecord, ExternallySourcedModel):
+    _icon = 'fa fa-warning'
+
+    drug = ForeignKeyOrFreeText(omodels.Antimicrobial)
+    provisional = models.NullBooleanField()
+    details = models.CharField(max_length=255, blank=True)
+
     # previously called drug this is the name of the problematic substance
     allergy_description = models.CharField(max_length=255, blank=True)
     allergy_type_description = models.CharField(max_length=255, blank=True)
@@ -318,13 +333,6 @@ class Allergies(omodels.Allergies, ExternallySourcedModel):
     diagnosis_datetime = models.DateTimeField(null=True, blank=True)
     allergy_start_datetime = models.DateTimeField(null=True, blank=True)
     no_allergies = models.BooleanField(default=False)
-
-    @classmethod
-    def get_fieldnames_to_serialize(cls):
-        # Looks like we won't get these from the prescribing system
-        # in the short-med term, so
-        # for now at least, we want none of these.
-        return super(Allergies, cls).get_fieldnames_to_serialize()
 
     class Meta:
         verbose_name_plural = "Allergies"
