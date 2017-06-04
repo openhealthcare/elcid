@@ -45,6 +45,16 @@ describe('ResearchHospitalNumberCtrl', function (){
             $httpBackend.flush();
         });
 
+        it('Should resolve reference data', function(){
+          $scope.newPatient({});
+          var callArgs = $modal.open.calls.mostRecent().args;
+          var resolves = $modal.open.calls.mostRecent().args[0].resolve;
+          var referenceDataLoader = jasmine.createSpyObj(["load"]);
+          var referenceData = {"expected": "something"};
+          referenceDataLoader.load.and.returnValue(referenceData);
+          expect(resolves.referencedata(referenceDataLoader)).toBe(referenceData);
+        });
+
         it('Should use the without teams template', function () {
             $scope.newPatient({});
             var callArgs = $modal.open.calls.mostRecent().args;
