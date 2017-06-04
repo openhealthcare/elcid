@@ -85,6 +85,13 @@ describe('DiagnosisAddEpisodeCtrl', function() {
         expect(resolve.referencedata()).toBe(referencedata);
       });
 
+      it('should resolve profile', function(){
+        var profile = jasmine.createSpyObj(["load"]);
+        profile.load.and.returnValue("someMetadata");
+        var resolve = $modal.open.calls.mostRecent().args[0].resolve;
+        expect(resolve.profile(profile)).toBe("someMetadata");
+      });
+
       it('should resolve metadata', function(){
         var metadata = jasmine.createSpyObj(["load"]);
         metadata.load.and.returnValue("someMetadata");
