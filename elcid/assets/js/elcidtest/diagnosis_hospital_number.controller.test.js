@@ -29,26 +29,7 @@ describe('DiagnosisHospitalNumber', function(){
     });
 
     describe('newPatient()', function() {
-
-        it('should open the AddPatientModal and then close with cancel', function() {
-            spyOn(modalInstance, 'close');
-            spyOn($modal, 'open').and.callFake(function(){
-                return {
-                  result: {
-                    then: function(fn){
-                      // modal instance should only be closed when
-                      // the add patient modal has been resolved
-                      expect(modalInstance.close).not.toHaveBeenCalled();
-                      fn('cancel');
-                    }
-                  }
-                }
-            });
-            $scope.newPatient({hospital_number: '555-123'});
-            expect(modalInstance.close).toHaveBeenCalledWith('cancel')
-        });
-
-        it('should pass the tags to the addpatient modal', function() {
+        beforeEach(function(){
           spyOn($modal, 'open').and.callFake(function(){
               return {
                 result: {
@@ -59,10 +40,25 @@ describe('DiagnosisHospitalNumber', function(){
                     fn('cancel');
                   }
                 }
-              }
+              };
           });
-            spyOn(modalInstance, 'close');
-            $scope.newPatient({hospital_number: '555-123'});
+          spyOn(modalInstance, 'close');
+          $scope.newPatient({hospital_number: '555-123'});
+        });
+
+        it('should open the AddPatientModal and then close with cancel', function() {
+            expect(modalInstance.close).toHaveBeenCalledWith('cancel')
+        });
+
+        it('should resolve reference data', function(){
+            var referencedata = jasmine.createSpyObj(["load"]);
+            var rd = {"some": "referencedata"};
+            referencedata.load.and.returnValue(rd);
+            var resolve = $modal.open.calls.mostRecent().args[0].resolve;
+            expect(resolve.referencedata(referencedata)).toBe(rd);
+        });
+
+        it('should pass the tags to the addpatient modal', function() {
             var resolvers = $modal.open.calls.mostRecent().args[0].resolve
             expect(resolvers.tags()).toEqual({"someTag": true});
             expect(modalInstance.close).toHaveBeenCalled();

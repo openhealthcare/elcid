@@ -54,9 +54,6 @@ describe('WalkinHospitalNumberCtrl', function (){
             options        : options,
             tags           : tags
         });
-
-        $httpBackend.expectGET('/api/v0.1/userprofile/').respond({});
-
     }));
 
     describe('tag_and_close()', function (){
@@ -89,6 +86,15 @@ describe('WalkinHospitalNumberCtrl', function (){
             expect($modalInstance.close).not.toHaveBeenCalled();
         });
 
+        it('Should resolve reference data', function(){
+          spyOn($modal, 'open').and.callThrough();
+          $scope.newPatient();
+          var resolves = $modal.open.calls.mostRecent().args[0].resolve;
+          var referenceDataLoader = jasmine.createSpyObj(["load"]);
+          var referenceData = {"expected": "something"};
+          referenceDataLoader.load.and.returnValue(referenceData);
+          expect(resolves.referencedata(referenceDataLoader)).toBe(referenceData);
+        });
     });
 
     describe('add_for_patient()', function() {
