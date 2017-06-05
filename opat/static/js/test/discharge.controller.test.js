@@ -99,8 +99,6 @@ describe('OPATDischargeCtrl', function (){
             });
 
         });
-        $httpBackend.expectGET('/api/v0.1/userprofile/').respond({})
-
     });
 
     afterEach(function() {
@@ -110,7 +108,6 @@ describe('OPATDischargeCtrl', function (){
 
     it('Should set up state', function () {
         expect($scope.episode).toBe(episode);
-        $httpBackend.flush();
     });
 
 

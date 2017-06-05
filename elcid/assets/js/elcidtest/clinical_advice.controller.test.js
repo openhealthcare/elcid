@@ -3,11 +3,12 @@ describe('ClinicalAdviceFormTest', function() {
 
   var $scope, $httpBackend, $rootScope, $controller;
   var Episode, $cookies;
-  var mkcontroller;
+  var mkcontroller, mockReferenceDataLoader, recordLoader;
 
   var episodedata = {
     demographics: [ { patient_id: 123 } ]
-  }
+  };
+
   var recorddata = {
     'microbiology_input': {
       'name': 'microbiology_input',
@@ -17,17 +18,25 @@ describe('ClinicalAdviceFormTest', function() {
 
   var mockReferenceData = {
     toLookuplists: function(){
-      return {some_list: []}
+      return {some_list: []};
     }
   };
 
-  var mockReferenceDataPromise = {
-    then: function(someFun){
-      return someFun(mockReferenceData);
-    }
-  }
-
   beforeEach(function(){
+    mockReferenceDataLoader = {load: function(){}}; // jasmine.createSpyObj(["load"])
+    spyOn(mockReferenceDataLoader, "load").and.returnValue({
+      then: function(someFun){
+        return someFun(mockReferenceData);
+      }
+    });
+
+    recordLoader = {load: function(){}}; // jasmine.createSpyObj(["load"])
+    spyOn(recordLoader, "load").and.returnValue({
+      then: function(someFun){
+        return someFun(recorddata);
+      }
+    });
+
 
     module('opal.controllers');
     $cookies = jasmine.createSpyObj('$cookies', ['get', 'put']);
@@ -49,17 +58,17 @@ describe('ClinicalAdviceFormTest', function() {
     });
 
     $scope.episode = new Episode(episodedata);
+    $rootScope.fields = recorddata;
 
     mkcontroller = function(){
       return $controller('ClinicalAdviceForm', {
         $rootScope: $rootScope,
         $scope: $scope,
-        Referencedata: mockReferenceDataPromise,
-        $cookies: $cookies
+        Referencedata: mockReferenceDataLoader,
+        $cookies: $cookies,
+        recordLoader: recordLoader
       });
     };
-    $httpBackend.expectGET('/api/v0.1/userprofile/').respond({});
-    $httpBackend.expectGET('/api/v0.1/record/').respond(recorddata);
   });
 
   afterEach(function(){
@@ -70,24 +79,20 @@ describe('ClinicalAdviceFormTest', function() {
   describe('initialization', function() {
     it('should put look up lists on the scope', function(){
       var ctrl = mkcontroller();
-      $httpBackend.flush();
       expect(ctrl.some_list).toEqual([]);
+      expect(mockReferenceDataLoader.load).toHaveBeenCalled();
     });
 
     it('should populate editing with a microbiology_input record', function(){
       var ctrl = mkcontroller();
-      $rootScope.$apply();
-      $httpBackend.flush();
-
       expect(!!ctrl.editing).toBe(true);
       expect(ctrl.editing.reason_for_interaction).toBe('issues');
       expect(ctrl.editing.discussed_with).toBe('Dr Doctor');
+      expect(recordLoader.load).toHaveBeenCalled();
     });
 
     it('should save items and store them to cookies', function(){
       var ctrl = mkcontroller();
-      $rootScope.$apply();
-      $httpBackend.flush();
       ctrl.editing.reason_for_interaction = "no issues";
       ctrl.editing.discussed_with = "Nurse Nurse";
       $httpBackend.expectPOST('/api/v0.1/microbiology_input/', ctrl.editing).respond({});
