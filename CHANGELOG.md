@@ -1,3 +1,7 @@
+## 0.6.5 Release
+
+Updates to Opal 0.9.0
+
 ## 0.6.4 Release
 
 Advanced Search interface rewrite

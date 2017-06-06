@@ -45,6 +45,7 @@ describe('DiagnosisAddEpisodeCtrl', function() {
             $modalInstance : modalInstance,
             referencedata  : referencedata,
             tags           : tags,
+            $modal         : $modal,
             demographics   : demographics,
             Episode: function(x){ return {
               newItem: function(){},
@@ -61,6 +62,42 @@ describe('DiagnosisAddEpisodeCtrl', function() {
             expect(modalInstance.close).toHaveBeenCalledWith(null);
         });
 
+    });
+
+    describe('presenting_complaint', function(){
+      beforeEach(function(){
+        spyOn($modal, "open").and.returnValue({
+          result: {then: function(x){x(); } }
+        });
+        $scope.episode = {newItem: function(){
+          return {"some": "item"};
+        }};
+        $scope.episode.presenting_complaint = [{}];
+        $scope.presenting_complaint();
+      });
+
+      it('should create a new presenting complaint', function(){
+        expect($scope.episode.presenting_complaint[0]).toEqual({"some": "item"});
+      });
+
+      it('should resolve reference data', function(){
+        var resolve = $modal.open.calls.mostRecent().args[0].resolve;
+        expect(resolve.referencedata()).toBe(referencedata);
+      });
+
+      it('should resolve profile', function(){
+        var profile = jasmine.createSpyObj(["load"]);
+        profile.load.and.returnValue("someMetadata");
+        var resolve = $modal.open.calls.mostRecent().args[0].resolve;
+        expect(resolve.profile(profile)).toBe("someMetadata");
+      });
+
+      it('should resolve metadata', function(){
+        var metadata = jasmine.createSpyObj(["load"]);
+        metadata.load.and.returnValue("someMetadata");
+        var resolve = $modal.open.calls.mostRecent().args[0].resolve;
+        expect(resolve.metadata(metadata)).toBe("someMetadata");
+      });
     });
 
     describe('save', function(){

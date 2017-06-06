@@ -62,10 +62,10 @@ angular.module('opal.controllers')
         controller: 'EditItemCtrl',
         resolve: {
           item: function() { return item; },
-          referencedata: function(Referencedata) { return Referencedata; },
-          metadata: function(Metadata) { return Metadata },
+          referencedata: function() { return referencedata; },
+          metadata: function(Metadata) { return Metadata.load() },
           episode: function() { return $scope.episode; },
-          profile: function(UserProfile) { return UserProfile }
+          profile: function(UserProfile) { return UserProfile.load() }
         }
       }).result.then(
         function(){deferred.resolve($scope.episode)},

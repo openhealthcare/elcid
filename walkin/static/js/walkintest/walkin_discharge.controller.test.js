@@ -124,7 +124,6 @@
     describe('move_to_review()', function (){
 
         beforeEach(function(){
-            $httpBackend.expectGET('/api/v0.1/userprofile/').respond({});
             $httpBackend.expectPUT(
                 '/api/v0.1/episode/555/',
                 {id: 555, discharge_date: today_string }
@@ -172,7 +171,6 @@
     describe('nurse_led_care()', function (){
 
         beforeEach(function(){
-            $httpBackend.expectGET('/api/v0.1/userprofile/').respond({});
             $httpBackend.expectPOST('/api/v0.1/walkin_nurse_led_care/').respond({});
             $httpBackend.expectPOST('/api/v0.1/management/').respond({});
             $httpBackend.expectPUT('/api/v0.1/tagging/555/').respond({});
@@ -209,7 +207,6 @@
     describe('remove_from_list()', function (){
 
         beforeEach(function(){
-            $httpBackend.expectGET('/api/v0.1/userprofile/').respond({});
             $httpBackend.expectPUT(
                 '/api/v0.1/tagging/555/', {
                     id: 555,
@@ -265,7 +262,6 @@
     describe('admit_to_ward()', function (){
 
         beforeEach(function(){
-            $httpBackend.expectGET('/api/v0.1/userprofile/').respond({});
             $httpBackend.expectPOST('/episode/555/actions/copyto/Inpatient')
                 .respond({id: 556, management: [{}], tagging: [{}],
                           demographics: [{patient_id: 1234}]});
