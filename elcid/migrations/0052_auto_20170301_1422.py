@@ -8,22 +8,13 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('elcid', '0051_auto_20160725_1222'),
+        ('elcid', '0051_auto_20170523_0831'),
     ]
 
     operations = [
         migrations.AlterModelOptions(
             name='pastmedicalhistory',
             options={},
-        ),
-        migrations.AlterField(
-            model_name='allergies',
-            name='drug_fk',
-            field=models.ForeignKey(blank=True, to='opal.Drug', null=True),
-        ),
-        migrations.AlterField(
-            model_name='allergies',
-            name='provisional',
-            field=models.BooleanField(default=False, verbose_name=b'Suspected?'),
         ),
         migrations.AlterField(
             model_name='demographics',
@@ -104,10 +95,5 @@ class Migration(migrations.Migration):
             model_name='microbiologytest',
             name='vzv',
             field=models.CharField(max_length=20, blank=True),
-        ),
-        migrations.AlterField(
-            model_name='pastmedicalhistory',
-            name='year',
-            field=models.CharField(max_length=4, blank=True),
         ),
     ]
