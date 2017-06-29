@@ -164,7 +164,7 @@ controllers.controller(
                 templateUrl: '/templates/modals/add_walkin_episode.html/',
                 controller: 'AddEpisodeCtrl',
                 resolve: {
-                    referencedata: function(Referencedata) { return Referencedata; },
+                    referencedata: function(Referencedata) { return Referencedata.load(); },
                     demographics: function() { return demographics; },
                     tags: function(){ return tags }
                 }

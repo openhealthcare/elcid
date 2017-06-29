@@ -2,17 +2,17 @@
 elCID Dashboards
 """
 import datetime
+from django.db.models import Count, Min, F, Max, Avg
 
 from django.utils.functional import cached_property
 from django.core.urlresolvers import reverse
 from urllib import urlencode
+from opal.core.subrecords import episode_subrecords
 
 
 from dashboard import Dashboard, widgets
-from django.db.models import Count
 from opal.models import Episode
 from elcid.models import Diagnosis, Consultant
-
 
 
 class NumberOfDiagnoses(widgets.Number):
@@ -107,4 +107,127 @@ class UsageDashboard(Dashboard):
             widgets.NumberOfEpisodes,
             NumberOfDiagnoses,
             CurrentPatients,
+        ]
+
+
+class SubrecordTrends(widgets.Table):
+    """
+        This Dashboard
+        Assuming that the first subrecord is created when the
+        episode is created
+        1. The average time a subrecord has been created after the episode is created
+        2. The average amount of a subrecord that is created
+    """
+    tagline = "User trends"
+    SUBRECORD_NAME = "Subrecord"
+    # AVG_SPEED_CREATED = "avg_created"
+    AVG_COUNT_PER_EPISODE = "avg_count"
+    MIN_COUNT_PER_EPISODE = "min_count"
+    MAX_COUNT_PER_EPISODE = "max_count"
+    table_headers = [
+        SUBRECORD_NAME,
+        # AVG_SPEED_CREATED,
+        MIN_COUNT_PER_EPISODE,
+        AVG_COUNT_PER_EPISODE,
+        MAX_COUNT_PER_EPISODE
+    ]
+
+    def get_min_episode(self, qs):
+        # annotates an episode queryset with extra fields
+        # of the min created for non singleton subrecords
+        # and min updated for singleton subrecord
+        qs = qs.select_related()
+
+        for subrecord in episode_subrecords():
+            related_name = subrecord.__name__.lower()
+            if subrecord._is_singleton:
+                # if its a singleton, created is never populated, updated is
+                # so use this as created
+                min_updated = {
+                    "{0}_min_created".format(related_name): Min(
+                        "{}__updated".format(related_name)
+                    )
+                }
+                qs = qs.annotate(
+                    **min_updated
+                )
+            else:
+                min_created = {
+                    "{0}_min_created".format(related_name): Min(
+                        "{}__created".format(related_name)
+                    )
+                }
+                qs = qs.annotate(
+                    **min_created
+                )
+            total_count = {
+                "{0}_count".format(related_name): Count(
+                    related_name
+                )
+            }
+            qs = qs.annotate(**total_count)
+
+        return qs
+
+    def get_min(self, qs):
+        # get's the min of all the subrecord mins
+        min_args = []
+        for subrecord in episode_subrecords():
+            related_name = subrecord.__name__.lower()
+            min_args.append(F("{0}_min_created".format(related_name)))
+        return qs.annotate(min_created=min(*min_args))
+
+    def get_subrecord_difference(self, qs, f_base):
+        # for each subrecord, give me the difference between
+        # some f expression and when it was created or updated
+        for Subrecord in episode_subrecords():
+            related_name = Subrecord.__name__.lower()
+            min_created = "{0}_min_created".format(related_name)
+            qs = qs.annotate(**{
+                "{}_diff_created".format(related_name): f_base - F(min_created)
+            })
+        return qs
+
+    def subrecord_detail(self, qs):
+        result = []
+        for Subrecord in episode_subrecords():
+            related_name = Subrecord.__name__.lower()
+            display_name = Subrecord.get_display_name()
+            field = "{0}_diff_created".format(related_name)
+            count_field = "{0}_count".format(related_name)
+
+            row = qs.aggregate(
+                # max_diff=Max(field),
+                # min_diff=Min(field),
+                # avg_created=Min(field),
+                max_count=Max(count_field),
+                avg_count=Avg(count_field),
+                min_count=Min(count_field)
+            )
+            row[self.SUBRECORD_NAME] = display_name
+            result.append(row)
+        return result
+
+    def all_episodes(self):
+        qs = Episode.objects.all()
+        qs = self.get_min_episode(qs)
+        qs = self.get_min(qs)
+        qs = self.get_subrecord_difference(qs, F('min_created'))
+        return self.subrecord_detail(qs)
+
+    @cached_property
+    def table_data(self):
+        return self.all_episodes()
+
+
+class TrendsDashboard(Dashboard):
+    """
+    Dashboard relaying core usage statistics for elCID
+    """
+    display_name = 'elCID Trends'
+    description = 'Trends in the way users use the elCID service.'
+
+    def get_widgets(user):
+        return [
+            SubrecordTrends,
         ]
