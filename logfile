@@ -1,0 +1,20 @@
+LOG:  database system was shut down at 2017-07-01 20:11:49 BST
+LOG:  MultiXact member wraparound protections are now enabled
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started
+FATAL:  role "fredkingahm" does not exist
+FATAL:  role "fredkingahm" does not exist
+FATAL:  database "fredkingham" does not exist
+ERROR:  syntax error at or near "createdb" at character 1
+STATEMENT:  createdb
+	;
+ERROR:  syntax error at or near "exit" at character 1
+STATEMENT:  exit
+	;
+ERROR:  syntax error at or near "bye" at character 1
+STATEMENT:  bye;
+FATAL:  database "fredkingham" does not exist
+FATAL:  role "postgres" does not exist
+ERROR:  syntax error at or near "'elcid065'" at character 17
+STATEMENT:  CREATE DATABASE 'elcid065';
+FATAL:  role "fredkingahm" does not exist

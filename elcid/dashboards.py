@@ -2,6 +2,7 @@
 elCID Dashboards
 """
 import datetime
+from collections import defaultdict
 from django.db.models import Count, Min, F, Max, Avg
 
 from django.utils.functional import cached_property
@@ -11,7 +12,7 @@ from opal.core.subrecords import episode_subrecords
 
 
 from dashboard import Dashboard, widgets
-from opal.models import Episode
+from opal import models
 from elcid.models import Diagnosis, Consultant
 
 
@@ -26,7 +27,7 @@ class CurrentPatients(widgets.Number):
     tagline = 'Active'
 
     def get_number(self):
-        return Episode.objects.filter(active=True).count()
+        return models.Episode.objects.filter(active=True).count()
 
 
 class Admissions(widgets.LineChart):
@@ -35,7 +36,7 @@ class Admissions(widgets.LineChart):
 
     def get_lines(self):
         twentyten = datetime.datetime(2013, 1, 1)
-        dates = Episode.objects.filter(date_of_admission__gte=twentyten).values('date_of_admission').annotate(Count('date_of_admission'))
+        dates = models.Episode.objects.filter(date_of_admission__gte=twentyten).values('date_of_admission').annotate(Count('date_of_admission'))
         ticks = ['x']
         lines = ['Date of admission']
         for date in dates:
@@ -68,7 +69,7 @@ class ConfirmedDiagnosisByConsultant(widgets.Table):
             link = link + "#/consultantreview?" + link_args
             consultant_link = "%s__link" % self.CONSULTANT
             row[consultant_link] = link
-            episodes = Episode.objects.exclude(discharge_date=None)
+            episodes = models.Episode.objects.exclude(discharge_date=None)
             episodes = episodes.filter(consultantatdischarge__consultant_fk=consultant.pk)
             row[self.TOTAL_NUMBER] = episodes.count()
             with_confirmed = episodes.filter(primarydiagnosis__confirmed=True)
@@ -120,16 +121,18 @@ class SubrecordTrends(widgets.Table):
     """
     tagline = "User trends"
     SUBRECORD_NAME = "Subrecord"
-    # AVG_SPEED_CREATED = "avg_created"
+    AVG_SPEED_CREATED = "avg_created"
     AVG_COUNT_PER_EPISODE = "avg_count"
     MIN_COUNT_PER_EPISODE = "min_count"
     MAX_COUNT_PER_EPISODE = "max_count"
+    SUBRECORD_DETAIL = "subrecord_detail"
     table_headers = [
         SUBRECORD_NAME,
-        # AVG_SPEED_CREATED,
+        AVG_SPEED_CREATED,
         MIN_COUNT_PER_EPISODE,
         AVG_COUNT_PER_EPISODE,
-        MAX_COUNT_PER_EPISODE
+        MAX_COUNT_PER_EPISODE,
+        SUBRECORD_DETAIL
     ]
 
     def get_min_episode(self, qs):
@@ -184,7 +187,7 @@ class SubrecordTrends(widgets.Table):
             related_name = Subrecord.__name__.lower()
             min_created = "{0}_min_created".format(related_name)
             qs = qs.annotate(**{
-                "{}_diff_created".format(related_name): f_base - F(min_created)
+                "{}_diff_created".format(related_name): F(min_created) - f_base
             })
         return qs
 
@@ -195,25 +198,47 @@ class SubrecordTrends(widgets.Table):
             display_name = Subrecord.get_display_name()
             field = "{0}_diff_created".format(related_name)
             count_field = "{0}_count".format(related_name)
-
             row = qs.aggregate(
-                # max_diff=Max(field),
-                # min_diff=Min(field),
-                # avg_created=Min(field),
+                avg_created=Min(field),
                 max_count=Max(count_field),
                 avg_count=Avg(count_field),
                 min_count=Min(count_field)
             )
             row[self.SUBRECORD_NAME] = display_name
+            row[self.SUBRECORD_DETAIL] = self.get_aggregate_subrecord_summary(
+                Subrecord, qs
+            )
             result.append(row)
         return result
 
     def all_episodes(self):
-        qs = Episode.objects.all()
+        qs = models.Episode.objects.all()
         qs = self.get_min_episode(qs)
         qs = self.get_min(qs)
         qs = self.get_subrecord_difference(qs, F('min_created'))
         return self.subrecord_detail(qs)
+
+    def get_aggregate_subrecord_summary(self, subrecord, qs):
+        diagnoses = defaultdict(int)
+        total = 0
+        if issubclass(subrecord, models.Diagnosis):
+            for episode in qs:
+                condition_fks = episode.diagnosis_set.filter(
+                    created__gte=episode.min_created
+                ).values_list("condition_fk", flat=True)
+                total += len(condition_fks)
+                conditions = models.Condition.objects.filter(
+                    id__in=[i for i in condition_fks if i]
+                )
+
+                for condition in conditions:
+                    diagnoses[condition] += 1
+        if diagnoses:
+            largest = max(v for v in diagnoses.values())
+            combinations = ", ".join(
+                ("{0}({1})".format(i, v) for i, v in diagnoses.items() if v == largest)
+            )
+            return "{0} out of {1}".format(combinations, total)
 
     @cached_property
     def table_data(self):
