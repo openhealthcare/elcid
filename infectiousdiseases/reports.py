@@ -1,22 +1,26 @@
 import datetime
+
 from dateutil.relativedelta import relativedelta
+from django.utils.functional import cached_property
 from functools import partial
 from six import moves
 from opal.models import Episode
 from django.db.models import Count, Max
 from elcid.models import Diagnosis
 from reporting import Report, ReportFile
+from infectiousdiseases.patient_lists import InfectiousDiseasesIdLiason
 
 
 class IdLiasonReport(Report):
     slug = "id-liason-report"
-    display = "ID Liason Report"
+    display_name = "ID Liason Report"
     description = "A Monthly Summary of the ID Liason Teams Output"
+    template = "reports/infectiousdiseases/id_liason_report.html"
 
     def get_queryset(self, month_start):
         month_end = month_start + relativedelta(day=31)
         return Episode.objects.filter(
-            tagging__value='id_liaison',
+            tagging__value=InfectiousDiseasesIdLiason.subtag,
             tagging__archived=True
         ).filter(
             discharge_date__gte=month_start,
@@ -25,48 +29,42 @@ class IdLiasonReport(Report):
 
     def get_age(self, demographics):
         if not demographics.date_of_birth:
-            return "Unknown"
+            return ""
         else:
             return relativedelta(
-                datetime.date.now(), demographics.date_of_birth
+                datetime.date.today(), demographics.date_of_birth
             ).years
-
-    def get_name(self, demographics):
-        if demographics.surname:
-            if demographics.first_name:
-                return "{0} {1}".format(
-                    demographics.surname, demographics.first_name
-                )
-            else:
-                return demographics.surname
-        else:
-            return "Unknown"
 
     def get_demographics_row(self, episode):
         demographics = episode.patient.demographics_set.first()
         return [
-            self.get_name(demographics),
+            demographics.name.strip(),
             self.get_age(demographics),
             demographics.sex
         ]
 
-    def get_demographics_headers(self, qs):
+    def get_demographics_headers(self):
         return [
             "Name",
             "Age",
             "Gender"
         ]
 
+    @cached_property
     def diagnosis_repetitions(self):
         diagnosis = Diagnosis.objects.filter(episode__in=self.qs)
-        diagnosis = diagnosis.annotate(Count('episode_id'))
+
+        if not diagnosis:
+            return 0
+
+        diagnosis = diagnosis.values('episode_id').annotate(Count('episode_id'))
         return diagnosis.aggregate(Max('episode_id__count'))[
-            "episode_id__cont__max"
+            "episode_id__count__max"
         ]
 
-    def get_diagnosis_headers(self, qs):
+    def get_diagnosis_headers(self):
         return [
-            "condition_{}".format(i) for i in self.diagnosis_repetitions
+            "Condition {}".format(i + 1) for i in range(self.diagnosis_repetitions)
         ]
 
     def get_diagnosis_row(self, episode):
@@ -96,7 +94,7 @@ class IdLiasonReport(Report):
         return qs.filter(**{field: True}).count()
 
     def get_clinical_advice_row(self, episode):
-        qs = episode.clinical_advice_set.all()
+        qs = episode.microbiologyinput_set.all()
         aggregate = partial(self.get_aggregate_column, qs)
 
         return [
@@ -117,21 +115,58 @@ class IdLiasonReport(Report):
         result = []
         result.extend(self.get_demographics_headers())
         result.extend(self.get_diagnosis_headers())
-        result.extend(self.get_clinical_advice_row())
+        result.extend(self.get_clinical_advice_headers())
         return result
 
-    def generate_report_data(self, criteria=None, **kwargs):
-        month_start = criteria["reporting_month"].format("%d/%m/%Y")
+    @cached_property
+    def template_context(self):
+        first_episode = Episode.objects.filter(
+            tagging__value=InfectiousDiseasesIdLiason.subtag,
+            tagging__archived=True,
+        ).exclude(
+            discharge_date=None
+        ).order_by("discharge_date").first()
 
-        self.queryset = self.get_queryset(month_start)
+        if not first_episode:
+            return None
+
+        first_date = first_episode.discharge_date
+        today = datetime.date.today()
+        first_date = datetime.date(first_date.year, first_date.month, 1)
+        rd = relativedelta(today, first_date)
+        num = (rd.years * 12) + rd.months
+
+        months = []
+
+        for i in range(num):
+            key_date = first_date + relativedelta(months=i)
+            months.append(dict(
+                display_month=key_date.strftime("%B"),
+                display_year=key_date.strftime("%Y"),
+                value=key_date.strftime("%d/%m/%Y")
+            ))
+
+        months.reverse()
+        rows = []
+
+        for i in range(0, len(months), 4):
+            rows.append(months[i:i+4])
+        return rows
+
+    def generate_report_data(self, criteria=None, **kwargs):
+        month_start = datetime.datetime.strptime(
+            criteria["reporting_month"], "%d/%m/%Y"
+        ).date()
+
+        self.qs = self.get_queryset(month_start)
         file_data = [self.get_headers()]
 
-        for episode in self.queryset:
+        for episode in self.qs:
             file_data.append(
                 self.get_row(episode)
             )
 
-        file_name = "id_liason_report_{0}_{1}.txt".format(
+        file_name = "id_liason_report_{0}_{1}.csv".format(
             month_start.month,
             month_start.year
         )

@@ -179,6 +179,7 @@ INSTALLED_APPS = (
     'referral',
     'dashboard',
     'guidelines',
+    'reporting',
     'dischargesummary',
     'djcelery',
 )
