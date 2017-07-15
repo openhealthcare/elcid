@@ -32,5 +32,6 @@ pycrypto==2.6.1
 
 -e git+https://github.com/openhealthcare/opal-dischargesummary.git@v0.4#egg=opal_dischargesummary
 -e git+https://github.com/openhealthcare/opal-guidelines.git@v0.2#egg=opal_guidelines
+-e git+https://github.com/openhealthcare/opal-trendy.git@master#egg=opal_trendy
 
 -e git+https://github.com/srosro/django-test-coverage#egg=django-test-coverage
