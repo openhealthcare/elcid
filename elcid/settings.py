@@ -168,6 +168,7 @@ INSTALLED_APPS = (
     'compressor',
     'opal.core.search',
     'elcid',
+    'trendy',
     'obs',
     'django.contrib.admin',
     'opat',
@@ -181,7 +182,6 @@ INSTALLED_APPS = (
     'guidelines',
     'dischargesummary',
     'djcelery',
-    'trendy',
 )
 
 if ON_TEST:
