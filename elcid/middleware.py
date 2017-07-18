@@ -83,7 +83,7 @@ class LoggingMiddleware(object):
                 datetime.now(), username, request.method, request.get_full_path(),
                 response.status_code, req_time, extra_log)
             )
-        except Exception as e:
+        except Exception, e:
             logging.error("LoggingMiddleware Error: %s" % e)
 
         return response
