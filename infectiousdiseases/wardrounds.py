@@ -15,7 +15,7 @@ class ConsultantReview(WardRound):
     def episodes(self):
         consultant_name = self.request.GET.get("consultant_at_discharge", None)
 
-        episodes = Episode.objects.exclude(discharge_date=None)
+        episodes = Episode.objects.exclude(end=None)
         episodes = episodes.exclude(consultantatdischarge__consultant_fk=None)
         episodes = episodes.filter(primarydiagnosis__confirmed=False)
 
@@ -25,4 +25,4 @@ class ConsultantReview(WardRound):
                 consultantatdischarge__consultant_fk=consultant.id
             )
 
-        return episodes.order_by("-discharge_date")
+        return episodes.order_by("-end")

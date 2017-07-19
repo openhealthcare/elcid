@@ -13,7 +13,7 @@ from infectiousdiseases import wardrounds
 class ConsultantReviewTestCase(OpalTestCase):
     def test_episodes(self):
         patient, episode = self.new_patient_and_episode_please()
-        episode.discharge_date = datetime.date.today()
+        episode.end = datetime.date.today()
         episode.save()
         dr_watson = Consultant(name='Dr Watson')
         dr_watson.save()

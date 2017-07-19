@@ -10,14 +10,14 @@ from elcid.dashboards import ConfirmedDiagnosisByConsultant
 
 class ConfirmedDiagnosisTestCase(OpalTestCase):
     def create_test_episode(
-        self, consultant=None, discharge_date=None, confirmed_diagnosis=False
+        self, consultant=None, end=None, confirmed_diagnosis=False
     ):
         patient = Patient.objects.create()
         consultant, _ = Consultant.objects.get_or_create(name=consultant)
         kwargs = {}
 
-        if discharge_date:
-            kwargs = {"discharge_date": discharge_date}
+        if end:
+            kwargs = {"end": end}
 
         episode = patient.create_episode(**kwargs)
 
@@ -37,7 +37,7 @@ class ConfirmedDiagnosisTestCase(OpalTestCase):
         yesterday = date.today() - timedelta(1)
         url = reverse("dashboard_detail", kwargs=dict(name="consultant_review_dashboard"))
         self.create_test_episode(
-            consultant="Jane", discharge_date=yesterday
+            consultant="Jane", end=yesterday
         )
         self.client.login(username=self.user.username, password=self.PASSWORD)
         response = self.client.get(url)
@@ -52,11 +52,11 @@ class ConfirmedDiagnosisTestCase(OpalTestCase):
         yesterday = date.today() - timedelta(1)
 
         self.create_test_episode(
-            consultant="Jane", discharge_date=yesterday
+            consultant="Jane", end=yesterday
         )
 
         self.create_test_episode(
-            consultant="Jane", discharge_date=yesterday, confirmed_diagnosis=True
+            consultant="Jane", end=yesterday, confirmed_diagnosis=True
         )
 
         self.create_test_episode(
@@ -64,7 +64,7 @@ class ConfirmedDiagnosisTestCase(OpalTestCase):
         )
 
         self.create_test_episode(
-            consultant="Ben", discharge_date=yesterday, confirmed_diagnosis=True
+            consultant="Ben", end=yesterday, confirmed_diagnosis=True
         )
 
         Consultant.objects.create(name="No Episodes")

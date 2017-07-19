@@ -9,7 +9,7 @@ class EpisodeCategoryTestCase(OpalTestCase):
         self.yesterday = self.today - datetime.timedelta(1)
         patient, self.accepted_episode = self.new_patient_and_episode_please()
         self.accepted_episode.category_name = "OPAT"
-        self.accepted_episode.date_of_episode = self.today
+        self.accepted_episode.start = self.today
         self.accepted_episode.save()
         location = self.accepted_episode.location_set.first()
         location.opat_acceptance = self.yesterday

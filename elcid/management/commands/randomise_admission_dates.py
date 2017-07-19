@@ -14,9 +14,9 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         twentyten = datetime.date(2010, 1, 1)
 
-        for e in Episode.objects.filter(date_of_admission__lt=twentyten):
+        for e in Episode.objects.filter(start__lt=twentyten):
             year = 2014
             month = random.randint(1, 12)
             day = random.randint(1, 28)
-            e.date_of_admission = datetime.date(year, month, day)
+            e.start = datetime.date(year, month, day)
             e.save()

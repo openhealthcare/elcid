@@ -22,7 +22,7 @@ describe('OPATDischargeCtrl', function (){
                     {name: 'hospital', type: 'string'},
                     {name: 'ward', type: 'string'},
                     {name: 'bed', type: 'string'},
-                    {name: 'date_of_admission', type: 'date'},
+                    {name: 'start', type: 'date'},
                     {name: 'tags', type: 'list'},
                 ]},
             {
@@ -142,7 +142,7 @@ describe('OPATDischargeCtrl', function (){
             $httpBackend.expectPUT('/api/v0.1/tagging/33/', taggingdata).respond({});
             // Should set the discharge date
             var episode_data = {
-                discharge_date: moment().format('DD/MM/YYYY'),
+                end: moment().format('DD/MM/YYYY'),
                 id: 33
             }
 

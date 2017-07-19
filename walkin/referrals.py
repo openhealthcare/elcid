@@ -21,6 +21,6 @@ class HTDWalkInRoute(ReferralRoute):
         MicrobiologyTest.objects.create(
             episode=episode, test='HIV Point of Care'
         )
-        episode.date_of_episode = datetime.date.today()
+        episode.start = datetime.date.today()
         episode.save()
         return

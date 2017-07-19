@@ -109,7 +109,7 @@ controllers.controller(
             tagging.walkin_review = true;
 
             var ep = $scope.episode.makeCopy();
-            ep.discharge_date = new Date();
+            ep.end = new Date();
 
             $scope.episode.save(ep).then(function(){
                 $scope.episode.tagging[0].save(tagging).then(function(){
@@ -130,7 +130,7 @@ controllers.controller(
             var nursing = $scope.episode.newItem('walkin_nurse_led_care');
 
             var ep = $scope.episode.makeCopy();
-            ep.discharge_date = new Date();
+            ep.end = new Date();
 
             var to_save = [
                 nursing.save({
@@ -198,9 +198,9 @@ controllers.controller(
                 $scope.episode.tagging[0].save(tagging)
             ]
 
-            if(!episode.discharge_date){
+            if(!episode.end){
                 var ep = $scope.episode.makeCopy();
-                ep.discharge_date = new Date();
+                ep.end = new Date();
                 to_save.push($scope.episode.save(ep));
             }
 
@@ -229,7 +229,7 @@ controllers.controller(
                     var newtags = {};
                     newtags[$scope.meta.target_team] = true;
                     var ep = $scope.episode.makeCopy();
-                    ep.discharge_date = new Date();
+                    ep.end = new Date();
                     $q.all([
                         $scope.episode.tagging[0].save(tagging),
                         $scope.episode.save(ep),

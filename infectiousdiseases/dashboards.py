@@ -28,7 +28,7 @@ class ConfirmedDiagnosisByConsultant(widgets.Table):
             link = link + "#/consultantreview?" + link_args
             consultant_link = "%s__link" % self.CONSULTANT
             row[consultant_link] = link
-            episodes = Episode.objects.exclude(discharge_date=None)
+            episodes = Episode.objects.exclude(end=None)
             episodes = episodes.filter(consultantatdischarge__consultant_fk=consultant.pk)
             row[self.TOTAL_NUMBER] = episodes.count()
             with_confirmed = episodes.filter(primarydiagnosis__confirmed=True)

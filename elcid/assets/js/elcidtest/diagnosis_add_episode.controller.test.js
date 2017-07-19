@@ -105,7 +105,7 @@ describe('DiagnosisAddEpisodeCtrl', function() {
             spyOn($modal, "open").and.returnValue({
               result: {then: function(x){x(); } }
             });
-            $scope.editing.date_of_admission = "10/02/2000";
+            $scope.editing.start = "10/02/2000";
             $scope.editing.demographics.date_of_birth = "10/02/1990";
             $scope.save();
             $httpBackend.expectPOST('/api/v0.1/episode/', {
@@ -115,7 +115,7 @@ describe('DiagnosisAddEpisodeCtrl', function() {
                 "patient_id":123,
                 "date_of_birth":"10/02/1990"
               },
-              "date_of_admission": "10/02/2000",
+              "start": "10/02/2000",
             }).respond({demographics: [{patient_id: 1}]});
             $httpBackend.flush();
         });

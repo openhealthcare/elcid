@@ -214,7 +214,7 @@ controllers.controller(
             updatedmeta.notes             = $scope.meta.notes;
 
             ep = $scope.episode.makeCopy();
-            ep.discharge_date = new Date();
+            ep.end = new Date();
 
             var outcome = $scope.episode.newItem('opat_outcome');
             var outcomesdata = {
