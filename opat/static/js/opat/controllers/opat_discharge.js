@@ -85,10 +85,13 @@ controllers.controller(
                     locationdata.opat_referral_consultant = $scope.qc.consultant;
                 }
             }
+            episodeChanges = $scope.episode.makeCopy();
+            episodeChanges.start = locationdata.opat_acceptance;
 
             var saves = [
                 $scope.episode.tagging[0].save(tagging),
-                $scope.episode.location[0].save(locationdata)
+                $scope.episode.location[0].save(locationdata),
+                $scope.episode.save(episodeChanges)
             ];
 
             if($scope.qc.no_allergies == true){
@@ -121,6 +124,8 @@ controllers.controller(
 
             $scope.ensure_tagging(episode);
             opatmetadata.review_date = $scope.meta.review_date;
+            var episodeToSave = $scope.episode.makeCopy();
+            episodeToSave.end = $scope.meta.rejection.date;
 
             tagging.opat_referrals = false;
             tagging.opat = false;
@@ -128,7 +133,8 @@ controllers.controller(
             $q.all([
                 rejection.save($scope.meta.rejection),
                 $scope.episode.tagging[0].save(tagging),
-                meta.save(opatmetadata)
+                meta.save(opatmetadata),
+                $scope.episode.save(episodeToSave)
             ]).then(function(){
                 //
                 // This comment edited to add (DM): I have literally no idea what the next
