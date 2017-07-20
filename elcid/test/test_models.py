@@ -149,7 +149,7 @@ class LocationTest(OpalTestCase, AbstractEpisodeTestCase):
             'opat_referral_consultant': None,
             'opat_referral_team_address': None,
             }
-        result = {str(k): v for k, v in self.location.to_dict(self.user).iteritems()}
+        result = {str(k): v for k, v in self.location.to_dict(self.user).items()}
         self.assertEqual(expected_data, result)
 
     def test_update_from_dict(self):
@@ -490,7 +490,7 @@ class DiagnosisTest(OpalTestCase, AbstractEpisodeTestCase):
             'date_of_diagnosis': datetime.date(2013, 7, 25),
             }
 
-        result = {str(k): v for k, v in self.diagnosis.to_dict(self.user).iteritems()}
+        result = {str(k): v for k, v in self.diagnosis.to_dict(self.user).items()}
         self.assertEqual(expected_data, result)
 
     def test_update_from_dict_with_existing_condition(self):

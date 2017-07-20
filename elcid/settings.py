@@ -1,5 +1,4 @@
 # Django settings for elcid project.
-import commands
 import os
 import sys
 
