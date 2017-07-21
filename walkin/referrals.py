@@ -11,7 +11,7 @@ class HTDWalkInRoute(ReferralRoute):
     description = 'The HTD Walk-In clinic provides a primary care service to returning travelers.'
     target_teams = ['walkin', 'walkin_triage']
     target_category = 'Walkin'
-    success_link = '/#/list/walkin'
+    success_link = '/#/list/walkin-walkin_triage'
 
     def post_create(self, episode, user):
         """
