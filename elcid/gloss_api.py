@@ -131,7 +131,7 @@ def bulk_create_from_gloss_response(request_data, episode=None):
 
         # as these are only going to have been sourced from upstream
         # make sure it says they're sourced from upstream
-        for api_name, updates_list in update_dict.iteritems():
+        for api_name, updates_list in update_dict.items():
             external_system = get_external_source(api_name)
 
             if external_system:
