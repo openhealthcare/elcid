@@ -80,22 +80,3 @@ class BulkCreateUserView(FormView):
             u.save()
 
         return super(BulkCreateUserView, self).form_valid(form)
-
-
-class ElcidTemplateView(TemplateView):
-    def dispatch(self, *args, **kwargs):
-        self.name = kwargs['name']
-        return super(ElcidTemplateView, self).dispatch(*args, **kwargs)
-
-    def get_template_names(self, *args, **kwargs):
-        return ['elcid/modals/'+self.name]
-
-    def get_context_data(self, *args, **kwargs):
-        ctd = super(ElcidTemplateView, self).get_context_data(*args, **kwargs)
-
-        try:
-            ctd["model"] = apps.get_model(app_label='elcid', model_name=self.name)
-        except LookupError:
-            pass
-
-        return ctd
