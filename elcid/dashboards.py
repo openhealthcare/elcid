@@ -5,7 +5,11 @@ import datetime
 
 from django.utils.functional import cached_property
 from django.core.urlresolvers import reverse
-from urllib import urlencode
+
+from future.standard_library import install_aliases
+install_aliases()
+
+from urllib.parse import urlencode
 
 
 from dashboard import Dashboard, widgets

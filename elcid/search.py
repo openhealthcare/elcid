@@ -1,5 +1,5 @@
 from opal.core.search.queries import DatabaseQuery
-from gloss_api import demographics_query
+from elcid.gloss_api import demographics_query
 
 
 class GlossQuery(DatabaseQuery):

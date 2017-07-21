@@ -2,6 +2,7 @@ import csv
 import json
 import sys
 import pprint
+import six
 
 # a simple lookup list loader
 # takes in a csv, with the headers name, synonym 1, synonym 2, synonym 3
@@ -26,7 +27,7 @@ class Differ(object):
 
     def synonym_columns(self, csv_dict):
         result = set()
-        for k, v in csv_dict.iteritems():
+        for k, v in csv_dict.items():
             if "synonym" in k.lower() and v and len(v.strip()):
                 result.add(v.strip())
         return result
@@ -67,24 +68,24 @@ class Differ(object):
 
         new_names_as_old_synonyms = old_synonyms.intersection(new_names)
 
-        print "existing names as new synonyms"
+        six.print_("existing names as new synonyms")
         pprint.pprint(existing_names_as_new_synonyms)
 
-        print "new names as existing synonyms"
+        six.print_("new names as existing synonyms")
         pprint.pprint(new_names_as_old_synonyms)
 
         names_diff = new_names.difference(old_names)
         names_diff = names_diff.difference(new_names_as_old_synonyms)
 
-        print "new names"
+        six.print_("new names")
         pprint.pprint(names_diff)
-        print "========"
+        six.print_("========")
         # all_new_synonyms = [i]
         # synonyms_diff = new_synonyms.diff(old_synonyms)
-        print "synonyms diff"
+        six.print_("synonyms diff")
         common_names = new_names.intersection(old_names)
 
-        names_to_add = {i: v for i, v in new_dict.iteritems() if i in names_diff}
+        names_to_add = {i: v for i, v in new_dict.items() if i in names_diff}
         synonyms_to_add = {}
 
         for common_name in common_names:
@@ -92,9 +93,9 @@ class Differ(object):
             new_row_synonyms = new_dict[common_name]
             synonyms_diff = new_row_synonyms.difference(old_row_synonyms)
             if synonyms_diff:
-                print "new synonyms for {0}".format(common_name)
+                six.print_("new synonyms for {0}".format(common_name))
                 pprint.pprint(synonyms_diff)
-                print "========"
+                six.print_("========")
                 synonyms_to_add[common_name] = synonyms_diff
 
         return names_to_add, synonyms_to_add
@@ -124,7 +125,7 @@ class Differ(object):
                     synonyms = self.synonym_columns(row)
                     cased[name] = self.case_synonyms(synonyms)
 
-        for name, synonyms in cased.iteritems():
+        for name, synonyms in cased.items():
             if not synonyms:
                 synonyms = []
             result.append(dict(name=name, synonyms=sorted(synonyms)))
@@ -147,11 +148,11 @@ class Differ(object):
         with open(self.lookuplist_file, 'r') as data_file:
             all_existing_json = json.load(data_file)
             existing_json = all_existing_json.get(self.lookuplist_type, [])
-            print "existing json length %s" % len(existing_json)
+            six.print_("existing json length %s" % len(existing_json))
             new_json = self.update_synonyms_for_case_sensitivity(synonyms_to_add, existing_json)
             new_names = self.update_names_for_case_sensitivity(names_to_add)
             new_json = new_json + new_names
-            print "new json length %s" % len(new_json)
+            six.print_("new json length %s" % len(new_json))
             all_existing_json[self.lookuplist_type] = new_json
 
             to_write_file = self.lookuplist_file
