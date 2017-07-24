@@ -1,4 +1,4 @@
-fdescribe('OPATDischargeCtrl', function (){
+describe('OPATDischargeCtrl', function (){
     "use strict"
     var $controller, $scope, $httpBackend, $modalInstance, $modal;
     var Episode, Item, $rootScope, fields, episodeData;
@@ -129,7 +129,8 @@ fdescribe('OPATDischargeCtrl', function (){
         var expectedTagging = {
            id:33, opat_referrals:false, opat_current:true, opat: true
         };
-        var expectedLocation = {id: 1, opat_acceptance: "20/07/2017"};
+        var today = moment().format("DD/MM/YYYY");
+        var expectedLocation = {id: 1, opat_acceptance: today};
         var expectedEpisode = {
            id: 33, start: expectedLocation.opat_acceptance
         }
