@@ -21,7 +21,9 @@ def migrate_forwards(apps, schema_editor):
             if referral:
                 e.start = None
                 e.end = None
-                e.save()
+
+            e.start = e.location_set.first().opat_acceptance
+            e.save()
 
 
 def migrate_backwards(app, schema_editor):
