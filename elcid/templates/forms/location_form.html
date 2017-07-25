@@ -18,7 +18,7 @@
 
 {% select field="Location.ward" lookuplist="ward_list" hide="episode.category_name == 'OPAT'" %}
 {% input field="Location.bed" hide="episode.category_name == 'OPAT'" %}
-{% datepicker model="episode.date_of_admission" label="Date of admission" %}
+{% datepicker model="episode.start" label="Date of admission" %}
 
 <!-- OPAT Only fields -->
 {% datepicker field="Location.opat_referral" show="episode.category_name == 'OPAT'"%}

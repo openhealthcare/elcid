@@ -22,7 +22,8 @@ controllers.controller(
             };
             var ep = episode.makeCopy();
             ep.category_name = 'Walkin';
-            ep.date_of_episode = moment();
+            ep.start = moment();
+            ep.end = moment();
 
             //
             // Pre fill some tests:

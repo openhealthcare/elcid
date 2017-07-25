@@ -12,10 +12,10 @@ class RandomiseAdmissionDates(OpalTestCase):
 
     def test_handle(self):
         p = Patient.objects.create()
-        e = Episode.objects.create(date_of_admission=datetime.date(1988, 1, 1),
+        e = Episode.objects.create(start=datetime.date(1988, 1, 1),
                                    patient=p)
 
         c = randomise_admission_dates.Command()
         c.handle()
         eafter = Episode.objects.get(id=e.id)
-        self.assertEqual(2014, eafter.date_of_admission.year)
+        self.assertEqual(2014, eafter.start.year)

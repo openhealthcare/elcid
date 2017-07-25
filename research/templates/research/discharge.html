@@ -6,7 +6,7 @@
 {% block modal_body %}
 <form class="form-horizontal">
   {% radio label="Reason" model="editing.category" lookuplist="['Ineligible', 'Deceased', 'Duplicate']" %}
-  {% datepicker label="Date of removal" model="editing.discharge_date" %}
+  {% datepicker label="Date of removal" model="editing.end" %}
 </form>
 {% endblock %}
 {% block modal_save %}

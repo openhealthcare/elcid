@@ -61,7 +61,8 @@ describe('WalkinHospitalNumberCtrl', function (){
         it('Should save and close', function () {
             var episode  = {
                 id: '3',
-                date_of_episode: moment().format('YYYY-MM-DD'),
+                start: moment().format('YYYY-MM-DD'),
+                end: moment().format('YYYY-MM-DD'),
                 category: 'Walkin',
                 demographics: [{patient_id: 123}]
             };

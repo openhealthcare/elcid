@@ -5,8 +5,8 @@
       <h3>
         {% block title %}
         Inpatient admission
-        [[ episode.date_of_admission | shortDate]]
-          <span ng-show="episode.discharge_date"> - [[ episode.discharge_date | shortDate ]]</span>
+        [[ episode.start | shortDate]]
+          <span ng-show="episode.end"> - [[ episode.end | shortDate ]]</span>
         {% endblock title %}
       </h3>
     </div>
@@ -17,7 +17,7 @@
     <!--        ng-click="dischargeEpisode(episode)" -->
     <!--        class="btn btn-primary btn-lg"> -->
     <!--       <i class="fa fa-home"></i> -->
-    <!--       <span ng-show="episode.discharge_date">Confirm</span> -->
+    <!--       <span ng-show="episode.end">Confirm</span> -->
     <!--       Discharge -->
     <!--     </button> -->
     <!--   </center> -->
