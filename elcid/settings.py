@@ -1,4 +1,5 @@
 # Django settings for elcid project.
+import commands
 import os
 import sys
 
@@ -265,7 +266,6 @@ APPEND_SLASH = False
 
 AXES_LOCK_OUT_AT_FAILURE = False
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-AUTOCOMPLETE_SEARCH = True
 
 # New modular settings!
 # !!! TODO: Are these how we want to discover these ?
