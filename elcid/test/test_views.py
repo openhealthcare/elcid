@@ -101,6 +101,15 @@ class ViewsTest(OpalTestCase):
     def test_delete_item_confirmation_template_view(self):
         self.assertStatusCode('/templates/modals/delete_item_confirmation.html/', 200)
 
+    def test_patient_detail(self):
+        url = reverse('patient_detail')
+        self.assertStatusCode(url, 200)
+
+    def test_episode_detail(self):
+        _, episode = self.new_patient_and_episode_please()
+        url = reverse('episode_detail', kwargs=dict(pk=episode.id))
+        self.assertStatusCode(url, 200)
+
     def test_all_modal_templates(self):
         """ This renders all of our modal templates and blows up
             if they fail to render
