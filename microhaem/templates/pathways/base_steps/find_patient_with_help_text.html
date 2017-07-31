@@ -1,0 +1,38 @@
+{% load forms %}
+<div pathway-step="{{ step.get_api_name }}">
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3">
+      <span ng-if="state ==='initial' || state === 'editing_demographics'">
+        <p class="lead text-center">
+          <b>Who</b> are you referring to MicroHaematology?
+        </p>
+      </span>
+      <span ng-if="state === 'has_demographics'">
+          <p class="lead text-center">
+            We've found
+            [[ demographics.first_name ]]
+            [[ demographics.surname ]]
+          </p>
+      </span>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3>
+            {% if step.get_icon %}
+              {% icon step.get_icon %}
+            {% endif %}
+            {{ step.get_display_name }}
+          </h3>
+        </div>
+        <div class="panel-body">
+          {% block step_form %}
+            {% include step.get_template %}
+          {% endblock %}
+        </div>
+      </div>
+    </div> <!-- Col -->
+  </div>
+</div>
