@@ -23,8 +23,8 @@ class IdLiasionReport(Report):
             tagging__value=InfectiousDiseasesIdLiason.subtag,
             tagging__archived=True
         ).filter(
-            discharge_date__gte=month_start,
-            discharge_date__lte=month_end
+            end__gte=month_start,
+            end__lte=month_end
         )
 
     def get_age(self, demographics):
@@ -124,16 +124,16 @@ class IdLiasionReport(Report):
             A list of lists of available reports for the template
         """
         first_episode = Episode.objects.filter(
-            tagging__value=InfectiousDiseasesIdLiasion.subtag,
+            tagging__value=InfectiousDiseasesIdLiason.subtag,
             tagging__archived=True,
         ).exclude(
-            discharge_date=None
-        ).order_by("discharge_date").first()
+            end=None
+        ).order_by("end").first()
 
         if not first_episode:
             return None
 
-        first_date = first_episode.discharge_date
+        first_date = first_episode.end
         today = datetime.date.today()
         first_date = datetime.date(first_date.year, first_date.month, 1)
         rd = relativedelta(today, first_date)
