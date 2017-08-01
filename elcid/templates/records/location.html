@@ -6,12 +6,14 @@
 </span>
 <span ng-hide="item.hospital=='UCH'">[[item.hospital]] </span>
 [[item.ward]] [[item.bed]]<br />
-<span ng-show="row.date_of_admission">
-  Admitted: [[row.date_of_admission | shortDate]]
+<span ng-show="row.category_name === 'Walkin'">
+  Date: [[row.start | shortDate]]
 </span>
-<span ng-show="row.date_of_episode">
-  Date: [[row.date_of_episode | shortDate]]
-</span>
-<span ng-show="row.discharge_date">
-  Discharged [[row.discharge_date | shortDate]]
+<span ng-hide="row.category_name === 'Walkin'">
+  <span ng-show="row.start">
+    Admitted: [[row.start | shortDate]]
+  </span>
+  <span ng-show="row.end">
+    Discharged [[row.end | shortDate]]
+  </span>
 </span>

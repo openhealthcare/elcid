@@ -4,7 +4,7 @@
 {% block title %}End Liaison {% endblock %}
 {% block modal_body %}
   <form name="form" class="form form-horizontal">
-  {% datepicker label="Liaison ended" model="editing.discharge_date" hide="currentCategory=='Discharged'" mindate="[[editing.date_of_admission]]"%}
+  {% datepicker label="Liaison ended" model="editing.end" hide="currentCategory=='Discharged'" mindate="[[editing.start]]"%}
   </form>
 {% endblock %}
 {% block modal_save %}

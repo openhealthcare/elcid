@@ -15,19 +15,19 @@ class DischargedLastWeekTestCase(OpalTestCase):
         today = datetime.date.today()
 
         # this is the episode we should see
-        episode_1.discharge_date = today
+        episode_1.end = today
         episode_1.save()
         Tagging.objects.create(value="id_inpatients", episode=episode_1)
 
         # this is an episode we should not see with a filter
         episode_2 = patient.create_episode()
-        episode_2.discharge_date = today
+        episode_2.end = today
         episode_2.save()
         Tagging.objects.create(value="id_liason", episode=episode_2)
 
         # this episode is older than 2 weeks
         old_epiosde = patient.create_episode()
-        old_epiosde.discharge_date = today - datetime.timedelta(30)
+        old_epiosde.end = today - datetime.timedelta(30)
         old_epiosde.save()
 
         # this episode is not discharged

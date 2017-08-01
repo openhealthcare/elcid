@@ -24,4 +24,4 @@ class WalkinTestCase(OpalTestCase):
     @patch('walkin.models.Management.objects.create')
     def test_date_of_appointment(self, create):
         referrals.HTDWalkInRoute().post_create(self.episode, None)
-        self.assertEqual(TODAY, self.episode.date_of_episode)
+        self.assertEqual(TODAY, self.episode.start)

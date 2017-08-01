@@ -29,12 +29,12 @@ angular.module('opal.controllers')
       var dob, doa;
 
       // This is a bit mucky but will do for now
-      doa = $scope.editing.date_of_admission;
+      doa = $scope.editing.start;
       if (doa) {
         if(!angular.isString(doa)){
           doa = moment(doa).format(DATE_FORMAT);
         }
-        $scope.editing.date_of_admission = doa;
+        $scope.editing.start = doa;
       }
 
       dob = $scope.editing.demographics.date_of_birth;

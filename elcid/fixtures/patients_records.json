@@ -46,8 +46,8 @@
             "consistency_token":  "EEEEEEEEEee",
             "patient": 1,
             "active": true,
-            "date_of_admission": "2013-07-25",
-            "discharge_date": null
+            "start": "2013-07-25",
+            "end": null
         }
     },
     {
@@ -57,8 +57,8 @@
             "consistency_token":  "EEEEEEEEEee",
             "patient": 1,
             "active": false,
-            "date_of_admission": "2012-07-25",
-            "discharge_date": "2012-08-22"
+            "start": "2012-07-25",
+            "end": "2012-08-22"
         }
     },
     {

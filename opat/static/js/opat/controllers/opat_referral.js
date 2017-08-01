@@ -108,7 +108,7 @@ controllers.controller(
   		templateUrl: '/opat/templates/modals/add_episode.html',
   		controller: 'AddEpisodeCtrl',
   		resolve: {
-                    referencedata: function(Referencedata) { return Referencedata; },
+                    referencedata: function(Referencedata) { return Referencedata.load(); },
 		    demographics: function() {
 			return { hospital_number: $scope.model.hospital_number }
 		    },
@@ -198,7 +198,7 @@ controllers.controller(
 		templateUrl: '/opat/templates/modals/add_episode.html',
 		controller: 'AddEpisodeCtrl',
 		resolve: {
-                    referencedata: function(Referencedata) { return Referencedata; },
+                    referencedata: function(Referencedata) { return Referencedata.load(); },
 		    demographics: function() { return demographics; },
                     tags: function(){ return {tag: 'walkin', subtag: ''}}
 		}

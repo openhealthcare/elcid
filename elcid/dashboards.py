@@ -5,7 +5,11 @@ import datetime
 
 from django.utils.functional import cached_property
 from django.core.urlresolvers import reverse
-from urllib import urlencode
+
+from future.standard_library import install_aliases
+install_aliases()
+
+from urllib.parse import urlencode
 
 
 from dashboard import Dashboard, widgets
@@ -35,13 +39,13 @@ class Admissions(widgets.LineChart):
 
     def get_lines(self):
         twentyten = datetime.datetime(2013, 1, 1)
-        dates = Episode.objects.filter(date_of_admission__gte=twentyten).values('date_of_admission').annotate(Count('date_of_admission'))
+        dates = Episode.objects.filter(start__gte=twentyten).values('start').annotate(Count('start'))
         ticks = ['x']
-        lines = ['Date of admission']
+        lines = ['Start']
         for date in dates:
-            if date['date_of_admission']:
-                ticks.append(date['date_of_admission'].isoformat())
-                lines.append(date['date_of_admission__count'])
+            if date['start']:
+                ticks.append(date['start'].isoformat())
+                lines.append(date['start__count'])
 
         return [ticks, lines]
 
@@ -68,7 +72,7 @@ class ConfirmedDiagnosisByConsultant(widgets.Table):
             link = link + "#/consultantreview?" + link_args
             consultant_link = "%s__link" % self.CONSULTANT
             row[consultant_link] = link
-            episodes = Episode.objects.exclude(discharge_date=None)
+            episodes = Episode.objects.exclude(end=None)
             episodes = episodes.filter(consultantatdischarge__consultant_fk=consultant.pk)
             row[self.TOTAL_NUMBER] = episodes.count()
             with_confirmed = episodes.filter(primarydiagnosis__confirmed=True)
