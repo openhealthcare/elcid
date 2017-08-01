@@ -217,7 +217,7 @@ LOGGING = {
         'mail_admins': {
             'level': 'ERROR',
             'filters': ['require_debug_false'],
-            'class': 'elcid.log.ConfidentialEmailer'
+            'class': 'opal.core.log.ConfidentialEmailer'
         },
     },
     'loggers': {
