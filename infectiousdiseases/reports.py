@@ -8,7 +8,7 @@ from opal.models import Episode
 from django.db.models import Count, Max
 from elcid.models import Diagnosis
 from reporting import Report, ReportFile
-from infectiousdiseases.patient_lists import InfectiousDiseasesIdLiasion
+from infectiousdiseases.patient_lists import InfectiousDiseasesIdLiason
 
 
 class IdLiasionReport(Report):
@@ -20,7 +20,7 @@ class IdLiasionReport(Report):
     def get_queryset(self, month_start):
         month_end = month_start + relativedelta(day=31)
         return Episode.objects.filter(
-            tagging__value=InfectiousDiseasesIdLiasion.subtag,
+            tagging__value=InfectiousDiseasesIdLiason.subtag,
             tagging__archived=True
         ).filter(
             discharge_date__gte=month_start,
