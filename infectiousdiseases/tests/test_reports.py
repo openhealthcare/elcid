@@ -5,16 +5,16 @@ from mock import patch
 from opal.core.test import OpalTestCase
 from opal.models import Episode
 
-from infectiousdiseases.reports import IdLiasonReport
+from infectiousdiseases.reports import IdLiasionReport
 
 
-class IdLiasonReportTestCase(OpalTestCase):
+class IdLiasionReportTestCase(OpalTestCase):
     def setUp(self):
-        self.report = IdLiasonReport()
+        self.report = IdLiasionReport()
 
     def test_get_queryset_vanilla(self):
         _, e1 = self.new_patient_and_episode_please()
-        e1.discharge_date = datetime.date(2017, 5, 5)
+        e1.end = datetime.date(2017, 5, 5)
         e1.tagging_set.create(
             value="id_liaison",
             archived=True,
@@ -22,7 +22,7 @@ class IdLiasonReportTestCase(OpalTestCase):
         e1.save()
 
         _, e2 = self.new_patient_and_episode_please()
-        e2.discharge_date = datetime.date(2017, 5, 5)
+        e2.end = datetime.date(2017, 5, 5)
 
         e2.tagging_set.create(
             value="something_else",
@@ -36,7 +36,7 @@ class IdLiasonReportTestCase(OpalTestCase):
 
     def test_get_queryset_tagging_archived(self):
         _, e1 = self.new_patient_and_episode_please()
-        e1.discharge_date = datetime.date(2017, 5, 5)
+        e1.end = datetime.date(2017, 5, 5)
         e1.save()
         e1.tagging_set.create(
             value="id_liaison",
@@ -266,14 +266,14 @@ class IdLiasonReportTestCase(OpalTestCase):
     def test_generate_report_data(self):
         patient, episode = self.new_patient_and_episode_please()
         patient_2, episode_2 = self.new_patient_and_episode_please()
-        episode.discharge_date = datetime.date(2017, 5, 5)
+        episode.end = datetime.date(2017, 5, 5)
         episode.tagging_set.create(
             value="id_liaison",
             archived=True,
         )
         episode.save()
 
-        episode_2.discharge_date = datetime.date(2017, 5, 5)
+        episode_2.end = datetime.date(2017, 5, 5)
 
         episode_2.tagging_set.create(
             value="id_liaison",
@@ -314,7 +314,7 @@ class IdLiasonReportTestCase(OpalTestCase):
 
         report = reports[0]
 
-        self.assertEqual(report.file_name, "id_liason_report_5_2017.csv")
+        self.assertEqual(report.file_name, "id_liasion_report_5_2017.csv")
         self.assertEqual(
             report.file_data[0],
             [
@@ -361,7 +361,7 @@ class IdLiasonReportTestCase(OpalTestCase):
         )
 
     @patch("infectiousdiseases.reports.datetime")
-    def test_template_context_only_2(self, dt):
+    def test_report_rows_only_2(self, dt):
 
         # override datetime.date.today
         class NewDate(datetime.date):
@@ -371,13 +371,13 @@ class IdLiasonReportTestCase(OpalTestCase):
         dt.date = NewDate
         some_date = datetime.date(2017, 05, 3)
         _, e = self.new_patient_and_episode_please()
-        e.discharge_date = some_date
+        e.end = some_date
         e.save()
         e.tagging_set.create(
             value="id_liaison",
             archived=True,
         )
-        ctx = self.report.template_context
+        ctx = self.report.report_rows
         self.assertEqual(
             len(ctx),
             1
@@ -405,7 +405,7 @@ class IdLiasonReportTestCase(OpalTestCase):
         )
 
     @patch("infectiousdiseases.reports.datetime")
-    def test_template_context_chunking(self, dt):
+    def test_report_rows_chunking(self, dt):
 
         # override datetime.date.today
         class NewDate(datetime.date):
@@ -415,13 +415,13 @@ class IdLiasonReportTestCase(OpalTestCase):
         dt.date = NewDate
         some_date = datetime.date(2016, 5, 3)
         _, e = self.new_patient_and_episode_please()
-        e.discharge_date = some_date
+        e.end = some_date
         e.save()
         e.tagging_set.create(
             value="id_liaison",
             archived=True,
         )
-        ctx = self.report.template_context
+        ctx = self.report.report_rows
         self.assertEqual(
             len(ctx),
             4
@@ -431,5 +431,5 @@ class IdLiasonReportTestCase(OpalTestCase):
             2
         )
 
-    def test_template_context_none(self):
-        self.assertIsNone(self.report.template_context)
+    def test_report_rows_none(self):
+        self.assertIsNone(self.report.report_rows)
