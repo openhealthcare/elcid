@@ -1,11 +1,11 @@
 {% extends "reporting/report_detail.html" %}
 {% load forms %}
 {% block report_choices %}
-{% for row in object.template_context %}
+{% for row in object.report_rows %}
   <div class="row {% if forloop.last %}content-offset-below-20{% endif %}">
     {% for column in row %}
       <div class="col-md-3 text-center">
-        <label ng-change="report.refresh()" style="display: block; margin-left: 20px; margin-right: 20px" class="btn btn-default text-center" ng-model="report.criteria.reporting_month" uib-btn-radio="'{{ column.value }}'">
+        <label ng-change="report.refresh()" class="btn btn-default text-center infectious-diseases-report-spacing" ng-model="report.criteria.reporting_month" uib-btn-radio="'{{ column.value }}'">
           <h1>
             {% icon "fa-file-zip-o" %}
           </h1>
@@ -25,7 +25,7 @@
 {% endfor %}
 {% endblock %}
 {% block report_button %}
-  {% if object.template_context %}
+  {% if object.report_list %}
     <span ng-show="!report.criteria.reporting_month">
       <h4>Please choose a month.</h4>
     </span>

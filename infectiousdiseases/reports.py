@@ -8,19 +8,19 @@ from opal.models import Episode
 from django.db.models import Count, Max
 from elcid.models import Diagnosis
 from reporting import Report, ReportFile
-from infectiousdiseases.patient_lists import InfectiousDiseasesIdLiason
+from infectiousdiseases.patient_lists import InfectiousDiseasesIdLiasion
 
 
-class IdLiasonReport(Report):
-    slug = "id-liason-report"
-    display_name = "ID Liason Report"
-    description = "A Monthly Summary of the ID Liason Teams Output"
-    template = "reports/infectiousdiseases/id_liason_report.html"
+class IdLiasionReport(Report):
+    slug = "id-liasion-report"
+    display_name = "ID Liasion Report"
+    description = "A Monthly Summary of the ID Liasion Teams Output"
+    template = "reports/infectiousdiseases/id_liasion_report.html"
 
     def get_queryset(self, month_start):
         month_end = month_start + relativedelta(day=31)
         return Episode.objects.filter(
-            tagging__value=InfectiousDiseasesIdLiason.subtag,
+            tagging__value=InfectiousDiseasesIdLiasion.subtag,
             tagging__archived=True
         ).filter(
             discharge_date__gte=month_start,
@@ -119,9 +119,12 @@ class IdLiasonReport(Report):
         return result
 
     @cached_property
-    def template_context(self):
+    def report_rows(self):
+        """
+            A list of lists of available reports for the template
+        """
         first_episode = Episode.objects.filter(
-            tagging__value=InfectiousDiseasesIdLiason.subtag,
+            tagging__value=InfectiousDiseasesIdLiasion.subtag,
             tagging__archived=True,
         ).exclude(
             discharge_date=None
@@ -166,7 +169,7 @@ class IdLiasonReport(Report):
                 self.get_row(episode)
             )
 
-        file_name = "id_liason_report_{0}_{1}.csv".format(
+        file_name = "id_liasion_report_{0}_{1}.csv".format(
             month_start.month,
             month_start.year
         )

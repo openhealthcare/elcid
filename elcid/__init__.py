@@ -29,6 +29,10 @@ class Application(application.OpalApplication):
         'js/elcid/services/records/antimicrobial.js',
     ]
 
+    styles = [
+        "css/infectiousdiseases.css"
+    ]
+
     actions = [
         'actions/presenting_complaint.html',
         'actions/mine.html'

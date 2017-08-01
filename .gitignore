@@ -13,3 +13,5 @@ opal.sqlite.*
 .coveragerc
 *#
 node_modules/*
+**/.sass-cache
+**/.sass-cache/*
