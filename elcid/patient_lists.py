@@ -1,6 +1,7 @@
 from opal.core.patient_lists import PatientList
 from elcid import models
 from opal.models import Episode
+from opal.utils import AbstractBase
 
 list_columns = [
     models.Demographics,
@@ -15,7 +16,11 @@ list_columns = [
 ]
 
 
-class Mine(PatientList):
+class ElcidPatientList(PatientList, AbstractBase):
+    comparator_service = "LocationWardComparator"
+
+
+class Mine(ElcidPatientList):
     """
     if the user has tagged episodes as their's this will give them the appropriate
     episode queryset

@@ -6,7 +6,7 @@ from django.db import migrations, models
 
 def migrate_forwards(apps, schema_editor):
     Episode = apps.get_model("opal", "Episode")
-    for e in Episode.objects.all():
+    for e in Episode.objects.filter(category_name__iexact='opat'):
         rejection = e.opatrejection_set.first()
 
         if rejection:
