@@ -54,6 +54,39 @@ class HaemPathwayTestCase(OpalTestCase):
             ["something", "micro_haem"]
         )
 
+    def test_save_with_episode_with_diagnosis(self):
+        old_patient, old_episode = self.new_patient_and_episode_please()
+        diagnosis = old_episode.diagnosis_set.create()
+        diagnosis.condition = "cough"
+        diagnosis.save()
+        old_episode.set_tag_names(["something"], self.user)
+        self.pathway.save({
+            "demographics": [{"hospital_number": "100"}],
+            "diagnosis": [{"condition": "sick"}]
+        }, user=self.user, patient=old_patient)
+        patient = Patient.objects.get()
+        episode = patient.episode_set.first()
+        self.assertEqual(
+            patient.demographics_set.first().hospital_number,
+            "100"
+        )
+        self.assertEqual(
+            episode.diagnosis_set.count(),
+            2
+        )
+        self.assertEqual(
+            episode.diagnosis_set.first().condition,
+            "cough"
+        )
+        self.assertEqual(
+            episode.diagnosis_set.last().condition,
+            "sick"
+        )
+        self.assertEqual(
+            list(episode.get_tag_names(None)),
+            ["something", "micro_haem"]
+        )
+
     def test_redirect_url(self):
         patient, _ = self.new_patient_and_episode_please()
         self.assertEqual(
