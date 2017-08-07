@@ -19,7 +19,8 @@ class ReferPatientPathway(WizardPathway):
         ),
         Step(
             model=Diagnosis,
-            base_template="pathways/base_steps/diagnosis.html"
+            base_template="pathways/base_steps/diagnosis.html",
+            delete_others=False
         )
     )
 
