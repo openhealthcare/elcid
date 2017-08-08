@@ -361,7 +361,7 @@ class IdLiasionReportTestCase(OpalTestCase):
         )
 
     @patch("infectiousdiseases.reports.datetime")
-    def test_report_rows_only_2(self, dt):
+    def test_reports_available_only_2(self, dt):
 
         # override datetime.date.today
         class NewDate(datetime.date):
@@ -377,7 +377,7 @@ class IdLiasionReportTestCase(OpalTestCase):
             value="id_liaison",
             archived=True,
         )
-        ctx = self.report.report_rows
+        ctx = self.report.reports_available
         self.assertEqual(
             len(ctx),
             1
@@ -405,7 +405,7 @@ class IdLiasionReportTestCase(OpalTestCase):
         )
 
     @patch("infectiousdiseases.reports.datetime")
-    def test_report_rows_chunking(self, dt):
+    def test_reports_available_chunking(self, dt):
 
         # override datetime.date.today
         class NewDate(datetime.date):
@@ -421,7 +421,7 @@ class IdLiasionReportTestCase(OpalTestCase):
             value="id_liaison",
             archived=True,
         )
-        ctx = self.report.report_rows
+        ctx = self.report.reports_available
         self.assertEqual(
             len(ctx),
             4
@@ -431,5 +431,5 @@ class IdLiasionReportTestCase(OpalTestCase):
             2
         )
 
-    def test_report_rows_none(self):
-        self.assertIsNone(self.report.report_rows)
+    def test_reports_available_none(self):
+        self.assertIsNone(self.report.reports_available)

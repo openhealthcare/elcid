@@ -119,7 +119,7 @@ class IdLiasionReport(Report):
         return result
 
     @cached_property
-    def report_rows(self):
+    def reports_available(self):
         """
             A list of lists of available reports for the template
         """
