@@ -179,6 +179,7 @@ INSTALLED_APPS = (
     'infectiousdiseases',
     'dashboard',
     'guidelines',
+    'reporting',
     'dischargesummary',
     'djcelery',
 )
