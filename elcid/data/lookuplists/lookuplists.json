@@ -6889,7 +6889,10 @@
     },
     {
       "name": "Malignant otitis externa",
-      "synonyms": ["Necrotising otitis externa"]
+      "synonyms": [
+        "Necrotising otitis externa",
+        "NOE"
+      ]
     },
     {
       "name": "Mastoiditis",
