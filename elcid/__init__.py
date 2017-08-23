@@ -58,12 +58,6 @@ class Application(application.OpalApplication):
                 display="Extract"
             )
             items.append(query)
-        report = menus.MenuItem(
-            href="reporting/#/list", activepattern="reporting/#/",
-            icon="fa-file-zip-o", display="Reports",
-            index=-2
-        )
-        items.append(report)
 
         if user:
             if user.profile.roles.filter(name=MICROHAEM_ROLE).exists():
