@@ -1,0 +1,37 @@
+{% load forms %}
+<div pathway-step="{{ step.get_api_name }}">
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3">
+      <p class="lead text-center">
+        Please enter
+        <span ng-show="editing.demographics">
+          [[ editing.demographics.first_name ]]
+          [[ editing.demographics.surname ]]'s diagnosis
+        </span>
+        <span ng-hide="editing.demographics">
+          [[ pathway.steps[0].scope.demographics.first_name ]]
+          [[ pathway.steps[0].scope.demographics.surname ]]'s diagnosis
+        </span>
+      </p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3>
+            {% if step.get_icon %}
+              {% icon step.get_icon %}
+            {% endif %}
+            {{ step.get_display_name }}
+          </h3>
+        </div>
+        <div class="panel-body">
+          {% block step_form %}
+            {% include step.get_template %}
+          {% endblock %}
+        </div>
+      </div>
+    </div> <!-- Col -->
+  </div>
+</div>

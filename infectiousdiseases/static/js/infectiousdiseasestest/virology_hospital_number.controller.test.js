@@ -22,7 +22,7 @@ describe('VirologyHospitalNumberCtrl', function(){
                     {name: 'hospital', type: 'string'},
                     {name: 'ward', type: 'string'},
                     {name: 'bed', type: 'string'},
-                    {name: 'date_of_admission', type: 'date'},
+                    {name: 'start', type: 'date'},
                     {name: 'tags', type: 'list'},
                 ]},
             {
@@ -100,8 +100,8 @@ describe('VirologyHospitalNumberCtrl', function(){
                         "bed": "",
                         "category": "Discharged",
                         "consistency_token": "bd4f5db6",
-                        "date_of_admission": "2013-11-14",
-                        "discharge_date": null,
+                        "start": "2013-11-14",
+                        "end": null,
                         "episode_id": 3,
                         "hospital": "",
                         "id": 3,
@@ -240,11 +240,13 @@ describe('VirologyHospitalNumberCtrl', function(){
             var deferred, callArgs;
 
             deferred = $q.defer();
-
+            var referenceDataLoader = jasmine.createSpyObj(["load"]);
+            var referenceData = {"expected": "something"};
+            referenceDataLoader.load.and.returnValue(referenceData);
             spyOn($modal, 'open').and.returnValue({result: deferred.promise});
-            $scope.newPatient({patients: [], hospitalNumber: 123})
+            $scope.newPatient({patients: [], hospitalNumber: 123});
             var resolves = $modal.open.calls.mostRecent().args[0].resolve;
-            expect(_.has(resolves, 'referencedata')).toBe(true);
+            expect(resolves.referencedata(referenceDataLoader)).toBe(referenceData);
             expect(resolves.demographics()).toEqual({ hospital_number: 123});
             expect(resolves.tags()).toEqual({tag: 'mine', subtag: ''});
         });

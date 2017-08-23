@@ -124,10 +124,9 @@
     describe('move_to_review()', function (){
 
         beforeEach(function(){
-            $httpBackend.expectGET('/api/v0.1/userprofile/').respond({});
             $httpBackend.expectPUT(
                 '/api/v0.1/episode/555/',
-                {id: 555, discharge_date: today_string }
+                {id: 555, end: today_string }
             ).respond(episodeData);
             spyOn($modalInstance, 'close');
         });
@@ -172,13 +171,12 @@
     describe('nurse_led_care()', function (){
 
         beforeEach(function(){
-            $httpBackend.expectGET('/api/v0.1/userprofile/').respond({});
             $httpBackend.expectPOST('/api/v0.1/walkin_nurse_led_care/').respond({});
             $httpBackend.expectPOST('/api/v0.1/management/').respond({});
             $httpBackend.expectPUT('/api/v0.1/tagging/555/').respond({});
             $httpBackend.expectPUT(
                 '/api/v0.1/episode/555/',
-                {id: 555, discharge_date: today_string }).respond({});
+                {id: 555, end: today_string }).respond({});
         });
 
         it('Should save the discharge date', function () {
@@ -209,7 +207,6 @@
     describe('remove_from_list()', function (){
 
         beforeEach(function(){
-            $httpBackend.expectGET('/api/v0.1/userprofile/').respond({});
             $httpBackend.expectPUT(
                 '/api/v0.1/tagging/555/', {
                     id: 555,
@@ -224,13 +221,13 @@
 
         it('Should set the discharge date if empty', function () {
             $httpBackend.expectPUT('/api/v0.1/episode/555/',
-                                   {id: 555, discharge_date: today_string }).respond(episodeData);
+                                   {id: 555, end: today_string }).respond(episodeData);
             $scope.remove_from_list();
             $httpBackend.flush();
         });
 
         it('Should leave the existing date if set', function () {
-            $scope.episode.discharge_date = Date(2014,1,1)
+            $scope.episode.end = Date(2014,1,1)
             $scope.remove_from_list();
             $httpBackend.flush();
         });
@@ -265,7 +262,6 @@
     describe('admit_to_ward()', function (){
 
         beforeEach(function(){
-            $httpBackend.expectGET('/api/v0.1/userprofile/').respond({});
             $httpBackend.expectPOST('/episode/555/actions/copyto/Inpatient')
                 .respond({id: 556, management: [{}], tagging: [{}],
                           demographics: [{patient_id: 1234}]});
@@ -273,7 +269,7 @@
 
             $httpBackend.expectPUT(
                 '/api/v0.1/episode/555/',
-                {id: 555, discharge_date: today_string }).respond({});
+                {id: 555, end: today_string }).respond({});
             $httpBackend.expectPUT('/api/v0.1/tagging/556/').respond({});
             $httpBackend.expectPOST('/api/v0.1/management/').respond({});
             spyOn($modalInstance, 'close');

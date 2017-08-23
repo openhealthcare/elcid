@@ -56,7 +56,7 @@ def checkout(package_name_version):
             existing_packages = local("ls", capture=True).split("\n")
             uncommitted = []
 
-            for package_name, version in package_name_version.iteritems():
+            for package_name, version in package_name_version.items():
                 if package_name in existing_packages:
                     with lcd(package_name):
                         if check_for_uncommitted():
@@ -68,7 +68,7 @@ def checkout(package_name_version):
                 )
                 return
 
-            for package_name, version in package_name_version.iteritems():
+            for package_name, version in package_name_version.items():
                 if not version:
                     print "found NO VERSION for {} using master".format(
                         package_name

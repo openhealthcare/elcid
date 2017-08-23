@@ -8,7 +8,7 @@ angular.module('opal.services').factory('DischargePatientService', function($q) 
         this.getEditing = function(episode){
             var newCategory,
                 admission,
-                discharge_date,
+                end,
 
             currentCategory = episode.location[0].category;
 
@@ -25,20 +25,20 @@ angular.module('opal.services').factory('DischargePatientService', function($q) 
           	    newCategory = currentCategory;
             }
 
-            if(episode.date_of_admission){
-                admission = moment(episode.date_of_admission).format('MM/DD/YY')
+            if(episode.start){
+                admission = moment(episode.start).format('MM/DD/YY')
             }
 
-            if(!episode.discharge_date){
-                discharge_date = moment().format('DD/MM/YYYY');
+            if(!episode.end){
+                end = moment().format('DD/MM/YYYY');
             }else{
-                discharge_date = episode.discharge_date;
+                end = episode.end;
             }
 
             return {
-                date_of_admission: admission,
+                start: admission,
           	    category_name: newCategory,
-                discharge_date: discharge_date
+                end: end
             };
         };
 
@@ -65,9 +65,9 @@ angular.module('opal.services').factory('DischargePatientService', function($q) 
 
             if(editing.category == 'Unfollow') {
                 // No longer under active review does not set a discharge date
-                episodeAttrs.discharge_date = null;
+                episodeAttrs.end = null;
             }else{
-                episodeAttrs.discharge_date = editing.discharge_date;
+                episodeAttrs.end = editing.end;
             }
 
             if (editing.category != 'Followup') {

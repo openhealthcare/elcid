@@ -1,4 +1,7 @@
-from urllib import urlencode
+from future.standard_library import install_aliases
+install_aliases()
+
+from urllib.parse import urlencode
 
 from dashboard import Dashboard, widgets
 from django.core.urlresolvers import reverse
@@ -28,7 +31,7 @@ class ConfirmedDiagnosisByConsultant(widgets.Table):
             link = link + "#/consultantreview?" + link_args
             consultant_link = "%s__link" % self.CONSULTANT
             row[consultant_link] = link
-            episodes = Episode.objects.exclude(discharge_date=None)
+            episodes = Episode.objects.exclude(end=None)
             episodes = episodes.filter(consultantatdischarge__consultant_fk=consultant.pk)
             row[self.TOTAL_NUMBER] = episodes.count()
             with_confirmed = episodes.filter(primarydiagnosis__confirmed=True)

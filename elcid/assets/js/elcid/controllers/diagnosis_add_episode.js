@@ -29,12 +29,12 @@ angular.module('opal.controllers')
       var dob, doa;
 
       // This is a bit mucky but will do for now
-      doa = $scope.editing.date_of_admission;
+      doa = $scope.editing.start;
       if (doa) {
         if(!angular.isString(doa)){
           doa = moment(doa).format(DATE_FORMAT);
         }
-        $scope.editing.date_of_admission = doa;
+        $scope.editing.start = doa;
       }
 
       dob = $scope.editing.demographics.date_of_birth;
@@ -62,10 +62,10 @@ angular.module('opal.controllers')
         controller: 'EditItemCtrl',
         resolve: {
           item: function() { return item; },
-          referencedata: function(Referencedata) { return Referencedata; },
-          metadata: function(Metadata) { return Metadata },
+          referencedata: function() { return referencedata; },
+          metadata: function(Metadata) { return Metadata.load() },
           episode: function() { return $scope.episode; },
-          profile: function(UserProfile) { return UserProfile }
+          profile: function(UserProfile) { return UserProfile.load() }
         }
       }).result.then(
         function(){deferred.resolve($scope.episode)},

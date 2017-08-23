@@ -3356,6 +3356,10 @@
       "synonyms": []
     },
     {
+      "name": "Rickettsial infection",
+      "synonyms": []
+    },
+    {
       "name": "Rocky mountain spotted fever",
       "synonyms": []
     },
@@ -6885,7 +6889,10 @@
     },
     {
       "name": "Malignant otitis externa",
-      "synonyms": []
+      "synonyms": [
+        "Necrotising otitis externa",
+        "NOE"
+      ]
     },
     {
       "name": "Mastoiditis",

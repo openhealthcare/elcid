@@ -3,6 +3,7 @@ elCID OPAL implementation
 """
 
 from opal.core import application, menus
+from microhaem.constants import MICROHAEM_ROLE
 
 
 class Application(application.OpalApplication):
@@ -19,6 +20,7 @@ class Application(application.OpalApplication):
         'js/elcid/controllers/result_view.js',
         'js/elcid/services/dicharge_patient.js',
         'js/elcid/services/flow.js',
+        'js/elcid/services/location_ward_comparator.js',
         'js/elcid/services/records/investigation.js',
         'js/elcid/services/records/general_note.js',
         'js/elcid/services/records/diagnosis.js',
@@ -27,6 +29,10 @@ class Application(application.OpalApplication):
         'js/elcid/services/records/opat_line_assessment.js',
         'js/elcid/services/records/opat_review.js',
         'js/elcid/services/records/antimicrobial.js',
+    ]
+
+    styles = [
+        "css/infectiousdiseases.css"
     ]
 
     actions = [
@@ -40,18 +46,36 @@ class Application(application.OpalApplication):
 
     @classmethod
     def get_menu_items(klass, user=None):
+        # import pathways here as this being in the init
+        # causes issues with django settings in heroku otherwise
+        from microhaem import pathways as haem_pathways
         items = application.OpalApplication.get_menu_items(user=user)
-        if (user.profile.can_extract or user.is_superuser):
+        if user.profile.can_extract or user.is_superuser:
             query = menus.MenuItem(
-                href="/#/extract/", activepattern="/#/extract/",
-                icon="fa-download", display="Extract",
-                index=-1
+                href="/#/extract/",
+                activepattern="/#/extract/",
+                icon="fa-download",
+                display="Extract"
             )
             items.append(query)
-            report = menus.MenuItem(
-                href="reporting/#/list", activepattern="reporting/#/",
-                icon="fa-file-zip-o", display="Reports",
-                index=-2
-            )
-            items.append(report)
+        report = menus.MenuItem(
+            href="reporting/#/list", activepattern="reporting/#/",
+            icon="fa-file-zip-o", display="Reports",
+            index=-2
+        )
+        items.append(report)
+
+        if user:
+            if user.profile.roles.filter(name=MICROHAEM_ROLE).exists():
+                pathway_url = "/pathway/#/{}".format(
+                    haem_pathways.ReferPatientPathway.slug
+                )
+                query = menus.MenuItem(
+                    href=pathway_url,
+                    activepattern=pathway_url,
+                    icon=haem_pathways.ReferPatientPathway.icon,
+                    display=haem_pathways.ReferPatientPathway.display_name,
+                    index=-1
+                )
+                items.append(query)
         return items

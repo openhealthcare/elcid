@@ -25,6 +25,7 @@ class OPATReferral(patient_lists.TaggedPatientList):
     subtag = "opat_referrals"
     schema = list_columns_opat
     order = 8
+    allow_edit_teams = False
 
 
 class OPATFollowUp(patient_lists.TaggedPatientList):
@@ -34,6 +35,7 @@ class OPATFollowUp(patient_lists.TaggedPatientList):
     subtag = "opat_followup"
     schema = list_columns_opat
     order = 10
+    allow_edit_teams = False
 
 
 class OPATCurrent(patient_lists.TaggedPatientList):
@@ -43,6 +45,7 @@ class OPATCurrent(patient_lists.TaggedPatientList):
     subtag = "opat_current"
     schema = list_columns_opat
     order = 9
+    allow_edit_teams = False
 
 
 class OPATListGroup(patient_lists.TabbedPatientListGroup):

@@ -86,7 +86,7 @@ controllers.controller(
                 templateUrl: '/templates/modals/add_episode_without_teams.html/',
                 controller: 'AddEpisodeCtrl',
                 resolve: {
-                    referencedata: function(Referencedata) { return Referencedata; },
+                    referencedata: function(Referencedata) { return Referencedata.load(); },
                     demographics: function() {
                         return { hospital_number: $scope.model.hospitalNumber }
                     },
@@ -147,7 +147,7 @@ controllers.controller(
                 templateUrl: '/templates/modals/add_episode_without_teams.html/',
                 controller: 'AddEpisodeCtrl',
                 resolve: {
-                    referencedata: function(Referencedata) { return Referencedata; },
+                    referencedata: function(Referencedata) { return Referencedata.load(); },
                     demographics: function() { return demographics; },
                     tags: function(){ return {} }
                 }

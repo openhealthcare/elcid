@@ -2,73 +2,56 @@ describe('OPATDischargeCtrl', function (){
     "use strict"
     var $controller, $scope, $httpBackend, $modalInstance, $modal;
     var Episode, Item, $rootScope, fields, episodeData;
-    var controller, growl, columns;
+    var controller, growl, columns, opalTestHelper;
     var episode, referencedata, tags;
 
     var columns = {
-        "default": [
-            {
-                name: 'demographics',
-                single: true,
-                fields: [
-                    {name: 'name', type: 'string'},
-                    {name: 'date_of_birth', type: 'date'},
-                ]},
-            {
-                name: 'location',
-                single: true,
-                fields: [
-                    {name: 'category_name', type: 'string'},
-                    {name: 'hospital', type: 'string'},
-                    {name: 'ward', type: 'string'},
-                    {name: 'bed', type: 'string'},
-                    {name: 'date_of_admission', type: 'date'},
-                    {name: 'tags', type: 'list'},
-                ]},
-            {
-                name: 'diagnosis',
-                single: false,
-                fields: [
-                    {name: 'condition', type: 'string'},
-                    {name: 'provisional', type: 'boolean'},
-                ]},
-            {
-                name: 'tagging',
-                single: true,
-                fields: [
-                    { name: 'mine', type: 'boolean' }
-                ]
-            },
-            {
-                name: 'opat_meta',
-                single: false,
-                fields: [
-                    { name: 'review_date', type: 'date' },
-                    { name: 'reason_for_stopping', type: 'string' },
-                    { name: 'unplanned_stop_reason', type: 'string' },
-                    { name: 'stopping_iv_details', type: 'string' },
-                    { name: 'treatment_outcome', type: 'string' },
-                    { name: 'deceased', type: 'boolean' },
-                    { name: 'death_category', type: 'string' },
-                    { name: 'cause_of_death', type: 'string' },
-                    { name: 'readmitted', type: 'boolean' },
-                    { name: 'readmission_cause', type: 'string' },
-                    { name: 'notes', type: 'text' },
-                ]
-            },
-            {
-                name  : 'opat_outcome',
-                single: false,
-                fields: [
-                ]
-            }
+      opat_meta: {
+          name: 'opat_meta',
+          single: false,
+          fields: [
+              { name: 'review_date', type: 'date' },
+              { name: 'reason_for_stopping', type: 'string' },
+              { name: 'unplanned_stop_reason', type: 'string' },
+              { name: 'stopping_iv_details', type: 'string' },
+              { name: 'treatment_outcome', type: 'string' },
+              { name: 'deceased', type: 'boolean' },
+              { name: 'death_category', type: 'string' },
+              { name: 'cause_of_death', type: 'string' },
+              { name: 'readmitted', type: 'boolean' },
+              { name: 'readmission_cause', type: 'string' },
+              { name: 'notes', type: 'text' },
+          ]
+      },
+      opat_outcome: {
+          name  : 'opat_outcome',
+          single: false,
+          fields: []
+      },
 
-        ]
+      opat_rejection: {
+          name  : 'opat_outcome',
+          single: false,
+          fields: [
+            { name: 'date', type: 'date' },
+            { name: 'patient_choice', type: 'null_boolean' },
+          ],
+      },
+      location: {
+          name: 'location',
+          single: true,
+          fields: [
+            { name: 'opat_acceptance', type: 'date' }
+          ],
+      }
     };
 
     beforeEach(module('opal.controllers'));
 
     beforeEach(function(){
+        module('opal.controllers');
+        module('opal.test');
+
         inject(function($injector){
             $rootScope   = $injector.get('$rootScope');
             $scope       = $rootScope.$new();
@@ -77,13 +60,17 @@ describe('OPATDischargeCtrl', function (){
             $httpBackend = $injector.get('$httpBackend');
             Episode      = $injector.get('Episode');
             Item         = $injector.get('Item');
-
-            fields = {}
-            _.each(columns.default, function(c){fields[c.name] = c});
+            opalTestHelper = $injector.get('opalTestHelper');
+            var fields = opalTestHelper.getRecordLoaderData();
+            _.extend(fields, columns);
             $rootScope.fields = fields;
-
             $modalInstance = $modal.open({template: 'Not a real template'});
-            episodeData = {id: 33, tagging: [{opat: true}], demographics: [{patient_id: 20}]}
+            episodeData = {
+              id: 33,
+              tagging: [{opat: true}],
+              demographics: [{patient_id: 20}],
+              location: [{id: 1}]
+            };
             episode = new Episode(episodeData);
             referencedata = { toLookuplists: function(){ return {} }};
             tags    = {};
@@ -99,8 +86,6 @@ describe('OPATDischargeCtrl', function (){
             });
 
         });
-        $httpBackend.expectGET('/api/v0.1/userprofile/').respond({})
-
     });
 
     afterEach(function() {
@@ -110,9 +95,55 @@ describe('OPATDischargeCtrl', function (){
 
     it('Should set up state', function () {
         expect($scope.episode).toBe(episode);
-        $httpBackend.flush();
     });
 
+    describe('reject', function(){
+      it('should handle rejection', function(){
+         $scope.meta = $scope.get_meta();
+         $scope.meta.rejection = {patient_choice: true};
+         $scope.meta.rejection.date = "01/02/2015";
+         var expectOpatOutcome = {
+           patient_choice: true,
+           date: "01/02/2015",
+           episode_id: 33
+         };
+         var expectedTagging = {
+            id:33, opat_referrals: false, "opat": false
+         };
+         var expectedEpisode = {
+            id: 33, end: "01/02/2015"
+         }
+         $httpBackend.expectPOST('/api/v0.1/opat_outcome/', expectOpatOutcome).respond({});
+         $httpBackend.expectPUT('/api/v0.1/tagging/33/', expectedTagging).respond({});
+         $httpBackend.expectPOST('/api/v0.1/opat_meta/', {episode_id: 33}).respond({});
+         $httpBackend.expectPUT('/api/v0.1/episode/33/', expectedEpisode).respond({
+           demographics: [{id: 1231, patient_id: 12312}]
+         });
+         $scope.reject();
+         $httpBackend.flush();
+      });
+    });
+
+    describe('accept', function(){
+      it('should accept its fate', function(){
+        var expectedTagging = {
+           id:33, opat_referrals:false, opat_current:true, opat: true
+        };
+        var today = moment().format("DD/MM/YYYY");
+        var expectedLocation = {id: 1, opat_acceptance: today};
+        var expectedEpisode = {
+           id: 33, start: expectedLocation.opat_acceptance
+        }
+        var todaty = moment().format("DD/MM/YYYY");
+        $httpBackend.expectPUT('/api/v0.1/tagging/33/', expectedTagging).respond({});
+        $httpBackend.expectPUT('/api/v0.1/location/1/', expectedLocation).respond({});
+        $httpBackend.expectPUT('/api/v0.1/episode/33/', expectedEpisode).respond({
+          demographics: [{id: 1231, patient_id: 12312}]
+        });
+        $scope.accept();
+        $httpBackend.flush();
+      });
+    });
 
     describe('completed_therapy()', function (){
         var metavars;
@@ -145,7 +176,7 @@ describe('OPATDischargeCtrl', function (){
             $httpBackend.expectPUT('/api/v0.1/tagging/33/', taggingdata).respond({});
             // Should set the discharge date
             var episode_data = {
-                discharge_date: moment().format('DD/MM/YYYY'),
+                end: moment().format('DD/MM/YYYY'),
                 id: 33
             }
 

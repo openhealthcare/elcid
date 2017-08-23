@@ -8,12 +8,14 @@ from elcid import models
 
 from walkin import models as wimodels
 
+
 class WalkinDoctor(patient_lists.TaggedPatientList):
     display_name = 'Walkin Doctor'
     direct_add = False
     tag = "walkin"
     subtag = "walkin_doctor"
     order = 12
+    allow_edit_teams = False
     schema = [
         models.Demographics,
         models.Location,
@@ -34,6 +36,7 @@ class WalkinNurseTriage(patient_lists.TaggedPatientList):
     tag = "walkin"
     subtag = "walkin_triage"
     order = 11
+    allow_edit_teams = False
     schema = [
         models.Demographics,
         models.Location,
@@ -51,6 +54,7 @@ class WalkinReview(patient_lists.TaggedPatientList):
     tag = "walkin"
     subtag = "walkin_review"
     order = 13
+    allow_edit_teams = False
     schema = [
         models.Demographics,
         models.Location,

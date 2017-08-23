@@ -1,7 +1,6 @@
 """
 Unittests for the UCLH eLCID OPAL implementation.
 """
-import datetime
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 import ffs
@@ -9,6 +8,8 @@ import ffs
 from opal.core.test import OpalTestCase
 from opal.models import Patient
 from opal.core.subrecords import subrecords
+from opal.core.episodes import EpisodeCategory
+from opal.core.patient_lists import PatientList
 
 from elcid import views
 
@@ -100,6 +101,21 @@ class ViewsTest(OpalTestCase):
     def test_delete_item_confirmation_template_view(self):
         self.assertStatusCode('/templates/modals/delete_item_confirmation.html/', 200)
 
+    def test_patient_detail(self):
+        url = reverse('patient_detail')
+        self.assertStatusCode(url, 200)
+
+    def test_episode_detail(self):
+        _, episode = self.new_patient_and_episode_please()
+        url = reverse('episode_detail', kwargs=dict(pk=episode.id))
+        self.assertStatusCode(url, 200)
+
+        for i in EpisodeCategory.list():
+            episode.category_name = i.display_name
+            episode.save()
+            url = reverse('episode_detail', kwargs=dict(pk=episode.id))
+            self.assertStatusCode(url, 200)
+
     def test_all_modal_templates(self):
         """ This renders all of our modal templates and blows up
             if they fail to render
@@ -108,6 +124,15 @@ class ViewsTest(OpalTestCase):
             if i.get_form_template():
                 url = reverse("{}_modal".format(i.get_api_name()))
                 self.assertStatusCode(url, 200)
+
+        for p in PatientList.list():
+            for i in subrecords():
+                if i.get_form_template():
+                    url = reverse(
+                        "{}_modal".format(i.get_api_name()),
+                        kwargs={"list": p.get_slug()}
+                    )
+                    self.assertStatusCode(url, 200)
 
 
 class DetailSchemaViewTest(OpalTestCase):

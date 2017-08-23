@@ -1,4 +1,5 @@
 from opal.core.patient_lists import PatientList, TaggedPatientList
+from elcid.patient_lists import ElcidPatientList
 from elcid import models
 from infectiousdiseases import models as id_models
 
@@ -25,7 +26,7 @@ tropical_liaison_list = [
 ]
 
 
-class Virology(TaggedPatientList):
+class Virology(ElcidPatientList, TaggedPatientList):
     display_name = 'Virology'
     tag = "virology"
     order = 7
@@ -40,7 +41,7 @@ class Virology(TaggedPatientList):
     ]
 
 
-class MicroOrtho(TaggedPatientList):
+class MicroOrtho(ElcidPatientList, TaggedPatientList):
     display_name = 'Micro Ortho'
     tag = "microbiology"
     subtag = "micro_ortho"
@@ -56,7 +57,7 @@ class MicroOrtho(TaggedPatientList):
     ]
 
 
-class InfectiousDiseasesIdLiason(TaggedPatientList):
+class InfectiousDiseasesIdLiason(ElcidPatientList, TaggedPatientList):
     display_name = 'ID Liaison'
     tag = "infectious_diseases"
     subtag = "id_liaison"
@@ -75,7 +76,7 @@ class InfectiousDiseasesIdLiason(TaggedPatientList):
     ]
 
 
-class InfectiousDiseasesIdInpatient(TaggedPatientList):
+class InfectiousDiseasesIdInpatient(ElcidPatientList, TaggedPatientList):
     display_name = 'ID Inpatients'
     tag = "infectious_diseases"
     subtag = "id_inpatients"
@@ -84,7 +85,7 @@ class InfectiousDiseasesIdInpatient(TaggedPatientList):
     schema = generic_infectious_diseases_list
 
 
-class ImmuneInpatients(TaggedPatientList):
+class ImmuneInpatients(ElcidPatientList, TaggedPatientList):
     display_name = 'Immune Inpatients'
     tag = "hiv"
     subtag = "immune_inpatients"
@@ -93,7 +94,7 @@ class ImmuneInpatients(TaggedPatientList):
     schema = generic_infectious_diseases_list
 
 
-class ImmuneLiason(TaggedPatientList):
+class ImmuneLiason(ElcidPatientList, TaggedPatientList):
     display_name = 'Immune Liaison'
     tag = "hiv"
     subtag = "immune_liason"
@@ -102,14 +103,14 @@ class ImmuneLiason(TaggedPatientList):
     schema = generic_infectious_diseases_list
 
 
-class Tropical(TaggedPatientList):
+class Tropical(ElcidPatientList, TaggedPatientList):
     display_name = 'Tropical'
     tag = "tropical_diseases"
     schema = generic_infectious_diseases_list
     order = 5
 
 
-class TropicalLiaison(TaggedPatientList):
+class TropicalLiaison(ElcidPatientList, TaggedPatientList):
     display_name = 'Tropical Liaison'
     tag = "tropical_liaison"
     schema = tropical_liaison_list
@@ -117,7 +118,7 @@ class TropicalLiaison(TaggedPatientList):
     order = 6
 
 
-class Weekend(PatientList):
+class Weekend(ElcidPatientList, PatientList):
     """
     On the weekend a single team handles the work of three regular teams.
     """

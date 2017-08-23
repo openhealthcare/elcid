@@ -56,22 +56,26 @@
     </h3>
   </div>
  <div class="panel-body">
-   <div class="row" ng-show="episode.date_of_admission">
-     <div class="col-md-4">
-       <b>Admitted</b>
+   <span ng-hide="episode.category_name === 'Walkin'">
+     <div class="row" ng-show="episode.start">
+       <div class="col-md-4">
+         <b>Admitted</b>
+       </div>
+       <div class="col-md-8">
+         [[ episode.start | shortDate ]]
+       </div>
      </div>
-     <div class="col-md-8">
-       [[ episode.date_of_admission | shortDate ]]
+   </span>
+   <span ng-show="episode.category_name === 'Walkin'">
+     <div class="row" ng-show="episode.start">
+       <div class="col-md-4">
+         <b>Date</b>
+       </div>
+       <div class="col-md-8">
+         [[ episode.start | shortDate ]]
+       </div>
      </div>
-   </div>
-   <div class="row" ng-show="episode.date_of_episode">
-     <div class="col-md-4">
-       <b>Date</b>
-     </div>
-     <div class="col-md-8">
-       [[ episode.date_of_episode | shortDate ]]
-     </div>
-   </div>
+   </span>
    <div class="row">
      <div class="col-md-4">
        <b>Hospital</b>

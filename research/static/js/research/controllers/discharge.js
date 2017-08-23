@@ -12,14 +12,14 @@ controllers.controller(
         $scope.episode = episode;
 
         var admission;
-        if(episode.date_of_admission){
-            admission = moment(episode.date_of_admission).format('MM/DD/YY')
+        if(episode.start){
+            admission = moment(episode.start).format('MM/DD/YY')
         }
 
         $scope.editing = {
-            date_of_admission: admission,
+            start: admission,
 	    category: 'ineligible',
-            discharge_date: null
+            end: null
         };
 
         
@@ -41,7 +41,7 @@ controllers.controller(
             var episodeAttrs = episode.makeCopy();
 
 	    locationAttrs.category = $scope.editing.category;
-            episodeAttrs.discharge_date = $scope.editing.discharge_date;
+            episodeAttrs.end = $scope.editing.end;
 
             // 
             // Set tagging attributes to what they need to be

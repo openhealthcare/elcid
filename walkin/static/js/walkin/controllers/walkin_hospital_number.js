@@ -22,7 +22,8 @@ controllers.controller(
             };
             var ep = episode.makeCopy();
             ep.category_name = 'Walkin';
-            ep.date_of_episode = moment();
+            ep.start = moment();
+            ep.end = moment();
 
             //
             // Pre fill some tests:
@@ -82,7 +83,7 @@ controllers.controller(
                 templateUrl: '/templates/modals/add_walkin_episode.html/',
                 controller: 'AddEpisodeCtrl',
                 resolve: {
-                    referencedata: function(Referencedata) { return Referencedata; },
+                    referencedata: function(Referencedata) { return Referencedata.load(); },
                     demographics: function() {
                         return { hospital_number: $scope.model.hospitalNumber }
                     },

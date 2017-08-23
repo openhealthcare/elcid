@@ -40,7 +40,7 @@ angular.module('opal.controllers').controller(
                 size: 'lg',
   				resolve: {
   					referencedata: function(Referencedata) {
-                        return Referencedata;
+                        return Referencedata.load();
                     },
   					demographics: function() {
   						return demographics

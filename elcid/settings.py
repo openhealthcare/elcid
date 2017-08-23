@@ -167,6 +167,7 @@ INSTALLED_APPS = (
     'rest_framework.authtoken',
     'compressor',
     'opal.core.search',
+    'opal.core.pathway',
     'elcid',
     'obs',
     'django.contrib.admin',
@@ -176,7 +177,6 @@ INSTALLED_APPS = (
     'wardround',
     'microhaem',
     'infectiousdiseases',
-    'referral',
     'dashboard',
     'guidelines',
     'dischargesummary',
@@ -218,7 +218,7 @@ LOGGING = {
         'mail_admins': {
             'level': 'ERROR',
             'filters': ['require_debug_false'],
-            'class': 'elcid.log.ConfidentialEmailer'
+            'class': 'opal.core.log.ConfidentialEmailer'
         },
     },
     'loggers': {
@@ -299,7 +299,7 @@ else:
     EMAIL_HOST = 'localhost'
 
 
-VERSION_NUMBER = '0.6.4'
+VERSION_NUMBER = '0.6.5'
 
 #TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 #TEST_RUNNER = 'django_test_coverage.runner.CoverageTestSuiteRunner'

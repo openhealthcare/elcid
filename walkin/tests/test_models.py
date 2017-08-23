@@ -9,6 +9,6 @@ class CustomSymptomsModelTestCase(OpalTestCase):
 
     def test_get_record_display(self):
         record_template = models.Symptom.get_display_template(
-            patient_list=patient_lists.WalkinDoctor()
+            prefixes=patient_lists.WalkinDoctor().get_template_prefixes()
         )
         self.assertEqual(record_template, "records/symptom.html")

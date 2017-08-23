@@ -4,7 +4,7 @@ import copy
 import calendar
 from reporting import Report
 from opal.models import Episode
-from opal.core.search.extract import generate_csv_files
+from opal.core.search.extract import generate_multi_csv_extract
 from opat import models as opat_models
 from collections import defaultdict
 import dateutil.parser
@@ -51,7 +51,7 @@ class OpatReport(Report):
             location__opat_acceptance__gte=from_date,
             location__opat_acceptance__lt=to_date
         )
-        generate_csv_files(self.from_tmp_file, episodes, user)
+        generate_multi_csv_extract(self.from_tmp_file, episodes, user)
 
     def group_by(self, rows, some_fun):
         sliced_data = defaultdict(list)

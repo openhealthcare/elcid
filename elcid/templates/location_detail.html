@@ -1,13 +1,15 @@
 [[ item.category_name ]] <span ng-show="item.category_name == 'OPAT' && episode.opat_rejection[0].date" class="text-danger">(Rejected from OPAT)</span><br />
 <span ng-hide="item.hospital=='UCH'">[[item.hospital]] </span>[[item.ward]] [[item.bed]]
-<span ng-show="row.date_of_admission">
-  Admitted: [[row.date_of_admission | shortDate]]
+<span ng-show="row.category_name === 'Walkin'">
+  Date: [[ row.start | shortDate ]]
 </span>
-<span ng-show="row.date_of_episode">
-  Date: [[row.date_of_episode | shortDate]]
+<span ng-hide="row.category_name === 'Walkin'">
+  <span ng-show="row.start">
+    Admitted: [[ row.start | shortDate ]]
+  </span>
+  <span ng-show="episode.end">Discharged:</span>
+  [[ episode.end | shortDate]]
 </span>
-<span ng-show="episode.discharge_date">Discharged:</span>
-[[episode.discharge_date | shortDate]]
 <br />
 <a class="screen-only" href="#" ng-click="dischargeEpisode($event)"
    ng-hide="profile.readonly">Discharge / Remove</a>
