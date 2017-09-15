@@ -182,6 +182,7 @@ INSTALLED_APPS = (
     'dischargesummary',
     'djcelery',
     'reporting',
+    'trendy',
 )
 
 if ON_TEST:
