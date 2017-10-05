@@ -38,6 +38,7 @@ class Symptom(omodels.EpisodeSubrecord):
     _icon = 'fa fa-stethoscope'
     HELP_DURATION = "The duration for which the patient had been experiencing \
 these symptoms when recorded."
+    _description = "Used by the Walkin Team"
 
     symptoms = models.ManyToManyField(
         omodels.Symptom, related_name="walkin_symptoms"
@@ -67,6 +68,7 @@ these symptoms when recorded."
 class ClinicalFindings(omodels.EpisodeSubrecord):
     _title        = 'Clinical Findings'
     _icon         = 'fa fa-stethoscope'
+    _description = "Used by the Walkin Team"
 
     lymphadenopathy         = models.CharField(
         max_length=20, blank=True, null=True
@@ -124,6 +126,7 @@ class Management(omodels.EpisodeSubrecord):
 class WalkinNurseLedCare(omodels.EpisodeSubrecord):
     _icon  = 'fa fa-user-md'
     _title = 'Nurse led care'
+    _description = "Used by the Walkin Team"
 
     reason    = ForeignKeyOrFreeText(Wi_nurse_reason)
     treatment = models.TextField(blank=True, null=True)
@@ -132,6 +135,7 @@ class WalkinNurseLedCare(omodels.EpisodeSubrecord):
 class ZikaPathway(omodels.EpisodeSubrecord):
     _icon = 'fa fa-warning'
     _advanced_searchable = False
+    _description = "Used by the Walkin Team"
 
     pregnant           = models.BooleanField(default=False)
     gestation          = models.CharField(max_length=255, blank=True, null=True)
