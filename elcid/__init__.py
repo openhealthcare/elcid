@@ -2,7 +2,7 @@
 elCID OPAL implementation
 """
 
-from opal.core import application, menus
+from opal.core import application
 from microhaem.constants import MICROHAEM_ROLE
 
 
@@ -46,6 +46,7 @@ class Application(application.OpalApplication):
 
     @classmethod
     def get_menu_items(klass, user=None):
+        from opal.core import menus
         # import pathways here as this being in the init
         # causes issues with django settings in heroku otherwise
         from microhaem import pathways as haem_pathways
