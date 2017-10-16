@@ -9,7 +9,6 @@ from microhaem.constants import MICROHAEM_ROLE
 class Application(application.OpalApplication):
     schema_module = 'elcid.schema'
     javascripts = [
-        'js/elcid/routes.js',
         'js/elcid/controllers/discharge.js',
         'js/elcid/controllers/confirm_discharge.js',
         'js/elcid/controllers/diagnosis_hospital_number.js',
