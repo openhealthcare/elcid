@@ -166,7 +166,6 @@ INSTALLED_APPS = (
     'rest_framework',
     'rest_framework.authtoken',
     'compressor',
-    'opal.core.search',
     'opal.core.pathway',
     'elcid',
     'obs',
@@ -182,6 +181,7 @@ INSTALLED_APPS = (
     'reporting',
     'dischargesummary',
     'djcelery',
+    'search'
 )
 
 if ON_TEST:
