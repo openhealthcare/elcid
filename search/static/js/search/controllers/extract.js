@@ -52,6 +52,7 @@ angular.module('opal.controllers').controller( 'ExtractCtrl',
       $scope.async_ready = false;
       $scope.searched = false;
       $scope.results = [];
+      $scope.extractQuery.reset();
     };
 
     $scope.$watch('extractQuery.criteria', $scope.refresh, true);

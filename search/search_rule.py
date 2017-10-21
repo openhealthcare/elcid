@@ -51,6 +51,9 @@ class SearchRule(DiscoverableFeature):
     def get_fields(self):
         return self.fields
 
+    def get_field(self, field_api_name):
+        return next(i for i in self.fields if i.get_slug() == field_api_name)
+
     def to_dict(self):
         return dict(
             name=self.get_slug(),

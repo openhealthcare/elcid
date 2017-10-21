@@ -473,16 +473,21 @@ class DatabaseQuery(QueryBackend):
         line_description = []
 
         for idx, query_line in enumerate(self.query):
-            if query_line["column"] == "episode":
-                subrecord_cls = models.Episode
+            search_rule_cls = SearchRule.get(query_line["column"])
+
+            if search_rule_cls:
+                search_rule = search_rule_cls()
+                display_name = search_rule.display_name
+                search_rule_field = search_rule.get_field(query_line["field"])
+                field_display_name = search_rule_field().display_name
             else:
                 subrecord_cls = subrecords.get_subrecord_from_api_name(
                     query_line["column"]
                 )
-            display_name = subrecord_cls.get_display_name()
-            field_display_name = subrecord_cls._get_field_title(
-                query_line["field"]
-            )
+                display_name = subrecord_cls.get_display_name()
+                field_display_name = subrecord_cls._get_field_title(
+                    query_line["field"]
+                )
             if idx == 0:
                 template = filter_item_first_line
             else:

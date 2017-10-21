@@ -30,6 +30,9 @@ angular.module('opal.services').factory('ExtractQuery', function(){
   };
 
   ExtractQuery.prototype = {
+    reset: function(){
+      this.slices = _.clone(this.requiredExtractFields);
+    },
     addSlice: function(someField){
       // add a field to the extract fields
       if(!this.isSliceAdded(someField)){
