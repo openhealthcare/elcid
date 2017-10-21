@@ -473,9 +473,12 @@ class DatabaseQuery(QueryBackend):
         line_description = []
 
         for idx, query_line in enumerate(self.query):
-            subrecord_cls = subrecords.get_subrecord_from_api_name(
-                query_line["column"]
-            )
+            if query_line["column"] == "episode":
+                subrecord_cls = models.Episode
+            else:
+                subrecord_cls = subrecords.get_subrecord_from_api_name(
+                    query_line["column"]
+                )
             display_name = subrecord_cls.get_display_name()
             field_display_name = subrecord_cls._get_field_title(
                 query_line["field"]
