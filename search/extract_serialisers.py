@@ -89,6 +89,8 @@ class CsvRenderer(object):
         return result
 
     def get_field_title(self, field_name):
+        if field_name in self.get_non_field_csv_column_names():
+            return self.get_non_field_csv_columns(field_name).display_name
         return self.model._get_field_title(field_name)
 
     def get_headers(self):
