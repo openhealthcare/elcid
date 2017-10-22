@@ -18,6 +18,7 @@ def extract_schema_for_model(model):
         )
 
     new_fields = []
+
     for field in serialised['fields']:
         field["type_display_name"] = model.get_human_readable_type(
             field["name"]
@@ -36,9 +37,10 @@ def extract_search_schema():
         and subrecords (that are advanced_searchable)
     """
     custom_rules = [i().to_dict() for i in SearchRule.list()]
+    cs = set(i["name"] for i in custom_rules)
     subs = (i for i in subrecords() if i._advanced_searchable)
     schema = [
-        extract_schema_for_model(s) for s in subs
+        extract_schema_for_model(s) for s in subs if s.get_api_name() not in cs
     ]
     return sorted(custom_rules + schema, key=lambda x: x["display_name"])
 

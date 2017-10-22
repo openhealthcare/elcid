@@ -3,7 +3,7 @@ from mock import patch
 from rest_framework.reverse import reverse
 from rest_framework import status
 
-from opal.core.search import api
+from search import api
 from opal.core.test import OpalTestCase
 from opal.tests.models import HatWearer
 

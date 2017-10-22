@@ -144,6 +144,12 @@ class TestBasicCsvRenderer(PatientEpisodeTestCase):
             ["Name", "Episode"]
         )
 
+    def test_get_field_title_with_model(self):
+        renderer = extract_serialisers.CsvRenderer(
+            Colour,  Colour.objects.all(), self.user
+        )
+        self.assertEqual(renderer.get_field_title('name'), 'Name')
+
     def test_get_field_names_to_render(self):
         with patch.object(Colour, "_get_fieldnames_to_extract") as field_names:
             field_names.return_value = ["name", "consistency_token"]
