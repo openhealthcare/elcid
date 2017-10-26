@@ -1,15 +1,15 @@
 """
-Unittests for the opal.core.search.tasks module
+Unittests for the search.tasks module
 """
 from mock import patch
 from opal.core.test import OpalTestCase
 
-from opal.core.search import tasks
+from search import tasks
 
 
 class ExtractTestCase(OpalTestCase):
 
-    @patch('opal.core.search.extract.zip_archive')
+    @patch('search.extract.zip_archive')
     def test_extract(self, zip_archive):
         zip_archive.return_value = 'Help'
         data_slice = {}

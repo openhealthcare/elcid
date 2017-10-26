@@ -10,7 +10,7 @@ from opal.tests.models import HatWearer
 
 class ExtractSchemaTestCase(OpalTestCase):
 
-    @patch('opal.core.search.api.schemas')
+    @patch('search.api.schemas')
     def test_records(self, schemas):
         schemas.extract_search_schema.return_value = [{}]
         self.assertEqual([{}], api.ExtractSchemaViewSet().list(None).data)
@@ -20,7 +20,7 @@ class ExtractSchemaTestCase(OpalTestCase):
 
 
 class DataDictionaryTestCase(OpalTestCase):
-    @patch('opal.core.search.api.ExtractCsvSerialiser')
+    @patch('search.api.ExtractCsvSerialiser')
     def test_records(self, serialiser):
         serialiser.get_data_dictionary_schema.return_value = [{}]
         self.assertEqual([{}], api.DataDictionaryViewSet().list(None).data)

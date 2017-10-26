@@ -3,7 +3,7 @@ from mock import patch, MagicMock, PropertyMock
 from opal.tests.models import Colour
 
 
-from opal.core.search import schemas
+from search import schemas
 
 colour_serialized = dict(
     name='colour',
@@ -106,11 +106,11 @@ episode_serialised = {
 }
 
 
-@patch('opal.core.search.schemas.subrecords')
-@patch('opal.core.search.schemas.SearchRule')
+@patch('search.schemas.subrecords')
+@patch('search.schemas.SearchRule')
 class ExtractSchemaTestCase(TestCase):
     def test_extract_schema(self, SearchRule, subrecords):
-        from opal.core.search.search_rule import EpisodeQuery
+        from search.search_rule import EpisodeQuery
         SearchRule.list.return_value = [EpisodeQuery]
         subrecords.return_value = [Colour]
 

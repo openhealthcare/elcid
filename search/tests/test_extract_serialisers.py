@@ -3,14 +3,15 @@ from mock import mock_open, patch
 
 from opal.core.test import OpalTestCase
 from opal.tests.models import (
-    PatientColour, Demographics, Colour, EpisodeName, FamousLastWords
+    PatientColour, Colour, EpisodeName, FamousLastWords
 )
-from opal.core.search import extract_serialisers
+from elcid.models import Demographics
+from search import extract_serialisers
 from opal import models
 from six import u, b  # NOQA
 
 
-MOCKING_FILE_NAME_OPEN = "opal.core.search.extract_serialisers.open"
+MOCKING_FILE_NAME_OPEN = "search.extract_serialisers.open"
 
 
 class TestEncodeToUTF8(OpalTestCase):
@@ -240,7 +241,7 @@ class TestBasicCsvRenderer(PatientEpisodeTestCase):
         get_row.assert_called_with(colour)
         self.assertEqual(result, [["some_row"]])
 
-    @patch("opal.core.search.extract_serialisers.csv")
+    @patch("search.extract_serialisers.csv")
     def test_write_to_file(self, csv):
         _, episode = self.new_patient_and_episode_please()
         Colour.objects.create(name="Blue", episode=episode)
@@ -262,7 +263,7 @@ class TestBasicCsvRenderer(PatientEpisodeTestCase):
                     csv.writer().writerow.mock_calls[1][1][0], ["row"]
                 )
 
-    @patch('opal.core.search.extract_serialisers.schemas')
+    @patch('search.extract_serialisers.schemas')
     def test_get_schema(self, schemas):
         schemas.extract_download_schema_for_model.return_value = "some_result"
         result = extract_serialisers.CsvRenderer.get_schema(FamousLastWords)
@@ -320,7 +321,7 @@ class TestEpisodeCsvRenderer(PatientEpisodeTestCase):
 
         self.assertEqual("Episode", renderer.get_display_name())
 
-    @patch('opal.core.search.extract_serialisers.schemas')
+    @patch('search.extract_serialisers.schemas')
     def test_get_schema(self, schemas):
         schemas.extract_download_schema_for_model.return_value = dict(
             fields=[]
@@ -644,8 +645,8 @@ class TestExtractCsvSerialiser(PatientEpisodeTestCase):
         )
         self.assertEqual(als, EpisodeName)
 
-    @patch('opal.core.search.extract_serialisers.ExtractCsvSerialiser.list')
-    @patch('opal.core.search.extract_serialisers.subrecords')
+    @patch('search.extract_serialisers.ExtractCsvSerialiser.list')
+    @patch('search.extract_serialisers.subrecords')
     def test_get_api_name_to_serialiser_cls_patient_subrecord(
         self, subrecords, discoverable_list
     ):
@@ -660,8 +661,8 @@ class TestExtractCsvSerialiser(PatientEpisodeTestCase):
             )
         )
 
-    @patch('opal.core.search.extract_serialisers.ExtractCsvSerialiser.list')
-    @patch('opal.core.search.extract_serialisers.subrecords')
+    @patch('search.extract_serialisers.ExtractCsvSerialiser.list')
+    @patch('search.extract_serialisers.subrecords')
     def test_get_api_name_to_serialiser_cls_episode_subrecord(
         self, subrecords, discoverable_list
     ):
@@ -676,8 +677,8 @@ class TestExtractCsvSerialiser(PatientEpisodeTestCase):
             )
         )
 
-    @patch('opal.core.search.extract_serialisers.ExtractCsvSerialiser.list')
-    @patch('opal.core.search.extract_serialisers.subrecords')
+    @patch('search.extract_serialisers.ExtractCsvSerialiser.list')
+    @patch('search.extract_serialisers.subrecords')
     def test_get_api_name_to_serialiser_cls_excluded(
         self, subrecords, discoverable_list
     ):
@@ -689,8 +690,8 @@ class TestExtractCsvSerialiser(PatientEpisodeTestCase):
             r, dict()
         )
 
-    @patch('opal.core.search.extract_serialisers.ExtractCsvSerialiser.list')
-    @patch('opal.core.search.extract_serialisers.subrecords')
+    @patch('search.extract_serialisers.ExtractCsvSerialiser.list')
+    @patch('search.extract_serialisers.subrecords')
     def test_get_api_name_to_serialiser_cls_overridden(
         self, subrecords, discoverable_list
     ):
@@ -705,11 +706,11 @@ class TestExtractCsvSerialiser(PatientEpisodeTestCase):
             r, dict(episode_name=EpisodeNameOverride)
         )
 
-    @patch('opal.core.search.extract_serialisers.subrecords')
+    @patch('search.extract_serialisers.subrecords')
     @patch(
-        'opal.core.search.extract_serialisers.EpisodeCsvRenderer.get_schema'
+        'search.extract_serialisers.EpisodeCsvRenderer.get_schema'
     )
-    @patch('opal.core.search.extract_serialisers.CsvRenderer.get_schema')
+    @patch('search.extract_serialisers.CsvRenderer.get_schema')
     def test_get_data_dictionary_schema(
         self, get_schema, episode_get_schema, subrecords
     ):

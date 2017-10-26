@@ -1,5 +1,5 @@
 """
-Unittests for opal.core.search.extract
+Unittests for search.extract
 """
 import datetime
 from collections import OrderedDict
@@ -10,13 +10,14 @@ import os.path
 from opal.core.test import OpalTestCase
 from opal import models
 from opal.tests.models import (
-    PatientColour, Demographics, HatWearer, HouseOwner, FamousLastWords
+    PatientColour, HatWearer, HouseOwner, FamousLastWords
 )
-from opal.core.search import extract, extract_serialisers
+from elcid.models import Demographics
+from search import extract, extract_serialisers
 from six import u, b  # NOQA
 
 
-MOCKING_FILE_NAME_OPEN = "opal.core.search.extract.open"
+MOCKING_FILE_NAME_OPEN = "search.extract.open"
 
 
 class PatientEpisodeTestCase(OpalTestCase):
@@ -39,10 +40,10 @@ class PatientEpisodeTestCase(OpalTestCase):
 
 class GenerateMultiFilesTestCase(OpalTestCase):
     @patch(
-        'opal.core.search.extract.ExtractCsvSerialiser.\
+        'search.extract.ExtractCsvSerialiser.\
 api_name_to_serialiser_cls'
     )
-    @patch('opal.core.search.extract.write_data_dictionary')
+    @patch('search.extract.write_data_dictionary')
     def test_generate_multi_csv_extract(
         self, write_data_dictionary, api_name_to_serialiser_cls
     ):
@@ -87,8 +88,8 @@ api_name_to_serialiser_cls'
         )
 
 
-@patch('opal.core.search.extract.csv')
-@patch('opal.core.search.extract.write_data_dictionary')
+@patch('search.extract.csv')
+@patch('search.extract.write_data_dictionary')
 class GenerateNestedFilesTestCase(OpalTestCase):
     def test_with_non_asci_charecters(
         self, write_data_dictionary, csv
@@ -318,7 +319,7 @@ class WriteDescriptionTestCase(OpalTestCase):
                 fields=dict(demographics=["birth_place", "death_indicator"])
             )
         m().write.assert_called_once_with(
-            "some_description \nExtracting:\nDemographics - Birth Place, \
+            "some_description \nExtracting:\nDemographics - Country of Birth \
 Death Indicator"
         )
 
@@ -336,7 +337,7 @@ Death Indicator"
                 )
             )
         m().write.assert_called_once_with(
-            'some_description \nExtracting:\nDemographics - Birth Place, Death Indicator\nLocation - Ward'
+            'some_description \nExtracting:\nDemographics - Country of Birth, Death Indicator\nLocation - Ward'
         )
 
     def test_with_multiple_where_one_is_not_advanced_searchable(self):
@@ -356,7 +357,7 @@ Death Indicator"
                 )
             )
         m().write.assert_called_once_with(
-            "some_description \nExtracting:\nDemographics - Birth Place, \
+            "some_description \nExtracting:\nDemographics - Country of Birth, \
 Death Indicator"
         )
 
@@ -390,10 +391,10 @@ Death Indicator"
         )
 
 
-@patch('opal.core.search.extract.ExtractCsvSerialiser.\
+@patch('search.extract.ExtractCsvSerialiser.\
 api_name_to_serialiser_cls'
 )
-@patch('opal.core.search.extract.zipfile')
+@patch('search.extract.zipfile')
 class ZipArchiveTestCase(OpalTestCase):
     def test_subrecords(self, zipfile, api_name_to_serialiser_cls):
         patient, episode = self.new_patient_and_episode_please()
@@ -453,10 +454,10 @@ class ZipArchiveTestCase(OpalTestCase):
         self.assertTrue(call_args[1][0][0].endswith("data_dictionary.html"))
         self.assertTrue(call_args[2][0][0].endswith("episode.csv"))
 
-    @patch('opal.core.search.extract.os')
-    @patch('opal.core.search.extract.write_description')
-    @patch('opal.core.search.extract.generate_nested_csv_extract')
-    @patch('opal.core.search.extract.generate_multi_csv_extract')
+    @patch('search.extract.os')
+    @patch('search.extract.write_description')
+    @patch('search.extract.generate_nested_csv_extract')
+    @patch('search.extract.generate_multi_csv_extract')
     def test_nested_extract_called(
         self,
         multi,
@@ -486,10 +487,10 @@ class ZipArchiveTestCase(OpalTestCase):
             fields=fields
         )
 
-    @patch('opal.core.search.extract.os')
-    @patch('opal.core.search.extract.write_description')
-    @patch('opal.core.search.extract.generate_nested_csv_extract')
-    @patch('opal.core.search.extract.generate_multi_csv_extract')
+    @patch('search.extract.os')
+    @patch('search.extract.write_description')
+    @patch('search.extract.generate_nested_csv_extract')
+    @patch('search.extract.generate_multi_csv_extract')
     def test_nested_extract_not_called(
         self,
         multi,
@@ -520,7 +521,7 @@ class ZipArchiveTestCase(OpalTestCase):
 
 class AsyncExtractTestCase(OpalTestCase):
 
-    @patch('opal.core.search.tasks.extract.delay')
+    @patch('search.tasks.extract.delay')
     def test_async(self, delay):
         extract.async_extract(self.user, 'THIS')
         delay.assert_called_with(self.user, 'THIS')

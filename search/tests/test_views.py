@@ -1,5 +1,5 @@
 """
-unittests for opal.core.search.views
+unittests for search.views
 """
 import json
 from django.core.urlresolvers import reverse
@@ -14,7 +14,7 @@ from mock import patch, mock_open
 from opal import models
 from opal.tests import models as tmodels
 from opal.core.test import OpalTestCase
-from opal.core.search import views, queries, extract
+from search import views, queries, extract
 
 
 class BaseSearchTestCase(OpalTestCase):
@@ -210,7 +210,7 @@ class SimpleSearchViewTestCase(BaseSearchTestCase):
                 "James", "Bond", str(i)
             )
 
-        with self.assertNumQueries(35):
+        with self.assertNumQueries(36):
             self.get_response('{}/?query=Bond'.format(self.url))
 
         for i in range(20):
@@ -218,7 +218,7 @@ class SimpleSearchViewTestCase(BaseSearchTestCase):
                 "James", "Blofelt", str(i)
             )
 
-        with self.assertNumQueries(35):
+        with self.assertNumQueries(36):
             self.get_response('{}/?query=Blofelt'.format(self.url))
 
     def test_with_multiple_patient_episodes(self):
@@ -416,7 +416,7 @@ class ExtractFileView(BaseSearchTestCase):
         async_result.return_value.get.return_value = 'foo.txt'
 
         m = mock_open(read_data='This is a file')
-        with patch('opal.core.search.views.open', m, create=True) as m:
+        with patch('search.views.open', m, create=True) as m:
             resp = view.get(task_id=437878)
             self.assertEqual(200, resp.status_code)
 
@@ -553,13 +553,13 @@ class DownloadTestCase(BaseSearchTestCase):
             )
         )
 
-        with patch('opal.core.search.views.open', m, create=True):
+        with patch('search.views.open', m, create=True):
             with patch(
-                'opal.core.search.views.queries.create_query',
+                'search.views.queries.create_query',
                 side_effect=queries.create_query
             ) as create_query:
                 with patch(
-                    'opal.core.search.views.zip_archive',
+                    'search.views.zip_archive',
                     side_effect=extract.zip_archive
                 ) as zip_archive:
                     m().read.return_value = "something"

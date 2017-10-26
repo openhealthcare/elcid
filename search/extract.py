@@ -191,5 +191,5 @@ def async_extract(user, extract_query):
     """
     Given the user and the criteria, let's run an async extract.
     """
-    from opal.core.search import tasks
+    from search import tasks
     return tasks.extract.delay(user, extract_query).id

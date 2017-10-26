@@ -1,5 +1,5 @@
 """
-Unittests for opal.core.search.queries
+Unittests for search.queries
 """
 from datetime import date, datetime
 
@@ -9,14 +9,15 @@ from mock import patch, MagicMock
 import reversion
 from opal.tests.episodes import RestrictedEpisodeCategory
 
-from opal.core.search.search_rule import SearchRule
+from search.search_rule import SearchRule
 from opal.models import Synonym, Gender
 
 from opal.core.test import OpalTestCase
 
-from opal.core.search import queries
+from search import queries
 
 from opal.tests import models as testmodels
+from elcid import models
 
 
 # don't remove this, we use it to discover the restricted episode category
@@ -195,7 +196,7 @@ class DatabaseQueryTestCase(OpalTestCase):
         query = queries.DatabaseQuery(self.user, [criteria])
         self.assertEqual([self.episode], query.get_episodes())
 
-    @patch("opal.core.search.queries.datetime")
+    @patch("search.queries.datetime")
     def test_description_display_name(self, dt):
         dt.datetime.now.return_value = datetime(
             2017, 12, 1, 10, 10
@@ -208,7 +209,7 @@ class DatabaseQueryTestCase(OpalTestCase):
         exp = "testuser (01/12/2017 10:10:00)\nSearching for:\nWearer of Hats Name Contains jeff"
         self.assertEqual(exp, query.description())
 
-    @patch("opal.core.search.queries.datetime")
+    @patch("search.queries.datetime")
     def test_description_field_display_name(self, dt):
         dt.datetime.now.return_value = datetime(
             2017, 12, 1, 10, 10
@@ -226,7 +227,7 @@ Hound Owner Hound Contains jeff
 """.strip()
         self.assertEqual(exp, query.description())
 
-    @patch("opal.core.search.queries.datetime")
+    @patch("search.queries.datetime")
     def test_description_multiple(self, dt):
         dt.datetime.now.return_value = datetime(
             2017, 12, 1, 10, 10
@@ -328,7 +329,7 @@ and Hound Owner Hound Contains jeff
         patient_1, episode_1 = self.new_patient_and_episode_please()
         patient_2, episode_2 = self.new_patient_and_episode_please()
         patient_3, episode_3 = self.new_patient_and_episode_please()
-        testmodels.Demographics.objects.filter(
+        models.Demographics.objects.filter(
             patient__in=[patient_1, patient_2, patient_3]
         ).update(
             first_name="tree"
@@ -785,7 +786,7 @@ and Hound Owner Hound Contains jeff
 
 class CreateQueryTestCase(OpalTestCase):
 
-    @patch('opal.core.search.queries.stringport')
+    @patch('search.queries.stringport')
     def test_from_settings(self, stringport):
         mock_backend = MagicMock('Mock Backend')
         stringport.return_value = mock_backend

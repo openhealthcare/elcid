@@ -1,5 +1,5 @@
 """
-Plugin definition for opal.core.search
+Plugin definition for elcid search
 """
 from search import urls
 from opal.core import plugins

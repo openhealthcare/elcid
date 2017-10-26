@@ -5,7 +5,7 @@ from celery import shared_task
 
 @shared_task
 def extract(user, extract_query):
-    from opal.core.search import queries, extract
+    from search import queries, extract
     query = queries.create_query(user, extract_query["criteria"])
     episodes = query.get_episodes()
     fname = extract.zip_archive(

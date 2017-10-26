@@ -2,7 +2,7 @@ from mock import MagicMock, patch
 import datetime
 
 from opal.core.test import OpalTestCase
-from opal.core.search import search_rule
+from search import search_rule
 
 
 class SearchRuleFieldTestCase(OpalTestCase):

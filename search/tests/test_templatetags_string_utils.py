@@ -1,5 +1,5 @@
 from opal.core.test import OpalTestCase
-from opal.templatetags.opal_string_utils import underscore_to_spaces
+from opal.templatetags.elcid_string_utils import underscore_to_spaces
 
 
 class UnderscoreToSpacesTestCase(OpalTestCase):
