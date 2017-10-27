@@ -59,6 +59,7 @@ class Application(application.OpalApplication):
                 display="Extract"
             )
             items.append(query)
+
         if user:
             if user.profile.roles.filter(name=MICROHAEM_ROLE).exists():
                 pathway_url = "/pathway/#/{}".format(

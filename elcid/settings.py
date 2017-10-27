@@ -179,9 +179,9 @@ INSTALLED_APPS = (
     'infectiousdiseases',
     'dashboard',
     'guidelines',
-    'reporting',
     'dischargesummary',
     'djcelery',
+    'reporting',
 )
 
 if ON_TEST:

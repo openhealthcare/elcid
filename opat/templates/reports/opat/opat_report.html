@@ -1,0 +1,39 @@
+{% extends "reporting/report_detail.html" %}
+{% load forms %}
+{% block report_choices %}
+{% regroup object.get_reporting_periods by year as year_list %}
+  {% for quarters in year_list %}
+    <div class="row">
+      <div class="col-md-12">
+        <h3>{{ quarters.grouper }}</h3>
+      </div>
+    </div>
+    <div class="row {% if forloop.last %}content-offset-below-20{% endif %}">
+      {% for quarter in quarters.list %}
+        <div class="col-md-3 text-center">
+          <label ng-change="report.refresh()" style="display: block; margin-left: 20px; margin-right: 20px" class="btn btn-default text-center" ng-model="report.criteria.reporting_period" uib-btn-radio="'{{ quarter.reporting_period }}'">
+            <h1>
+              {% icon "fa-file-zip-o" %}
+            </h1>
+            <p>{{ quarter.display_name }}</p>
+          </label>
+        </div>
+      {% endfor %}
+    </div>
+    {% if not forloop.last %}
+    <div class="row">
+      <div class="col-md-10 col-md-push-1">
+        <hr />
+      </div>
+    </div>
+    {% endif %}
+  {% endfor %}
+{% endblock %}
+{% block report_button %}
+  <span ng-show="!report.criteria.reporting_period">
+    <h4>Please choose a quarter</h4>
+  </span>
+  <span ng-show="report.criteria.reporting_period">
+    {{ block.super }}
+  </span>
+{% endblock %}
