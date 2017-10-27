@@ -1,0 +1,36 @@
+//
+// Main Elcid Search Angular application
+//
+!(function(){
+  var opal = OPAL.module('opal');
+  var app = OPAL.module('opal.search', [
+      'ngRoute',
+      'ngProgressLite',
+      'ngCookies',
+      'opal.filters',
+      'opal.services',
+      'opal.directives',
+      'opal.controllers'
+  ]);
+
+  OPAL.run(app);
+
+  app.config(function($routeProvider){
+    $routeProvider
+    .when('/', {
+      controller: 'SearchCtrl',
+      templateUrl: '/search/templates/search/search.html',
+    })
+    .when('/extract', {
+        controller: 'ExtractCtrl',
+        templateUrl: '/search/templates/search/extract.html',
+        resolve: {
+          profile: function(UserProfile){ return UserProfile.load(); },
+          extractSchema: function(extractSchemaLoader){ return extractSchemaLoader; },
+          dataDictionary: function(dataDictionaryLoader){ return dataDictionaryLoader.load(); },
+          filters: function(filtersLoader){ return filtersLoader(); },
+          referencedata: function(Referencedata){ return Referencedata.load(); }
+        }
+    })
+  });
+})();

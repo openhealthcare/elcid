@@ -4,7 +4,7 @@ import copy
 import calendar
 from reporting import Report
 from opal.models import Episode
-from opal.core.search.extract import generate_multi_csv_extract
+from search.extract import generate_multi_csv_extract
 from opat import models as opat_models
 from collections import defaultdict
 import dateutil.parser
@@ -236,10 +236,6 @@ class OpatReport(Report):
                 result.append(new_pid_row)
 
         return result
-
-    def reporting_period_to_date_range(self, reporting_period):
-        """ The reporting period is of the form 1_
-        """
 
     def drugs_union(self, pid_rows):
         # get episodes ids that had iv and werenot delivered by the inpatient team
