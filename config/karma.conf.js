@@ -1,7 +1,9 @@
 module.exports = function(config){
   var opalPath;
   if(process.env.TRAVIS){
-    python_version = process.env.TRAVIS_PYTHON_VERSION;
+    // the python version from travis return 2.7, but the env its using is 2.7.13
+    // python_version = process.env.TRAVIS_PYTHON_VERSION;
+    python_version = "2.7.13";
     opalPath = '/home/travis/virtualenv/python' + python_version + '/src/opal';
   }
   else{
