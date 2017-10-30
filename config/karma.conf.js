@@ -1,15 +1,16 @@
 module.exports = function(config){
-  var opalPath;
-  if(process.env.TRAVIS){
-    // the python version from travis return 2.7, but the env its using is 2.7
-    // python_version = process.env.TRAVIS_PYTHON_VERSION;
-    python_version = "2.7.13";
-    opalPath = '/home/travis/virtualenv/python' + python_version + '/src/opal';
-  }
-  else{
-    opalPath = '../../opal';
-  }
-  var karmaDefaults = require(opalPath + '/config/karma_defaults.js');
+  // var opalPath;
+  // if(process.env.TRAVIS){
+  //   // the python version from travis return 2.7, but the env its using is 2.7
+  //   // python_version = process.env.TRAVIS_PYTHON_VERSION;
+  //   python_version = "2.7.13";
+  //   opalPath = '/home/travis/virtualenv/python' + python_version + '/src/opal';
+  // }
+  // else{
+  //   opalPath = '../../opal';
+  // }
+  // var karmaDefaults = require(opalPath + '/config/karma_defaults.js');
+  var karmaDefaults = require("../config/karma_defaults.js");
   var baseDir = __dirname + '/..';
   var coverageFiles = [
     __dirname + '/../elcid/assets/js/elcid/*',
