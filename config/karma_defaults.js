@@ -7,18 +7,19 @@ module.exports = function(includedFiles, baseDir, coverageFiles){
     var browsers, coverageReporter, opalRoute;
 
     var opalPath;
-    if(process.env.TRAVIS){
+    if(!process.env.TRAVIS){
       // the python version from travis return 2.7, but the env its using is 2.7
       // python_version = process.env.TRAVIS_PYTHON_VERSION;
       python_version = "2.7.13";
       opalPath = '/home/travis/virtualenv/python' + python_version + '/src';
     }
     else{
-      opalPath = '../../opal';
+      opalPath = '../..';
     }
 
-    var basePath = opalPath + "/opal/static/js";
+    var basePath = opalPath + "/opal/opal/static/js";
 
+    console.error(basePath);
     var OPAL_DEPENDENCIES = [
       "lib/bower_components/angular/angular.js",
       "lib/bower_components/angular-route/angular-route.js",
