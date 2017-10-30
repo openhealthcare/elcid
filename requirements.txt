@@ -22,7 +22,7 @@ pycrypto==2.6.1
 six==1.10.0
 future==0.16.0
 
--e git+https://github.com/openhealthcare/opal.git@v0.9.0#egg=opal
+-e git+https://github.com/openhealthcare/opal.git@travis-checker#egg=opal
 -e git+https://github.com/openhealthcare/opal-reporting.git@v0.1#egg=opal_reporting
 -e git+https://github.com/openhealthcare/opal-observations.git@v0.4.0#egg=opal_observations
 
