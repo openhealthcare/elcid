@@ -11,7 +11,7 @@ module.exports = function(includedFiles, baseDir, coverageFiles){
       // the python version from travis return 2.7, but the env its using is 2.7
       // python_version = process.env.TRAVIS_PYTHON_VERSION;
       python_version = "2.7.13";
-      opalPath = '/home/travis/virtualenv/python' + python_version + '/src/opal';
+      opalPath = '/home/travis/virtualenv/python' + python_version + '/src';
     }
     else{
       opalPath = '../../opal';
