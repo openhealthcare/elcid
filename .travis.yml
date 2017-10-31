@@ -12,10 +12,10 @@ before_script:
 script:
   - ls /home/travis/virtualenv/python2.7.13
   - ls /home/travis/virtualenv/python2.7
-  - ls /home/travis/virtualenv/python2.7.13/src
-  - ls /home/travis/virtualenv/python2.7/src
-  - ls /home/travis/virtualenv/python2.7.13/src/opal
-  - ls /home/travis/virtualenv/python2.7/src/opal
+  - ls /home/travis/virtualenv/python2.7.13/site-packages
+  - ls /home/travis/virtualenv/python2.7/site-packages
+  - ls /home/travis/virtualenv/python2.7.13/site-packages/opal
+  - ls /home/travis/virtualenv/python2.7/site-packages/opal
   - opal test --coverage
 after_success:
   - find coverage
