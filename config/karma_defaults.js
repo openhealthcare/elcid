@@ -11,13 +11,13 @@ module.exports = function(includedFiles, baseDir, coverageFiles){
       // the python version from travis return 2.7, but the env its using is 2.7
       // python_version = process.env.TRAVIS_PYTHON_VERSION;
       python_version = "2.7.13"
-      opalPath = '/home/travis/virtualenv/python' + python_version + '/src';
+      opalPath = '/home/travis/virtualenv/python2.7.13/lib/python2.7/site-packages/opal';
     }
     else{
-      opalPath = '../..';
+      opalPath = '../../opal/opal';
     }
 
-    var basePath = opalPath + "/opal/opal/static/js";
+    var basePath = opalPath + "/static/js";
 
     var OPAL_DEPENDENCIES = [
       "lib/bower_components/angular/angular.js",
