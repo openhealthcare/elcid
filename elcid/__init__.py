@@ -53,7 +53,7 @@ class Application(application.OpalApplication):
         if user.profile.can_extract or user.is_superuser:
             query = menus.MenuItem(
                 href="/#/extract/",
-                activepattern="/#/extract/",
+                activepattern="/search/#/extract/",
                 icon="fa-download",
                 display="Extract"
             )
