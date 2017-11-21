@@ -1,4 +1,4 @@
 {% load forms %}
-{% select "autofocus" field="Symptom.symptoms" multiple=True tagging=False search_select=True help_text="If your symptom isn't in the list please add it to the details box below" maxlength="255" %}
+{% select "autofocus" required=False field="Symptom.symptoms" multiple=True tagging=False search_select=True help_text="If your symptom isn't in the list please add it to the details box below" maxlength="255" %}
 {% select field="Symptom.duration" lookuplist="['3 days or less','4-10 days','11-21 days','22 days to 3 months','over 3 months']" %}
 {% textarea field="Symptom.details" maxlength="255" %}
