@@ -2,7 +2,7 @@ from opal.core.pathway import WizardPathway, Step
 from opal.utils import AbstractBase
 from elcid.models import Diagnosis
 from django.db import transaction
-from microhaem.constants import MICROHAEM_TAG, ONCOLOGY_TAG
+from microhaem import constants
 
 
 class AbstractReferPatientPathway(WizardPathway, AbstractBase):
@@ -49,7 +49,7 @@ class AbstractReferPatientPathway(WizardPathway, AbstractBase):
 class HaemReferalPathway(AbstractReferPatientPathway):
     display_name = "Haem Referral"
     slug = 'haem_referral'
-    tag = MICROHAEM_TAG
+    tag = constants.MICROHAEM_TAG
     tag_display = "Micro Haematology"
 
     def redirect_url(self, user=None, patient=None, episode=None):
@@ -59,5 +59,12 @@ class HaemReferalPathway(AbstractReferPatientPathway):
 class OncologyReferalPathway(AbstractReferPatientPathway):
     display_name = "Oncology Referral"
     slug = 'oncology_referral'
-    tag = ONCOLOGY_TAG
+    tag = constants.ONCOLOGY_TAG
     tag_display = "Micro Oncology"
+
+
+class MicroAdviceReferalPathway(AbstractReferPatientPathway):
+    display_name = "Micro Advice Referral"
+    slug = 'micro_advice_referral'
+    tag = constants.MICRO_ADVICE_TAG
+    tag_display = "Micro advice"

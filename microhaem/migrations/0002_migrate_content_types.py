@@ -27,6 +27,7 @@ def backwards(apps, *args):
             apps, to_app, model_name, from_app, model_name
         )
 
+
 class Migration(migrations.Migration):
 
     dependencies = [

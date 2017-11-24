@@ -3,7 +3,6 @@ elCID OPAL implementation
 """
 
 from opal.core import application, menus
-from microhaem.constants import MICROHAEM_ROLE, ONCOLOGY_ROLE
 
 
 class Application(application.OpalApplication):
@@ -57,20 +56,15 @@ class Application(application.OpalApplication):
                 display="Extract"
             )
             items.append(query)
-        if user:
-            haem_user = user.profile.roles.filter(name=MICROHAEM_ROLE).exists()
-            oncology_user = user.profile.roles.filter(
-                name=ONCOLOGY_ROLE
-            ).exists()
-            if haem_user or oncology_user:
-                menuitem = menus.MenuItem(
-                    href='/referrals/',
-                    display="Referrals",
-                    icon="fa fa-mail-forward",
-                    activepattern='/referrals',
-                    index=3
-                )
 
-            items.append(menuitem)
+        menuitem = menus.MenuItem(
+            href='/referrals/',
+            display="Referrals",
+            icon="fa fa-mail-forward",
+            activepattern='/referrals',
+            index=3
+        )
+
+        items.append(menuitem)
 
         return items
