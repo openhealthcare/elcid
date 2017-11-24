@@ -41,10 +41,13 @@ angular.module('opal.controllers').controller('UchFindPatientCtrl',
         });
         scope.allTags = _.uniq(allTags);
         scope.demographics = patient.demographics[0];
-        var latestEpisode = _.last(_.sortBy(_.values(patient.episodes), "id"));
+        var openEpisodes = _.filter(_.values(patient.episodes), function(x){
+          return !x.end;
+        });
+        var latestEpisode = _.last(_.sortBy(openEpisodes, "id"));
         var editing = scope.pathway.populateEditingDict(latestEpisode);
 
-        if(!editing.end){
+        if(editing){
           angular.extend(scope.editing, editing);
           scope.pathway.save_url = scope.pathway.save_url + "/" + patient.id + "/" + latestEpisode.id;
         }
