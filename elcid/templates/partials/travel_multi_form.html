@@ -3,11 +3,33 @@
   <div ng-repeat="travel in editing.travel">
     <span ng-show="!travel.submitted">
       <span ng-class="{'warning-state': travelStep.warning}">
-        {% input "autofocus" change="travelStep.reset()"  label="Destination" disabled="travelStep.none" model="travel.destination" lookuplist="destination_list" %}
-        {% input label="Dates" change="travelStep.reset()" disabled="travelStep.none" model="travel.dates" %}
+        {% input "autofocus" change="travelStep.reset()"  maxlength="256" label="Destination" disabled="travelStep.none" model="travel.destination" lookuplist="destination_list" %}
+        <span class="help-block ng-hide" ng-show="dischargeDiagnosis.travel_destination.$invalid && dischargeDiagnosis.travel_destination.$error.maxlength">
+          <div class="row">
+            <div class="col-sm-8 col-sm-push-3">
+              Maximum length is 255
+            </div>
+          </div>
+        </span>
+        {% input label="Dates" maxlength="256" change="travelStep.reset()" disabled="travelStep.none" model="travel.dates" %}
+        <span class="help-block ng-hide" ng-show="dischargeDiagnosis.travel_dates.$invalid && dischargeDiagnosis.travel_dates.$error.maxlength">
+          <div class="row">
+            <div class="col-sm-8 col-sm-push-3">
+              Maximum length is 255
+            </div>
+          </div>
+        </span>
       </span>
-      {% select label="Reason for travel" model="travel.reason_for_travel" lookuplist="travel_reason_list" disabled="travelStep.none" %}
-      {% input disabled="travelStep.none" label="Specific exposures" model="travel.specific_exposures" change="travelStep.reset()" %}
+      {% select label="Reason for travel" maxlength="256" model="travel.reason_for_travel" lookuplist="travel_reason_list" disabled="travelStep.none" %}
+
+      {% input disabled="travelStep.none" maxlength="256" label="Specific exposures" model="travel.specific_exposures" change="travelStep.reset()" %}
+      <span class="help-block ng-hide" ng-show="dischargeDiagnosis.travel_specific_exposures.$invalid && dischargeDiagnosis.travel_specific_exposures.$error.maxlength">
+        <div class="row">
+          <div class="col-sm-8 col-sm-push-3">
+            Maximum length is 255
+          </div>
+        </div>
+      </span>
       <btn type="button" ng-disabled="travelStep.none" ng-click="travelStep.addAnother(travel)" class="btn btn-primary"><i class="fa fa-plus"></i> Add Another</btn>
     </span>
 
