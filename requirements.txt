@@ -21,14 +21,12 @@ jsonfield==1.0.3
 pycrypto==2.6.1
 six==1.10.0
 future==0.16.0
-
--e git+https://github.com/openhealthcare/opal.git@search-seprate-with-9#egg=opal
+opal==0.9.0rc5
 
 -e git+https://github.com/openhealthcare/opal-reporting.git@v0.1#egg=opal_reporting
 -e git+https://github.com/openhealthcare/opal-observations.git@v0.4.0#egg=opal_observations
 
 -e git+https://github.com/openhealthcare/opal-wardround.git@v0.9.0#egg=opal_wardround
--e git+https://github.com/openhealthcare/opal-referral.git@v0.4.0#egg=opal_referral
 -e git+https://github.com/openhealthcare/opal-dashboard.git@v0.4.0#egg=opal_dashboard
 
 -e git+https://github.com/openhealthcare/opal-dischargesummary.git@v0.4#egg=opal_dischargesummary
