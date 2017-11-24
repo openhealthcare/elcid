@@ -6,7 +6,7 @@ from microhaem import pathways
 
 class HaemPathwayTestCase(OpalTestCase):
     def setUp(self):
-        self.pathway = pathways.ReferPatientPathway()
+        self.pathway = pathways.HaemReferalPathway()
 
     def test_render(self):
         url = reverse('pathway_template', kwargs=dict(name='haem_referral'))

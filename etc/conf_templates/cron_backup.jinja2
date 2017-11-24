@@ -1,0 +1,1 @@
+0 2 * * * postgres pg_dump {{ database_name }} > {{ backup_dir }}/back.$(date +"\%d.\%m.\%Y").{{ database_name }}.sql 2>> /usr/lib/ohc/log/cron.log

@@ -51,7 +51,7 @@
       <div class="row">
         <div class="col-md-12 text-center">
           <p class="lead">
-            Unable to find a patient with the hospital number [[ demographics.hospital_number ]]. <strong>Add now</strong>.
+            Unable to find a patient with the hospital number [[ editing.demographics.hospital_number ]]. <strong>Add now</strong>.
           </p>
         </div>
       </div>
@@ -68,10 +68,10 @@
                   [[ demographics.hospital_number ]]
                 </label>
               </div>
-              {% input "autofocus" field="Demographics.first_name" model="demographics.first_name" %}
-              {% input field="Demographics.surname" model="demographics.surname" %}
-              {% date_of_birth_field model_name="demographics.date_of_birth" %}
-              {% select field="Demographics.sex" model="demographics.sex" %}
+              {% input "autofocus" field="Demographics.first_name" %}
+              {% input field="Demographics.surname" %}
+              {% date_of_birth_field %}
+              {% select field="Demographics.sex" %}
             </div>
           </div>
         </div>
@@ -91,15 +91,15 @@
         <div class="row">
           <div class="panel panel-default">
             <div class="panel-heading">
-              <h3>[[ demographics.first_name ]] [[ demographics.surname ]]</h3>
+              <h3>[[ editing.demographics.first_name ]] [[ editing.demographics.surname ]]</h3>
             </div>
             <div class="panel-body">
               <div class="row">
                 <div class="col-md-4">
-                  <b>Hospital #[[ demographics.hospital_number ]]</b>
+                  <b>Hospital #[[ editing.demographics.hospital_number ]]</b>
                 </div>
                 <div class="col-md-8">
-                  [[ demographics.hospital_number ]]
+                  [[ editing.demographics.hospital_number ]]
                 </div>
               </div>
               <div class="row">
@@ -107,8 +107,8 @@
                   <b>Name</b>
                 </div>
                 <div class="col-md-8">
-                  [[ demographics.first_name ]]
-                  [[ demographics.surname ]]
+                  [[ editing.demographics.first_name ]]
+                  [[ editing.demographics.surname ]]
                 </div>
               </div>
               <div class="row">
@@ -116,7 +116,7 @@
                   <b>Date of Birth</b>
                 </div>
                 <div class="col-md-8">
-                  [[ demographics.date_of_birth | shortDate ]]
+                  [[ editing.demographics.date_of_birth | shortDate ]]
                 </div>
               </div>
               <div class="row">
@@ -124,7 +124,7 @@
                   <b>Gender</b>
                 </div>
                 <div class="col-md-8">
-                  [[ demographics.sex ]]
+                  [[ editing.demographics.sex ]]
                 </div>
               </div>
             </div>

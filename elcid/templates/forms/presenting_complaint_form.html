@@ -1,4 +1,4 @@
 {% load forms %}
-{% select required=False autofocus field="PresentingComplaint.symptoms" multiple=True tagging=False help_text="If a symptom isn't in the list, add it in the details box" %}
+{% select autofocus required=False field="PresentingComplaint.symptoms" multiple=True tagging=False help_text="If a symptom isn't in the list, add it in the details box" %}
 {% select field="PresentingComplaint.duration" %}
 {% textarea field="PresentingComplaint.details" %}

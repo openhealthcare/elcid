@@ -26,15 +26,8 @@ class AbstractReferPatientPathway(WizardPathway, AbstractBase):
     @transaction.atomic
     def save(self, data, user=None, episode=None, patient=None):
         """
-            Does 2 things.
-
-            1. If an episode exists, for this patient, use the last one
-            2. Tags the episode with Microhaem
+            Tags the episode with the tag
         """
-        if not episode:
-            if patient:
-                episode = patient.episode_set.last()
-
         patient, episode = super(AbstractReferPatientPathway, self).save(
             data, user=user, episode=episode, patient=patient
         )

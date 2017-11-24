@@ -1,5 +1,5 @@
 angular.module('opal.controllers').controller('UchFindPatientCtrl',
-  function(scope, Episode, step, episode, $window) {
+  function(scope, Patient, Episode, step, episode, Item, $window) {
     "use strict";
 
     scope.lookup_hospital_number = function() {
@@ -29,7 +29,8 @@ angular.module('opal.controllers').controller('UchFindPatientCtrl',
         scope.state = 'editing_demographics';
     };
 
-    scope.new_for_patient = function(patient){
+    scope.new_for_patient = function(rawPatient){
+        var patient = new Patient(rawPatient);
         var allTags = [];
         _.each(patient.episodes, function(episode){
           _.each(_.keys(episode.tagging[0]), function(tag){
@@ -40,20 +41,29 @@ angular.module('opal.controllers').controller('UchFindPatientCtrl',
         });
         scope.allTags = _.uniq(allTags);
         scope.demographics = patient.demographics[0];
-        scope.state   = 'has_demographics';
+        var latestEpisode = _.last(_.sortBy(_.values(patient.episodes), "id"));
+        var editing = scope.pathway.populateEditingDict(latestEpisode);
+
+        if(!editing.end){
+          angular.extend(scope.editing, editing);
+          scope.pathway.save_url = scope.pathway.save_url + "/" + patient.id + "/" + latestEpisode.id;
+        }
+        else{
+          scope.editing.demographics = patient.demographics[0].makeCopy();
+        }
+        scope.state  = 'has_demographics';
         scope.hideFooter = false;
     };
+
     scope.showNext = function(editing){
         return scope.state === 'has_demographics' || scope.state === 'editing_demographics';
     };
 
     scope.preSave = function(editing){
-        // this is not great
-        editing.demographics = scope.demographics;
-        if(editing.demographics && editing.demographics.patient_id){
-          scope.pathway.save_url = scope.pathway.save_url + "/" + editing.demographics.patient_id;
-        }
-    };
+      if(!editing.demographics.hospital_number){
+        editing.demographics.hospital_number = scope.demographics.hospital_number;
+      }
+    }
 
     this.initialise(scope);
 });
