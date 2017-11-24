@@ -53,4 +53,3 @@ class OpatPlugin(plugins.OpalPlugin):
             },
             'OPAT': flows
         }
-
