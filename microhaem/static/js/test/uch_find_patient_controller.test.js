@@ -1,21 +1,30 @@
 describe('UchFindPatientCtrl', function() {
   "use strict";
   var scope, Episode, $controller, controller, $window;
+  var $rootScope, opalTestHelper, Pathway;
 
   beforeEach(function(){
     module('opal.controllers');
+    module('opal.services');
+    module('opal.test');
+
     inject(function($injector){
-      var $rootScope = $injector.get('$rootScope');
+      $rootScope = $injector.get('$rootScope');
       scope = $rootScope.$new();
       Episode = $injector.get('Episode');
       $controller = $injector.get('$controller');
+      opalTestHelper = $injector.get('opalTestHelper');
+      Pathway = $injector.get('Pathway');
     });
 
+
+    $rootScope.fields = opalTestHelper.getRecordLoaderData();
     $window = {alert: jasmine.createSpy()};
 
-    scope.pathway = {
+    scope.pathway = new Pathway({
       save_url: "/some_url"
-    };
+    });
+    scope.editing = {};
     controller = $controller('UchFindPatientCtrl', {
       scope: scope,
       Episode: Episode,
@@ -75,116 +84,41 @@ describe('UchFindPatientCtrl', function() {
     expect(scope.showNext()).toBe(false);
   });
 
-  it('should update the next save_url if an patient is found', function(){
-    scope.demographics = {patient_id: 1};
-    scope.preSave({});
-    expect(scope.pathway.save_url).toBe("/some_url/1");
+  it('should update the save_url if an patient is found with no open episode', function(){
+    var patient = opalTestHelper.newPatient($rootScope);
+    _.each(patient.episodes, function(e){
+      e.end = new moment();
+    });
+
+    scope.new_for_patient(patient);
+    expect(scope.pathway.save_url).toBe("/some_url/" + patient.id);
   });
 
-  it('should not update the next save_url if an patient is not found', function(){
-    scope.preSave({});
-    expect(scope.pathway.save_url).toBe("/some_url");
+  it('should update the save url if a patient with an open episode is found', function(){
+    var patient = opalTestHelper.newPatient($rootScope);
+    _.each(patient.episodes, function(e){
+      e.end = undefined;
+    });
+    scope.new_for_patient(patient);
+    expect(scope.pathway.save_url).toBe("/some_url/" + patient.id + "/123");
   });
 
-  it("should update the demographics if a patient is found", function(){
-    var fakePatient = {demographics: [{hospital_number: "1"}]};
-    scope.new_for_patient(fakePatient);
+  it('should update the editing dictionary if a patient with an open episode is found', function(){
+    var patient = opalTestHelper.newPatient($rootScope);
+    _.each(patient.episodes, function(e){
+      e.end = null;
+    });
+    scope.new_for_patient(patient);
     expect(scope.state).toBe('has_demographics');
-    expect(scope.demographics).toBe(fakePatient.demographics[0]);
+    expect(!!scope.editing.diagnosis.length).toBe(true);
   });
 
-  it("should hoist demographics to editing before saving", function(){
-    scope.demographics = {hospital_number: "1"};
-    var editing = {};
-    scope.preSave(editing);
-    expect(editing.demographics).toEqual(scope.demographics);
-  });
-
-  it("should update the tags if a patient is found", function(){
-    var fakePatient = {
-      demographics: [{hospital_number: "1"}],
-      episodes: {
-        1: {
-          tagging: [{haem: true}]
-        }
-      }
-
-    };
-    scope.metadata = {tags: {haem: {}}};
-    scope.new_for_patient(fakePatient);
-    expect(scope.allTags).toEqual(['haem']);
-  });
-
-  it("should not update the tags if they're not in the metadata", function(){
-    var fakePatient = {
-      demographics: [{hospital_number: "1"}],
-      episodes: {
-        1: {
-          tagging: [{haem: true}]
-        }
-      }
-
-    };
-    scope.metadata = {tags: {}};
-    scope.new_for_patient(fakePatient);
-    expect(scope.allTags).toEqual([]);
-  });
-
-  it("should update the from multiple episodes if found", function(){
-    var fakePatient = {
-      demographics: [{hospital_number: "1"}],
-      episodes: {
-        1: {
-          tagging: [{
-            haem: true,
-            bacteraemia: true
-          }],
-        },
-        3: {
-          tagging: [{
-            oncology: true
-          }],
-        }
-      }
-
-    };
-    scope.metadata = {
-      tags: {
-        haem: {},
-        bacteraemia: {},
-        oncology: {}
-      }
-    };
-    scope.new_for_patient(fakePatient);
-    expect(scope.allTags).toEqual(['haem', 'bacteraemia', 'oncology']);
-  });
-
-  it("should update the tags removing duplicates if the patient is found", function(){
-    var fakePatient = {
-      demographics: [{hospital_number: "1"}],
-      episodes: {
-        1: {
-          tagging: [{
-            haem: true,
-            bacteraemia: true
-          }],
-        },
-        3: {
-          tagging: [{
-            bacteraemia: true
-          }],
-        }
-      }
-
-    };
-    scope.metadata = {
-      tags: {
-        haem: {},
-        bacteraemia: {},
-        oncology: {}
-      }
-    };
-    scope.new_for_patient(fakePatient);
-    expect(scope.allTags).toEqual(['haem', 'bacteraemia']);
+  it('should just update the demographics with only a demographics if no open episode is found', function(){
+    var patient = opalTestHelper.newPatient($rootScope);
+    scope.new_for_patient(patient);
+    expect(scope.state).toBe('has_demographics');
+    expect(
+      scope.demographics.first_name).toBe(patient.demographics[0].first_name
+    );
   });
 });

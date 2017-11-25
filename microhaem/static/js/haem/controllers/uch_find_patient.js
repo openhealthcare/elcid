@@ -31,28 +31,25 @@ angular.module('opal.controllers').controller('UchFindPatientCtrl',
 
     scope.new_for_patient = function(rawPatient){
         var patient = new Patient(rawPatient);
-        var allTags = [];
-        _.each(patient.episodes, function(episode){
-          _.each(_.keys(episode.tagging[0]), function(tag){
-            if(scope.metadata.tags[tag]){
-              allTags.push(tag);
-            }
-          });
-        });
-        scope.allTags = _.uniq(allTags);
         scope.demographics = patient.demographics[0];
         var openEpisodes = _.filter(_.values(patient.episodes), function(x){
           return !x.end;
         });
         var latestEpisode = _.last(_.sortBy(openEpisodes, "id"));
-        var editing = scope.pathway.populateEditingDict(latestEpisode);
 
-        if(editing){
-          angular.extend(scope.editing, editing);
+        if(latestEpisode){
+          var editing = scope.pathway.populateEditingDict(latestEpisode);
+          // angular.extend doesn't work for angular reasons
+          _.each(editing, function(v, k){
+            if(k.indexOf("$") !== 0){
+              scope.editing[k] = v;
+            }
+          });
           scope.pathway.save_url = scope.pathway.save_url + "/" + patient.id + "/" + latestEpisode.id;
         }
         else{
           scope.editing.demographics = patient.demographics[0].makeCopy();
+          scope.pathway.save_url = scope.pathway.save_url + "/" + patient.id;
         }
         scope.state  = 'has_demographics';
         scope.hideFooter = false;
