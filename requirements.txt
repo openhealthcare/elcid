@@ -1,4 +1,5 @@
 # cryptography is required for heroku deployment
+Fabric==1.14.0
 django==1.8.13
 coverage==3.6
 dj-database-url==0.2.1
