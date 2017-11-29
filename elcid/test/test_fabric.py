@@ -72,7 +72,6 @@ class CreatePrivateSettingsTestCase(OpalTestCase):
         self.assertEqual(
             called,
             dict(
-                proxy="",
                 db_password="",
                 host_string="",
                 additional_settings={},
@@ -239,18 +238,18 @@ exists"
         )
 
     def test_pip_install_requirements(self, local, print_statement):
-        fabfile.pip_install_requirements(self.prod_env, "some_proxy")
+        fabfile.pip_install_requirements(self.prod_env)
         first_call = local.call_args_list[0][0][0]
         self.assertEqual(
             first_call,
             "/home/ohc/.virtualenvs/elcid-some_branch/bin/pip install \
-pip==9.0.1 --proxy some_proxy"
+pip==9.0.1"
         )
         second_call = local.call_args_list[1][0][0]
         self.assertEqual(
             second_call,
             "/home/ohc/.virtualenvs/elcid-some_branch/bin/pip install -r \
-requirements.txt --proxy some_proxy"
+requirements.txt"
         )
 
     def test_set_project_directory(self, local, print_statement):
@@ -708,29 +707,12 @@ class GetPrivateSettingsTestCase(OpalTestCase):
 your private settings"
         )
 
-    def test_proxy_present(self, os, json):
-        m = mock.mock_open()
-        fab_open = "fabfile.open"
-        json.load.return_value = dict(
-            db_password="something",
-            additional_settings={}
-        )
-        with mock.patch(fab_open, m, create=True):
-            with self.assertRaises(ValueError) as e:
-                fabfile.get_private_settings()
-
-        self.assertEqual(
-            str(e.exception),
-            "we require 'proxy' in your private settings"
-        )
-
     def test_host_string(self, os, json):
         m = mock.mock_open()
         fab_open = "fabfile.open"
         json.load.return_value = dict(
             db_password="something",
             additional_settings={},
-            proxy="127.0.0.1",
             remote_password=None
         )
         with mock.patch(fab_open, m, create=True):
@@ -749,7 +731,6 @@ the address you want to sync to on prod in your private settings"
         json.load.return_value = dict(
             db_password="something",
             additional_settings={},
-            proxy="127.0.0.1",
             host_string="some_str"
         )
         with mock.patch(fab_open, m, create=True):
@@ -767,7 +748,6 @@ the address you want to sync to on prod in your private settings"
         expected = dict(
             db_password="something",
             additional_settings={},
-            proxy="127.0.0.1",
             host_string="some_str",
             remote_password=None
         )
@@ -813,7 +793,6 @@ class DeployTestCase(FabfileTestCase):
         env_constructor
     ):
         pv = dict(
-            proxy="1.2.3",
             host_string="0.0.0.0"
         )
         get_private_settings.return_value = pv
@@ -830,8 +809,7 @@ class DeployTestCase(FabfileTestCase):
         )
         pip_create_virtual_env.assert_called_once_with(self.prod_env)
         pip_set_project_directory.assert_called_once_with(self.prod_env)
-        pip_install_requirements.assert_called_once_with(self.prod_env, "1.2.3")
-
+        pip_install_requirements.assert_called_once_with(self.prod_env)
         postgres_create_database.assert_called_once_with(self.prod_env)
         self.assertFalse(postgres_load_database.called)
         services_symlink_nginx.assert_called_once_with(self.prod_env)
@@ -916,7 +894,6 @@ class DeployTestCase(FabfileTestCase):
         os
     ):
         pv = dict(
-            proxy="1.2.3",
             host_string="0.0.0.0"
         )
         get_private_settings.return_value = pv
@@ -936,10 +913,12 @@ class DeployTestCase(FabfileTestCase):
         )
         pip_create_virtual_env.assert_called_once_with(self.prod_env)
         pip_set_project_directory.assert_called_once_with(self.prod_env)
-        pip_install_requirements.assert_called_once_with(self.prod_env, "1.2.3")
+        pip_install_requirements.assert_called_once_with(self.prod_env)
 
         postgres_create_database.assert_called_once_with(self.prod_env)
-        postgres_load_database.assert_called_once_with("some_backup", self.prod_env)
+        postgres_load_database.assert_called_once_with(
+            "some_backup", self.prod_env
+        )
         services_symlink_nginx.assert_called_once_with(self.prod_env)
         services_symlink_upstart.assert_called_once_with(self.prod_env)
         services_create_local_settings.assert_called_once_with(self.prod_env, pv)

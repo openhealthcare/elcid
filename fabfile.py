@@ -3,9 +3,8 @@ This deals with deployment for the UCH.
 
 Before you being make sure that in ../private_settings.json
 you have
-    1) the proxy address
-    2) a db_password
-    3) an empty dictionary called additional_settings or a dictionary
+    1) a db_password
+    2) an empty dictionary called additional_settings or a dictionary
        of any other variables you want set in your local settings
 
 Make sure the you have a back up directory which is read writeable
@@ -161,11 +160,11 @@ def pip_create_virtual_env(new_env):
     return
 
 
-def pip_install_requirements(new_env, proxy):
+def pip_install_requirements(new_env):
     print("Installing requirements")
     pip = "{}/bin/pip".format(new_env.virtual_env_path)
-    local("{0} install pip==9.0.1 --proxy {1}".format(pip, proxy))
-    local("{0} install -r requirements.txt --proxy {1}".format(pip, proxy))
+    local("{0} install pip==9.0.1".format(pip))
+    local("{0} install -r requirements.txt".format(pip))
 
 
 def pip_set_project_directory(some_env):
@@ -402,8 +401,6 @@ def get_private_settings():
             raise ValueError(err_template.format(
                 "additional_settings dict (even if its empty)"
             ))
-        if "proxy" not in result:
-            raise ValueError(err_template.format("proxy"))
         if "remote_password" not in result:
             raise ValueError(err_template.format("remote_password"))
         if "host_string" not in result:
@@ -476,7 +473,6 @@ def create_private_settings():
     with open(PRIVATE_SETTINGS, "w") as privado:
         json.dump(
             dict(
-                proxy="",
                 db_password="",
                 host_string="",
                 remote_password="",
@@ -501,7 +497,7 @@ def _deploy(new_branch, backup_name=None, remove_existing=False):
     # Setup environment
     pip_create_virtual_env(new_env)
     pip_set_project_directory(new_env)
-    pip_install_requirements(new_env, private_settings["proxy"])
+    pip_install_requirements(new_env)
 
     # create a database
     postgres_create_database(new_env)

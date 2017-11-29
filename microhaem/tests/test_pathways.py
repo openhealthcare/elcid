@@ -79,7 +79,6 @@ class HaemPathwayTestCase(OpalTestCase):
             patient.demographics_set.first().hospital_number,
             "100"
         )
-        import ipdb; ipdb.set_trace()
         self.assertEqual(
             episode.diagnosis_set.count(),
             2
