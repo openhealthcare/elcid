@@ -156,7 +156,7 @@ def pip_create_virtual_env(new_env):
             raise ValueError(
                 "Directory {} already exists".format(new_env.virtual_env_path)
             )
-    local("/usr/bin/virtualenv {}".format(new_env.virtual_env_path))
+    local("virtualenv {}".format(new_env.virtual_env_path))
     return
 
 

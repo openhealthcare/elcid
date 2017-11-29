@@ -226,7 +226,7 @@ exists"
         second_call = local.call_args_list[1][0][0]
         self.assertEqual(
             second_call,
-            "/usr/bin/virtualenv /home/ohc/.virtualenvs/elcid-some_branch"
+            "virtualenv /home/ohc/.virtualenvs/elcid-some_branch"
         )
 
     def test_pip_test_create_virtual_env_without_remove(
@@ -234,7 +234,7 @@ exists"
     ):
         fabfile.pip_create_virtual_env(self.prod_env)
         local.assert_called_once_with(
-            "/usr/bin/virtualenv /home/ohc/.virtualenvs/elcid-some_branch"
+            "virtualenv /home/ohc/.virtualenvs/elcid-some_branch"
         )
 
     def test_pip_install_requirements(self, local, print_statement):
