@@ -41,10 +41,10 @@ class CloneBranchTestCase(OpalTestCase):
         branch_name = "some-branch"
         expected = "git clone -b some-branch \
 https://github.com/openhealthcare/elcid \
-/usr/lib/ohc/elcid-some-branch"
+/usr/local/ohc/elcid-some-branch"
         fabfile.clone_branch(branch_name)
         print_statement.assert_called_once_with(
-            'Cloning into /usr/lib/ohc/elcid-some-branch'
+            'Cloning into /usr/local/ohc/elcid-some-branch'
         )
         local.assert_called_once_with(expected)
 
@@ -55,7 +55,7 @@ https://github.com/openhealthcare/elcid \
             fabfile.clone_branch(branch_name)
         self.assertEqual(
             str(err.exception),
-            "/usr/lib/ohc/elcid-some-branch already exists"
+            "/usr/local/ohc/elcid-some-branch already exists"
         )
 
 
@@ -79,14 +79,14 @@ class CreatePrivateSettingsTestCase(OpalTestCase):
                 remote_password=""
             )
         )
-        m.assert_called_once_with('/usr/lib/ohc/private_settings.json', 'w')
+        m.assert_called_once_with('/usr/local/ohc/private_settings.json', 'w')
 
     def test_private_settings_already_exist(self, os, json):
         # mock open just in case, we don't want to
         # accidentally write anything
         os.path.isfile.return_value = True
         er = "private settings already exist at \
-/usr/lib/ohc/private_settings.json"
+/usr/local/ohc/private_settings.json"
         with self.assertRaises(ValueError) as err:
             fabfile.create_private_settings()
         self.assertEqual(
@@ -107,7 +107,7 @@ class EnvTestCase(FabfileTestCase):
     def test_project_directory(self):
         self.assertEqual(
             self.prod_env.project_directory,
-            "/usr/lib/ohc/elcid-some_branch"
+            "/usr/local/ohc/elcid-some_branch"
         )
 
     def test_remove_existing(self):
@@ -119,7 +119,7 @@ class EnvTestCase(FabfileTestCase):
         dt.datetime.now.return_value = datetime.datetime(2017, 9, 21)
         self.assertEqual(
             self.prod_env.remote_backup_name,
-            "/usr/lib/ohc/var/live/back.21.09.2017.elcid_some_branch.sql"
+            "/usr/local/ohc/var/live/back.21.09.2017.elcid_some_branch.sql"
         )
 
     def test_release_name(self):
@@ -147,7 +147,7 @@ class EnvTestCase(FabfileTestCase):
         )
         self.assertEqual(
             self.prod_env.backup_name,
-            "/usr/lib/ohc/var/back.07.09.2017.elcid_some_branch.sql"
+            "/usr/local/ohc/var/back.07.09.2017.elcid_some_branch.sql"
         )
         self.assertTrue(dt.datetime.now.called)
 
@@ -158,7 +158,7 @@ class EnvTestCase(FabfileTestCase):
         )
         self.assertEqual(
             self.prod_env.release_backup_name,
-            "/usr/lib/ohc/var/release.07.09.2017.11.\
+            "/usr/local/ohc/var/release.07.09.2017.11.\
 12.elcid_some_branch.sql"
         )
         self.assertTrue(dt.datetime.now.called)
@@ -167,19 +167,19 @@ class EnvTestCase(FabfileTestCase):
 @mock.patch('fabfile.os')
 class InferCurrentBranchTestCase(FabfileTestCase):
     def test_infer_current_branch_success(self, os):
-        os.path.abspath.return_value = "/usr/lib/ohc/elcid-something"
+        os.path.abspath.return_value = "/usr/local/ohc/elcid-something"
         self.assertEqual(
             fabfile.infer_current_branch(),
             "something"
         )
 
     def test_infer_current_branch_error(self, os):
-        os.path.abspath.return_value = "/usr/lib/ohc/blah"
+        os.path.abspath.return_value = "/usr/local/ohc/blah"
         with self.assertRaises(ValueError) as er:
             fabfile.infer_current_branch(),
 
-        expected = "we are in /usr/lib/ohc/blah but expect to be in a \
-directory beginning with /usr/lib/ohc/elcid-"
+        expected = "we are in /usr/local/ohc/blah but expect to be in a \
+directory beginning with /usr/local/ohc/elcid-"
         self.assertEqual(str(er.exception), expected)
 
 
@@ -192,7 +192,7 @@ class RunManagementCommandTestCase(FabfileTestCase):
         result = fabfile.run_management_command("some_command", self.prod_env)
         local.called_once_with("as")
         self.assertEqual(result, local.return_value)
-        lcd.assert_called_once_with("/usr/lib/ohc/elcid-some_branch")
+        lcd.assert_called_once_with("/usr/local/ohc/elcid-some_branch")
 
 
 @mock.patch("fabfile.print", create=True)
@@ -256,7 +256,7 @@ requirements.txt --proxy some_proxy"
     def test_set_project_directory(self, local, print_statement):
         fabfile.pip_set_project_directory(self.prod_env)
         local.assert_called_once_with(
-            "echo '/usr/lib/ohc/elcid-some_branch' > \
+            "echo '/usr/local/ohc/elcid-some_branch' > \
 /home/ohc/.virtualenvs/elcid-some_branch/.project"
         )
 
@@ -381,11 +381,11 @@ class ServicesTestCase(FabfileTestCase):
         self.assertEqual(
             str(er.exception),
             "we expect an nginx conf to exist at \
-/usr/lib/ohc/elcid-some_branch/etc/nginx.conf"
+/usr/local/ohc/elcid-some_branch/etc/nginx.conf"
         )
 
         os.path.isfile.assert_called_once_with(
-            "/usr/lib/ohc/elcid-some_branch/etc/nginx.conf"
+            "/usr/local/ohc/elcid-some_branch/etc/nginx.conf"
         )
 
     @mock.patch('fabfile.local')
@@ -397,7 +397,7 @@ class ServicesTestCase(FabfileTestCase):
         fabfile.services_symlink_nginx(self.prod_env)
 
         os.path.isfile.assert_called_once_with(
-            "/usr/lib/ohc/elcid-some_branch/etc/nginx.conf"
+            "/usr/local/ohc/elcid-some_branch/etc/nginx.conf"
         )
         first_call = local.call_args_list[0][0][0]
         self.assertEqual(
@@ -405,17 +405,10 @@ class ServicesTestCase(FabfileTestCase):
             "sudo rm /etc/nginx/sites-enabled/elcid"
         )
 
-        second = local.call_args_list[1][0][0]
-
+        second_call = local.call_args_list[1][0][0]
         self.assertEqual(
-            second,
-            "sudo rm /etc/nginx/sites-enabled/elcid"
-        )
-
-        third = local.call_args_list[2][0][0]
-        self.assertEqual(
-            third,
-            "sudo ln -s /usr/lib/ohc/elcid-some_branch/etc/nginx.conf \
+            second_call,
+            "sudo ln -s /usr/local/ohc/elcid-some_branch/etc/nginx.conf \
 /etc/nginx/sites-enabled/elcid"
         )
 
@@ -431,11 +424,11 @@ class ServicesTestCase(FabfileTestCase):
         self.assertEqual(
             str(er.exception),
             "we expect an upstart conf to exist \
-/usr/lib/ohc/elcid-some_branch/etc/upstart.conf"
+/usr/local/ohc/elcid-some_branch/etc/upstart.conf"
         )
 
         os.path.isfile.assert_called_once_with(
-            "/usr/lib/ohc/elcid-some_branch/etc/upstart.conf"
+            "/usr/local/ohc/elcid-some_branch/etc/upstart.conf"
         )
 
     @mock.patch('fabfile.local')
@@ -447,7 +440,7 @@ class ServicesTestCase(FabfileTestCase):
         fabfile.services_symlink_upstart(self.prod_env)
 
         os.path.isfile.assert_called_once_with(
-            "/usr/lib/ohc/elcid-some_branch/etc/upstart.conf"
+            "/usr/local/ohc/elcid-some_branch/etc/upstart.conf"
         )
         first_call = local.call_args_list[0][0][0]
         self.assertEqual(
@@ -458,7 +451,7 @@ class ServicesTestCase(FabfileTestCase):
         second = local.call_args_list[1][0][0]
         self.assertEqual(
             second,
-            "sudo ln -s /usr/lib/ohc/elcid-some_branch/etc/upstart.conf \
+            "sudo ln -s /usr/local/ohc/elcid-some_branch/etc/upstart.conf \
 /etc/init/elcid.conf"
         )
 
@@ -554,7 +547,7 @@ class RestartTestCase(FabfileTestCase):
         )
         second_call = local.call_args_list[1][0][0]
         expected_second_call = "/home/ohc/.virtualenvs/elcid-some_branch/bin\
-/supervisord -c /usr/lib/ohc/elcid-some_branch/etc/production.conf"
+/supervisord -c /usr/local/ohc/elcid-some_branch/etc/production.conf"
         self.assertEqual(second_call, expected_second_call)
 
     def test_restart_nginx(self, local, print_function):
@@ -590,8 +583,8 @@ class CopyBackupTestCase(FabfileTestCase):
         )
         os.path.isfile.return_value = True
         fabfile.copy_backup(self.prod_env.branch)
-        lp = "/usr/lib/ohc/var/back.07.09.2017.elcid_some_branch.sql"
-        rp = "/usr/lib/ohc/var/live/back.07.09.2017.elcid_some_branch.sql"
+        lp = "/usr/local/ohc/var/back.07.09.2017.elcid_some_branch.sql"
+        rp = "/usr/local/ohc/var/live/back.07.09.2017.elcid_some_branch.sql"
         put.assert_called_once_with(
             local_path=lp,
             remote_path=rp
@@ -683,7 +676,7 @@ class GetPrivateSettingsTestCase(OpalTestCase):
         self.assertEqual(
             str(e.exception),
             "unable to find additional settings at \
-/usr/lib/ohc/private_settings.json"
+/usr/local/ohc/private_settings.json"
         )
 
     def test_db_password_not_present(self, os, json):
@@ -1279,11 +1272,11 @@ class DeployProdTestCase(FabfileTestCase):
         validate_private_settings.assert_called_once_with()
         local.assert_called_once_with(
             "sudo -u postgres pg_dump elcid_old_env -U postgres > \
-/usr/lib/ohc/var/release.08.09.2017.10.47.elcid_old_env.sql"
+/usr/local/ohc/var/release.08.09.2017.10.47.elcid_old_env.sql"
         )
         _deploy.assert_called_once_with(
             "new_branch",
-            '/usr/lib/ohc/var/release.08.09.2017.10.47.elcid_old_env.sql',
+            '/usr/local/ohc/var/release.08.09.2017.10.47.elcid_old_env.sql',
             remove_existing=False
         )
 

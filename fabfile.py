@@ -56,7 +56,7 @@ DB_USER = "ohc"
 RELEASE_NAME = "elcid-{branch}"
 
 VIRTUAL_ENV_PATH = "/home/{unix_user}/.virtualenvs/{release_name}"
-PROJECT_ROOT = "/usr/lib/{unix_user}".format(unix_user=UNIX_USER)
+PROJECT_ROOT = "/usr/local/{unix_user}".format(unix_user=UNIX_USER)
 PROJECT_DIRECTORY = "{project_root}/{release_name}"
 BACKUP_DIR = "{project_root}/var".format(project_root=PROJECT_ROOT)
 GIT_URL = "https://github.com/openhealthcare/elcid"
