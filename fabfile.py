@@ -15,7 +15,7 @@ Make sure you have a deployment env that has fabric available
 e.g.
 workon elcid-deployment or another environment
 fab clone_branch your-branch
-cd /usr/lib/ohc/elcid-{your branch name}
+cd /usr/local/ohc/elcid-{your branch name}
 
 Then 2 choices
 
@@ -29,13 +29,13 @@ create_private_settings will create an empty private settings file in
 the appropriate place with the fields for you to fill in
 
 The code is in
-/usr/lib/ohc/log
+/usr/local/ohc/log
 
 The log environment for this project is considered to be
-/usr/lib/ohc/log/
+/usr/local/ohc/log/
 
 The backups are stored in
-/usr/lib/ohc/var/
+/usr/local/ohc/var/
 
 """
 from __future__ import print_function

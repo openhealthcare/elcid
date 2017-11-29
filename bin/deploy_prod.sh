@@ -3,7 +3,7 @@
 # ./deploy_prod.sh $branch_name $previous_branch_name [$previous_db_name]
 #
 fab clone_branch:$1
-cd /usr/lib/ohc/elcid-$1
+cd /usr/local/ohc/elcid-$1
 
 if [ ! -z $3 ]
 then
