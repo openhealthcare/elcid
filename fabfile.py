@@ -521,7 +521,9 @@ def _deploy(new_branch, backup_name=None, remove_existing=False):
     # django setup
     run_management_command("collectstatic --noinput", new_env)
     run_management_command("migrate", new_env)
-    run_management_command("create_singletons", new_env)
+    # commented out because at the moment this logs episode that then blows up
+    # because the unicode method is flawed in some circumstances
+    # run_management_command("create_singletons", new_env)
     run_management_command("load_lookup_lists", new_env)
     restart_supervisord(new_env)
     restart_nginx()
