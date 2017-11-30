@@ -110,7 +110,7 @@ class Env(object):
         now = datetime.datetime.now()
         return BACKUP_NAME.format(
             backup_dir=BACKUP_DIR,
-            dt=now.strftime("%d.%m.%Y"),
+            dt=datetime.datetime.now().strftime("%d.%m.%Y.%H.%M"),
             db_name=self.database_name
         )
 
@@ -118,14 +118,6 @@ class Env(object):
     def remote_backup_name(self):
         now = datetime.datetime.now()
         return REMOTE_BACKUP_NAME.format(
-            backup_dir=BACKUP_DIR,
-            dt=now.strftime("%d.%m.%Y"),
-            db_name=self.database_name
-        )
-
-    @property
-    def release_backup_name(self):
-        return RELEASE_BACKUP_NAME.format(
             backup_dir=BACKUP_DIR,
             dt=datetime.datetime.now().strftime("%d.%m.%Y.%H.%M"),
             db_name=self.database_name
@@ -331,7 +323,7 @@ def restart_supervisord(new_env):
     print("Restarting supervisord")
     # warn only in case nothing is running
     with settings(warn_only=True):
-        local("pkill super; pkill gunic; pkill gloss_flask")
+        local("pkill super; pkill gunic; pkill celery")
     # don't restart supervisorctl as we need to be running the correct
     # supervisord
     local("{0}/bin/supervisord -c {1}/etc/production.conf".format(
@@ -607,10 +599,12 @@ def deploy_prod(old_branch, old_database_name=None):
         dbname = old_env.database_name
     else:
         dbname = old_database_name
-    local(dump_str.format(dbname, old_env.release_backup_name))
+
+    local(dump_str.format(dbname, old_env.backup_name))
+    copy_backup(old_branch)
 
     old_status = run_management_command("status_report", old_env)
-    _deploy(new_branch, old_env.release_backup_name, remove_existing=False)
+    _deploy(new_branch, old_env.backup_name, remove_existing=False)
     new_status = run_management_command("status_report", new_env)
 
     diff_status(new_status, old_status)

@@ -118,7 +118,7 @@ class EnvTestCase(FabfileTestCase):
         dt.datetime.now.return_value = datetime.datetime(2017, 9, 21)
         self.assertEqual(
             self.prod_env.remote_backup_name,
-            "/usr/local/ohc/var/live/back.21.09.2017.elcid_some_branch.sql"
+            "/usr/local/ohc/var/live/back.21.09.2017.00.00.elcid_some_branch.sql"
         )
 
     def test_release_name(self):
@@ -146,19 +146,7 @@ class EnvTestCase(FabfileTestCase):
         )
         self.assertEqual(
             self.prod_env.backup_name,
-            "/usr/local/ohc/var/back.07.09.2017.elcid_some_branch.sql"
-        )
-        self.assertTrue(dt.datetime.now.called)
-
-    @mock.patch("fabfile.datetime")
-    def test_release_backup_name(self, dt):
-        dt.datetime.now.return_value = datetime.datetime(
-            2017, 9, 7, 11, 12
-        )
-        self.assertEqual(
-            self.prod_env.release_backup_name,
-            "/usr/local/ohc/var/release.07.09.2017.11.\
-12.elcid_some_branch.sql"
+            "/usr/local/ohc/var/back.07.09.2017.11.12.elcid_some_branch.sql"
         )
         self.assertTrue(dt.datetime.now.called)
 
@@ -542,7 +530,7 @@ class RestartTestCase(FabfileTestCase):
         print_function.assert_called_once_with("Restarting supervisord")
         first_call = local.call_args_list[0][0][0]
         self.assertEqual(
-            first_call, 'pkill super; pkill gunic; pkill gloss_flask'
+            first_call, 'pkill super; pkill gunic; pkill celery'
         )
         second_call = local.call_args_list[1][0][0]
         expected_second_call = "/home/ohc/.virtualenvs/elcid-some_branch/bin\
@@ -582,8 +570,8 @@ class CopyBackupTestCase(FabfileTestCase):
         )
         os.path.isfile.return_value = True
         fabfile.copy_backup(self.prod_env.branch)
-        lp = "/usr/local/ohc/var/back.07.09.2017.elcid_some_branch.sql"
-        rp = "/usr/local/ohc/var/live/back.07.09.2017.elcid_some_branch.sql"
+        lp = "/usr/local/ohc/var/back.07.09.2017.00.00.elcid_some_branch.sql"
+        rp = "/usr/local/ohc/var/live/back.07.09.2017.00.00.elcid_some_branch.sql"
         put.assert_called_once_with(
             local_path=lp,
             remote_path=rp
@@ -818,7 +806,7 @@ class DeployTestCase(FabfileTestCase):
         services_create_gunicorn_conf.assert_called_once_with(self.prod_env)
         services_create_upstart_conf.assert_called_once_with(self.prod_env)
         self.assertEqual(
-            run_management_command.call_count, 4
+            run_management_command.call_count, 3
         )
         first_call = run_management_command.call_args_list[0][0]
         self.assertEqual(
@@ -840,20 +828,11 @@ class DeployTestCase(FabfileTestCase):
 
         third_call = run_management_command.call_args_list[2][0]
         self.assertEqual(
-            third_call[0], "create_singletons"
+            third_call[0], "load_lookup_lists"
         )
 
         self.assertEqual(
             third_call[1], self.prod_env
-        )
-
-        fourth_call = run_management_command.call_args_list[3][0]
-        self.assertEqual(
-            fourth_call[0], "load_lookup_lists"
-        )
-
-        self.assertEqual(
-            fourth_call[1], self.prod_env
         )
         restart_supervisord.assert_called_once_with(self.prod_env)
         restart_nginx.assert_called_once_with()
@@ -925,7 +904,7 @@ class DeployTestCase(FabfileTestCase):
         services_create_gunicorn_conf.assert_called_once_with(self.prod_env)
         services_create_upstart_conf.assert_called_once_with(self.prod_env)
         self.assertEqual(
-            run_management_command.call_count, 4
+            run_management_command.call_count, 3
         )
         first_call = run_management_command.call_args_list[0][0]
         self.assertEqual(
@@ -947,20 +926,11 @@ class DeployTestCase(FabfileTestCase):
 
         third_call = run_management_command.call_args_list[2][0]
         self.assertEqual(
-            third_call[0], "create_singletons"
+            third_call[0], "load_lookup_lists"
         )
 
         self.assertEqual(
             third_call[1], self.prod_env
-        )
-
-        fourth_call = run_management_command.call_args_list[3][0]
-        self.assertEqual(
-            fourth_call[0], "load_lookup_lists"
-        )
-
-        self.assertEqual(
-            fourth_call[1], self.prod_env
         )
 
         restart_supervisord.assert_called_once_with(self.prod_env)
@@ -1222,6 +1192,7 @@ class DeployProdTestCase(FabfileTestCase):
     @mock.patch("fabfile.Env")
     @mock.patch("fabfile.validate_private_settings")
     @mock.patch("fabfile.local")
+    @mock.patch("fabfile.copy_backup")
     @mock.patch("fabfile.run_management_command")
     @mock.patch("fabfile._deploy")
     @mock.patch("fabfile.print", create=True)
@@ -1230,6 +1201,7 @@ class DeployProdTestCase(FabfileTestCase):
         print_function,
         _deploy,
         run_management_command,
+        copy_backup,
         local,
         validate_private_settings,
         env_constructor,
@@ -1251,13 +1223,14 @@ class DeployProdTestCase(FabfileTestCase):
         validate_private_settings.assert_called_once_with()
         local.assert_called_once_with(
             "sudo -u postgres pg_dump elcid_old_env -U postgres > \
-/usr/local/ohc/var/release.08.09.2017.10.47.elcid_old_env.sql"
+/usr/local/ohc/var/back.08.09.2017.10.47.elcid_old_env.sql"
         )
         _deploy.assert_called_once_with(
             "new_branch",
-            '/usr/local/ohc/var/release.08.09.2017.10.47.elcid_old_env.sql',
+            '/usr/local/ohc/var/back.08.09.2017.10.47.elcid_old_env.sql',
             remove_existing=False
         )
+        copy_backup.called_once_with("old_env")
 
         self.assertEqual(
             run_management_command.call_count, 2
