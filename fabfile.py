@@ -296,6 +296,32 @@ def services_create_gunicorn_conf(new_env):
         f.write(output)
 
 
+def services_create_celery_conf(new_env):
+    print("Creating celery conf")
+    template = jinja_env.get_template(
+        'etc/conf_templates/celery.conf.jinja2'
+    )
+    output = template.render(
+        env_name=new_env.virtual_env_path,
+        log_dir=LOG_DIR
+    )
+    celery_conf = '{0}/etc/celery.conf'.format(
+        new_env.project_directory
+    )
+
+    if os.path.isfile(celery_conf) and not new_env.remove_existing:
+        raise ValueError(
+            'celery conf {} unexpectedly already exists'.format(
+                celery_conf
+            )
+        )
+
+    local("rm -f {}".format(celery_conf))
+
+    with open(celery_conf, 'w') as f:
+        f.write(output)
+
+
 def services_create_upstart_conf(new_env):
     print("Creating upstart conf")
     template = jinja_env.get_template('etc/conf_templates/upstart.conf.jinja2')
@@ -505,6 +531,7 @@ def _deploy(new_branch, backup_name=None, remove_existing=False):
 
     services_create_gunicorn_conf(new_env)
     services_create_upstart_conf(new_env)
+    services_create_celery_conf(new_env)
 
     # symlink the nginx conf
     services_symlink_nginx(new_env)

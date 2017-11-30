@@ -497,6 +497,33 @@ class ServicesTestCase(FabfileTestCase):
         )
 
     @mock.patch('fabfile.local')
+    def test_services_create_celery_conf(
+        self, local, print_function
+    ):
+        some_dir = tempfile.mkdtemp()
+        project_dir = "{}/etc".format(some_dir)
+        os.mkdir(project_dir)
+        with mock.patch(
+            "fabfile.Env.project_directory", new_callable=mock.PropertyMock
+        ) as prop:
+            prop.return_value = some_dir
+            fabfile.services_create_celery_conf(
+                self.prod_env
+            )
+        print_function.assert_called_once_with('Creating celery conf')
+        celery_conf_file = "{}/celery.conf".format(project_dir)
+        with open(celery_conf_file) as l:
+            output_file = l.read()
+
+        # make sure we're executing celery with our project directory
+        self.assertIn(
+            "elcid-some_branch/bin/python manage.py celery worker", output_file
+        )
+        local.assert_called_once_with(
+            "rm -f {}".format(celery_conf_file)
+        )
+
+    @mock.patch('fabfile.local')
     def test_services_create_upstart_conf(self, local, print_function):
         some_dir = tempfile.mkdtemp()
         project_dir = "{}/etc".format(some_dir)
@@ -758,6 +785,7 @@ class DeployTestCase(FabfileTestCase):
     @mock.patch("fabfile.services_symlink_upstart")
     @mock.patch("fabfile.services_create_local_settings")
     @mock.patch("fabfile.services_create_upstart_conf")
+    @mock.patch("fabfile.services_create_celery_conf")
     @mock.patch("fabfile.services_create_gunicorn_conf")
     @mock.patch("fabfile.run_management_command")
     @mock.patch("fabfile.restart_supervisord")
@@ -768,6 +796,7 @@ class DeployTestCase(FabfileTestCase):
         restart_supervisord,
         run_management_command,
         services_create_gunicorn_conf,
+        services_create_celery_conf,
         services_create_upstart_conf,
         services_create_local_settings,
         services_symlink_upstart,
@@ -803,6 +832,7 @@ class DeployTestCase(FabfileTestCase):
         services_symlink_nginx.assert_called_once_with(self.prod_env)
         services_symlink_upstart.assert_called_once_with(self.prod_env)
         services_create_local_settings.assert_called_once_with(self.prod_env, pv)
+        services_create_celery_conf.assert_called_once_with(self.prod_env)
         services_create_gunicorn_conf.assert_called_once_with(self.prod_env)
         services_create_upstart_conf.assert_called_once_with(self.prod_env)
         self.assertEqual(
@@ -848,6 +878,7 @@ class DeployTestCase(FabfileTestCase):
     @mock.patch("fabfile.services_symlink_nginx")
     @mock.patch("fabfile.services_symlink_upstart")
     @mock.patch("fabfile.services_create_local_settings")
+    @mock.patch("fabfile.services_create_celery_conf")
     @mock.patch("fabfile.services_create_upstart_conf")
     @mock.patch("fabfile.services_create_gunicorn_conf")
     @mock.patch("fabfile.run_management_command")
@@ -860,6 +891,7 @@ class DeployTestCase(FabfileTestCase):
         run_management_command,
         services_create_gunicorn_conf,
         services_create_upstart_conf,
+        services_create_celery_conf,
         services_create_local_settings,
         services_symlink_upstart,
         services_symlink_nginx,
@@ -901,6 +933,7 @@ class DeployTestCase(FabfileTestCase):
         services_symlink_nginx.assert_called_once_with(self.prod_env)
         services_symlink_upstart.assert_called_once_with(self.prod_env)
         services_create_local_settings.assert_called_once_with(self.prod_env, pv)
+        services_create_celery_conf(self.prod_env)
         services_create_gunicorn_conf.assert_called_once_with(self.prod_env)
         services_create_upstart_conf.assert_called_once_with(self.prod_env)
         self.assertEqual(

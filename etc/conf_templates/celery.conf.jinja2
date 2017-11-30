@@ -1,0 +1,10 @@
+[program:celery]
+command={{ env_name }}/bin/python manage.py celery worker -l info
+directory=%(here)s/../
+;user=nobody
+numprocs=1
+stdout_logfile={{ log_dir }}gcelery.log
+stderr_logfile={{ log_dir }}gcelery.log
+autostart=true
+autorestart=true
+startsecs=10
