@@ -66,6 +66,7 @@ REMOTE_BACKUP_NAME = "{backup_dir}/live/back.{dt}.{db_name}.sql"
 
 # the release back up is take just before the release, and then restored
 RELEASE_BACKUP_NAME = "{backup_dir}/release.{dt}.{db_name}.sql"
+LOG_DIR = "/usr/local/ohc/log/"
 
 MODULE_NAME = "elcid"
 PROJECT_NAME = MODULE_NAME
@@ -276,7 +277,8 @@ def services_create_gunicorn_conf(new_env):
         'etc/conf_templates/gunicorn.conf.jinja2'
     )
     output = template.render(
-        env_name=new_env.virtual_env_path
+        env_name=new_env.virtual_env_path,
+        log_dir=LOG_DIR
     )
     gunicorn_conf = '{0}/etc/gunicorn.conf'.format(
         new_env.project_directory
@@ -300,7 +302,8 @@ def services_create_upstart_conf(new_env):
     template = jinja_env.get_template('etc/conf_templates/upstart.conf.jinja2')
     output = template.render(
         env_name=new_env.virtual_env_path,
-        project_directory=new_env.project_directory
+        project_directory=new_env.project_directory,
+        log_dir=LOG_DIR
     )
     upstart_conf = '{0}/etc/upstart.conf'.format(
         new_env.project_directory

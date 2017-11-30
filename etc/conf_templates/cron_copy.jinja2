@@ -1,1 +1,0 @@
-0 3 * * * {{ unix_user }} {{ virtualenv }}/bin/fab -f {{ fabric_file }} copy_backup:{{ branch }} >> /usr/lib/ohc/log/cron.log 2>&1

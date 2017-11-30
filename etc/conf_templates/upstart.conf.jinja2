@@ -26,4 +26,4 @@ pre-start script
     # echo "Put bash code here"
 end script
 
-exec su -c ". {{ env_name }}/bin/activate; {{ env_name }}/bin/supervisord -c {{ project_directory }}/etc/production.conf >> /usr/lib/ohc/log/elcid.upstart.log 2>&1" ohc
+exec su -c ". {{ env_name }}/bin/activate; {{ env_name }}/bin/supervisord -c {{ project_directory }}/etc/production.conf >> {{ log_dir }}elcid.upstart.log 2>&1" ohc
