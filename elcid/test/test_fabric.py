@@ -118,7 +118,7 @@ class EnvTestCase(FabfileTestCase):
         dt.datetime.now.return_value = datetime.datetime(2017, 9, 21)
         self.assertEqual(
             self.prod_env.remote_backup_name,
-            "/usr/local/ohc/var/live/back.21.09.2017.00.00.elcid_some_branch.sql"
+            "/usr/local/ohc/var/live/back.21.09.2017.elcid_some_branch.sql"
         )
 
     def test_release_name(self):
@@ -146,7 +146,7 @@ class EnvTestCase(FabfileTestCase):
         )
         self.assertEqual(
             self.prod_env.backup_name,
-            "/usr/local/ohc/var/back.07.09.2017.11.12.elcid_some_branch.sql"
+            "/usr/local/ohc/var/back.07.09.2017.elcid_some_branch.sql"
         )
         self.assertTrue(dt.datetime.now.called)
 
@@ -570,8 +570,8 @@ class CopyBackupTestCase(FabfileTestCase):
         )
         os.path.isfile.return_value = True
         fabfile.copy_backup(self.prod_env.branch)
-        lp = "/usr/local/ohc/var/back.07.09.2017.00.00.elcid_some_branch.sql"
-        rp = "/usr/local/ohc/var/live/back.07.09.2017.00.00.elcid_some_branch.sql"
+        lp = "/usr/local/ohc/var/back.07.09.2017.elcid_some_branch.sql"
+        rp = "/usr/local/ohc/var/live/back.07.09.2017.elcid_some_branch.sql"
         put.assert_called_once_with(
             local_path=lp,
             remote_path=rp
@@ -1223,11 +1223,11 @@ class DeployProdTestCase(FabfileTestCase):
         validate_private_settings.assert_called_once_with()
         local.assert_called_once_with(
             "sudo -u postgres pg_dump elcid_old_env -U postgres > \
-/usr/local/ohc/var/back.08.09.2017.10.47.elcid_old_env.sql"
+/usr/local/ohc/var/back.08.09.2017.elcid_old_env.sql"
         )
         _deploy.assert_called_once_with(
             "new_branch",
-            '/usr/local/ohc/var/back.08.09.2017.10.47.elcid_old_env.sql',
+            '/usr/local/ohc/var/back.08.09.2017.elcid_old_env.sql',
             remove_existing=False
         )
         copy_backup.called_once_with("old_env")

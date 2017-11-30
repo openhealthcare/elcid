@@ -111,16 +111,15 @@ class Env(object):
         now = datetime.datetime.now()
         return BACKUP_NAME.format(
             backup_dir=BACKUP_DIR,
-            dt=datetime.datetime.now().strftime("%d.%m.%Y.%H.%M"),
+            dt=datetime.datetime.now().strftime("%d.%m.%Y"),
             db_name=self.database_name
         )
 
     @property
     def remote_backup_name(self):
-        now = datetime.datetime.now()
         return REMOTE_BACKUP_NAME.format(
             backup_dir=BACKUP_DIR,
-            dt=datetime.datetime.now().strftime("%d.%m.%Y.%H.%M"),
+            dt=datetime.datetime.now().strftime("%d.%m.%Y"),
             db_name=self.database_name
         )
 
