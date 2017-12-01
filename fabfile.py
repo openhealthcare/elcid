@@ -42,6 +42,7 @@ from __future__ import print_function
 import datetime
 import json
 import copy
+import time
 from jinja2 import Environment, FileSystemLoader
 from fabric.api import local, env
 from fabric.operations import put
@@ -62,7 +63,8 @@ GIT_URL = "https://github.com/openhealthcare/elcid"
 
 # the daily back up
 BACKUP_NAME = "{backup_dir}/back.{dt}.{db_name}.sql"
-REMOTE_BACKUP_NAME = "{backup_dir}/live/back.{dt}.{db_name}.sql"
+TAR_BACKUP_NAME = "{backup_dir}/back.{dt}.{db_name}.sql.tar.gz"
+REMOTE_BACKUP_NAME = "{backup_dir}/live/back.{dt}.{db_name}.sql.tar.gz"
 
 # the release back up is take just before the release, and then restored
 RELEASE_BACKUP_NAME = "{backup_dir}/release.{dt}.{db_name}.sql"
@@ -108,10 +110,17 @@ class Env(object):
 
     @property
     def backup_name(self):
-        now = datetime.datetime.now()
         return BACKUP_NAME.format(
             backup_dir=BACKUP_DIR,
-            dt=datetime.datetime.now().strftime("%d.%m.%Y"),
+            dt=datetime.datetime.now().strftime("%d.%m.%Y.%H.%M"),
+            db_name=self.database_name
+        )
+
+    @property
+    def tar_backup_name(self):
+        return TAR_BACKUP_NAME.format(
+            backup_dir=BACKUP_DIR,
+            dt=datetime.datetime.now().strftime("%d.%m.%Y.%H.%M"),
             db_name=self.database_name
         )
 
@@ -119,7 +128,7 @@ class Env(object):
     def remote_backup_name(self):
         return REMOTE_BACKUP_NAME.format(
             backup_dir=BACKUP_DIR,
-            dt=datetime.datetime.now().strftime("%d.%m.%Y"),
+            dt=datetime.datetime.now().strftime("%d.%m.%Y.%H.%M"),
             db_name=self.database_name
         )
 
@@ -354,9 +363,17 @@ def restart_supervisord(new_env):
         local("pkill super; pkill gunic; pkill celery")
     # don't restart supervisorctl as we need to be running the correct
     # supervisord
-    local("{0}/bin/supervisord -c {1}/etc/production.conf".format(
-        new_env.virtual_env_path, new_env.project_directory
-    ))
+    try:
+        local("{0}/bin/supervisord -c {1}/etc/production.conf".format(
+            new_env.virtual_env_path, new_env.project_directory
+        ))
+    except:
+        # celery works take a while to kill, so if we die wait a few
+        # seconds and try again
+        time.sleep(3)
+        local("{0}/bin/supervisord -c {1}/etc/production.conf".format(
+            new_env.virtual_env_path, new_env.project_directory
+        ))
 
 
 def restart_nginx():
@@ -364,44 +381,44 @@ def restart_nginx():
     local('sudo service nginx restart')
 
 
-def send_error_email(error, some_env):
-    print("Sending error email")
-    run_management_command(
-        "error_emailer '{}'".format(
-            error
-        ),
-        some_env
-    )
-
-
 @task
-def copy_backup(branch_name):
-    current_env = Env(branch_name)
+def backup_and_copy(old_branch_name, old_database_name=None):
+    old_env = Env(old_branch_name)
     private_settings = get_private_settings()
     env.host_string = private_settings["host_string"]
     env.password = private_settings["remote_password"]
+    backup_name = old_env.backup_name
+    remote_backup_name = old_env.remote_backup_name
+    tar_backup_name = old_env.tar_backup_name
 
-    if not os.path.isfile(current_env.backup_name):
-        send_error_email(
-            "unable to find backup {}".format(
-                current_env.backup_name
-            ),
-            current_env
-        )
+    dump_str = "sudo -u postgres pg_dump {0} -U postgres > {1}"
+    if old_database_name is None:
+        dbname = old_env.database_name
     else:
-        with settings(warn_only=True):
-            failed = put(
-                local_path=current_env.backup_name,
-                remote_path=current_env.remote_backup_name
-            ).failed
+        dbname = old_database_name
 
-        if failed:
-            send_error_email(
-                "unable to copy backup {}".format(
-                    current_env.backup_name,
-                ),
-                current_env
-            )
+    local(dump_str.format(dbname, old_env.backup_name))
+
+    if not os.path.isfile(backup_name):
+        raise ValueError("unable to find backup {}".format(
+            backup_name
+        ))
+
+    # tar the file
+    local("tar -czvf {} {}".format(backup_name, tar_backup_name))
+
+    if not os.path.isfile(tar_backup_name):
+        raise ValueError("unable to find tar file {}".format(
+            backup_name
+        ))
+
+    # remove the untarred file
+    local("rm {}".format(backup_name))
+
+    put(
+        local_path=tar_backup_name,
+        remote_path=remote_backup_name
+    )
 
 
 def get_private_settings():
@@ -623,14 +640,8 @@ def deploy_prod(old_branch, old_database_name=None):
     new_env = Env(new_branch)
 
     validate_private_settings()
-    dump_str = "sudo -u postgres pg_dump {0} -U postgres > {1}"
-    if old_database_name is None:
-        dbname = old_env.database_name
-    else:
-        dbname = old_database_name
 
-    local(dump_str.format(dbname, old_env.backup_name))
-    copy_backup(old_branch)
+    backup_and_copy(old_branch)
 
     old_status = run_management_command("status_report", old_env)
     _deploy(new_branch, old_env.backup_name, remove_existing=False)

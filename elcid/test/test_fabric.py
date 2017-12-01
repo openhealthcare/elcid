@@ -118,7 +118,7 @@ class EnvTestCase(FabfileTestCase):
         dt.datetime.now.return_value = datetime.datetime(2017, 9, 21)
         self.assertEqual(
             self.prod_env.remote_backup_name,
-            "/usr/local/ohc/var/live/back.21.09.2017.elcid_some_branch.sql"
+            "/usr/local/ohc/var/live/back.21.09.2017.00.00.elcid_some_branch.sql.tar.gz"
         )
 
     def test_release_name(self):
@@ -146,7 +146,7 @@ class EnvTestCase(FabfileTestCase):
         )
         self.assertEqual(
             self.prod_env.backup_name,
-            "/usr/local/ohc/var/back.07.09.2017.elcid_some_branch.sql"
+            "/usr/local/ohc/var/back.07.09.2017.11.12.elcid_some_branch.sql"
         )
         self.assertTrue(dt.datetime.now.called)
 
@@ -564,6 +564,29 @@ class RestartTestCase(FabfileTestCase):
 /supervisord -c /usr/local/ohc/elcid-some_branch/etc/production.conf"
         self.assertEqual(second_call, expected_second_call)
 
+    @mock.patch('fabfile.time')
+    def test_restart_supervisord_with_one_failure(
+        self, time, local, print_function
+    ):
+        local.side_effect = [
+            None, ValueError("failed"), None
+        ]
+        fabfile.restart_supervisord(self.prod_env)
+        print_function.assert_called_once_with("Restarting supervisord")
+        first_call = local.call_args_list[0][0][0]
+        self.assertEqual(
+            first_call, 'pkill super; pkill gunic; pkill celery'
+        )
+        second_call = local.call_args_list[1][0][0]
+        expected_second_call = "/home/ohc/.virtualenvs/elcid-some_branch/bin\
+/supervisord -c /usr/local/ohc/elcid-some_branch/etc/production.conf"
+        self.assertEqual(second_call, expected_second_call)
+        time.sleep.assert_called_once_with(3)
+        third_call = local.call_args_list[2][0][0]
+        expected_third_call = "/home/ohc/.virtualenvs/elcid-some_branch/bin\
+/supervisord -c /usr/local/ohc/elcid-some_branch/etc/production.conf"
+        self.assertEqual(third_call, expected_third_call)
+
     def test_restart_nginx(self, local, print_function):
         fabfile.restart_nginx()
         print_function.assert_called_once_with('Restarting nginx')
@@ -577,9 +600,11 @@ class RestartTestCase(FabfileTestCase):
 @mock.patch("fabfile.env")
 @mock.patch("fabfile.os")
 @mock.patch("fabfile.datetime")
+@mock.patch("fabfile.local")
 class CopyBackupTestCase(FabfileTestCase):
-    def test_copy_backup(
+    def test_backup_and_copy(
         self,
+        local,
         dt,
         os,
         env,
@@ -596,16 +621,17 @@ class CopyBackupTestCase(FabfileTestCase):
             2017, 9, 7
         )
         os.path.isfile.return_value = True
-        fabfile.copy_backup(self.prod_env.branch)
-        lp = "/usr/local/ohc/var/back.07.09.2017.elcid_some_branch.sql"
-        rp = "/usr/local/ohc/var/live/back.07.09.2017.elcid_some_branch.sql"
+        fabfile.backup_and_copy(self.prod_env.branch)
+        lp = "/usr/local/ohc/var/back.07.09.2017.00.00.elcid_some_branch.sql.tar.gz"
+        rp = "/usr/local/ohc/var/live/back.07.09.2017.00.00.elcid_some_branch.sql.tar.gz"
         put.assert_called_once_with(
             local_path=lp,
             remote_path=rp
         )
 
-    def test_copy_backup_no_backup(
+    def test_backup_and_copy_no_backup(
         self,
+        local,
         dt,
         os,
         env,
@@ -624,58 +650,12 @@ class CopyBackupTestCase(FabfileTestCase):
             "fabfile.Env.backup_name", new_callable=mock.PropertyMock
         ) as prop:
             prop.return_value = "some_backup"
-            fabfile.copy_backup(self.prod_env.branch)
+            with self.assertRaises(ValueError) as ve:
+                fabfile.backup_and_copy(self.prod_env.branch)
 
-        self.assertEqual(
-            run_management_command.call_args[0][0],
-            "error_emailer 'unable to find backup some_backup'"
-        )
-        print_function.assert_called_once_with("Sending error email")
-
-    def test_put_sends_email(
-        self,
-        dt,
-        os,
-        env,
-        put,
-        run_management_command,
-        get_private_settings,
-        print_function,
-    ):
-        get_private_settings.return_value(dict(
-            host_string="121.1.1.1",
-            password="some_password"
-        ))
-        put_result = mock.MagicMock()
-        put_result.failed = True
-        put.return_value = put_result
-        with mock.patch(
-            "fabfile.Env.backup_name", new_callable=mock.PropertyMock
-        ) as prop:
-            prop.return_value = "some_backup"
-            fabfile.copy_backup(self.prod_env.branch)
-
-        self.assertEqual(
-            run_management_command.call_args[0][0],
-            "error_emailer 'unable to copy backup some_backup'"
-        )
-        print_function.assert_called_once_with('Sending error email')
-
-
-class SendErrorEmailTestCase(FabfileTestCase):
-    @mock.patch("fabfile.print", create=True)
-    @mock.patch("fabfile.run_management_command")
-    def test_send_error_email(self, run_management_command, print_function):
-        fabfile.send_error_email("testing", self.prod_env)
-        self.assertEqual(
-            run_management_command.call_args[0][0],
-            "error_emailer 'testing'"
-        )
-        self.assertEqual(
-            run_management_command.call_args[0][1],
-            self.prod_env
-        )
-        print_function.assert_called_once_with('Sending error email')
+                self.assertRaises(
+                    str(ve.exception), "unable to find backup some_backup"
+                )
 
 
 @mock.patch("fabfile.json")
@@ -1224,8 +1204,7 @@ class DeployProdTestCase(FabfileTestCase):
     @mock.patch("fabfile.datetime")
     @mock.patch("fabfile.Env")
     @mock.patch("fabfile.validate_private_settings")
-    @mock.patch("fabfile.local")
-    @mock.patch("fabfile.copy_backup")
+    @mock.patch("fabfile.backup_and_copy")
     @mock.patch("fabfile.run_management_command")
     @mock.patch("fabfile._deploy")
     @mock.patch("fabfile.print", create=True)
@@ -1234,8 +1213,7 @@ class DeployProdTestCase(FabfileTestCase):
         print_function,
         _deploy,
         run_management_command,
-        copy_backup,
-        local,
+        backup_and_copy,
         validate_private_settings,
         env_constructor,
         dt,
@@ -1254,16 +1232,12 @@ class DeployProdTestCase(FabfileTestCase):
         ]
         fabfile.deploy_prod("new_branch")
         validate_private_settings.assert_called_once_with()
-        local.assert_called_once_with(
-            "sudo -u postgres pg_dump elcid_old_env -U postgres > \
-/usr/local/ohc/var/back.08.09.2017.elcid_old_env.sql"
-        )
         _deploy.assert_called_once_with(
             "new_branch",
-            '/usr/local/ohc/var/back.08.09.2017.elcid_old_env.sql',
+            '/usr/local/ohc/var/back.08.09.2017.10.47.elcid_old_env.sql',
             remove_existing=False
         )
-        copy_backup.called_once_with("old_env")
+        backup_and_copy.called_once_with("old_env")
 
         self.assertEqual(
             run_management_command.call_count, 2
