@@ -383,6 +383,11 @@ def restart_nginx():
 
 @task
 def backup_and_copy(old_branch_name, old_database_name=None):
+    """
+        dumps the database
+        tars the database and posts it over to the remote host location
+        returns the untarred backup name for use with loading into postgres
+    """
     old_env = Env(old_branch_name)
     private_settings = get_private_settings()
     env.host_string = private_settings["host_string"]
@@ -397,7 +402,7 @@ def backup_and_copy(old_branch_name, old_database_name=None):
     else:
         dbname = old_database_name
 
-    local(dump_str.format(dbname, old_env.backup_name))
+    local(dump_str.format(dbname, backup_name))
 
     if not os.path.isfile(backup_name):
         raise ValueError("unable to find backup {}".format(
@@ -412,13 +417,11 @@ def backup_and_copy(old_branch_name, old_database_name=None):
             backup_name
         ))
 
-    # remove the untarred file
-    local("rm {}".format(backup_name))
-
     put(
         local_path=tar_backup_name,
         remote_path=remote_backup_name
     )
+    return backup_name
 
 
 def get_private_settings():
@@ -641,10 +644,11 @@ def deploy_prod(old_branch, old_database_name=None):
 
     validate_private_settings()
 
-    backup_and_copy(old_branch)
+    backup_name = backup_and_copy(old_branch)
 
     old_status = run_management_command("status_report", old_env)
-    _deploy(new_branch, old_env.backup_name, remove_existing=False)
+    _deploy(new_branch, backup_name, remove_existing=False)
+    # remove the old backup, its been tarred so its safe to go
+    local("rm {}".format(backup_name))
     new_status = run_management_command("status_report", new_env)
-
     diff_status(new_status, old_status)

@@ -1207,10 +1207,12 @@ class DeployProdTestCase(FabfileTestCase):
     @mock.patch("fabfile.backup_and_copy")
     @mock.patch("fabfile.run_management_command")
     @mock.patch("fabfile._deploy")
+    @mock.patch("fabfile.local")
     @mock.patch("fabfile.print", create=True)
     def test_deploy_prod(
         self,
         print_function,
+        local,
         _deploy,
         run_management_command,
         backup_and_copy,
@@ -1225,6 +1227,8 @@ class DeployProdTestCase(FabfileTestCase):
             2017, 9, 8, 10, 47
         )
         old_env = Env("old_env", remove_existing=False)
+        bk = "/usr/local/ohc/var/back.08.09.2017.10.47.elcid_old_env.sql"
+        backup_and_copy.return_value = bk
         new_env = Env("new_env", remove_existing=False)
         env_constructor.side_effect = [old_env, new_env]
         run_management_command.side_effect = [
@@ -1233,9 +1237,7 @@ class DeployProdTestCase(FabfileTestCase):
         fabfile.deploy_prod("new_branch")
         validate_private_settings.assert_called_once_with()
         _deploy.assert_called_once_with(
-            "new_branch",
-            '/usr/local/ohc/var/back.08.09.2017.10.47.elcid_old_env.sql',
-            remove_existing=False
+            "new_branch", bk, remove_existing=False
         )
         backup_and_copy.called_once_with("old_env")
 
@@ -1257,3 +1259,4 @@ class DeployProdTestCase(FabfileTestCase):
         )
 
         diff_status.assert_called_once_with("new_status", "old_status")
+        local.assert_called_once_with("rm {}".format(bk))
