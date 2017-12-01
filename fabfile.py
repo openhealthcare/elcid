@@ -405,7 +405,7 @@ def backup_and_copy(old_branch_name, old_database_name=None):
         ))
 
     # tar the file
-    local("tar -czvf {} {}".format(backup_name, tar_backup_name))
+    local("tar -czvf {} {}".format(tar_backup_name, backup_name))
 
     if not os.path.isfile(tar_backup_name):
         raise ValueError("unable to find tar file {}".format(
