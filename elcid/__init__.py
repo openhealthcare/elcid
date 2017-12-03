@@ -3,7 +3,6 @@ elCID OPAL implementation
 """
 
 from opal.core import application, menus
-from microhaem.constants import MICROHAEM_ROLE
 
 
 class Application(application.OpalApplication):
@@ -48,27 +47,24 @@ class Application(application.OpalApplication):
     def get_menu_items(klass, user=None):
         # import pathways here as this being in the init
         # causes issues with django settings in heroku otherwise
-        from microhaem import pathways as haem_pathways
         items = application.OpalApplication.get_menu_items(user=user)
         if user.profile.can_extract or user.is_superuser:
             query = menus.MenuItem(
-                href="/#/extract/",
-                activepattern="/search/#/extract/",
+                href="/search/#/extract/",
+                activepattern="/search/#/extract",
                 icon="fa-download",
                 display="Extract"
             )
             items.append(query)
-        if user:
-            if user.profile.roles.filter(name=MICROHAEM_ROLE).exists():
-                pathway_url = "/pathway/#/{}".format(
-                    haem_pathways.ReferPatientPathway.slug
-                )
-                query = menus.MenuItem(
-                    href=pathway_url,
-                    activepattern=pathway_url,
-                    icon=haem_pathways.ReferPatientPathway.icon,
-                    display=haem_pathways.ReferPatientPathway.display_name,
-                    index=-1
-                )
-                items.append(query)
+
+        menuitem = menus.MenuItem(
+            href='/referrals/',
+            display="Referrals",
+            icon="fa fa-mail-forward",
+            activepattern='/referrals',
+            index=3
+        )
+
+        items.append(menuitem)
+
         return items
