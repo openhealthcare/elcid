@@ -72,7 +72,7 @@ class HaemPathwayTestCase(OpalTestCase):
                 diagnosis.to_dict(self.user),
                 {"condition": "sick", "episode_id": old_episode.id}
             ]
-        }, user=self.user, patient=old_patient)
+        }, user=self.user, patient=old_patient, episode=old_episode)
         patient = Patient.objects.get()
         episode = patient.episode_set.first()
         self.assertEqual(
