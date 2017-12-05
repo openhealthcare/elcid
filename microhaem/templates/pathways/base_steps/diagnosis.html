@@ -1,11 +1,11 @@
 {% load forms %}
+{% load elcid_pathways %}
 <div pathway-step="{{ step.get_api_name }}">
   <div class="col-md-6 col-md-offset-3">
     <p class="lead text-center">
       Add Diagnosis
     </p>
   </div>
-
   <div class="row">
     <div class="{% block width_classes %}col-md-10 col-md-push-1{% endblock %}">
       <div class="panel panel-default">
@@ -20,7 +20,7 @@
         </div>
         {% endblock %}
         <div class="panel-body">
-            {% include step.get_template %}
+          {% open_multisave models.Diagnosis %}
         </div>
       </div>
     </div>
