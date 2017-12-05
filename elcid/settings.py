@@ -179,13 +179,15 @@ INSTALLED_APPS = (
     'infectiousdiseases',
     'dashboard',
     'guidelines',
-    'reporting',
     'dischargesummary',
     'djcelery',
 )
 
 if ON_TEST:
-    INSTALLED_APPS += ('opal.tests',)
+    INSTALLED_APPS += (
+        'opal.tests',
+        'reporting',
+    )
     PASSWORD_HASHERS = (
         'django.contrib.auth.hashers.MD5PasswordHasher',
     )
