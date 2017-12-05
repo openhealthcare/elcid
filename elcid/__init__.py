@@ -50,13 +50,12 @@ class Application(application.OpalApplication):
 
         if user:
             if not user.is_authenticated():
-                login = menus.MenuItem(
+                return [menus.MenuItem(
                     href=reverse('login'),
                     icon='fa-sign-in',
-                    display='Log In'
-                )
-                items = [login]
-                return items
+                    display='Log In')
+                ]
+
         # import pathways here as this being in the init
         # causes issues with django settings in heroku otherwise
         from microhaem import pathways as haem_pathways
