@@ -4,6 +4,7 @@ elCID OPAL implementation
 
 from opal.core import application, menus
 from microhaem.constants import MICROHAEM_ROLE
+from django.core.urlresolvers import reverse
 
 
 class Application(application.OpalApplication):
@@ -46,6 +47,15 @@ class Application(application.OpalApplication):
 
     @classmethod
     def get_menu_items(klass, user=None):
+
+        if user:
+            if not user.is_authenticated():
+                return [menus.MenuItem(
+                    href=reverse('login'),
+                    icon='fa-sign-in',
+                    display='Log In')
+                ]
+
         # import pathways here as this being in the init
         # causes issues with django settings in heroku otherwise
         from microhaem import pathways as haem_pathways
