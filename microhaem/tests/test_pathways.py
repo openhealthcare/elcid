@@ -2,7 +2,6 @@ from opal.core.test import OpalTestCase
 from opal.models import Patient
 from django.core.urlresolvers import reverse
 from microhaem import pathways
-from elcid.models import Diagnosis
 
 
 class HaemPathwayTestCase(OpalTestCase):
@@ -10,7 +9,7 @@ class HaemPathwayTestCase(OpalTestCase):
         self.pathway = pathways.HaemReferalPathway()
 
     def test_render(self):
-        url = reverse('pathway_template', kwargs=dict(name='haem_referral'))
+        url = reverse('pathway_template', kwargs=dict(name='haem_referrals'))
         self.assertStatusCode(url, 200)
 
     def test_save(self):
