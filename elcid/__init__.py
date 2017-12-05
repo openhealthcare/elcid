@@ -61,7 +61,7 @@ class Application(application.OpalApplication):
             href='/referrals/',
             display="Referrals",
             icon="fa fa-mail-forward",
-            activepattern='/referrals',
+            activepattern='referrals',
             index=3
         )
 

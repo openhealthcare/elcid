@@ -41,7 +41,7 @@ class AbstractReferPatientPathway(WizardPathway, AbstractBase):
 
 class HaemReferalPathway(AbstractReferPatientPathway):
     display_name = "Haem Referral"
-    slug = 'haem_referral'
+    slug = 'haem_referrals'
     tag = constants.MICROHAEM_TAG
     tag_display = "Micro Haematology"
 
@@ -51,13 +51,13 @@ class HaemReferalPathway(AbstractReferPatientPathway):
 
 class OncologyReferalPathway(AbstractReferPatientPathway):
     display_name = "Oncology Referral"
-    slug = 'oncology_referral'
+    slug = 'oncology_referrals'
     tag = constants.ONCOLOGY_TAG
     tag_display = "Micro Oncology"
 
 
 class MicroAdviceReferalPathway(AbstractReferPatientPathway):
     display_name = "Micro Advice Referral"
-    slug = 'micro_advice_referral'
+    slug = 'micro_advice_referrals'
     tag = constants.MICRO_ADVICE_TAG
     tag_display = "Micro advice"
