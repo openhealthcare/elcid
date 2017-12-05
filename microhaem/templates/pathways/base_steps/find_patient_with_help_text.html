@@ -1,38 +1,136 @@
 {% load forms %}
 <div pathway-step="{{ step.get_api_name }}">
-  <div class="row">
+  <div class="row" ng-if="state == 'initial'">
     <div class="col-md-6 col-md-offset-3">
       <span ng-if="state ==='initial' || state === 'editing_demographics'">
         <p class="lead text-center">
-          <b>Who</b> are you referring to MicroHaematology?
+          <b>Who</b> are you referring to {{ pathway.tag_display }}?
         </p>
       </span>
       <span ng-if="state === 'has_demographics'">
-          <p class="lead text-center">
-            We've found
-            [[ demographics.first_name ]]
-            [[ demographics.surname ]]
-          </p>
+        <p class="lead text-center">
+          We've found
+          [[ demographics.first_name ]]
+          [[ demographics.surname ]]
+        </p>
       </span>
     </div>
-  </div>
-  <div class="row">
-    <div class="col-md-6 col-md-offset-3">
-      <div class="panel panel-default">
+    <div class="col-sm-10 col-sm-push-1">
+      <div class="panel-default panel">
         <div class="panel-heading">
-          <h3>
-            {% if step.get_icon %}
-              {% icon step.get_icon %}
-            {% endif %}
-            {{ step.get_display_name }}
-          </h3>
+          <h3>{% icon "fa-user" %} Find Patient</h3>
         </div>
         <div class="panel-body">
-          {% block step_form %}
-            {% include step.get_template %}
-          {% endblock %}
+          <div class="row">
+            <div class="col-sm-8">
+              <h4>Hospital Number</h4>
+              <input required autofocus class="form-control" type="text"
+                     ng-model="demographics.hospital_number"
+                     ng-keypress="$event.keyCode == 13 && lookup_hospital_number()"
+                     />
+              <br />
+              <button class="btn btn-lg btn-primary" ng-click="lookup_hospital_number()">
+                <i class="fa fa-search"></i>
+                Search
+              </button>
+              <br />
+              <p>
+                If we already have your patient on the system, we can pull their
+                details for you
+              </p>
+            </div>
+          </div>
         </div>
       </div>
-    </div> <!-- Col -->
+    </div>
   </div>
+
+  <!-- Editing demographics state -->
+  <div class="row" ng-if="state == 'editing_demographics'">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-12 text-center">
+          <p class="lead">
+            Unable to find a patient with the hospital number [[ editing.demographics.hospital_number ]]. <strong>Add now</strong>.
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-10 col-md-push-1">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3>{% icon models.demographics.get_icon %} {{ models.Demographics.get_display_name }}</h3>
+            </div>
+            <div class="panel-body">
+              <div class="form-group">
+                <label class="control-label col-sm-3">Hospital</label>
+                <label class="control-label col-sm-8 text-left">
+                  [[ demographics.hospital_number ]]
+                </label>
+              </div>
+              {% input "autofocus" field="Demographics.first_name" %}
+              {% input field="Demographics.surname" %}
+              {% date_of_birth_field %}
+              {% select field="Demographics.sex" %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <span ng-if="state === 'has_demographics'">
+    <div class="row">
+      <div class="col-md-12">
+        <p class="lead text-center">
+          We've found
+        </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-10 col-sm-push-1">
+        <div class="row">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3>[[ editing.demographics.first_name ]] [[ editing.demographics.surname ]]</h3>
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-md-4">
+                  <b>Hospital #[[ editing.demographics.hospital_number ]]</b>
+                </div>
+                <div class="col-md-8">
+                  [[ editing.demographics.hospital_number ]]
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4">
+                  <b>Name</b>
+                </div>
+                <div class="col-md-8">
+                  [[ editing.demographics.first_name ]]
+                  [[ editing.demographics.surname ]]
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4">
+                  <b>Date of Birth</b>
+                </div>
+                <div class="col-md-8">
+                  [[ editing.demographics.date_of_birth | shortDate ]]
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4">
+                  <b>Gender</b>
+                </div>
+                <div class="col-md-8">
+                  [[ editing.demographics.sex ]]
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </span>
 </div>
