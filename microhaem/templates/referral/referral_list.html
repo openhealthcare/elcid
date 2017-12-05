@@ -1,5 +1,15 @@
 {% extends 'opal.html' %}
 
+{% load plugins %}
+
+{% block ngapp %}haem.referrals{% endblock %}
+
+
+{% block angularapp %}
+  {% plugin_javascripts 'haem.referrals' %}
+{% endblock %}
+
+
 {% block content %}
 <div class="container content-offset">
   <div class="panel panel-primary">
@@ -26,7 +36,7 @@
               </div>
               <div class="row">
                 <div class="col-md-12 text-right">
-                  <a href="/pathway/#/haem_referral" class="btn btn-lg btn-primary ">
+                  <a href="/pathway/#/haem_referrals" class="btn btn-lg btn-primary ">
                     <i class="fa fa-arrow-right"></i>
                     Make Referral
                   </a>
@@ -49,7 +59,7 @@
               </div>
               <div class="row">
                 <div class="col-md-12 text-right">
-                  <a href="/pathway/#/oncology_referral" class="btn btn-lg btn-primary">
+                  <a href="/pathway/#/oncology_referrals" class="btn btn-lg btn-primary">
                     <i class="fa fa-arrow-right"></i>
                     Make Referral
                   </a>
@@ -72,7 +82,7 @@
               </div>
               <div class="row">
                 <div class="col-md-12 text-right">
-                  <a href="/pathway/#/micro_advice_referral" class="btn btn-lg btn-primary">
+                  <a href="/pathway/#/micro_advice_referrals" class="btn btn-lg btn-primary">
                     <i class="fa fa-arrow-right"></i>
                     Make Referral
                   </a>

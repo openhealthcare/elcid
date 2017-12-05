@@ -12,4 +12,7 @@ class HaemPlugin(plugins.OpalPlugin):
         'opal.controllers': [
             'js/haem/controllers/uch_find_patient.js',
         ],
+        'haem.referrals': [
+            'js/haem/app.js',
+        ]
     }
