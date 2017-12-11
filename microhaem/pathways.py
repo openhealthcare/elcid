@@ -8,6 +8,7 @@ from microhaem import constants
 class AbstractReferPatientPathway(WizardPathway, AbstractBase):
     display_name = "Haem Referral"
     icon = "fa-mail-forward"
+    finish_button_text = "Add Patient"
 
     steps = (
         Step(
@@ -20,6 +21,12 @@ class AbstractReferPatientPathway(WizardPathway, AbstractBase):
         Step(
             model=Diagnosis,
             base_template="pathways/base_steps/diagnosis.html"
+        ),
+        Step(
+            template="unused",
+            display_name="Add to lists",
+            icon="fa fa-tags",
+            base_template="pathways/base_steps/add_to_teams.html"
         )
     )
 
@@ -28,11 +35,15 @@ class AbstractReferPatientPathway(WizardPathway, AbstractBase):
         """
             Tags the episode with the tag
         """
+        tagging = data.pop("tagging", [])
         patient, episode = super(AbstractReferPatientPathway, self).save(
             data, user=user, episode=episode, patient=patient
         )
+        tag_names = []
+        if tagging:
+            tag_names = [n for n, v in list(tagging[0].items()) if v]
 
-        tag_names = list(episode.get_tag_names(None))
+        tag_names = list(episode.get_tag_names(None)) + tag_names
         tag_names.append(self.tag)
         episode.set_tag_names(tag_names, None)
 

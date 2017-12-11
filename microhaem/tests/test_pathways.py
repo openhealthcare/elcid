@@ -59,6 +59,34 @@ class HaemPathwayTestCase(OpalTestCase):
             ["something", "micro_haem"]
         )
 
+    def test_with_tagging(self):
+        old_patient, old_episode = self.new_patient_and_episode_please()
+        old_patient.demographics_set.update(
+            hospital_number="100"
+        )
+        old_episode.set_tag_names(["something"], self.user)
+        self.pathway.save({
+            "demographics": [
+                old_patient.demographics_set.first().to_dict(self.user)
+            ],
+            "diagnosis": [{"condition": "sick"}],
+            "tagging": [dict(bacteraemia_review=True)]
+        }, user=self.user, patient=old_patient, episode=old_episode)
+        patient = Patient.objects.get()
+        episode = patient.episode_set.first()
+        self.assertEqual(
+            patient.demographics_set.first().hospital_number,
+            "100"
+        )
+        self.assertEqual(
+            episode.diagnosis_set.first().condition,
+            "sick"
+        )
+        self.assertEqual(
+            set(episode.get_tag_names(None)),
+            set(["something", "micro_haem", "bacteraemia_review"])
+        )
+
     def test_save_with_episode_with_diagnosis(self):
         old_patient, old_episode = self.new_patient_and_episode_please()
         diagnosis = old_episode.diagnosis_set.create()
