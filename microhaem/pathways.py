@@ -21,12 +21,6 @@ class AbstractReferPatientPathway(WizardPathway, AbstractBase):
         Step(
             model=Diagnosis,
             base_template="pathways/base_steps/diagnosis.html"
-        ),
-        Step(
-            template="unused",
-            display_name="Add to lists",
-            icon="fa fa-tags",
-            base_template="pathways/base_steps/add_to_teams.html"
         )
     )
 
@@ -43,7 +37,9 @@ class AbstractReferPatientPathway(WizardPathway, AbstractBase):
         tags_to_remove = set()
         if tagging:
             tag_names = [n for n, v in list(tagging[0].items()) if v]
-            tags_to_remove = set(n for n, v in list(tagging[0].items()) if not v)
+            tags_to_remove = set(
+                n for n, v in list(tagging[0].items()) if not v
+            )
 
         tag_names = list(episode.get_tag_names(None)) + tag_names
         tag_names = list(set(tag_names) - tags_to_remove)
@@ -75,3 +71,23 @@ class MicroAdviceReferalPathway(AbstractReferPatientPathway):
     slug = 'micro_advice_referrals'
     tag = constants.MICRO_ADVICE_TAG
     tag_display = "Micro advice"
+
+    steps = (
+        Step(
+            template="unused",
+            step_controller="UchFindPatientCtrl",
+            display_name="Find patient",
+            icon="fa fa-user",
+            base_template="pathways/base_steps/find_patient_with_help_text.html"
+        ),
+        Step(
+            model=Diagnosis,
+            base_template="pathways/base_steps/diagnosis.html"
+        ),
+        Step(
+            template="unused",
+            display_name="Add to lists",
+            icon="fa fa-tags",
+            base_template="pathways/base_steps/add_to_teams.html"
+        )
+    )
