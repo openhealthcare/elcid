@@ -40,10 +40,13 @@ class AbstractReferPatientPathway(WizardPathway, AbstractBase):
             data, user=user, episode=episode, patient=patient
         )
         tag_names = []
+        tags_to_remove = set()
         if tagging:
             tag_names = [n for n, v in list(tagging[0].items()) if v]
+            tags_to_remove = set(n for n, v in list(tagging[0].items()) if not v)
 
         tag_names = list(episode.get_tag_names(None)) + tag_names
+        tag_names = list(set(tag_names) - tags_to_remove)
         tag_names.append(self.tag)
         episode.set_tag_names(tag_names, None)
 
