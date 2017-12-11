@@ -2,7 +2,6 @@ from opal.core.test import OpalTestCase
 from opal.models import Patient
 from django.core.urlresolvers import reverse
 from microhaem import pathways
-from elcid.models import Diagnosis
 
 
 class HaemPathwayTestCase(OpalTestCase):
@@ -10,7 +9,7 @@ class HaemPathwayTestCase(OpalTestCase):
         self.pathway = pathways.HaemReferalPathway()
 
     def test_render(self):
-        url = reverse('pathway_template', kwargs=dict(name='haem_referral'))
+        url = reverse('pathway_template', kwargs=dict(name='haem_referrals'))
         self.assertStatusCode(url, 200)
 
     def test_save(self):
@@ -58,6 +57,34 @@ class HaemPathwayTestCase(OpalTestCase):
         self.assertEqual(
             list(episode.get_tag_names(None)),
             ["something", "micro_haem"]
+        )
+
+    def test_with_tagging(self):
+        old_patient, old_episode = self.new_patient_and_episode_please()
+        old_patient.demographics_set.update(
+            hospital_number="100"
+        )
+        old_episode.set_tag_names(["something"], self.user)
+        self.pathway.save({
+            "demographics": [
+                old_patient.demographics_set.first().to_dict(self.user)
+            ],
+            "diagnosis": [{"condition": "sick"}],
+            "tagging": [dict(bacteraemia_review=True)]
+        }, user=self.user, patient=old_patient, episode=old_episode)
+        patient = Patient.objects.get()
+        episode = patient.episode_set.first()
+        self.assertEqual(
+            patient.demographics_set.first().hospital_number,
+            "100"
+        )
+        self.assertEqual(
+            episode.diagnosis_set.first().condition,
+            "sick"
+        )
+        self.assertEqual(
+            set(episode.get_tag_names(None)),
+            set(["something", "micro_haem", "bacteraemia_review"])
         )
 
     def test_save_with_episode_with_diagnosis(self):

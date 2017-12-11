@@ -202,3 +202,22 @@ class BulkCreateUserViewTestCase(OpalTestCase):
         response = self.client.post(self.url, follow=True)
         login = reverse('admin:login')
         self.assertEqual(response.request["PATH_INFO"], login)
+
+
+class ViewStoriesTemplateTestCase(OpalTestCase):
+    def setUp(self):
+        self.url = reverse("stories")
+
+    def test_logged_in_user(self):
+        self.assertTrue(
+            self.client.login(
+                username=self.user.username,
+                password=self.PASSWORD
+            )
+        )
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+
+    def test_user_is_not_logged_in(self):
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 302)
