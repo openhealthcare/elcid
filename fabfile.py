@@ -370,7 +370,7 @@ def restart_supervisord(new_env):
     except:
         # celery works take a while to kill, so if we die wait a few
         # seconds and try again
-        time.sleep(3)
+        time.sleep(10)
         local("{0}/bin/supervisord -c {1}/etc/production.conf".format(
             new_env.virtual_env_path, new_env.project_directory
         ))

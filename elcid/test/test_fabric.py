@@ -581,7 +581,7 @@ class RestartTestCase(FabfileTestCase):
         expected_second_call = "/home/ohc/.virtualenvs/elcid-some_branch/bin\
 /supervisord -c /usr/local/ohc/elcid-some_branch/etc/production.conf"
         self.assertEqual(second_call, expected_second_call)
-        time.sleep.assert_called_once_with(3)
+        time.sleep.assert_called_once_with(10)
         third_call = local.call_args_list[2][0][0]
         expected_third_call = "/home/ohc/.virtualenvs/elcid-some_branch/bin\
 /supervisord -c /usr/local/ohc/elcid-some_branch/etc/production.conf"
