@@ -28,9 +28,7 @@ urlpatterns = patterns(
     url(r'^test/500$', views.Error500View.as_view(), name='test-500'),
     url(
         r'stories/$',
-        login_required(
-            views.TemplateView.as_view(template_name='stories.html')
-        ),
+        views.StoriesView.as_view(),
         name='stories'
     ),
     url(r'glossapi/v0.1/', include(api.router.urls)),
