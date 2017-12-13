@@ -7694,19 +7694,7 @@
       "synonyms": []
     },
     {
-      "name": "Acute Coronary Wing",
-      "synonyms": []
-    },
-    {
       "name": "A&E",
-      "synonyms": []
-    },
-    {
-      "name": "Cardiac ICU North",
-      "synonyms": []
-    },
-    {
-      "name": "Cardiac ICU South",
       "synonyms": []
     },
     {
@@ -7715,14 +7703,6 @@
     },
     {
       "name": "HASU",
-      "synonyms": []
-    },
-    {
-      "name": "Heart Ward 3",
-      "synonyms": []
-    },
-    {
-      "name": "Heart Ward 4",
       "synonyms": []
     },
     {
@@ -7831,6 +7811,26 @@
     },
     {
       "name": "T9",
+      "synonyms": []
+    },
+    {
+      "name": "Westmoreland Street 1/ICU",
+      "synonyms": []
+    },
+    {
+      "name": "Westmoreland Street 2/Short Stay Ward",
+      "synonyms": []
+    },
+    {
+      "name": "Westmoreland Street Surgical Reception",
+      "synonyms": []
+    },
+    {
+      "name": "Westmoreland Street 3",
+      "synonyms": []
+    },
+    {
+      "name": "Westmoreland Street 4",
       "synonyms": []
     }
   ],
