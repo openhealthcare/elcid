@@ -644,11 +644,19 @@ def deploy_prod(old_branch, old_database_name=None):
 
     validate_private_settings()
 
-    backup_name = backup_and_copy(old_branch)
+    if old_database_name:
+        backup_name = old_database_name
+        old_status = {}
+    else:
+        backup_name = backup_and_copy(old_branch)
+        old_status = run_management_command("status_report", old_env)
 
-    old_status = run_management_command("status_report", old_env)
     _deploy(new_branch, backup_name, remove_existing=False)
-    # remove the old backup, its been tarred so its safe to go
-    local("rm {}".format(backup_name))
     new_status = run_management_command("status_report", new_env)
-    diff_status(new_status, old_status)
+    # remove the old backup, its been tarred so its safe to go
+    if not old_database_name:
+        local("rm {}".format(backup_name))
+        diff_status(new_status, old_status)
+    else:
+        print("no old status")
+        print(new_status)
