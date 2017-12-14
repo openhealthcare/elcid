@@ -1,0 +1,22 @@
+{% load forms %}
+<div save-multiple-wrapper="{{ model }}" initialise-empty="{{ initialise_empty }}">
+  <div ng-repeat="editing in model.subrecords track by $index">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="form-horizontal">
+          {% include subrecord.get_form_template %}
+        </div>
+        <div class="pull-right">
+          <div ng-show="model.subrecords.length > 1" ng-click="remove($index)" class="btn btn-secondary">
+            {% icon 'fa-trash' %}
+            {{ remove_button_text }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr ng-show="!$last" />
+  </div>
+  <div class="text-center row">
+    <a ng-click="addAnother()" class="text-center btn btn-primary">{% icon "glyphicon-plus" %} {{ add_button_text }}</a>
+  </div>
+</div>
