@@ -1,4 +1,4 @@
-describe('UchFindPatientCtrl', function() {
+fdescribe('UchFindPatientCtrl', function() {
   "use strict";
   var scope, Episode, $controller, controller, $window;
   var $rootScope, opalTestHelper, Pathway;
@@ -47,6 +47,13 @@ describe('UchFindPatientCtrl', function() {
     scope.new_patient();
     expect(scope.state).toBe('editing_demographics');
     expect(scope.hideFooter).toBe(false);
+  });
+
+  it("should change hoist the hospital number on to the new demographics object", function(){
+    expect(scope.state).toBe('initial');
+    scope.demographics.hospital_number = "123122";
+    scope.new_patient();
+    expect(scope.editing.demographics[0].hospital_number).toEqual("123122");
   });
 
   it("should look up hospital numbers", function(){
@@ -117,8 +124,6 @@ describe('UchFindPatientCtrl', function() {
     var patient = opalTestHelper.newPatient($rootScope);
     scope.new_for_patient(patient);
     expect(scope.state).toBe('has_demographics');
-    expect(
-      scope.demographics.first_name).toBe(patient.demographics[0].first_name
-    );
+    expect(scope.editing.demographics[0].first_name).toBe(patient.demographics[0].first_name);
   });
 });

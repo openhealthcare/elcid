@@ -40,7 +40,7 @@ angular.module('opal.controllers').controller('UchFindPatientCtrl',
         var latestEpisode = _.last(_.sortBy(openEpisodes, "id"));
 
         if(latestEpisode){
-          var editing = new EditingEpisode(latestEpisode);
+          scope.editing = new EditingEpisode(latestEpisode);
           scope.pathway.save_url = scope.pathway.save_url + "/" + patient.id + "/" + latestEpisode.id;
         }
         else{
