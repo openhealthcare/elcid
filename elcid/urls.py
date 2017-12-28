@@ -1,7 +1,7 @@
 """
 Root elCID urlconf
 """
-from django.conf.urls import patterns, url, include
+from django.conf.urls import url, include
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.contrib import admin
@@ -13,8 +13,7 @@ from elcid import api
 
 from elcid import views
 
-urlpatterns = patterns(
-    '',
+urlpatterns = [
     url(
         '^admin/bulk-create-users$',
         staff_member_required(views.BulkCreateUserView.as_view()),
@@ -32,6 +31,6 @@ urlpatterns = patterns(
         name='stories'
     ),
     url(r'glossapi/v0.1/', include(api.router.urls)),
-)
+]
 
 urlpatterns += opatterns
