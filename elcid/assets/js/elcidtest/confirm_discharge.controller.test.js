@@ -3,16 +3,17 @@ describe('ConfirmDischargeCtrl', function(){
 
     var $rootScope, $scope, $modal, $httpBackend, $controller;
     var modalInstance, tags, hospital_number, $q, controller;
-    var DischargePatientService, context, episode, demographics;
+    var DischargePatientService, Referencedata, context, episode, demographics;
     var patient, discharge, modalResult;
 
     beforeEach(module('opal.controllers'));
 
     beforeEach(function(){
         inject(function($injector){
-            $rootScope = $injector.get('$rootScope');
-            $modal = $injector.get('$modal');
-            $controller = $injector.get('$controller');
+            $rootScope    = $injector.get('$rootScope');
+            $modal        = $injector.get('$modal');
+            $controller   = $injector.get('$controller');
+            Referencedata = $injector.get('Referencedata')
         });
 
         $scope = $rootScope.$new();
@@ -96,6 +97,17 @@ describe('ConfirmDischargeCtrl', function(){
       expect(discharge).toHaveBeenCalledWith(episode, {category: "Discharged"}, tags);
       expect(context.removeFromList).toHaveBeenCalledWith(episode.id);
       expect($scope.newPatient).toHaveBeenCalledWith(patient);
+    });
+
+    it('should open the next modal resolving referenceata appropriately', function() {
+        modalResult.and.returnValue('some result');
+        $scope.newPatient(patient);
+        expect($modal.open).toHaveBeenCalled();
+        var callArgs = $modal.open.calls.argsFor(0)[0];
+        spyOn(Referencedata, 'load')
+        expect(Referencedata.load).not.toHaveBeenCalled()
+        callArgs.resolve.referencedata(Referencedata)
+        expect(Referencedata.load).toHaveBeenCalled()
     });
 
     it('show open the next step with the controller passed in', function(){
