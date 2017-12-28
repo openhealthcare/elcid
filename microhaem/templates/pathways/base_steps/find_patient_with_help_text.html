@@ -7,13 +7,6 @@
           <b>Who</b> are you referring to {{ pathway.tag_display }}?
         </p>
       </span>
-      <span ng-if="state === 'has_demographics'">
-        <p class="lead text-center">
-          We've found
-          [[ editing.demographics[0].first_name ]]
-          [[ editing.demographics[0].surname ]]
-        </p>
-      </span>
     </div>
     <div class="col-sm-10 col-sm-push-1">
       <div class="panel-default panel">
@@ -83,6 +76,8 @@
       <div class="col-md-12">
         <p class="lead text-center">
           We've found
+          [[ editing.demographics[0].first_name ]]
+          [[ editing.demographics[0].surname ]]
         </p>
       </div>
     </div>
@@ -91,7 +86,7 @@
         <div class="row">
           <div class="panel panel-default">
             <div class="panel-heading">
-              <h3>[[ editing.demographics.first_name ]] [[ editing.demographics.surname ]]</h3>
+              <h3>[[ editing.demographics[0].first_name ]] [[ editing.demographics[0].surname ]]</h3>
             </div>
             <div class="panel-body">
               <div class="row">
@@ -99,7 +94,7 @@
                   <b>Hospital #</b>
                 </div>
                 <div class="col-md-8">
-                  [[ editing.demographics.hospital_number ]]
+                  [[ editing.demographics[0].hospital_number ]]
                 </div>
               </div>
               <div class="row">
@@ -107,8 +102,8 @@
                   <b>Name</b>
                 </div>
                 <div class="col-md-8">
-                  [[ editing.demographics.first_name ]]
-                  [[ editing.demographics.surname ]]
+                  [[ editing.demographics[0].first_name ]]
+                  [[ editing.demographics[0].surname ]]
                 </div>
               </div>
               <div class="row">
@@ -116,7 +111,7 @@
                   <b>Date of Birth</b>
                 </div>
                 <div class="col-md-8">
-                  [[ editing.demographics.date_of_birth | shortDate ]]
+                  [[ editing.demographics[0].date_of_birth | shortDate ]]
                 </div>
               </div>
               <div class="row">
@@ -124,7 +119,7 @@
                   <b>Gender</b>
                 </div>
                 <div class="col-md-8">
-                  [[ editing.demographics.sex ]]
+                  [[ editing.demographics[0].sex ]]
                 </div>
               </div>
             </div>

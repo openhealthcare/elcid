@@ -51,15 +51,5 @@ angular.module('opal.controllers').controller('UchFindPatientCtrl',
         scope.hideFooter = false;
     };
 
-    scope.showNext = function(editing){
-        return scope.state === 'has_demographics' || scope.state === 'editing_demographics';
-    };
-
-    scope.preSave = function(editing){
-      if(!editing.demographics.hospital_number){
-        editing.demographics.hospital_number = scope.demographics.hospital_number;
-      }
-    }
-
     this.initialise(scope);
 });

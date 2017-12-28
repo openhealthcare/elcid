@@ -1,4 +1,4 @@
-fdescribe('UchFindPatientCtrl', function() {
+describe('UchFindPatientCtrl', function() {
   "use strict";
   var scope, Episode, $controller, controller, $window;
   var $rootScope, opalTestHelper, Pathway;
@@ -77,18 +77,6 @@ fdescribe('UchFindPatientCtrl', function() {
     var callArgs = allCallArgs[0].args;
     expect(callArgs[1].error());
     expect($window.alert).toHaveBeenCalledWith('ERROR: More than one patient found with hospital number');
-  });
-
-  it('should only show next if state is has_demographics or editing_demographics', function(){
-    scope.state = "has_demographics";
-    expect(scope.showNext()).toBe(true);
-    scope.state = "editing_demographics";
-    expect(scope.showNext()).toBe(true);
-  });
-
-  it('should only show next if state is neither has_demographics or editing_demographics', function(){
-    scope.state = "something";
-    expect(scope.showNext()).toBe(false);
   });
 
   it('should update the save_url if an patient is found with no open episode', function(){
