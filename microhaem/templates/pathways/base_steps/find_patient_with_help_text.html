@@ -10,8 +10,8 @@
       <span ng-if="state === 'has_demographics'">
         <p class="lead text-center">
           We've found
-          [[ editing.demographics.first_name ]]
-          [[ editing.demographics.surname ]]
+          [[ editing.demographics[0].first_name ]]
+          [[ editing.demographics[0].surname ]]
         </p>
       </span>
     </div>
@@ -61,9 +61,9 @@
             <div class="panel-heading">
               <h3>{% icon models.demographics.get_icon %} {{ models.Demographics.get_display_name }}</h3>
             </div>
-            <div class="panel-body">
+            <div ng-repeat="demographics in editing.demographics" class="panel-body">
               <div class="form-group">
-                <label class="control-label col-sm-3">Hospital</label>
+                <label class="control-label col-sm-3">Hospital #</label>
                 <label class="control-label col-sm-8 text-left">
                   [[ demographics.hospital_number ]]
                 </label>

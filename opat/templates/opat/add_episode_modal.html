@@ -9,8 +9,10 @@
 <div class="modal-body">
   <form class="form-horizontal" name="form">
     {% include 'partials/_core_demographics.html' %}
-    {% select model="editing.location.opat_referral_team" label="Referring Team" lookuplist="speciality_list" %}
-    {% input model="editing.location.opat_referral_consultant" label="Referring Consultant" %}
+    <div ng-repeat="{{ models.Location.get_api_name }} in editing.{{ models.Location.get_api_name }}">
+      {% select field="Location.opat_referral_team" lookuplist="speciality_list" %}
+      {% input field="Location.opat_referral_consultant" %}
+    </div>
   </form>
 </div>
 <div class="modal-footer">

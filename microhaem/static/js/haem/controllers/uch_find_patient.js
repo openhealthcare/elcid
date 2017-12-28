@@ -1,5 +1,5 @@
 angular.module('opal.controllers').controller('UchFindPatientCtrl',
-  function(scope, Patient, Episode, step, episode, Item, $window) {
+  function(scope, Patient, Episode, step, episode, Item, $window, EditingEpisode) {
     "use strict";
 
     scope.lookup_hospital_number = function() {
@@ -27,28 +27,24 @@ angular.module('opal.controllers').controller('UchFindPatientCtrl',
     scope.new_patient = function(result){
         scope.hideFooter = false;
         scope.state = 'editing_demographics';
+        scope.editing.demographics = [{
+          hospital_number: scope.demographics.hospital_number
+        }];
     };
 
     scope.new_for_patient = function(rawPatient){
         var patient = new Patient(rawPatient);
-        scope.demographics = patient.demographics[0];
         var openEpisodes = _.filter(_.values(patient.episodes), function(x){
           return !x.end;
         });
         var latestEpisode = _.last(_.sortBy(openEpisodes, "id"));
 
         if(latestEpisode){
-          var editing = scope.pathway.populateEditingDict(latestEpisode);
-          // angular.extend doesn't work for angular reasons
-          _.each(editing, function(v, k){
-            if(k.indexOf("$") !== 0){
-              scope.editing[k] = v;
-            }
-          });
+          var editing = new EditingEpisode(latestEpisode);
           scope.pathway.save_url = scope.pathway.save_url + "/" + patient.id + "/" + latestEpisode.id;
         }
         else{
-          scope.editing.demographics = patient.demographics[0].makeCopy();
+          scope.editing.demographics = [patient.demographics[0].makeCopy()];
           scope.pathway.save_url = scope.pathway.save_url + "/" + patient.id;
         }
         scope.state  = 'has_demographics';

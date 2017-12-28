@@ -1,2 +1,3 @@
-<textarea class="form-control" ng-model="editing.opat_outstanding_issues.details" rows="10" autofocus></textarea>
+{% load forms %}
+<textarea class="form-control" ng-model="{% js_model "OPATOutstandingIssues.details" %}" rows="10" autofocus></textarea>
 {% include "partials/_markdown_help.html" %}

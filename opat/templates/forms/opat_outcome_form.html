@@ -1,5 +1,5 @@
 {% load forms %}
-<input type="hidden" ng-init="editing.opat_outcome.outcome_stage = editing.opat_outcome.outcome_stage || 'OPAT Review'" ng-model="editing.opat_outcome.outcome_stage" />
+<input type="hidden" ng-init="opat_outcome.outcome_stage = opat_outcome.outcome_stage || 'OPAT Review'" ng-model="opat_outcome.outcome_stage" />
 
 {% select field="OPATOutcome.patient_outcome" lookuplist="['Cure', 'Improved', 'Failure']" help="opat/_patient_outcome_help.html" %}
 {% select field="OPATOutcome.opat_outcome" lookuplist="['Success', 'Partial Success', 'Failure of OPAT', 'Intermidiate Outcome']" help="opat/_opat_outcome_help.html" %}
@@ -7,22 +7,22 @@
 
 
 {% checkbox field="OPATOutcome.deceased" label="Died?"  %}
-<div class="form-group" ng-show="editing.deceased">
+<div class="form-group" ng-show="{% js_model "OPATOutcome.deceased" %}">
   <label class="control-label col-sm-3">Death Category</label>
   <div class="col-sm-8">
-    <select class="form-control" ng-model="editing.opat_outcome.death_category">
+    <select class="form-control" ng-model="{% js_model "OPATOutcome.death_category" %}">
       <option>Death due the infection for which OPAT was initiated'</option>
       <option>Death due to a complication of OPAT</option>
       <option>Death due to pathology unrelated to OPAT or indication for OPAT</option>
     </select>
   </div>
 </div>
-{% input field="OPATOutcome.cause_of_death" show="editing.died"%}
+{% input field="OPATOutcome.cause_of_death" show="opatoutcome.deceased" %}
 {% checkbox field="OPATOutcome.readmitted" label="Readmitted?" %}
-<div class="form-group" ng-show="editing.readmitted">
+<div class="form-group" ng-show="{% js_model "OPATOutcome.readmitted" %}">
   <label class="control-label col-sm-3">Readmission Cause</label>
   <div class="col-sm-8">
-    <select class="form-control" ng-model="editing.opat_outcome.readmission_cause">
+    <select class="form-control" ng-model="{% js_model "OPATOutcome.readmission_cause" %}">
       <option>Relapse of the infection for which they had received OPAT</option>
       <option>New infection</option>
       <option>Planned procedure</option>

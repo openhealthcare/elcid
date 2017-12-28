@@ -82,7 +82,8 @@ class MicroAdviceReferalPathway(AbstractReferPatientPathway):
         ),
         Step(
             model=Diagnosis,
-            base_template="pathways/base_steps/diagnosis.html"
+            base_template="pathways/base_steps/diagnosis.html",
+            template="pathway/steps/multi_save.html"
         ),
         Step(
             template="unused",

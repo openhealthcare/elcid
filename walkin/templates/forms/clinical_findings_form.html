@@ -5,28 +5,28 @@
         <div class="col-sm-8">
 
             <label class="radio-inline">
-                <input class="" type="radio" value="Y" ng-model="editing.clinical_findings.lymphadenopathy">
+                <input class="" type="radio" value="Y" ng-model="{% js_model "ClinicalFindings.lymphadenopathy" %}">
                 Yes
             </label>
 
             <label class="radio-inline">
-                <input class="" type="radio" value="N" ng-model="editing.clinical_findings.lymphadenopathy">
+                <input class="" type="radio" value="N" ng-model="{% js_model "ClinicalFindings.lymphadenopathy" %}">
                 No
             </label>
 
             <label class="radio-inline">
-                <input class="" type="radio" value="NAD" ng-model="editing.clinical_findings.lymphadenopathy">
+                <input class="" type="radio" value="NAD" ng-model="{% js_model "ClinicalFindings.lymphadenopathy" %}">
                 Not assessed
             </label>
         </div>
     </div>
 
-    <span ng-show="editing.clinical_findings.lymphadenopathy == 'Y'">
+    <span ng-show="{% js_model "ClinicalFindings.lymphadenopathy" %} == 'Y'">
         <div class="form-group">
             <label class="control-label col-sm-3">Details</label>
             <div class="col-sm-8">
                 <input class="form-control" type="text"
-                     ng-model="editing.clinical_findings.lymphadenopathy_details">
+                     ng-model="{% js_model "ClinicalFindings.lymphadenopathy_details" %}">
             </div>
         </div>
     </span>
@@ -36,17 +36,17 @@
         <div class="col-sm-8">
 
             <label class="radio-inline">
-                <input class="" type="radio" value="Y" ng-model="editing.clinical_findings.jaundice">
+                <input class="" type="radio" value="Y" ng-model="{% js_model "ClinicalFindings.jaundice" %}">
                 Yes
             </label>
 
             <label class="radio-inline">
-                <input class="" type="radio" value="N" ng-model="editing.clinical_findings.jaundice">
+                <input class="" type="radio" value="N" ng-model="{% js_model "ClinicalFindings.jaundice" %}">
                 No
             </label>
 
             <label class="radio-inline">
-                <input class="" type="radio" value="NAD" ng-model="editing.clinical_findings.jaundice">
+                <input class="" type="radio" value="NAD" ng-model="{% js_model "ClinicalFindings.jaundice" %}">
                 Not assessed
             </label>
         </div>
@@ -57,17 +57,17 @@
         <div class="col-sm-8">
 
             <label class="radio-inline">
-                <input class="" type="radio" value="Y" ng-model="editing.clinical_findings.dehydrated">
+                <input class="" type="radio" value="Y" ng-model="{% js_model "ClinicalFindings.dehydrated" %}">
                 Yes
             </label>
 
             <label class="radio-inline">
-                <input class="" type="radio" value="N" ng-model="editing.clinical_findings.dehydrated">
+                <input class="" type="radio" value="N" ng-model="{% js_model "ClinicalFindings.dehydrated" %}">
                 No
             </label>
 
             <label class="radio-inline">
-                <input class="" type="radio" value="NAD" ng-model="editing.clinical_findings.dehydrated">
+                <input class="" type="radio" value="NAD" ng-model="{% js_model "ClinicalFindings.dehydrated" %}">
                 Not assessed
             </label>
         </div>
@@ -78,24 +78,24 @@
         <div class="col-sm-8">
 
             <label class="radio-inline">
-                <input class="" type="radio" value="Y" ng-model="editing.clinical_findings.rash">
+                <input class="" type="radio" value="Y" ng-model="{% js_model "ClinicalFindings.rash" %}">
                 Yes
             </label>
 
             <label class="radio-inline">
-                <input class="" type="radio" value="N" ng-model="editing.clinical_findings.rash">
+                <input class="" type="radio" value="N" ng-model="{% js_model "ClinicalFindings.rash" %">
                 No
             </label>
 
             <label class="radio-inline">
-                <input class="" type="radio" value="NAD" ng-model="editing.clinical_findings.rash">
+                <input class="" type="radio" value="NAD" ng-model="{% js_model "ClinicalFindings.rash" %">
                 Not assessed
             </label>
         </div>
     </div>
 
-    {% input field="ClinicalFindings.rash_type" show="editing.clinical_findings.rash == 'Y'" %}
-    {% input field="ClinicalFindings.rash_distribution" show="editing.clinical_findings.rash == 'Y'" %}
+    {% input field="ClinicalFindings.rash_type" show="clinical_findings.rash == 'Y'" %}
+    {% input field="ClinicalFindings.rash_distribution" show="clinical_findings.rash == 'Y'" %}
 
     {% input field="ClinicalFindings.cardiovascular" %}
     {% input field="ClinicalFindings.respiratory" %}
