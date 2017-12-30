@@ -1,20 +1,21 @@
-<table ng-show="test == 'hapvap'">
+{% load forms %}
+<table ng-show="{% js_model "rid_rti_test.test" %} == 'hapvap'">
   <tr>
     <td>
       <label class="checkbox inline">
-        <input type="checkbox" ng-model="pseudomonas_aeruginosa">
+        <input type="checkbox" ng-model="{% js_model "RidRTITest.pseudomonas_aeruginosa" %}">
         Pseudomonas aeruginosa
       </label>
     </td>
     <td>
       <label class="checkbox inline">
-        <input type="checkbox" ng-model="acinetobacter_baumannii">
+        <input type="checkbox" ng-model="{% js_model "RidRTITest.acinetobacter_baumannii" %}">
         Acinetobacter baumannii
       </label>
     </td>
     <td>
       <label class="checkbox inline">
-        <input type="checkbox" ng-model="stenotrophomonas_maltophilia">
+        <input type="checkbox" ng-model="{% js_model "RidRTITest.stenotrophomonas_maltophilia" %}">
         Stenotrophomonas maltophilia
       </label>
     </td>
@@ -22,19 +23,19 @@
   <tr>
     <td>
       <label class="checkbox inline">
-        <input type="checkbox" ng-model="klebsiella_spp">
+        <input type="checkbox" ng-model="{% js_model "RidRTITest.klebsiella_spp" %}">
         Klebsiella spp
       </label>
     </td>
     <td>
       <label class="checkbox inline">
-        <input type="checkbox" ng-model="enterobacter_spp">
+        <input type="checkbox" ng-model="{% js_model "RidRTITest.enterobacter_spp" %}">
         Enterobacter spp
       </label>
     </td>
     <td>
       <label class="checkbox inline">
-        <input type="checkbox" ng-model="staphylococcus_aureus">
+        <input type="checkbox" ng-model="{% js_model "RidRTITest.staphylococcus_aureus" %}">
         Staphylococcus aureus
       </label>
     </td>
@@ -42,19 +43,19 @@
   <tr>
     <td>
       <label class="checkbox inline">
-        <input type="checkbox" ng-model="staphylococcus_mrsa">
+        <input type="checkbox" ng-model="{% js_model "RidRTITest.staphylococcus_mrsa" %}">
         Staphylococcus MRSA
       </label>
     </td>
     <td>
       <label class="checkbox inline">
-        <input type="checkbox" ng-model="ctx_m">
+        <input type="checkbox" ng-model="{% js_model "RidRTITest.ctx_m" %}">
         CTX-M
       </label>
     </td>
     <td>
       <label class="checkbox inline">
-        <input type="checkbox" ng-model="shv_esbl">
+        <input type="checkbox" ng-model="{% js_model "RidRTITest.shv_esbl" %}">
         SHV ESBL
       </label>
     </td>
@@ -62,19 +63,19 @@
   <tr>
     <td>
       <label class="checkbox inline">
-        <input type="checkbox" ng-model="tem_esbl">
+        <input type="checkbox" ng-model="{% js_model "RidRTITest.tem_esbl" %}">
         TEM ESBL
       </label>
     </td>
     <td>
       <label class="checkbox inline">
-        <input type="checkbox" ng-model="vim">
+        <input type="checkbox" ng-model="{% js_model "RidRTITest.vim" %}">
         VIM
       </label>
     </td>
     <td>
       <label class="checkbox inline">
-        <input type="checkbox" ng-model="imp">
+        <input type="checkbox" ng-model="{% js_model "RidRTITest.imp" %}">
         IMP
       </label>
     </td>
@@ -82,19 +83,19 @@
   <tr>
     <td>
       <label class="checkbox inline">
-        <input type="checkbox" ng-model="ndm">
+        <input type="checkbox" ng-model="{% js_model "RidRTITest.ndm" %}">
         NDM
       </label>
     </td>
     <td>
       <label class="checkbox inline">
-        <input type="checkbox" ng-model="kpc">
+        <input type="checkbox" ng-model="{% js_model "RidRTITest.kpc" %}">
         KPC
       </label>
     </td>
     <td>
       <label class="checkbox inline">
-        <input type="checkbox" ng-model="oxa_48">
+        <input type="checkbox" ng-model="{% js_model "RidRTITest.oxa_48" %}">
         OXA-48
       </label>
     </td>
@@ -102,7 +103,7 @@
   <tr>
     <td>
       <label class="checkbox inline">
-        <input type="checkbox" ng-model="meca" >
+        <input type="checkbox" ng-model="{% js_model "RidRTITest.meca" %}" >
         mecA
       </label>
     </td>

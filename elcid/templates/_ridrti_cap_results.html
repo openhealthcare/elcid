@@ -1,20 +1,21 @@
-<table ng-show="test == 'cap' ">
+{% load forms %}
+<table ng-show="{% js_model "RidRTITest.test" %} == 'cap'">
   <tr>
     <td>
       <label class="checkbox inline">
-        <input type="checkbox" ng-model="mycoplasma_pneumoniae">
+        <input type="checkbox" ng-model="{% js_model "RidRTITest.mycoplasma_pneumoniae" %}">
         Mycoplasma pneumoniae
       </label>
     </td>
     <td>
       <label class="checkbox inline">
-        <input type="checkbox" ng-model="chlamydophila_pneumoniae">
+        <input type="checkbox" ng-model="{% js_model "RidRTITest.chlamydophila_pneumoniae" %}">
         Chlamydophila pneumoniae
       </label>
     </td>
     <td>
       <label class="checkbox inline">
-        <input type="checkbox" ng-model="legionella_pneumophila">
+        <input type="checkbox" ng-model="{% js_model "RidRTITest.legionella_pneumophila" %}">
         Legionella pneumophila
       </label>
     </td>
@@ -22,19 +23,19 @@
   <tr>
     <td>
       <label class="checkbox inline">
-        <input type="checkbox" ng-model="mtc">
+        <input type="checkbox" ng-model="{% js_model "RidRTITest.mtc" %}">
         Mycobacterium tuberculosis complex
       </label>
     </td>
     <td>
       <label class="checkbox inline">
-        <input type="checkbox" ng-model="haemophilus_influenzae">
+        <input type="checkbox" ng-model="{% js_model "RidRTITest.haemophilus_influenzae" %}">
         Haemophilus influenzae
       </label>
     </td>
     <td>
       <label class="checkbox inline">
-        <input type="checkbox" ng-model="streptococcus_pneumoniae">
+        <input type="checkbox" ng-model="{% js_model "RidRTITest.streptococcus_pneumoniae" %}">
         Streptococcus pneumoniae
       </label>
     </td>
@@ -42,19 +43,19 @@
   <tr>
     <td>
       <label class="checkbox inline">
-        <input type="checkbox" ng-model="rsva">
+        <input type="checkbox" ng-model="{% js_model "RidRTITest.rsva" %}">
         RSVA
       </label>
     </td>
     <td>
       <label class="checkbox inline">
-        <input type="checkbox" ng-model="rsvb">
+        <input type="checkbox" ng-model="{% js_model "RidRTITest.rsvb" %}">
         RSVB
       </label>
     </td>
     <td>
       <label class="checkbox inline">
-        <input type="checkbox" ng-model="influenza_a">
+        <input type="checkbox" ng-model="{% js_model "RidRTITest.influenza_a" %}">
         Influenza A
       </label>
     </td>
@@ -62,19 +63,19 @@
   <tr>
     <td>
       <label class="checkbox inline">
-        <input type="checkbox" ng-model="influenza_b">
+        <input type="checkbox" ng-model="{% js_model "RidRTITest.influenza_b" %}">
         Influenza B
       </label>
     </td>
     <td>
       <label class="checkbox inline">
-        <input type="checkbox" ng-model="cap_coronavirus_oc43">
+        <input type="checkbox" ng-model="{% js_model "RidRTITest.cap_coronavirus_oc43" %}">
         Coronavirus OC43
       </label>
     </td>
     <td>
       <label class="checkbox inline">
-        <input type="checkbox" ng-model="cap_coronavirus_hku1">
+        <input type="checkbox" ng-model="{% js_model "RidRTITest.cap_coronavirus_hku1" %}">
         Coronavirus HKU1
       </label>
     </td>
@@ -82,13 +83,13 @@
   <tr>
     <td>
       <label class="checkbox inline">
-        <input type="checkbox" ng-model="cap_coronavirus_nl63">
+        <input type="checkbox" ng-model="{% js_model "RidRTITest.cap_coronavirus_nl63" %}">
         Coronavirus NL63
       </label>
     </td>
     <td>
       <label class="checkbox inline">
-        <input type="checkbox" ng-model="cap_coronavirus_229e">
+        <input type="checkbox" ng-model="{% js_model "RidRTITest.cap_coronavirus_229e" %}">
         Cornavirus 229E
       </label>
     </td>

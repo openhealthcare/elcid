@@ -1,20 +1,21 @@
-<table ng-show="test == 'orti' ">
+{% load forms %}
+<table ng-show="{% js_model "RidRTITest.test" %} == 'orti' ">
   <tr>
     <td>
       <label class="checkbox inline">
-        <input type="checkbox" ng-model="nocardia_spp">
+        <input type="checkbox" ng-model="{% js_model "RidRTITest.nocardia_spp" %}">
         Nocardia spp
       </label>
     </td>
     <td>
       <label class="checkbox inline">
-        <input type="checkbox" ng-model="rhodococcus_equi">
+        <input type="checkbox" ng-model="{% js_model "RidRTITest.rhodococcus_equi" %}">
         Rhodococcus equi
       </label>
     </td>
     <td>
       <label class="checkbox inline">
-        <input type="checkbox" ng-model="aspergillus_spp">
+        <input type="checkbox" ng-model="{% js_model "RidRTITest.aspergillus_spp" %}">
         Aspergillus spp
       </label>
     </td>
@@ -22,19 +23,19 @@
   <tr>
     <td>
       <label class="checkbox inline">
-        <input type="checkbox" ng-model="cryptococcus_neoformans">
+        <input type="checkbox" ng-model="{% js_model "RidRTITest.cryptococcus_neoformans" %}">
         Cryptococcus neoformans
       </label>
     </td>
     <td>
       <label class="checkbox inline">
-        <input type="checkbox" ng-model="pneumocystis_jivoveci">
+        <input type="checkbox" ng-model="{% js_model "RidRTITest.pneumocystis_jivoveci" %}">
         Pneumocystis jiroveci
       </label>
     </td>
     <td>
       <label class="checkbox inline">
-        <input type="checkbox" ng-model="orti_coronavirus_oc43">
+        <input type="checkbox" ng-model="{% js_model "RidRTITest.orti_coronavirus_oc43" %}">
         Coronavirus OC43
       </label>
     </td>
@@ -42,19 +43,19 @@
   <tr>
     <td>
       <label class="checkbox inline">
-        <input type="checkbox" ng-model="orti_coronavirus_hku1">
+        <input type="checkbox" ng-model="{% js_model "RidRTITest.orti_coronavirus_hku1" %}">
         Cornavirus HKU1
       </label>
     </td>
     <td>
       <label class="checkbox inline">
-        <input type="checkbox" ng-model="orti_coronavirus_nl63">
+        <input type="checkbox" ng-model="{% js_model "RidRTITest.orti_coronavirus_nl63" %}">
         Coronavirus NL63
       </label>
     </td>
     <td>
       <label class="checkbox inline">
-        <input type="checkbox" ng-model="orti_coronavirus_229e">
+        <input type="checkbox" ng-model="{% js_model "RidRTITest.orti_coronavirus_229e" %}">
         Coronavirus 229E
       </label>
     </td>

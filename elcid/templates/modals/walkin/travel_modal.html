@@ -3,13 +3,15 @@
 {% block icon %}<i class="fa fa-plane"></i>{% endblock %}
 {% block modal_body %}
   <form class="form-horizontal">
-    {% input "autofocus" label="Destination" model="editing.travel.destination" lookuplist="destination_list" %}
-    {% input label="Dates" model="editing.travel.dates" %}
-    {% input label="Reason for travel" model="editing.travel.reason_for_travel" lookuplist="travel_reason_list" %}
-    {% input label="Specific exposures" model="editing.travel.specific_exposures" %}
-    {% checkbox label="Malaria Prohylaxis" model="editing.travel.malaria_prophylaxis" %}
-    {% input label="Drug" model="editing.travel.malaria_drug" lookuplist="antimicrobial_list" show="editing.travel.malaria_prophylaxis" %}
-    {% select label="Compliance" model="editing.travel.malaria_compliance" lookuplist="['Complete', 'Incomplete']" show="editing.travel.malaria_prophylaxis" %}
-    {% checkbox label="Did not travel" model="editing.travel.did_not_travel" %}
+    <div ng-repeat="{{ models.Travel.get_api_name }} in [editing.{{ models.Travel.get_api_name}}]">
+      {% input "autofocus" field="Travel.destination" %}
+      {% input field="Travel.dates" %}
+      {% input field="Travel.reason_for_travel" %}
+      {% input field="Travel.specific_exposures" %}
+      {% checkbox field="Travel.malaria_prophylaxis" %}
+      {% input field="Travel.malaria_drug" show="travel.malaria_prophylaxis" %}
+      {% select field="Travel.malaria_compliance" label="Compliance" lookuplist="['Complete', 'Incomplete']" show="travel.malaria_prophylaxis" %}
+      {% checkbox field="Travel.did_not_travel" %}
+    </div>
   </form>
 {% endblock %}
