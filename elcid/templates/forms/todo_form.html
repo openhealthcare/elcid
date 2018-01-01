@@ -1,4 +1,5 @@
-<textarea class="form-control" ng-model="todo.details" rows="10" autofocus
+{% load forms %}
+<textarea class="form-control" ng-model="{% js_model "Todo.details" %}" rows="10" autofocus
           {% include 'partials/_mentio_edit_item.html' %}
           ></textarea>
 {% include "partials/_markdown_help.html" %}

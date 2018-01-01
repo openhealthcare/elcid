@@ -1,25 +1,25 @@
 {% load forms %}
-<div ng-hide="allergies.external_system">
+<div ng-hide="{% js_model "Allergies.external_system" %}">
   {% input field="Allergies.drug" lookuplist="antimicrobial_list" %}
   {% checkbox field="Allergies.provisional" %}
   {% input field="Allergies.details" %}
 </div>
-<div ng-show="allergies.external_system">
+<div ng-show="{% js_model "Allergies.external_system" %}">
   <div class="text-center content-offset-below-25" ng-show="allergies.no_allergies">
     <b>The patient has no allergies</b>
   </div>
-  <div class="content-offset-below-25" ng-hide="allergies.no_allergies">
+  <div class="content-offset-below-25" ng-hide="{% js_model "Allergies.no_allergies" %}">
     <div class="row">
-      <div class="col-md-4 col-md-offset-2"><b>Allergy Description::</b></div> <div class="col-md-4">[[ allergies.allergy_description  ]]</div>
+      <div class="col-md-4 col-md-offset-2"><b>Allergy Description::</b></div> <div class="col-md-4">[[ {% js_model "Allergies.allergy_description" %} ]]</div>
     </div>
     <div class="row">
-      <div class="col-md-4 col-md-offset-2"><b>Certainty Description:</b></div> <div class="col-md-4">[[ allergies.certainty_description ]]</div>
+      <div class="col-md-4 col-md-offset-2"><b>Certainty Description:</b></div> <div class="col-md-4">[[ {% js_model "Allergies.certainty_description" %} ]]</div>
     </div>
     <div class="row">
-      <div class="col-md-4 col-md-offset-2"><b>Status Description:</b></div> <div class="col-md-4">[[ allergies.status_description ]]</div>
+      <div class="col-md-4 col-md-offset-2"><b>Status Description:</b></div> <div class="col-md-4">[[ {% js_model "Allergies.status_description" %} ]]</div>
     </div>
     <div class="row">
-      <div class="col-md-4 col-md-offset-2"><b>Diagnosis Date:</b></div> <div class="col-md-4">[[ allergies.diagnosis_datetime | shortDate ]]</div>
+      <div class="col-md-4 col-md-offset-2"><b>Diagnosis Date:</b></div> <div class="col-md-4">[[ {% js_model "Allergies.diagnosis_datetime" %} | shortDate ]]</div>
     </div>
   </div>
 </div>

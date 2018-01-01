@@ -1,14 +1,14 @@
 {% load forms %}
 <div class="form-group">
   <label class="control-label col-sm-3">Category</label>
-  <div class="col-sm-8" ng-show="location.category == 'Discharged'">
+  <div class="col-sm-8" ng-show="{% js_model "Location.category" %} === 'Discharged'">
     <label class="readonly">
-      [[ location.category | title]] &nbsp;
+      [[ {% js_model "Location.category" %} | title]] &nbsp;
       <button analytics-category="patient-detail" analytics-label="[[ episode.category_name ]]" analytics-event="undischarge"
               analytics-on class="btn" ng-click="undischarge()">Undischarge</button>
     </label>
   </div>
-  <div class="col-sm-8" ng-show="location.category != 'Discharged'">
+  <div class="col-sm-8" ng-show="{% js_model "Location.category" %} !== 'Discharged'">
     <p>[[ episode.category_name ]]</p>
   </div>
 </div>

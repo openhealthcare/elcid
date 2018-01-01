@@ -1,19 +1,19 @@
 {% load forms %}
 {% select "autofocus" field="Line.line_type" %}
 {% input field="Line.site" %}
-<span ng-show="line.line_type == 'Peripheral cannula'">
+<span ng-show="{% js_model "Line.line_type" %} === 'Peripheral cannula'">
   {% datetimepicker field="Line.insertion_datetime" date_label="Insertion Date" time_label="Insertion Time" %}
 </span>
-<span ng-hide="line.line_type == 'Peripheral cannula'">
+<span ng-hide="{% js_model "Line.line_type" %} === 'Peripheral cannula'">
   {% datepicker "data-date-type=\"date\"" field="Line.insertion_datetime" label="Insertion Date" %}
 </span>
 {% input field="Line.inserted_by" %}
 {% input field="Line.external_length" show="line.line_type != 'Peripheral cannula'" unit="cm" %}
 
-<span ng-show="line.line_type == 'Peripheral cannula'">
+<span ng-show="{% js_model "Line.line_type" %} === 'Peripheral cannula'">
   {% datetimepicker field="Line.removal_datetime" date_label="Removal Date" time_label="Removal Time" %}
 </span>
-<span ng-hide="line.line_type == 'Peripheral cannula'">
+<span ng-hide="{% js_model "Line.line_type" %} === 'Peripheral cannula'">
   {% datepicker "data-date-type=\"date\"" field="Line.removal_datetime" label="Removal Date" %}
 </span>
 
