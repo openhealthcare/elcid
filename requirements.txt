@@ -26,13 +26,13 @@ supervisor==3.0
 
 -e git+https://github.com/openhealthcare/opal.git@v0.10.0#egg=opal
 
--e git+https://github.com/openhealthcare/opal-reporting.git@v0.1#egg=opal_reporting
--e git+https://github.com/openhealthcare/opal-observations.git@v0.4.0#egg=opal_observations
+-e git+https://github.com/openhealthcare/opal-reporting.git@v0.2#egg=opal_reporting
+-e git+https://github.com/openhealthcare/opal-observations.git@v0.5.0#egg=opal_observations
 
--e git+https://github.com/openhealthcare/opal-wardround.git@v0.9.0#egg=opal_wardround
--e git+https://github.com/openhealthcare/opal-dashboard.git@v0.4.0#egg=opal_dashboard
+-e git+https://github.com/openhealthcare/opal-wardround.git@v0.10.0#egg=opal_wardround
+-e git+https://github.com/openhealthcare/opal-dashboard.git@v0.5.0#egg=opal_dashboard
 
--e git+https://github.com/openhealthcare/opal-dischargesummary.git@v0.4#egg=opal_dischargesummary
--e git+https://github.com/openhealthcare/opal-guidelines.git@v0.3#egg=opal_guidelines
+-e git+https://github.com/openhealthcare/opal-dischargesummary.git@v0.5.0#egg=opal_dischargesummary
+-e git+https://github.com/openhealthcare/opal-guidelines.git@v0.4.0#egg=opal_guidelines
 
 -e git+https://github.com/srosro/django-test-coverage#egg=django-test-coverage
