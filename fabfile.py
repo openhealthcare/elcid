@@ -165,7 +165,8 @@ def pip_install_requirements(new_env):
     print("Installing requirements")
     pip = "{}/bin/pip".format(new_env.virtual_env_path)
     local("{0} install pip==9.0.1".format(pip))
-    local("{} install distribute==0.6.34".format(pip))
+    local("{0} install setuptools==38.4.0".format(pip))
+    local("{} install distribute==0.7.3".format(pip))
     local("{0} install -r requirements.txt".format(pip))
 
 
