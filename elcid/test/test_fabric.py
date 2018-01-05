@@ -243,7 +243,7 @@ distribute"
         third_call = local.call_args_list[2][0][0]
         self.assertEqual(
             third_call,
-            "/home/ohc/.virtualenvs/elcid-some_branch/bin/pip update \
+            "/home/ohc/.virtualenvs/elcid-some_branch/bin/pip install \
 setuptools==38.4.0"
         )
 
