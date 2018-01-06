@@ -30,9 +30,16 @@ angular.module('opal.services').factory('DischargePatientService', function($q) 
             }
 
             if(!episode.end){
-                end = moment().format('DD/MM/YYYY');
+                end = new Date();
             }else{
-                end = episode.end;
+                if(_.isString(episode.end)){
+                    end = moment(episode.end, 'DD/MM/YYYY').toDate();
+                }
+                else{
+                    // allows for the fact that episode.end is a moment
+                    // or a date. It should always be a moment
+                    end = moment(episode.end).toDate();
+                }
             }
 
             return {
