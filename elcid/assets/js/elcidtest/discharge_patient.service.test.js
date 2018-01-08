@@ -104,23 +104,6 @@ describe('DischargePatientService', function(){
       expect(editing.end).toEqual(expectedDate.toDate());
     });
 
-    it("should set the end date appropriately if there's an end date that is a string", function(){
-      episode.end = "25/05/2016";
-      episode.location = [{category: "Inpatient"}];
-      dischargePatientService.getEditing(episode, tags);
-      var editing = dischargePatientService.getEditing(episode);
-      expect(editing.end).toEqual(moment("2016-05-25").toDate());
-    });
-
-    it("should set the end date appropriately if there's an end date that is a date", function(){
-      var end = moment("2016-05-25").toDate()
-      episode.end = end;
-      episode.location = [{category: "Inpatient"}];
-      dischargePatientService.getEditing(episode, tags);
-      var editing = dischargePatientService.getEditing(episode);
-      expect(editing.end).toEqual(end);
-    });
-
     it("should set the end date appropriately if end is not set", function(){
       var end = new Date();
       episode.location = [{category: "Inpatient"}];
