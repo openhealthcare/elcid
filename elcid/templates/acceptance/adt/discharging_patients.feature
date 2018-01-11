@@ -32,3 +32,21 @@ When I click discharge, a modal pops up that gives me the radio option "Discharg
 When I choose this and click the 'Discharge' button
 The patient is still on the list, but marked in the Location column as
 'Discharged with Follow up'
+
+Given that I am on the virology list
+Given that there is a person on the list with discharged with follow up
+When I choose this patient and click the 'Discharge' button, the patient should be removed from the list
+When I add a patient using the previous hospital number for the patient
+Then I should see a new episode added to the list
+
+Given that I am on the immune liason list
+When I click discharge, a modal pops up that gives me the radio option "Discharged - Outstanding Results for Follow-Up"
+When I choose this and click the 'Discharge' button
+The patient is still on the list, but marked in the Location column as
+'Discharged with Follow up'
+
+Given that I am on the immune liason  list
+Given that there is a person on the list with discharged with follow up
+When I choose this patient and click the 'Discharge' button, the patient should be removed from the list
+When I add a patient using the previous hospital number for the patient
+Then I should see a new episode added to the list
