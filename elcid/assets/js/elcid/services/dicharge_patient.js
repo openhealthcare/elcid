@@ -72,6 +72,18 @@ angular.module('opal.services').factory('DischargePatientService', function($q) 
               }
             }
 
+            if(location.category !== ''){
+              // if we are already in the discharged with
+              // follow up/transferred/diceased/removed/no longer under active review
+              // then the episode definitely wants to be discharge
+
+              // alternatively if they have not been already
+              // been discharged, ie they are currently just on the list
+              // then their location is '' they can then have their category
+              // set to 'follo wup' or what have you.
+              locationAttrs.category = "Discharged";
+            }
+
             var deferred = $q.defer();
 
             tagging.save(taggingAttrs).then(function(){

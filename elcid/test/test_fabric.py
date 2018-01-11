@@ -231,11 +231,26 @@ exists"
         self.assertEqual(
             first_call,
             "/home/ohc/.virtualenvs/elcid-some_branch/bin/pip install \
-pip==9.0.1"
+setuptools==38.4.0"
         )
         second_call = local.call_args_list[1][0][0]
         self.assertEqual(
             second_call,
+            "/home/ohc/.virtualenvs/elcid-some_branch/bin/pip install \
+distribute==0.7.3"
+        )
+
+        third_call = local.call_args_list[2][0][0]
+        self.assertEqual(
+            third_call,
+            "/home/ohc/.virtualenvs/elcid-some_branch/bin/pip install \
+pip==9.0.1"
+        )
+
+        fourth_call = local.call_args_list[3][0][0]
+
+        self.assertEqual(
+            fourth_call,
             "/home/ohc/.virtualenvs/elcid-some_branch/bin/pip install -r \
 requirements.txt"
         )
