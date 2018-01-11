@@ -1,15 +1,15 @@
 angular.module('opal.services').factory('DischargePatientService', function($q) {
-    var DischargePatientService = function(episode, tags){
+    "use strict";
+
+    var DischargePatientService = function(){
         /* has 2 jobs
         * i) create the editing fields for the template
         * ii) return a promise dicharging those fields
         */
-
         this.getEditing = function(episode){
             var newCategory,
                 admission,
                 end,
-
             currentCategory = episode.location[0].category;
 
             if(!currentCategory.length){
@@ -25,18 +25,12 @@ angular.module('opal.services').factory('DischargePatientService', function($q) 
           	    newCategory = currentCategory;
             }
 
-            if(episode.start){
-                admission = moment(episode.start).format('MM/DD/YY')
-            }
+            var episodeCopy = episode.makeCopy();
 
-            if(!episode.end){
-                end = moment().format('DD/MM/YYYY');
-            }else{
-                end = episode.end;
-            }
+            end = episodeCopy.end || new Date();
 
             return {
-                start: admission,
+                start: episodeCopy.start,
           	    category_name: newCategory,
                 end: end
             };

@@ -1,16 +1,19 @@
 describe('DischargePatientService', function(){
   "use strict";
   var episode, dischargePatientService, tags, tagging, location, $rootScope;
-  var DischargePatientService, editing;
+  var DischargePatientService, editing, opalTestHelper;
 
   beforeEach(function(){
     module('opal.services', function($provide) {
         $provide.value('UserProfile', function(){ return profile; });
     });
 
+    module('opal.test');
+
     inject(function($injector){
       $rootScope   = $injector.get('$rootScope');
       DischargePatientService = $injector.get('DischargePatientService');
+      opalTestHelper = $injector.get('opalTestHelper');
     });
 
     tagging = {
@@ -92,6 +95,24 @@ describe('DischargePatientService', function(){
       expect(resolved).toBe(true);
       expect(tagging.save).toHaveBeenCalledWith({});
     });
+
+    it("should set the end date appropriately if there's an end date that is a moment", function(){
+    var episode = opalTestHelper.newEpisode($rootScope);
+    var expectedDate = moment("2016-05-25");
+    // validate assumptions
+    expect(expectedDate.isSame(episode.end)).toBe(true);
+    dischargePatientService = new DischargePatientService(episode, tags);
+    var editing = dischargePatientService.getEditing(episode);
+    expect(editing.end).toEqual(expectedDate.toDate());
+  });
+
+  it("should set the end date appropriately if end is not set", function(){
+    var end = new Date();
+    episode.location = [{category: "Inpatient"}];
+    dischargePatientService.getEditing(episode, tags);
+    var editing = dischargePatientService.getEditing(episode);
+    expect(editing.end).toEqual(end);
+  });
 
     it("should discharge the patient, if the patient location was follow up", function(){
       var editing = {category: 'Followup'};
