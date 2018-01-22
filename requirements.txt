@@ -28,7 +28,7 @@ supervisor==3.0
 -e git+https://github.com/openhealthcare/opal-reporting.git@v0.1#egg=opal_reporting
 -e git+https://github.com/openhealthcare/opal-observations.git@v0.4.0#egg=opal_observations
 
--e git+https://github.com/openhealthcare/opal-wardround.git@v0.9.1#egg=opal_wardround
+-e git+https://github.com/openhealthcare/opal-wardround.git@fix-ordering-in-the-find-patient-table#egg=opal_wardround
 -e git+https://github.com/openhealthcare/opal-dashboard.git@v0.4.0#egg=opal_dashboard
 
 -e git+https://github.com/openhealthcare/opal-dischargesummary.git@v0.4#egg=opal_dischargesummary
