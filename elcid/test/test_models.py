@@ -96,7 +96,7 @@ class DemographicsTest(OpalTestCase, AbstractPatientTestCase):
         self.assertEqual('AA1112', demographics.hospital_number)
 
     def test_update_from_dict_with_missing_consistency_token(self):
-        with self.assertRaises(exceptions.APIError):
+        with self.assertRaises(exceptions.MissingConsistencyTokenError):
             self.demographics.update_from_dict({}, self.user)
 
     def test_update_from_dict_with_incorrect_consistency_token(self):
