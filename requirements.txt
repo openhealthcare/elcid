@@ -15,8 +15,8 @@ mock==1.0.1
 requests==2.18.4
 python-dateutil==2.4.2
 djangorestframework==3.4.7
-celery==3.1.19
-django-celery==3.1.17
+celery==3.1.25
+django-celery==3.2.2
 django-compressor==1.5
 jsonfield==1.0.3
 pycrypto==2.6.1
