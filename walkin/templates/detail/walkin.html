@@ -1,4 +1,5 @@
 {% load panels %}
+{% load modalsummary %}
 <div class="col-md-12">
   <div class="panel panel-active">
     <div class="panel-heading text-center">
@@ -9,15 +10,28 @@
       </h3>
     </div>
     <div class="panel-body">
-      <center>
-        <button
-           ng-hide="profile.readonly"
-           ng-click="dischargeEpisode(episode)"
-           class="btn btn-primary">
-          <i class="fa fa-check"></i>
-          Next stage
-        </button>
-      </center>
+      <div class="row">
+        <div class="col-md-12 text-center">
+          <span ng-show="episode.category_name == 'Walkin' && ((episode.hasTag('walkin_doctor') || episode.hasTag('walkin_review') ) || episode.getTags().length == 1)">
+            {% modalsummary 'walkindoctor' %}
+          </span>
+
+          <span ng-show="episode.category_name == 'Walkin' && episode.getTags().length == 1">
+            {% modalsummary 'walkinnurse' %}
+          </span>
+
+          <span ng-show="episode.category_name == 'Walkin' && ((episode.hasTag('walkin_doctor') || episode.hasTag('walkin_review') ) || episode.getTags().length == 1)">
+            {% modalsummary 'zikaletter' %}
+          </span>
+          <button
+             ng-hide="profile.readonly"
+             ng-click="dischargeEpisode(episode)"
+             class="btn btn-primary">
+            <i class="fa fa-check"></i>
+            Next stage
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
