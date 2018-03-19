@@ -28,10 +28,25 @@ class TestMinePatientList(OpalTestCase):
             the user
         '''
         self.episode_1.set_tag_names(["mine"], self.user)
+
+        # make sure Mine is still a thing
         self.assertIn(Mine, PatientList.list())
 
-        mock_request = MagicMock(name='Mock request')
-        mock_request.user = self.user
+        # this is a vanilla case where the episode is active
+        # so make sure its active
+        self.assertTrue(self.episode_1.active)
+        patient_list = PatientList.get("mine")()
+        self.assertEqual(
+            [self.episode_1], [i for i in patient_list.get_queryset(self.user)]
+        )
+        serialized = patient_list.to_dict(self.user)
+        self.assertEqual(len(serialized), 1)
+        self.assertEqual(serialized[0]["id"], 1)
+
+    def test_mine_includes_inactive(self):
+        self.episode_1.set_tag_names(["mine"], self.user)
+        self.episode_1.active = False
+        self.episode_1.save()
 
         patient_list = PatientList.get("mine")()
         self.assertEqual(
