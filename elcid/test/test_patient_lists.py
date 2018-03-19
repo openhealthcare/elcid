@@ -85,9 +85,15 @@ class TestWeekendPatientList(OpalTestCase):
         tropical_episode.set_tag_names(['tropical_diseases'], self.user)
         other_episode = patient.create_episode()
         other_episode.set_tag_names(['other'], self.user)
+        # a patient who has been 'Discharged With Followup' should not
+        # show on the Weekend list
+        discharged_with_followup_episode = patient.create_episode()
+        discharged_with_followup_episode.set_tag_names(['id_inpatients'], self.user)
+        discharged_with_followup_episode.location_set.update(category="Followup")
 
         episodes = Weekend().get_queryset()
         self.assertIn(id_episode, episodes)
         self.assertIn(immune_episode, episodes)
         self.assertIn(tropical_episode, episodes)
         self.assertNotIn(other_episode, episodes)
+        self.assertNotIn(discharged_with_followup_episode, episodes)

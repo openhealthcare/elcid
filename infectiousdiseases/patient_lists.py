@@ -121,6 +121,8 @@ class TropicalLiaison(ElcidPatientList, TaggedPatientList):
 class Weekend(ElcidPatientList, PatientList):
     """
     On the weekend a single team handles the work of three regular teams.
+    Queryset should exclude patients 'discharged but requiring followup'
+    (see https://github.com/openhealthcare/elcid/issues/1525)
     """
     display_name = 'Weekend HTD'
     order = 99
@@ -133,4 +135,6 @@ class Weekend(ElcidPatientList, PatientList):
             tagging__value__in=[
                 'tropical_diseases', 'immune_inpatients', 'id_inpatients'
             ]
+        ).exclude(
+            location__category="Followup"
         )
