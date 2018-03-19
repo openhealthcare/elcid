@@ -126,7 +126,7 @@
         beforeEach(function(){
             $httpBackend.expectPUT(
                 '/api/v0.1/episode/555/',
-                {id: 555, end: today_string }
+                {id: 555, end: today_string, start: null}
             ).respond(episodeData);
             spyOn($modalInstance, 'close');
         });
@@ -176,7 +176,8 @@
             $httpBackend.expectPUT('/api/v0.1/tagging/555/').respond({});
             $httpBackend.expectPUT(
                 '/api/v0.1/episode/555/',
-                {id: 555, end: today_string }).respond({});
+                {id: 555, end: today_string, start: null}
+            ).respond({});
         });
 
         it('Should save the discharge date', function () {
@@ -220,8 +221,11 @@
         });
 
         it('Should set the discharge date if empty', function () {
-            $httpBackend.expectPUT('/api/v0.1/episode/555/',
-                                   {id: 555, end: today_string }).respond(episodeData);
+            $httpBackend.expectPUT(
+              '/api/v0.1/episode/555/',
+              {id: 555, end: today_string, start: null }
+            ).respond(episodeData);
+
             $scope.remove_from_list();
             $httpBackend.flush();
         });
@@ -269,7 +273,7 @@
 
             $httpBackend.expectPUT(
                 '/api/v0.1/episode/555/',
-                {id: 555, end: today_string }).respond({});
+                {id: 555, end: today_string, start: null }).respond({});
             $httpBackend.expectPUT('/api/v0.1/tagging/556/').respond({});
             $httpBackend.expectPOST('/api/v0.1/management/').respond({});
             spyOn($modalInstance, 'close');
