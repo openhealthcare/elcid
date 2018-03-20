@@ -40,4 +40,4 @@ class Mine(ElcidPatientList):
 
     def to_dict(self, user):
         qs = self.get_queryset(user).filter(tagging__user=user)
-        return qs.serialised_active(user)
+        return qs.serialised(user, qs)

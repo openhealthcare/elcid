@@ -111,7 +111,7 @@ describe('OPATDischargeCtrl', function (){
             id:33, opat_referrals: false, "opat": false
          };
          var expectedEpisode = {
-            id: 33, end: "01/02/2015"
+            id: 33, end: "01/02/2015", start: null
          }
          $httpBackend.expectPOST('/api/v0.1/opat_outcome/', expectOpatOutcome).respond({});
          $httpBackend.expectPUT('/api/v0.1/tagging/33/', expectedTagging).respond({});
@@ -132,7 +132,7 @@ describe('OPATDischargeCtrl', function (){
         var today = moment().format("DD/MM/YYYY");
         var expectedLocation = {id: 1, opat_acceptance: today};
         var expectedEpisode = {
-           id: 33, start: expectedLocation.opat_acceptance
+           id: 33, start: expectedLocation.opat_acceptance, end: null
         }
         var todaty = moment().format("DD/MM/YYYY");
         $httpBackend.expectPUT('/api/v0.1/tagging/33/', expectedTagging).respond({});
@@ -177,7 +177,8 @@ describe('OPATDischargeCtrl', function (){
             // Should set the discharge date
             var episode_data = {
                 end: moment().format('DD/MM/YYYY'),
-                id: 33
+                id: 33,
+                start: null
             }
 
             var expectedPost = {
@@ -190,7 +191,7 @@ describe('OPATDischargeCtrl', function (){
             $httpBackend.expectPOST('/api/v0.1/opat_outcome/', expectedPost).respond({});
         });
 
-        it('Should close the mdoal', function () {
+        it('Should close the modal', function () {
             spyOn($modalInstance, 'close');
             $scope.completed_therapy();
             $httpBackend.flush();

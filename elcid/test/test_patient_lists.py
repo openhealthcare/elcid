@@ -28,10 +28,25 @@ class TestMinePatientList(OpalTestCase):
             the user
         '''
         self.episode_1.set_tag_names(["mine"], self.user)
+
+        # make sure Mine is still a thing
         self.assertIn(Mine, PatientList.list())
 
-        mock_request = MagicMock(name='Mock request')
-        mock_request.user = self.user
+        # this is a vanilla case where the episode is active
+        # so make sure its active
+        self.assertTrue(self.episode_1.active)
+        patient_list = PatientList.get("mine")()
+        self.assertEqual(
+            [self.episode_1], [i for i in patient_list.get_queryset(self.user)]
+        )
+        serialized = patient_list.to_dict(self.user)
+        self.assertEqual(len(serialized), 1)
+        self.assertEqual(serialized[0]["id"], 1)
+
+    def test_mine_includes_inactive(self):
+        self.episode_1.set_tag_names(["mine"], self.user)
+        self.episode_1.active = False
+        self.episode_1.save()
 
         patient_list = PatientList.get("mine")()
         self.assertEqual(
@@ -85,9 +100,15 @@ class TestWeekendPatientList(OpalTestCase):
         tropical_episode.set_tag_names(['tropical_diseases'], self.user)
         other_episode = patient.create_episode()
         other_episode.set_tag_names(['other'], self.user)
+        # a patient who has been 'Discharged With Followup' should not
+        # show on the Weekend list
+        discharged_with_followup_episode = patient.create_episode()
+        discharged_with_followup_episode.set_tag_names(['id_inpatients'], self.user)
+        discharged_with_followup_episode.location_set.update(category="Followup")
 
         episodes = Weekend().get_queryset()
         self.assertIn(id_episode, episodes)
         self.assertIn(immune_episode, episodes)
         self.assertIn(tropical_episode, episodes)
         self.assertNotIn(other_episode, episodes)
+        self.assertNotIn(discharged_with_followup_episode, episodes)
