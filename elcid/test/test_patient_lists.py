@@ -1,5 +1,6 @@
 from mock import MagicMock
 
+from django.contrib.auth.models import User
 from django.test import RequestFactory
 from django.core.urlresolvers import reverse
 from opal.core.patient_lists import PatientList
@@ -42,6 +43,24 @@ class TestMinePatientList(OpalTestCase):
         serialized = patient_list.to_dict(self.user)
         self.assertEqual(len(serialized), 1)
         self.assertEqual(serialized[0]["id"], 1)
+
+    def test_mine_excludes_archived(self):
+        self.episode_1.set_tag_names(["mine"], self.user)
+        self.episode_1.set_tag_names([], self.user)
+        patient_list = PatientList.get("mine")()
+        self.assertFalse(
+            patient_list.get_queryset(self.user).exists()
+        )
+
+    def test_mine_excludes_others_mine(self):
+        self.episode_1.set_tag_names(["mine"], self.user)
+        other_user = User.objects.create(username="other")
+        self.episode_2.set_tag_names(["mine"], other_user)
+
+        patient_list = PatientList.get("mine")()
+        self.assertEqual(
+            [self.episode_1], [i for i in patient_list.get_queryset(self.user)]
+        )
 
     def test_mine_includes_inactive(self):
         self.episode_1.set_tag_names(["mine"], self.user)
