@@ -1,8 +1,8 @@
 {% load forms %}
 
-{% select field="Management.follow_up" model="editing.follow_up"%}
+{% select field="Management.follow_up" %}
 
-<div ng-show="editing.follow_up == 'Discharged from clinic: Follow-Up in clinic'">
+<div ng-show="editing.management.follow_up == 'Discharged from clinic: Follow-Up in clinic'">
   {% input field="Management.follow_up_clinic" %}
   {% datepicker field="Management.date_of_appointment" %}
 </div>
