@@ -22,7 +22,7 @@ class ElcidPatientList(PatientList, AbstractBase):
 
 class Mine(ElcidPatientList, TaggedPatientList):
     """
-    if the user has tagged episodes as their's this will give them the
+    if the user has tagged episodes as theirs this will give them the
     appropriate
     episode queryset
     """
