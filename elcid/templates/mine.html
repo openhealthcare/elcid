@@ -2,12 +2,12 @@
 <!-- extends opal/templates/patient_lists/spreadsheet_list.html -->
 
 {% block episode_actions %}
-<p ng-show="listView && currentTag === 'mine' && !profile.readonly">
-  <button class="screen-only btn btn-primary"
-    ng-click="removeFromMine(episode)">
-    <i class="fa fa-minus-square-o"></i>
-     Remove from 'Mine' List
-  </button>
-</p>
+<li class="list-group-item">
+  <p ng-show="listView && currentTag === 'mine' && !profile.readonly">
+    <button class="screen-only btn btn-primary"
+      ng-click="removeFromMine(episode)">
+      <i class="fa fa-minus-square-o"></i> Remove from Mine
+    </button>
+  </p>
+</li>
 {% endblock %}
-opal
