@@ -30,6 +30,7 @@ class Mine(ElcidPatientList, TaggedPatientList):
     tag = "mine"
     order = 100
     schema = list_columns
+    template_name = 'mine.html'
 
     @classmethod
     def get(klass, **kwargs):
