@@ -20,9 +20,6 @@
             {% modalsummary 'walkinnurse' %}
           </span>
 
-          <span ng-show="episode.category_name == 'Walkin' && ((episode.hasTag('walkin_doctor') || episode.hasTag('walkin_review') ) || episode.getTags().length == 1)">
-            {% modalsummary 'zikaletter' %}
-          </span>
           <button
              ng-hide="profile.readonly"
              ng-click="dischargeEpisode(episode)"
