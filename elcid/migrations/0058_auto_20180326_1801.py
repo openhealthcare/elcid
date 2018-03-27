@@ -15,6 +15,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='appointment',
             name='appointment_type',
-            field=models.CharField(blank=True, choices=[(b'DoctorClinic', b'Doctor Clinic review appointment'), (b'NurseClinic', b'Nurse Clinic review appointment')], max_length=200, null=True),
+            field=models.CharField(blank=True, choices=[(b'Doctor Clinic review appointment', b'Doctor Clinic review appointment'), (b'Nurse Clinic review appointment', b'Nurse Clinic review appointment')], max_length=200, null=True),
         ),
     ]
