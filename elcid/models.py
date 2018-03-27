@@ -448,8 +448,14 @@ class Appointment(EpisodeSubrecord):
     _sort = 'date'
     _icon = 'fa fa-calendar'
     _advanced_searchable = False
-
-    appointment_type = models.CharField(max_length=200, blank=True, null=True)
+    APPOINTMENT_CHOICES = [
+        ("Doctor Clinic review appointment", "Doctor Clinic review appointment"),
+        ("Nurse Clinic review appointment", "Nurse Clinic review appointment")
+    ]
+    appointment_type = models.CharField(
+        max_length=200,
+        blank=True, null=True,
+        choices=APPOINTMENT_CHOICES)
     appointment_with = models.CharField(max_length=200, blank=True, null=True, verbose_name="With")
     date             = models.DateField(blank=True, null=True)
 

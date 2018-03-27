@@ -1,12 +1,5 @@
 {% load forms %}
-<div class="form-group">
-  <label class="control-label col-sm-3">Type</label>
-  <div class="col-sm-8">
-    <select class="form-control" ng-model="editing.appointment.appointment_type">
-      <option>Dr clinic Review</option>
-      <option>Nurse clinic Review</option>
-    </select>
-  </div>
-</div>
+
+{% select field="Appointment.appointment_type" %}
 {% input "autofocus" field="Appointment.appointment_with" %}
 {% datepicker field="Appointment.date" %}
