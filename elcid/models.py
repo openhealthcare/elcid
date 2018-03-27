@@ -449,8 +449,8 @@ class Appointment(EpisodeSubrecord):
     _icon = 'fa fa-calendar'
     _advanced_searchable = False
     APPOINTMENT_CHOICES = [
-        ("DoctorClinic", "Doctor Clinic review appointment"),
-        ("NurseClinic", "Nurse Clinic review appointment")
+        ("Doctor Clinic review appointment", "Doctor Clinic review appointment"),
+        ("Nurse Clinic review appointment", "Nurse Clinic review appointment")
     ]
     appointment_type = models.CharField(
         max_length=200,
