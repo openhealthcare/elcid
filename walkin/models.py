@@ -130,6 +130,8 @@ class WalkinNurseLedCare(omodels.EpisodeSubrecord):
 
 
 class ZikaPathway(omodels.EpisodeSubrecord):
+    # this model is no longer used in the application UI
+    # it's been left as there is still Zika data in the DB
     _icon = 'fa fa-warning'
     _advanced_searchable = False
 

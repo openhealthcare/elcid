@@ -13,8 +13,3 @@ class WalkinNurseDischargeLetter(DischargeTemplate):
     name = 'walkinnurse'
     template = 'walkin_nurse_discharge_letter.html'
     button_display = 'Nurse Clinic Letter'
-
-class WalkinZikaLetter(DischargeTemplate):
-    name = 'zikaletter'
-    template = 'zika_letter.html'
-    button_display = 'ZIKA Letter'
