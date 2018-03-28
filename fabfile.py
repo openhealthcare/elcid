@@ -1,208 +1,662 @@
-from fabric.api import env, task, local, lcd, run, prefix
-from fabric.operations import prompt
-from fabric.context_managers import warn_only
-import os
+"""
+This deals with deployment for the UCH.
+
+Before you being make sure that in ../private_settings.json
+you have
+    1) a db_password
+    2) an empty dictionary called additional_settings or a dictionary
+       of any other variables you want set in your local settings
+
+Make sure the you have a back up directory which is read writeable
+that is at BACKUP_DIR
+
+Make sure you have a deployment env that has fabric available
+
+e.g.
+workon elcid-deployment or another environment
+fab clone_branch your-branch
+cd /usr/local/ohc/elcid-{your branch name}
+
+Then 2 choices
+
+deploy_test, this takes the back up file and name of the new branch.
+the back up file will be loaded the environment a database back up from
+
+deploy_prod, this takes the old env and the new env
+
+2 small tasks to look at
+create_private_settings will create an empty private settings file in
+the appropriate place with the fields for you to fill in
+
+The code is in
+/usr/local/ohc/log
+
+The log environment for this project is considered to be
+/usr/local/ohc/log/
+
+The backups are stored in
+/usr/local/ohc/var/
+
+"""
+from __future__ import print_function
+import datetime
+import json
+import copy
+import time
+from jinja2 import Environment, FileSystemLoader
+from fabric.api import local, env
+from fabric.operations import put
+from fabric.context_managers import lcd, settings
+from fabric.decorators import task
+import os.path
+
+env.hosts = ['127.0.0.1']
+UNIX_USER = "ohc"
+DB_USER = "ohc"
+RELEASE_NAME = "elcid-{branch}"
+
+VIRTUAL_ENV_PATH = "/home/{unix_user}/.virtualenvs/{release_name}"
+PROJECT_ROOT = "/usr/local/{unix_user}".format(unix_user=UNIX_USER)
+PROJECT_DIRECTORY = "{project_root}/{release_name}"
+BACKUP_DIR = "{project_root}/var".format(project_root=PROJECT_ROOT)
+GIT_URL = "https://github.com/openhealthcare/elcid"
+
+# the daily back up
+BACKUP_NAME = "{backup_dir}/back.{dt}.{db_name}.sql"
+TAR_BACKUP_NAME = "{backup_dir}/back.{dt}.{db_name}.sql.tar.gz"
+REMOTE_BACKUP_NAME = "{backup_dir}/live/back.{dt}.{db_name}.sql.tar.gz"
+
+# the release back up is take just before the release, and then restored
+RELEASE_BACKUP_NAME = "{backup_dir}/release.{dt}.{db_name}.sql"
+LOG_DIR = "/usr/local/ohc/log/"
+
+MODULE_NAME = "elcid"
+PROJECT_NAME = MODULE_NAME
+CRON_COMMENT = "{} back up".format(MODULE_NAME)
+DB_COMMAND_PREFIX = "sudo -u postgres psql --command"
+TEMPLATE_DIR = os.path.abspath(os.path.dirname(__file__))
+PRIVATE_SETTINGS = "{project_root}/private_settings.json".format(
+    project_root=PROJECT_ROOT
+)
+jinja_env = Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 
 
-env.hosts = ["elcid-uch-test.openhealthcare.org.uk"]
-env.user = "ubuntu"
-project_name = "elcid"
-virtual_env_name = "elcid"
-fabfile_dir = os.path.realpath(os.path.dirname(__file__))
+class Env(object):
+    def __init__(self, branch, remove_existing=False):
+        self.branch = branch
+        self.remove_existing = remove_existing
 
-
-def check_for_uncommitted():
-    changes = local("git status --porcelain", capture=True)
-    return len(changes)
-
-
-def get_requirements():
-    """
-    looks for a requirements file in the same directory as the
-    fabfile. Parses it,
-    """
-
-    with lcd(fabfile_dir):
-        requirements = local("less requirements.txt", capture=True).split("\n")
-
-        package_to_version = {}
-
-        for requirement in requirements:
-            parsed_url = parse_github_urls(requirement)
-
-            if parsed_url:
-                package_to_version.update(parsed_url)
-
-    return package_to_version
-
-
-def parse_github_urls(some_url):
-    """
-    takes in something that looks like a git hub url in a fabfile e.g.
-    -e git+https://github.com/openhealthcare/opal-referral.git@v0.1.2#egg=opal_referral
-    returns opal-referral
-    """
-
-    if "github" in some_url and "opal" in some_url:
-        package_name = some_url.split("@")[0].split("/")[-1]
-        package_name = package_name.replace(".git", "")
-        version = some_url.split("@")[-1].split("#")[0]
-        return {package_name: version}
-
-
-def checkout(package_name_version):
-    with lcd(fabfile_dir):
-        with lcd(".."):
-            existing_packages = local("ls", capture=True).split("\n")
-            uncommitted = []
-
-            for package_name, version in package_name_version.items():
-                if package_name in existing_packages:
-                    with lcd(package_name):
-                        if check_for_uncommitted():
-                            uncommitted.append(package_name)
-
-            if len(uncommitted):
-                print "we have uncommited changes in {} quitting".format(
-                    ", ".join(uncommitted)
-                )
-                return
-
-            for package_name, version in package_name_version.items():
-                if not version:
-                    print "found NO VERSION for {} using master".format(
-                        package_name
-                    )
-                    version = "master"
-                print "looking at {}".format(package_name)
-
-                if package_name not in existing_packages:
-                    print "cloning {}".format(package_name)
-                    local("git clone {}".format(package_name))
-                    with lcd(package_name):
-                        print "checking out {0} to {1}".format(
-                            package_name, version
-                        )
-                else:
-                    with lcd(package_name):
-                        local("git fetch")
-
-                with lcd(package_name):
-                    local("git checkout {}".format(version))
-                    local("git pull origin {}".format(version))
-                    local("python setup.py develop")
-
-
-def db_commands(username):
-    cmds =  [
-        "python manage.py migrate",
-        "python manage.py loaddata data/elcid.teams.json",
-        "python manage.py load_lookup_lists -f data/lookuplists/lookuplists.json",
-        'echo "from opal.models import Role; Role.objects.create(name=\'micro_haem\')" | python ./manage.py shell',
-        "python manage.py create_random_data"
-    ]
-    python_cmd = "echo '"
-    python_cmd += "from django.contrib.auth.models import User; "
-    python_cmd += "User.objects.create_superuser(\"{0}\", \"{0}@example.com\", \"{0}1\")".format(username)
-    python_cmd += "' | python ./manage.py shell"
-    cmds.append(python_cmd)
-    return cmds
-
-def push_to_heroku(remote_name):
-    with lcd(fabfile_dir):
-        current_branch_name = local(
-            "git rev-parse --abbrev-ref HEAD", capture=True
-        )
-        local("git push {0} {1}:master".format(
-            remote_name, current_branch_name)
+    @property
+    def project_directory(self):
+        return PROJECT_DIRECTORY.format(
+            project_root=PROJECT_ROOT,
+            release_name=self.release_name,
         )
 
+    @property
+    def release_name(self):
+        return RELEASE_NAME.format(branch=self.branch)
 
-@task
-def create_heroku_instance(name, username):
+    @property
+    def virtual_env_path(self):
+        return VIRTUAL_ENV_PATH.format(
+            unix_user=UNIX_USER,
+            release_name=self.release_name
+        )
+
+    @property
+    def database_name(self):
+        return self.release_name.replace("-", "_").replace(".", "")
+
+    @property
+    def backup_name(self):
+        return BACKUP_NAME.format(
+            backup_dir=BACKUP_DIR,
+            dt=datetime.datetime.now().strftime("%d.%m.%Y.%H.%M"),
+            db_name=self.database_name
+        )
+
+    @property
+    def tar_backup_name(self):
+        return TAR_BACKUP_NAME.format(
+            backup_dir=BACKUP_DIR,
+            dt=datetime.datetime.now().strftime("%d.%m.%Y.%H.%M"),
+            db_name=self.database_name
+        )
+
+    @property
+    def remote_backup_name(self):
+        return REMOTE_BACKUP_NAME.format(
+            backup_dir=BACKUP_DIR,
+            dt=datetime.datetime.now().strftime("%d.%m.%Y.%H.%M"),
+            db_name=self.database_name
+        )
+
+
+def run_management_command(some_command, env):
+    with lcd(env.project_directory):
+        cmd = "{0}/bin/python manage.py {1}".format(
+            env.virtual_env_path, some_command
+        )
+        result = local(cmd, capture=True)
+        print(result.stdout)
+        print(result.stderr)
+    if result.failed:
+        raise ValueError(
+            "{} failed".format(cmd)
+        )
+    return result
+
+
+def pip_create_virtual_env(new_env):
+    print("Creating new environment")
+    if new_env.remove_existing:
+        local("rm -rf {}".format(new_env.virtual_env_path))
+    else:
+        if os.path.isdir(new_env.virtual_env_path):
+            raise ValueError(
+                "Directory {} already exists".format(new_env.virtual_env_path)
+            )
+    local("virtualenv {}".format(new_env.virtual_env_path))
+    return
+
+
+def pip_install_requirements(new_env):
+    print("Installing requirements")
+    pip = "{}/bin/pip".format(new_env.virtual_env_path)
+    local("{0} install pip==9.0.1".format(pip))
+    local("{0} install -r requirements.txt".format(pip))
+
+
+def pip_set_project_directory(some_env):
+    print("Setting the project directory")
+    local("echo '{0}' > {1}/.project".format(
+        some_env.project_directory, some_env.virtual_env_path
+    ))
+
+
+def postgres_command(command):
+    return local(
+        '{0} "{1}"'.format(DB_COMMAND_PREFIX, command),
+    )
+
+
+def postgres_create_database(some_env):
+    """ creates a database and user if they don't already exist.
+        the db_name is created from the release name
     """
-    creates and populates a heroku instance
-    TODO make sure that we're fully committed git wise before pushing
-    """
-    with lcd(fabfile_dir):
-        local("heroku apps:create {}".format(name))
-        git_url = "https://git.heroku.com/{}.git".format(name)
-        local("git remote add {0} {1}".format(name, git_url))
-        push_to_heroku(name)
-        with warn_only():
-            # heroku somtimes has memory issues doing migrate
-            # it seems to work fine if we just migrate opal first
-            # it will later fail because content types haven't
-            # been migrated, but that's fine we'll do that later
-            local("heroku run --app {0} python manage.py migrate opal".format(
-                name
+    print("Creating the database")
+
+    select_result = local(
+        "sudo -u postgres psql -tAc \"SELECT 1 FROM pg_database \
+WHERE datname='{}'\"".format(some_env.database_name),
+        capture=True
+    )
+    database_exists = "1" in select_result.stdout
+    print(select_result.stderr)
+    print(select_result.stdout)
+
+    if database_exists:
+        if some_env.remove_existing:
+            postgres_command(
+                "DROP DATABASE {0}".format(some_env.database_name)
+            )
+        else:
+            raise ValueError('database {} already exists'.format(
+                some_env.database_name
             ))
-        for db_command in db_commands(username):
-            local("heroku run --app {0} {1}".format(name, db_command))
+
+    postgres_command("CREATE DATABASE {0}".format(some_env.database_name))
+    postgres_command("GRANT ALL PRIVILEGES ON DATABASE {0} TO {1}".format(
+        some_env.database_name, DB_USER
+    ))
 
 
-@task
-def production_deploy():
-    # TODO include the supervisor commands
-    # synch the nginx conf
-    with lcd(fabfile_dir):
-        local("python manage.py migrate")
-        local("python manage.py collectstatic --noinput")
+def postgres_load_database(backup_name, new_env):
+    print("Loading the database {}".format(new_env.database_name))
+    local("sudo -u postgres psql -d {0} -f {1}".format(
+        new_env.database_name,
+        backup_name
+    ))
 
 
-@task
-def checkout_project():
-    checkout(get_requirements())
-
-
-@task
-def create_db(username):
-    with lcd(fabfile_dir):
-        with warn_only():
-            # heroku somtimes has memory issues doing migrate
-            # it seems to work fine if we just migrate opal first
-            # it will later fail because content types haven't
-            # been migrated, but that's fine we'll do that later
-            local("python manage.py migrate opal")
-
-        for db_command in db_commands(username):
-            local(db_command)
-
-@task
-def deploy(key_file_name="../ec2.pem"):
-    env.key_filename = key_file_name
-    changes = local("git status --porcelain", capture=True)
-    if len(changes):
-        print " {}".format(changes)
-        proceed = prompt(
-            "you have uncommited changes, do you want to proceed",
-            default=False,
-            validate=bool
+def services_symlink_nginx(new_env):
+    print("Symlinking nginx")
+    abs_address = "{}/etc/nginx.conf".format(new_env.project_directory, "")
+    if not os.path.isfile(abs_address):
+        raise ValueError(
+            "we expect an nginx conf to exist at {}".format(abs_address)
         )
 
-        if not proceed:
-            return
+    symlink_name = '/etc/nginx/sites-enabled/{}'.format(MODULE_NAME)
+
+    # In case we have trailing enabled elcid configs.
+    # TODO >=2.6  remove this, just remove the one above
+    if os.path.islink(symlink_name):
+        local("sudo rm {}".format(symlink_name))
+
+    local('sudo ln -s {0} {1}'.format(abs_address, symlink_name))
 
 
-    git_branch_name = local('git rev-parse --abbrev-ref HEAD', capture=True)
-    with prefix(". /usr/share/virtualenvwrapper/virtualenvwrapper.sh"):
-        with prefix("workon {}".format(virtual_env_name)):
-            run("git fetch")
-            run("git checkout {}".format(git_branch_name))
-            run("git pull origin {}".format(git_branch_name))
-            run("pip install -r requirements.txt")
-            run("python manage.py migrate")
-            run("python manage.py collectstatic --noinput")
-            run("supervisorctl -c etc/test.conf restart gunicorn")
-            run("supervisorctl -c etc/test.conf restart celery")
+def services_symlink_upstart(new_env):
+    print("Symlinking upstart")
+    abs_address = "{}/etc/upstart.conf".format(new_env.project_directory, "")
+    if not os.path.isfile(abs_address):
+        raise ValueError(
+            "we expect an upstart conf to exist {}".format(abs_address)
+        )
+    symlink_name = '/etc/init/{}.conf'.format(PROJECT_NAME)
+    local("sudo rm -f {}".format(symlink_name))
+
+    local('sudo ln -s {0} {1}'.format(
+        abs_address,
+        symlink_name
+    ))
+
+
+def services_create_local_settings(new_env, additional_settings):
+    print("Creating local settings")
+    new_settings = copy.copy(additional_settings)
+    new_settings["db_name"] = new_env.database_name
+    new_settings["db_user"] = DB_USER
+    template = jinja_env.get_template(
+        'etc/conf_templates/local_settings.py.jinja2'
+    )
+    output = template.render(new_settings)
+    local_settings_file = '{0}/{1}/local_settings.py'.format(
+        new_env.project_directory, MODULE_NAME
+    )
+
+    if os.path.isfile(local_settings_file) and not new_env.remove_existing:
+        raise ValueError(
+            "local settings file {} already exists".format(
+                local_settings_file
+            )
+        )
+    local("rm -f {}".format(local_settings_file))
+
+    with open(local_settings_file, 'w') as f:
+        f.write(output)
+
+
+def services_create_gunicorn_conf(new_env):
+    print("Creating gunicorn conf")
+    template = jinja_env.get_template(
+        'etc/conf_templates/gunicorn.conf.jinja2'
+    )
+    output = template.render(
+        env_name=new_env.virtual_env_path,
+        log_dir=LOG_DIR
+    )
+    gunicorn_conf = '{0}/etc/gunicorn.conf'.format(
+        new_env.project_directory
+    )
+
+    if os.path.isfile(gunicorn_conf) and not new_env.remove_existing:
+        raise ValueError(
+            'gunicorn conf {} unexpectedly already exists'.format(
+                gunicorn_conf
+            )
+        )
+
+    local("rm -f {}".format(gunicorn_conf))
+
+    with open(gunicorn_conf, 'w') as f:
+        f.write(output)
+
+
+def services_create_celery_conf(new_env):
+    print("Creating celery conf")
+    template = jinja_env.get_template(
+        'etc/conf_templates/celery.conf.jinja2'
+    )
+    output = template.render(
+        env_name=new_env.virtual_env_path,
+        log_dir=LOG_DIR
+    )
+    celery_conf = '{0}/etc/celery.conf'.format(
+        new_env.project_directory
+    )
+
+    if os.path.isfile(celery_conf) and not new_env.remove_existing:
+        raise ValueError(
+            'celery conf {} unexpectedly already exists'.format(
+                celery_conf
+            )
+        )
+
+    local("rm -f {}".format(celery_conf))
+
+    with open(celery_conf, 'w') as f:
+        f.write(output)
+
+
+def services_create_upstart_conf(new_env):
+    print("Creating upstart conf")
+    template = jinja_env.get_template('etc/conf_templates/upstart.conf.jinja2')
+    output = template.render(
+        env_name=new_env.virtual_env_path,
+        project_directory=new_env.project_directory,
+        log_dir=LOG_DIR
+    )
+    upstart_conf = '{0}/etc/upstart.conf'.format(
+        new_env.project_directory
+    )
+
+    if os.path.isfile(upstart_conf) and not new_env.remove_existing:
+        raise ValueError(
+            'gunicorn conf {} unexpectedly already exists'.format(
+                upstart_conf
+            )
+        )
+
+    local("rm -f {}".format(upstart_conf))
+
+    with open(upstart_conf, 'w') as f:
+        f.write(output)
+
+
+def restart_supervisord(new_env):
+    print("Restarting supervisord")
+    # warn only in case nothing is running
+    with settings(warn_only=True):
+        local("pkill super; pkill gunic; pkill celery")
+    # don't restart supervisorctl as we need to be running the correct
+    # supervisord
+    try:
+        local("{0}/bin/supervisord -c {1}/etc/production.conf".format(
+            new_env.virtual_env_path, new_env.project_directory
+        ))
+    except:
+        # celery works take a while to kill, so if we die wait a few
+        # seconds and try again
+        time.sleep(10)
+        local("{0}/bin/supervisord -c {1}/etc/production.conf".format(
+            new_env.virtual_env_path, new_env.project_directory
+        ))
+
+
+def restart_nginx():
+    print("Restarting nginx")
+    local('sudo service nginx restart')
 
 
 @task
-def restart_all(key_file_name="../ec2.pem"):
-    env.key_filename = key_file_name
-    with prefix(". /usr/share/virtualenvwrapper/virtualenvwrapper.sh"):
-        with prefix("workon {}".format(virtual_env_name)):
-            run("supervisorctl -c etc/test.conf restart gunicorn")
-            run("supervisorctl -c etc/test.conf restart celery")
-            run("supervisorctl -c etc/test.conf restart gloss")
-            run("supervisorctl -c etc/test.conf restart gloss_flask")
+def backup_and_copy(old_branch_name, old_database_name=None):
+    """
+        dumps the database
+        tars the database and posts it over to the remote host location
+        returns the untarred backup name for use with loading into postgres
+    """
+    old_env = Env(old_branch_name)
+    private_settings = get_private_settings()
+    env.host_string = private_settings["host_string"]
+    env.password = private_settings["remote_password"]
+    backup_name = old_env.backup_name
+    remote_backup_name = old_env.remote_backup_name
+    tar_backup_name = old_env.tar_backup_name
+
+    dump_str = "sudo -u postgres pg_dump {0} -U postgres > {1}"
+    if old_database_name is None:
+        dbname = old_env.database_name
+    else:
+        dbname = old_database_name
+
+    local(dump_str.format(dbname, backup_name))
+
+    if not os.path.isfile(backup_name):
+        raise ValueError("unable to find backup {}".format(
+            backup_name
+        ))
+
+    # tar the file
+    local("tar -czvf {} {}".format(tar_backup_name, backup_name))
+
+    if not os.path.isfile(tar_backup_name):
+        raise ValueError("unable to find tar file {}".format(
+            backup_name
+        ))
+
+    put(
+        local_path=tar_backup_name,
+        remote_path=remote_backup_name
+    )
+    return backup_name
+
+
+def get_private_settings():
+    if not os.path.isfile(PRIVATE_SETTINGS):
+        raise ValueError(
+            "unable to find additional settings at {}".format(
+                PRIVATE_SETTINGS
+            )
+        )
+
+    with open(PRIVATE_SETTINGS) as privado:
+        result = json.load(privado)
+        err_template = "we require '{}' in your private settings"
+        if "db_password" not in result:
+            raise ValueError(err_template.format("db_password"))
+        if "additional_settings" not in result:
+            raise ValueError(err_template.format(
+                "additional_settings dict (even if its empty)"
+            ))
+        if "remote_password" not in result:
+            raise ValueError(err_template.format("remote_password"))
+        if "host_string" not in result:
+            e = "we expect host string to be set, this should be 127.0.0.1 on test, \
+or the address you want to sync to on prod in your private settings"
+            raise ValueError(e)
+
+    return result
+
+
+@task
+def clone_branch(branch_name):
+    branch_env = Env(branch_name)
+    if os.path.isdir(branch_env.project_directory):
+        raise ValueError("{} already exists".format(
+            branch_env.project_directory
+        ))
+
+    print("Cloning into {}".format(branch_env.project_directory))
+
+    local(
+        "git clone -b {0} {1} {2}".format(
+            branch_name,
+            GIT_URL,
+            branch_env.project_directory
+        )
+    )
+
+
+def diff_status(old_status_json, new_status_json):
+    old_status = json.loads(old_status_json)
+    new_status = json.loads(new_status_json)
+
+    for time_period in ["all_time", "last_week"]:
+        flawed = False
+        print("looking at {}".format(time_period))
+        new_time_period = new_status[time_period]
+        old_time_period = old_status[time_period]
+        missing = list(
+            set(new_time_period.keys()) - set(old_time_period.keys())
+        )
+
+        for m in missing:
+            flawed = True
+            print("missing {} from old".format(m))
+
+        for k, v in old_time_period.items():
+            if k not in new_time_period:
+                flawed = True
+                print("missing {} from new".format(k))
+            else:
+                new_result = new_time_period[k]
+                if not v == new_result:
+                    flawed = True
+                    print(
+                        "for {} we used to have {} but now have {}".format(
+                            k, v, new_result
+                        )
+                    )
+        if not flawed:
+            print("no difference")
+
+
+@task
+def create_private_settings():
+    if os.path.isfile(PRIVATE_SETTINGS):
+        raise ValueError(
+            'private settings already exist at {}'.format(PRIVATE_SETTINGS)
+        )
+    with open(PRIVATE_SETTINGS, "w") as privado:
+        json.dump(
+            dict(
+                db_password="",
+                host_string="",
+                remote_password="",
+                additional_settings={}
+            ),
+            privado,
+            indent=4
+        )
+
+
+def _deploy(new_branch, backup_name=None, remove_existing=False):
+    if backup_name and not os.path.isfile(backup_name):
+        raise ValueError("unable to find backup {}".format(backup_name))
+
+    # the new env that is going to be live
+    new_env = Env(new_branch, remove_existing=remove_existing)
+
+    # the private settings
+    private_settings = get_private_settings()
+    env.host_string = private_settings["host_string"]
+
+    # Setup environment
+    pip_create_virtual_env(new_env)
+    pip_set_project_directory(new_env)
+    pip_install_requirements(new_env)
+
+    # create a database
+    postgres_create_database(new_env)
+
+    # load in a backup
+    if backup_name:
+        postgres_load_database(backup_name, new_env)
+
+    # create the local settings used by the django app
+    services_create_local_settings(new_env, private_settings)
+
+    services_create_gunicorn_conf(new_env)
+    services_create_upstart_conf(new_env)
+    services_create_celery_conf(new_env)
+
+    # symlink the nginx conf
+    services_symlink_nginx(new_env)
+
+    # symlink the upstart conf
+    services_symlink_upstart(new_env)
+
+    # django setup
+    run_management_command("collectstatic --noinput", new_env)
+    run_management_command("migrate", new_env)
+    # commented out because at the moment this logs episode that then blows up
+    # because the unicode method is flawed in some circumstances
+    # run_management_command("create_singletons", new_env)
+    run_management_command("load_lookup_lists", new_env)
+    restart_supervisord(new_env)
+    restart_nginx()
+
+
+def infer_current_branch():
+    current_dir = os.path.abspath(os.path.dirname(__file__))
+    project_beginning = Env('', False).project_directory
+
+    if not current_dir.startswith(project_beginning):
+        er_temp = 'we are in {0} but expect to be in a directory beginning \
+with {1}'
+        raise ValueError(er_temp.format(current_dir, project_beginning))
+    return current_dir.replace(project_beginning, "")
+
+
+@task
+def deploy_test(backup_name=None):
+    new_branch = infer_current_branch()
+    _deploy(new_branch, backup_name, remove_existing=True)
+    new_status = run_management_command("status_report", Env(new_branch))
+    print("=" * 20)
+    print("new environment was")
+    print(new_status)
+    print("=" * 20)
+
+
+def validate_private_settings():
+    private_settings = get_private_settings()
+    if "host_string" not in private_settings:
+        raise ValueError(
+            'we need a host string inorder to scp data to a backup server'
+        )
+
+    if "remote_password" not in private_settings:
+        raise ValueError(
+            'we need the password of the backup server inorder to scp data to \
+a backup server'
+        )
+
+
+def _roll_back(branch_name):
+    roll_to_env = Env(branch_name)
+    # symlink the nginx conf
+    services_symlink_nginx(roll_to_env)
+
+    # symlink the upstart conf
+    services_symlink_upstart(roll_to_env)
+
+    restart_supervisord(roll_to_env)
+    restart_nginx()
+
+
+@task
+def roll_back_test(branch_name):
+    _roll_back(branch_name)
+
+
+@task
+def roll_back_prod(branch_name):
+    validate_private_settings()
+    _roll_back(branch_name)
+
+
+@task
+def deploy_prod(old_branch, old_database_name=None):
+    """
+    Occassionally (for instance, when transitioning to new deployment
+    scripts) we will change the database naming scheme
+    We have an optional old_database_name for transitory deployments
+    where we need to pass it in rather than infer from the branch
+    name as normal.
+    """
+    new_branch = infer_current_branch()
+    old_env = Env(old_branch)
+    new_env = Env(new_branch)
+
+    validate_private_settings()
+
+    if old_database_name:
+        backup_name = old_database_name
+        old_status = {}
+    else:
+        backup_name = backup_and_copy(old_branch)
+        old_status = run_management_command("status_report", old_env)
+
+    _deploy(new_branch, backup_name, remove_existing=False)
+    new_status = run_management_command("status_report", new_env)
+    # remove the old backup, its been tarred so its safe to go
+    if not old_database_name:
+        local("rm {}".format(backup_name))
+        diff_status(new_status, old_status)
+    else:
+        print("no old status")
+        print(new_status)

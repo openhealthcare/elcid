@@ -3,4 +3,4 @@
   ([[item.initials]]<span ng-show="item.discussed_with"></span>)<br />
   [[item.reason_for_interaction]]</b>
 <br />
-  [[ item.clinical_discussion ]]
+[[ item.clinical_discussion | limitTo:100 ]]<span ng-if="item.clinical_discussion.length > 100">&hellip;</span>

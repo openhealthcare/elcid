@@ -1,0 +1,100 @@
+{% extends 'opal.html' %}
+
+{% load plugins %}
+
+{% block ngapp %}haem.referrals{% endblock %}
+
+
+{% block angularapp %}
+  {% plugin_javascripts 'haem.referrals' %}
+{% endblock %}
+
+
+{% block content %}
+<div class="container content-offset">
+  <div class="panel panel-primary">
+    <!-- Default panel contents -->
+    <div class="panel-heading">
+      <h2>
+        <i class="fa fa-dashboard"></i>
+        Referrals
+      </h2>
+    </div>
+
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3>Haem Referral</h3>
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-md-12">
+                  <p class="lead">Refer to Micro Haematology</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12 text-right">
+                  <a href="/pathway/#/haem_referrals" class="btn btn-lg btn-primary ">
+                    <i class="fa fa-arrow-right"></i>
+                    Make Referral
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3>Oncology Referral</h3>
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-md-12">
+                  <p class="lead">Refer to Micro Oncology</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12 text-right">
+                  <a href="/pathway/#/oncology_referrals" class="btn btn-lg btn-primary">
+                    <i class="fa fa-arrow-right"></i>
+                    Make Referral
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3>Micro Advice Referral</h3>
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-md-12">
+                  <p class="lead">Refer to Micro Advice</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12 text-right">
+                  <a href="/pathway/#/micro_advice_referrals" class="btn btn-lg btn-primary">
+                    <i class="fa fa-arrow-right"></i>
+                    Make Referral
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block loading %}{% endblock %}

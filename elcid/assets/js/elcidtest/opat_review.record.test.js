@@ -19,7 +19,6 @@ describe('OPATReview', function(){
         it('should set the date', function(){
             var today = moment();
             var review = new OPATReview({});
-            jasmine.clock().mockDate(today.toDate());
             expect(review.datetime).toEqual(today);
         });
 

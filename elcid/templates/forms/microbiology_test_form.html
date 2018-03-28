@@ -258,7 +258,6 @@
 </span>
 
 <span ng-show="testType == 'micro_test_respiratory_virus_pcr'">
-
   <div class="form-group">
     <label class="control-label col-sm-3">Influenza-A</label>
     <div class="col-sm-8">
@@ -277,7 +276,6 @@
         <input class="" type="radio" value="negative" ng-model="editing.microbiology_test.influenza_a">
         negative
       </label>
-
     </div>
   </div>
 
@@ -324,6 +322,8 @@
 
     </div>
   </div>
+
+  {% radio field="MicrobiologyTest.rhinovirus" %}
 
   <div class="form-group">
     <label class="control-label col-sm-3">Metapneumovirus</label>
@@ -533,16 +533,9 @@
 
 </span>
 
-<span ng-show="testType == 'micro_test_other'">
-
-  <div class="form-group">
-    <label class="control-label col-sm-3">Result</label>
-    <div class="col-sm-8">
-      <input class="form-control" type="text" ng-model="editing.microbiology_test.result">
-    </div>
-  </div>
-
-</span>
+<div ng-show="testType == 'micro_test_other'">
+  {% input field="MicrobiologyTest.result" element_name="'result_text'" %}
+</div>
 
 {% select field="MicrobiologyTest.hiv_declined" show="editing.microbiology_test.test == 'HIV Point of Care' && editing.microbiology_test.result == 'not done'" lookuplist="hiv_no_list" %}
 {% checkbox field="MicrobiologyTest.alert_investigation" %}

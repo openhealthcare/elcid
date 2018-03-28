@@ -4,7 +4,8 @@
   <div class="col-sm-8" ng-show="editing.location.category == 'Discharged'">
     <label class="readonly">
       [[ editing.location.category | title]] &nbsp;
-      <button class="btn" ng-click="undischarge()">Undischarge</button>
+      <button analytics-category="patient-detail" analytics-label="[[ episode.category_name ]]" analytics-event="undischarge"
+              analytics-on class="btn" ng-click="undischarge()">Undischarge</button>
     </label>
   </div>
   <div class="col-sm-8" ng-show="editing.location.category != 'Discharged'">

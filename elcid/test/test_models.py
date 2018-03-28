@@ -1,14 +1,18 @@
+"""
+Models for the UCH elCID implementation
+"""
 import datetime
+
 import ffs
 import pytz
-from mock import patch
-
 from django.conf import settings
 from django.test import TestCase, override_settings
 from django.contrib.contenttypes.models import ContentType
+from mock import patch
 from opal.core import exceptions
 from opal.core.test import OpalTestCase
 from opal.models import Patient, Episode, Condition, Synonym, Symptom
+
 from elcid.models import (
     Location, PresentingComplaint, Result, Allergies, Demographics
 )
@@ -92,7 +96,7 @@ class DemographicsTest(OpalTestCase, AbstractPatientTestCase):
         self.assertEqual('AA1112', demographics.hospital_number)
 
     def test_update_from_dict_with_missing_consistency_token(self):
-        with self.assertRaises(exceptions.APIError):
+        with self.assertRaises(exceptions.MissingConsistencyTokenError):
             self.demographics.update_from_dict({}, self.user)
 
     def test_update_from_dict_with_incorrect_consistency_token(self):
@@ -183,7 +187,7 @@ class PresentingComplaintTest(OpalTestCase, AbstractEpisodeTestCase):
         self.symptom_2 = Symptom.objects.create(name="alertness")
         self.symptom_3 = Symptom.objects.create(name="apathy")
         self.presenting_complaint = PresentingComplaint.objects.create(
-            symptom=self.symptom_1,
+            symptom_fk_id=self.symptom_1.id,
             duration="a week",
             details="information",
             consistency_token=1111,

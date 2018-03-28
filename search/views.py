@@ -42,7 +42,7 @@ class SearchTemplateView(LoginRequiredMixin, TemplateView):
 
 
 class ExtractTemplateView(LoginRequiredMixin, TemplateView):
-    template_name = 'extract.html'
+    template_name = 'search/extract.html'
 
 
 def ajax_login_required(view):

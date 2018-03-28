@@ -6,9 +6,9 @@ import random
 
 from django.apps import apps
 from django.contrib.auth.models import User
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
 from django.views.generic import TemplateView, FormView, View
-
 
 from opal.core import application
 
@@ -80,3 +80,7 @@ class BulkCreateUserView(FormView):
             u.save()
 
         return super(BulkCreateUserView, self).form_valid(form)
+
+
+class StoriesView(LoginRequiredMixin, TemplateView):
+    template_name = "stories.html"

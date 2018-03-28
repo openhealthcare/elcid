@@ -1,0 +1,31 @@
+{% extends 'base_templates/form_modal_base.html' %}
+{% load forms %}
+
+{% block modal_body %}
+<form name="form" ng-submit="" class="form-horizontal" novalidate>
+  <div class="row">
+    <div class="col-md-8">
+      {% datetimepicker field="OPATReview.datetime" %}
+      {% input "autofocus" label="Review Undertaken by" model="editing.opat_review.initials" %}
+      {% select field="OPATReview.rv_type" %}
+      <div ng-show="editing.opat_review.rv_type.indexOf('Nurse') == 0">
+        <hr >
+        <h4>Nurse Review</h4>
+        {% checkbox field="OPATReview.dressing_changed" %}
+        {% checkbox field="OPATReview.bung_changed" %}
+        {% textarea field="OPATReview.medication_administered" %}
+        {% input field="OPATReview.adverse_events" %}
+      </div>
+    </div>
+    <div class="col-md-4">
+      {% include 'modals/_allergies_sidebar.html' %}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-10 col-md-push-1">
+      <label>OPAT Plan</label>
+      <textarea class="form-control" ng-model="editing.opat_review.opat_plan" rows="5" {% include 'partials/_mentio_edit_item.html' %} autocomplete="off"></textarea>
+    </div>
+  </div>
+</form>
+{% endblock %}
