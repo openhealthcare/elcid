@@ -16,7 +16,7 @@
 {% radio field="MicrobiologyTest.vca_igg" show="testType == 'micro_test_ebv_serology'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
 {% radio field="MicrobiologyTest.ebna_igg" show="testType == 'micro_test_ebv_serology'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
 
-{% radio field="MicrobiologyTest.result" show="testType == 'micro_test_hiv'" lookuplist="['pending', 'antibody positive', 'p24 antigen only', 'negative']" %}
+{% radio field="MicrobiologyTest.result" show="testType == 'micro_test_hiv'" lookuplist="['pending', 'antibody positive', 'p24 antigen only', 'negative']" element_name="test_hiv" %}
 
 {% radio field="MicrobiologyTest.hbsag" show="testType == 'micro_test_hepititis_b_serology'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
 {% radio field="MicrobiologyTest.anti_hbs" show="testType == 'micro_test_hepititis_b_serology'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
@@ -26,9 +26,9 @@
 {% input field="MicrobiologyTest.rpr" label="RPR" model="editing.microbiology_test.rpr" show="testType == 'micro_test_syphilis_serology'" %}
 {% radio field="MicrobiologyTest.tppa" show="testType == 'micro_test_syphilis_serology'" lookuplist="['pending', 'positive', 'negative']" %}
 
-{% radio field="MicrobiologyTest.result" show="testType == 'micro_test_single_test_pos_neg'" lookuplist="['pending', 'positive', 'negative']" %}
+{% radio field="MicrobiologyTest.result" show="testType == 'micro_test_single_test_pos_neg'" lookuplist="['pending', 'positive', 'negative']" element_name="test_pos_neg" %}
 
-{% radio field="MicrobiologyTest.result" show="testType == 'micro_test_single_test_pos_neg_equiv'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
+{% radio field="MicrobiologyTest.result" show="testType == 'micro_test_single_test_pos_neg_equiv'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" element_name="test_pos_neg_equiv" %}
 
 {% radio field="MicrobiologyTest.igg" show="testType == 'micro_test_single_igg_test'" lookuplist="['pending', 'positive', 'negative', 'equivocal', 'not done']" %}
 
@@ -102,17 +102,17 @@
     <div class="col-sm-8">
 
       <label class="radio-inline">
-        <input class="" type="radio" value="pending" ng-model="editing.microbiology_test.result">
+        <input class="" type="radio" value="pending" ng-model="editing.microbiology_test.result" name="test_leish_pcr">
         pending
       </label>
 
       <label class="radio-inline">
-        <input class="" type="radio" value="positive" ng-model="editing.microbiology_test.result">
+        <input class="" type="radio" value="positive" ng-model="editing.microbiology_test.result" name="test_leish_pcr">
         positive
       </label>
 
       <label class="radio-inline">
-        <input class="" type="radio" value="negative" ng-model="editing.microbiology_test.result">
+        <input class="" type="radio" value="negative" ng-model="editing.microbiology_test.result" name="test_leish_pcr">
         negative
       </label>
 
@@ -128,17 +128,17 @@
     <div class="col-sm-8">
 
       <label class="radio-inline">
-        <input class="" type="radio" value="pending" ng-model="editing.microbiology_test.hsv_1">
+        <input class="" type="radio" value="pending" ng-model="editing.microbiology_test.hsv_1" name="test_csf_pcr">
         pending
       </label>
 
       <label class="radio-inline">
-        <input class="" type="radio" value="positive" ng-model="editing.microbiology_test.hsv_1">
+        <input class="" type="radio" value="positive" ng-model="editing.microbiology_test.hsv_1" name="test_csf_pcr">
         positive
       </label>
 
       <label class="radio-inline">
-        <input class="" type="radio" value="negative" ng-model="editing.microbiology_test.hsv_1">
+        <input class="" type="radio" value="negative" ng-model="editing.microbiology_test.hsv_1" name="test_csf_pcr">
         negative
       </label>
 
