@@ -17,9 +17,9 @@ describe('OPATReview', function(){
     describe('Initialization', function(){
 
         it('should set the date', function(){
-            var today = moment();
+            var today = moment().format('DD/MM/YY');
             var review = new OPATReview({});
-            expect(review.datetime).toEqual(today);
+            expect(review.datetime.format('DD/MM/YY')).toEqual(today);
         });
 
         it('should set the initials', function(){
