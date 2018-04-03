@@ -15,8 +15,10 @@ from django.core.paginator import Paginator
 from rest_framework import status
 
 from opal import models
-from opal.core.views import (LoginRequiredMixin, json_response,
-                             _get_request_data, with_no_caching)
+from django.contrib.auth.mixins import LoginRequiredMixin
+from opal.core.views import (
+    json_response, _get_request_data, with_no_caching
+)
 from search import queries
 from search.extract import (
     zip_archive, async_extract

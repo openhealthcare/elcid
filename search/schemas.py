@@ -1,5 +1,4 @@
-from search.search_rule import SearchRule
-from opal.core.subrecords import subrecords
+from search.search_rule import SearchRule, ModelSearchRule
 
 
 def extract_schema_for_model(model):
@@ -36,13 +35,7 @@ def extract_search_schema():
         Creates the search schema, ie a combination of all roles
         and subrecords (that are advanced_searchable)
     """
-    custom_rules = [i().to_dict() for i in SearchRule.list()]
-    cs = set(i["name"] for i in custom_rules)
-    subs = (i for i in subrecords() if i._advanced_searchable)
-    schema = [
-        extract_schema_for_model(s) for s in subs if s.get_api_name() not in cs
-    ]
-    return sorted(custom_rules + schema, key=lambda x: x["display_name"])
+    return [i.to_search_dict() for i in SearchRule.list()]
 
 
 def extract_download_schema_for_model(model):
@@ -50,10 +43,4 @@ def extract_download_schema_for_model(model):
         similar to extract_search_schema but excludes fields
         that one cannot extract
     """
-    serialised = extract_schema_for_model(model)
-    field_names = model._get_fieldnames_to_extract()
-    serialised["fields"] = [
-        i for i in serialised["fields"] if i["name"] in field_names
-    ]
-
-    return serialised
+    return ModelSearchRule(model).to_extract_dict()

@@ -47,6 +47,21 @@ class CsvColumn(object):
             self.display_name = self.name.title()
 
 
+class EpisodeIdColumn(object):
+    name = "episode_id"
+    display_name = "Episode Id"
+    description = ""
+
+    def get_value(self, obj):
+        return obj.episode.id
+
+
+class ModelFieldColumn(object):
+    def __init__(self, model, field_name):
+        self.model = model
+        self.field_name = field_name
+
+
 class CsvRenderer(object):
     """
         An Abstract base class of the other csv renderers
@@ -55,27 +70,48 @@ class CsvRenderer(object):
     # overrides of model fields for the csv columns
     non_field_csv_columns = []
 
-    def __init__(self, model, queryset, user, fields=None):
+    def __init__(self, model, queryset, user, chosen_fields_names=None):
         self.queryset = queryset
         self.model = model
         self.user = user
-        if fields:
-            self.fields = fields
+        self.chosen_fields_names = chosen_fields
+
+    def list_fields(self):
+        fields = self.fields
+
+        if not fields:
+            fields = self.model._get_fieldnames_to_extract()
+
+        for field in fields:
+            if isinstance(field, (str, unicode,)):
+                yield ModelFieldColumn(self.model, field)
+            else:
+                yield field()
+
+    def get_fields(self):
+        """
+            If we've got fields declared, returned them.
+        """
+
+        if not self.chosen_fields_names:
+            return self.list_fields()
         else:
-            self.fields = self.get_field_names_to_render()
+            return [self.get_field(i) for i in self.chosen_fields_names]
 
-    def get_non_field_csv_column_names(self):
-        return [csv_column.name for csv_column in self.non_field_csv_columns]
-
-    def get_non_field_csv_columns(self, field_name):
-        return next(
-            i for i in self.non_field_csv_columns if i.name == field_name
-        )
+    def get_field(self, field_name):
+        for i in self.get_fields():
+            if i.get_slug() == field_name:
+                return i
+        raise SearchException("Unable to find field {} for {}".format(
+            field_name, self.get_display_name()
+        ))
 
     def exists(self):
         return self.queryset.exists()
 
     def get_field_names_to_render(self):
+        fields = self.get_fields()
+
         field_names = self.model._get_fieldnames_to_extract()
         # its not in episode but its in all subrecords
         if "consistency_token" in field_names:
@@ -178,6 +214,11 @@ class CsvRenderer(object):
 
 
 class PatientSubrecordCsvRenderer(CsvRenderer):
+    fields = []
+
+    def get_fields(self):
+        return EpisodeIdColumn +
+
     non_field_csv_columns = (
         CsvColumn(
             "episode_id",

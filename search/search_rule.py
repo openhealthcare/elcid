@@ -1,66 +1,58 @@
 from opal.core.discoverable import DiscoverableFeature
-from opal.core.exceptions import Error
-from opal.utils import camelcase_to_underscore
-from opal.models import Episode, Tagging, deserialize_date
+from opal.core import subrecords
+from opal.models import Episode
+from search.search_rule_fields import ModelSearchRuleField, EpisodeTeam
+from search.exceptions import SearchException
 
+"""
+    A Search Rule a
+    A Search Rule is roughly similar to a rest framework serialiser
+    with bits...
 
-class SearchException(Error):
-    pass
+    What we want is a discoverable that will return a search rule if its
+    set or a model wrapped in a search field if its not.
 
+    Similar to a Step in a pathway.
 
-class SearchRuleField(object):
-    lookup_list = None
-    enum = None
-    description = None
-    slug = None
-    display_name = None
+    Fields are declared on the search rule or default to all.
 
-    @classmethod
-    def get_slug(klass):
-        if klass.slug is not None:
-            return klass.slug
+    A search rule field takes in a query, and is serialised to an extract.
 
-        if klass.display_name is None:
-            raise ValueError(
-                'Must set display_name for {0}'.format(klass)
-            )
-        return camelcase_to_underscore(klass.display_name).replace(' ', '')
+    stage 1.
+    Just do the wrap.
 
-    def to_dict(self):
-        return dict(
-            name=self.get_slug(),
-            title=self.display_name,
-            type=self.field_type,
-            enum=self.enum,
-            type_display_name=self.type_display_name,
-            lookup_list=self.lookup_list,
-            description=self.description
-        )
-
-    def query(self, given_query):
-        """
-            takes in the full query and returns a list of episodes
-        """
-        raise NotImplementedError("please implement a query")
+    stage 2.
+    Manage the serialisation.
+"""
 
 
 class SearchRule(DiscoverableFeature):
     module_name = "search_rule"
     fields = []
+    display_name = ""
 
     def get_fields(self):
-        return self.fields
+        for field in self.fields:
+            yield field()
 
     def get_field(self, field_api_name):
-        return next(i for i in self.fields if i.get_slug() == field_api_name)
+        return next(
+            i for i in self.get_fields() if i.get_slug() == field_api_name
+        )
 
-    def to_dict(self):
+    def to_search_dict(self):
         return dict(
             name=self.get_slug(),
             display_name=self.display_name,
-            fields=[i().to_dict() for i in self.get_fields()],
+            fields=[i.to_dict() for i in self.get_fields()],
             description=getattr(self, "description", None)
         )
+
+    def to_extract_dict(self):
+        return self.to_search_dict()
+
+    def get_display_name(self):
+        return self.display_name
 
     @classmethod
     def get(klass, name):
@@ -71,102 +63,128 @@ class SearchRule(DiscoverableFeature):
             if sub.get_slug() == name:
                 return sub
 
+    @classmethod
+    def list(klass):
+        search_rules = super(SearchRule, klass).list()
+        search_rule_slugs = set()
+
+        for search_rule in search_rules:
+            search_rule_slugs.add(search_rule.get_slug())
+            yield search_rule()
+
+        for subrecord in subrecords.subrecords():
+            if subrecord.get_api_name() not in search_rule_slugs:
+                if subrecord._advanced_searchable:
+                    yield ModelSearchRule(subrecord)
+
     def query(self, given_query):
         given_field = given_query['field']
         query_field = next(
             f for f in self.get_fields() if f.get_slug() == given_field
         )
-        return query_field().query(given_query)
+        return query_field.query(given_query)
 
 
-class EpisodeStart(SearchRuleField):
-    display_name = "Start"
-    description = "Episode Start"
-    field_type = "date_time"
-    type_display_name = "Date & Time"
+class ModelSearchRule(object):
+    description = ""
+    fields = []
 
-    def query(self, given_query):
-        val = deserialize_date(given_query['query'])
-        qs = Episode.objects.exclude(start=None)
-        if given_query['queryType'] == 'Before':
-            return qs.filter(start__lte=val)
-        elif given_query['queryType'] == 'After':
-            return qs.filter(start__gte=val)
-        else:
-            err = "unrecognised query type for the start episode query with {}"
-            raise SearchException(err.format(given_query['queryType']))
-
-
-class EpisodeEnd(SearchRuleField):
-    display_name = "End"
-    description = "Episode End"
-    field_type = "date_time"
-    type_display_name = "Date & Time"
-
-    def query(self, given_query):
-        val = deserialize_date(given_query['query'])
-        qs = Episode.objects.exclude(end=None)
-        if given_query['queryType'] == 'Before':
-            return qs.filter(end__lte=val)
-        elif given_query['queryType'] == 'After':
-            return qs.filter(end__gte=val)
-        else:
-            err = "unrecognised query type for the start episode query with {}"
-            raise SearchException(err.format(given_query['queryType']))
-
-
-class EpisodeTeam(SearchRuleField):
-    ALL_OF = "All Of"
-    ANY_OF = "Any Of"
-
-    display_name = "Team"
-    description = "The team(s) related to an episode of care"
-    field_type = "many_to_many_multi_select"
-    type_display_name = "Text Field"
-
-    @property
-    def enum(self):
-        return [i["title"] for i in Tagging.build_field_schema()]
-
-    def translate_titles_to_names(self, titles):
-        result = []
-        titles_not_found = set(titles)
-        for schema in Tagging.build_field_schema():
-            if schema["title"] in titles:
-                result.append(schema["name"])
-                titles_not_found.remove(schema["title"])
-
-        if titles_not_found:
+    def __init__(self, model=None):
+        if model:
+            self.model = model
+        if not self.model:
             raise SearchException(
-                "unable to find the tag titled {}".format(
-                    ",".join(titles_not_found)
-                )
+                "A model search rule either needs to be instantiated with a \
+model, or have one on the class"
             )
 
-        return result
+    def get_slug(self):
+        return self.model.get_api_name()
 
-    def query(self, given_query):
-        query_type = given_query["queryType"]
-        team_display_names = given_query['query']
-        if not query_type == self.ALL_OF:
-            if not query_type == self.ANY_OF:
-                err = """
-                    unrecognised query type for the episode team query with {}
-                """.strip()
-                raise SearchException(err.format(query_type))
+    def get_display_name(self):
+        return getattr(
+            self, "display_name", self.model.get_display_name()
+        )
 
-        team_names = self.translate_titles_to_names(team_display_names)
-        qs = Episode.objects.all()
-        if given_query["queryType"] == self.ALL_OF:
-            for team_name in team_names:
-                qs = qs.filter(tagging__value=team_name)
-        else:
-            qs = qs.filter(tagging__value__in=team_names)
+    def get_fields(self):
+        """
+            If we've got fields declared, returned them.
+        """
+        fields = self.fields
 
-        return qs.distinct()
+        if not fields:
+            fields = self.model._get_fieldnames_to_serialize()
+
+        for field in fields:
+            if isinstance(field, (str, unicode,)):
+                yield ModelSearchRuleField(self.model, field)
+            else:
+                yield field()
+
+    def get_search_fields_schema(self):
+        fields = self.model.build_field_schema()
+        for field in fields:
+            field["type_display_name"] = self.model.get_human_readable_type(
+                field["name"]
+            )
+        return sorted(
+            fields, key=lambda x: x["title"]
+        )
+
+    def to_extract_dict(self):
+        """
+            Get the schema of extract fields.
+
+            For example we want to remove the users personal information.
+        """
+        search_dict = self.to_search_dict()
+        field_names = self.model._get_fieldnames_to_extract()
+        search_dict["fields"] = [
+            i for i in search_dict["fields"] if i["name"] in field_names
+        ]
+        return search_dict
+
+    def to_search_dict(self):
+        """
+            Get the schema of search fields
+        """
+        serialised = {
+            'name': self.model.get_api_name(),
+            'display_name': self.model.get_display_name(),
+            'description': self.description
+        }
+
+        fields = self.get_search_fields_schema()
+
+        if hasattr(self.model, 'get_icon'):
+            serialised["icon"] = self.model.get_icon()
+        for field in fields:
+            field["type_display_name"] = self.model.get_human_readable_type(
+                field["name"]
+            )
+        serialised["fields"] = fields
+        return serialised
+
+    def get_field(self, field_name):
+        for i in self.get_fields():
+            if i.get_slug() == field_name:
+                return i
+        raise SearchException("Unable to find field {} for {}".format(
+            field_name, self.get_display_name()
+        ))
+
+    def query(self, some_query):
+        given_field = some_query['field']
+        for i in self.get_fields():
+            if i.get_slug() == given_field:
+                return i.query(some_query)
+        raise SearchException("Unable to find field {} for {}".format(
+            given_field, self.get_display_name()
+        ))
 
 
-class EpisodeQuery(SearchRule):
+class EpisodeQuery(ModelSearchRule):
     display_name = "Episode"
     slug = "episode"
-    fields = (EpisodeStart, EpisodeEnd, EpisodeTeam,)
+    model = Episode
+    fields = (EpisodeTeam, Episode.start, Episode.end)

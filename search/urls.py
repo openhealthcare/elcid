@@ -1,12 +1,11 @@
 """
 Urls for Opal's search functionality
 """
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 
 from search import views, api
 
-urlpatterns = patterns(
-    '',
+urlpatterns = [
     url(r'^search/$', views.SearchIndexView.as_view(), name="search_index"),
     url(r'^search/templates/search.html/?$',
         views.SearchTemplateView.as_view()),
@@ -52,4 +51,4 @@ urlpatterns = patterns(
         api.DataDictionaryViewSet.as_view({'get': 'list'}),
         name="data-dictionary-list"
     ),
-)
+]
