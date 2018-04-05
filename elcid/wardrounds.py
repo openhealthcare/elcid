@@ -17,7 +17,6 @@ class HistoricTagsMixin(object):
                     episodes=Episode.objects.serialised(
                         self.request.user,
                         self.episodes(),
-                        episode_history=True,
                         historic_tags=True),
                     )
 
