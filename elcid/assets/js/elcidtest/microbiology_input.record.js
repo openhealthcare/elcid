@@ -17,10 +17,9 @@ describe('MicrobiologyInput', function(){
     describe('Initialization', function(){
 
         it('should set the date', function(){
-            var today = moment();
+            var today = moment().format('DD/MM/YY');
             var ca = new MicrobiologyInput({});
-            jasmine.clock().mockDate(today.toDate());
-            expect(ca.when).toEqual(today);
+            expect(ca.when.format('DD/MM/YY')).toEqual(today);
         });
 
         it('should set the initials', function(){

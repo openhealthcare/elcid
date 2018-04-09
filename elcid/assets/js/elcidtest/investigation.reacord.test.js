@@ -15,10 +15,9 @@ describe('Investigation', function(){
     describe('Initialization', function(){
 
         it('should set the date', function(){
-            var today = moment();
-            var note = new Investigation({});
-            jasmine.clock().mockDate(today.toDate());
-            expect(note.date_ordered).toEqual(today);
+            var today = moment().format('DD/MM/YY');
+            var investigation = new Investigation({});
+            expect(investigation.date_ordered.format('DD/MM/YY')).toEqual(today);
         });
 
         it('should leave the date alone if we set it already', function(){
