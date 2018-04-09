@@ -17,11 +17,10 @@ describe('Antimicrobial', function(){
     describe('Initialization', function(){
 
         it('should set the date if we are in walkin', function(){
-            var today = moment();
-            jasmine.clock().mockDate(today.toDate());
+            var today = moment().format('DD/MM/YY');
             $routeParams.slug = 'walkin-walkin_doctor';
-            var a = new Antimicrobial({});
-            expect(a.start_date).toEqual(today);
+            var antimicrobial = new Antimicrobial({});
+            expect(antimicrobial.start_date.format('DD/MM/YY')).toEqual(today);
         });
 
         it('should leave the start date alone if we are not in walkin', function(){

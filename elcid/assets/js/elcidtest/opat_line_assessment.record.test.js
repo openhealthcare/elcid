@@ -15,10 +15,9 @@ describe('OPATLineAssessment', function(){
     describe('Initialization', function(){
 
         it('should set the date', function(){
-            var today = moment();
-            var ass = new OPATLineAssessment({});
-            jasmine.clock().mockDate(today.toDate());
-            expect(ass.assessment_date).toEqual(today);
+            var today = moment().format('DD/MM/YY');
+            var opatLineAssessment = new OPATLineAssessment({});
+            expect(opatLineAssessment.assessment_date.format('DD/MM/YY')).toEqual(today)
         });
 
         it('should leave the date alone if we set it already', function(){
