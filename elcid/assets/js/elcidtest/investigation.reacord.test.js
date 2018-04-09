@@ -17,7 +17,6 @@ describe('Investigation', function(){
         it('should set the date', function(){
             var today = moment();
             var note = new Investigation({});
-            jasmine.clock().mockDate(today.toDate());
             expect(note.date_ordered).toEqual(today);
         });
 
