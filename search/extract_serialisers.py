@@ -110,8 +110,6 @@ class CsvRenderer(object):
         return self.queryset.exists()
 
     def get_field_names_to_render(self):
-        fields = self.get_fields()
-
         field_names = self.model._get_fieldnames_to_extract()
         # its not in episode but its in all subrecords
         if "consistency_token" in field_names:
@@ -217,7 +215,7 @@ class PatientSubrecordCsvRenderer(CsvRenderer):
     fields = []
 
     def get_fields(self):
-        return EpisodeIdColumn +
+        return [EpisodeIdColumn]
 
     non_field_csv_columns = (
         CsvColumn(
@@ -373,8 +371,13 @@ class ExtractCsvSerialiser(CsvRenderer, discoverable.DiscoverableFeature):
         for some_model in subrecords_and_episode:
             # there will be no schema if its advanced searchable false
             # and hasn't been overridden
+            if some_model == Episode:
+                api_name = "episode"
+            else:
+                api_name = some_model.get_api_name()
+
             serialiser_cls = api_name_to_serialiser_cls.get(
-                some_model.get_api_name(), None
+                api_name, None
             )
             if serialiser_cls:
                 result.append(
