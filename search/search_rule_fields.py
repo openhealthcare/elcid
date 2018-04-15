@@ -1,11 +1,11 @@
 from django.db import models as djangomodels
-from opal.core.fields import ForeignKeyOrFreeText
 from django.utils.encoding import force_str
 from opal.core import fields
 from opal.utils import camelcase_to_underscore
 from opal import models
 from search.exceptions import SearchException
 from search import model_queries
+from search.subrecord_discoverable import SubrecordFieldWrapper
 
 """
     A search rule field is a field declared by a search rule.
@@ -22,41 +22,7 @@ from search import model_queries
 """
 
 
-class SearchRuleField(object):
-    lookup_list = None
-    enum = None
-    description = None
-    slug = None
-    display_name = None
-
-    @classmethod
-    def get_slug(klass):
-        if klass.slug is not None:
-            return klass.slug
-
-        if klass.display_name is None:
-            raise ValueError(
-                'Must set display_name for {0}'.format(klass)
-            )
-        return camelcase_to_underscore(klass.display_name).replace(' ', '')
-
-    def get_display_name(self):
-        return self.display_name
-
-    def get_description(self):
-        return self.description
-
-    def to_dict(self):
-        return dict(
-            name=self.get_slug(),
-            title=self.display_name,
-            type=self.field_type,
-            enum=self.enum,
-            type_display_name=self.type_display_name,
-            lookup_list=self.lookup_list,
-            description=self.description
-        )
-
+class SearchRuleField(SubrecordFieldWrapper):
     def query(self, given_query):
         """
             takes in the full query and returns a list of episodes

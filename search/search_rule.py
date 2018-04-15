@@ -32,18 +32,6 @@ class SearchRule(SubrecordDiscoverableMixin, DiscoverableFeature):
     display_name = ""
     slug = ""
 
-    def to_search_dict(self):
-        fields = [i.to_dict() for i in self.get_fields()]
-        fields = sorted(
-            fields, key=lambda x: x["title"]
-        )
-        return dict(
-            name=self.get_api_name(),
-            display_name=self.get_display_name(),
-            fields=fields,
-            description=self.get_description()
-        )
-
     def cast_field_name_to_attribute(self, str):
         return ModelSearchRuleField(self.model, str)
 
@@ -51,8 +39,6 @@ class SearchRule(SubrecordDiscoverableMixin, DiscoverableFeature):
         return getattr(self, "description", "")
 
     def get_model_fields(self):
-        if not self.model:
-            import ipdb; ipdb.set_trace()
         return self.model._get_fieldnames_to_serialize()
 
     def query(self, given_query):

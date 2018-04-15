@@ -3,15 +3,27 @@ from django.db import models as djangomodels
 
 from opal.core import subrecords
 from opal.core import fields
-
-
 from search.exceptions import SearchException
 
 
 class SubrecordFieldWrapper(object):
-    def __init__(self, model, field_name):
-        self.model = model
-        self.field_name = field_name
+    model = None
+    field_name = None
+    description = None
+    display_name = None
+    enum = None
+    fields = None
+    lookup_list = None
+    type_display_name = None
+
+    def __init__(self, user, model=None, field_name=None):
+        if not hasattr(user, "first_name"):
+            raise ValueError("wrong")
+        if model is not None:
+            self.model = model
+        if field_name is not None:
+            self.field_name = field_name
+        self.user = user
 
     @property
     def field(self):
@@ -21,19 +33,41 @@ class SubrecordFieldWrapper(object):
             return getattr(self.model, self.field_name)
         return self.model._meta.get_field(self.field_name)
 
+    def to_dict(self):
+        if self.model:
+            schema = self.model.build_schema_for_field_name(self.field_name)
+        else:
+            schema = {}
+        schema.update(dict(
+            name=self.field_name,
+            title=self.get_display_name(),
+            enum=self.get_enum(),
+            description=self.get_description(),
+            type_display_name=self.type_display_name,
+            lookup_list=self.lookup_list
+        ))
+        return schema
+
+    def get_enum(self):
+        if self.enum is not None:
+            return self.enum
+        return self.model.get_field_enum(self.field_name)
+
     def get_slug(self):
         return self.field_name
 
     def get_display_name(self):
+        if self.display_name:
+            return self.display_name
         return self.model._get_field_title(self.field_name)
 
     def get_description(self):
-        field = self.field
         description = self.description
 
         if description:
             return description
 
+        field = self.field
         enum = self.model.get_field_enum(self.field_name)
 
         if enum:
@@ -78,24 +112,27 @@ class SubrecordDiscoverableMixin(object):
     attribute_cls = None
     description = ""
     model = None
+    fields = None
 
     # set this to True if you want it to be excluded
     # from the list, for example if the model should not be
     # searchable
     exclude = False
 
-    def __init__(self, model=None):
+    def __init__(self, user, model=None):
+        self.user = user
+
         if model is not None:
             self.model = model
 
     @classmethod
-    def get(cls, slug):
-        for field in cls.list():
+    def get(cls, slug, user):
+        for field in cls.list(user):
             if field.get_api_name() == slug:
                 return field
 
     @classmethod
-    def list(klass):
+    def list(klass, user):
         declared_classes = super(SubrecordDiscoverableMixin, klass).list()
         declared_slugs = set()
 
@@ -104,14 +141,14 @@ class SubrecordDiscoverableMixin(object):
             if declared_class.exclude:
                 continue
             else:
-                yield declared_class()
+                yield declared_class(user)
 
         for subrecord in subrecords.subrecords():
             if subrecord.get_api_name() not in declared_slugs:
-                yield klass(subrecord)
+                yield klass(user, subrecord)
 
     def cast_field_name_to_attribute(self, str):
-        return self.attribute_cls(self.model, str)
+        return self.attribute_cls(self.user, self.model, str)
 
     def get_model_fields(self):
         raise NotImplementedError(
@@ -119,11 +156,14 @@ class SubrecordDiscoverableMixin(object):
         )
 
     def get_fields(self):
-        if not hasattr(self, "fields"):
+        """ Get all fields, if
+        """
+        class_attr = "fields"
+        if not hasattr(self, class_attr):
             if not self.model:
                 raise SearchException(
-                    "Fields must be declared on {}".format(
-                        self
+                    "{} must be declared on {}".format(
+                        class_attr, self
                     )
                 )
 
@@ -141,7 +181,7 @@ class SubrecordDiscoverableMixin(object):
                     )
                 yield self.cast_field_name_to_attribute(field)
             else:
-                yield field()
+                yield field(self.user)
 
     def get_field(self, field_name):
         for i in self.get_fields():
@@ -158,6 +198,9 @@ class SubrecordDiscoverableMixin(object):
             return self.model.get_display_name()
         raise NotImplementedError("please implement a display name on {}")
 
+    def get_description(self):
+        return self.description
+
     def get_api_name(self):
         if self.slug:
             return self.slug
@@ -168,3 +211,19 @@ class SubrecordDiscoverableMixin(object):
     def get_icon(self):
         if self.model:
             return self.model.get_icon()
+
+    @classmethod
+    def get_schemas(cls, user):
+        return [i.get_schema() for i in cls.list(user)]
+
+    def get_schema(self):
+        fields = [i.to_dict() for i in self.get_fields()]
+        fields = sorted(
+            fields, key=lambda x: x["title"]
+        )
+        return dict(
+            name=self.get_api_name(),
+            display_name=self.get_display_name(),
+            fields=fields,
+            description=self.get_description()
+        )

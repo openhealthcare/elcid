@@ -9,7 +9,7 @@ import os
 import tempfile
 import zipfile
 
-from search.extract_serialisers import ExtractCsvSerialiser
+from search.extract_serializers import CsvSerializer
 
 from django.conf import settings
 from django.template import Context, loader
@@ -20,9 +20,9 @@ def chunk_list(some_list, amount):
         yield some_list[i:i + amount]
 
 
-def write_data_dictionary(file_name):
+def write_data_dictionary(file_name, user):
     t = loader.get_template("search/data_dictionary_download.html")
-    schema = ExtractCsvSerialiser.get_data_dictionary_schema()
+    schema = CsvSerializer.get_schemas(user)
     ctx = Context(dict(
         settings=settings,
         schema=schema,
@@ -43,25 +43,19 @@ def generate_nested_csv_extract(root_dir, episodes, user, field_dict):
     file_names = []
     data_dict_file_name = "data_dictionary.html"
     full_file_name = os.path.join(root_dir, data_dict_file_name)
-    write_data_dictionary(full_file_name)
+    write_data_dictionary(full_file_name, user)
     file_names.append((full_file_name, data_dict_file_name,))
     csv_file_name = "extract.csv"
     full_file_name = os.path.join(root_dir, csv_file_name)
     file_names.append((full_file_name, csv_file_name,))
     renderers = []
-    slugs_to_serialisers = ExtractCsvSerialiser.api_name_to_serialiser_cls()
 
     for model_api_name, model_fields in field_dict.items():
-        serialiser_cls = slugs_to_serialisers.get(model_api_name, None)
+        serialiser = CsvSerializer.get(model_api_name)
+        renderer_cls = serialiser.get_renderer()
 
-        if not serialiser_cls:
-            # if for whatever reason someone tries to extract a model api name
-            # we don't allow, just skip it
-            continue
-        model = ExtractCsvSerialiser.get_model_for_api_name(model_api_name)
-
-        renderers.append(serialiser_cls(
-            model, episodes, user, fields=field_dict[model_api_name]
+        renderers.append(renderer_cls(
+            serialiser, episodes, user, fields=field_dict[model_api_name]
         ))
 
     with open(full_file_name, 'w') as csv_file:
@@ -86,17 +80,17 @@ def generate_multi_csv_extract(root_dir, episodes, user):
 
     file_name = "data_dictionary.html"
     full_file_name = os.path.join(root_dir, file_name)
-    write_data_dictionary(full_file_name)
+    write_data_dictionary(full_file_name, user)
     file_names.append((full_file_name, file_name,))
 
     full_file_name = os.path.join(root_dir, file_name)
-    slugs_to_serialisers = ExtractCsvSerialiser.api_name_to_serialiser_cls()
 
-    for slug, serialiser_cls in slugs_to_serialisers.items():
-        file_name = "{}.csv".format(slug)
+    for serialiser in CsvSerializer.list(user):
+        file_name = "{}.csv".format(serialiser.get_api_name())
         full_file_name = os.path.join(root_dir, file_name)
-        model = ExtractCsvSerialiser.get_model_for_api_name(slug)
-        renderer = serialiser_cls(model, episodes, user)
+        renderer_cls = serialiser.get_renderer()
+
+        renderer = renderer_cls(serialiser, episodes, user)
         if renderer.exists():
             renderer.write_to_file(full_file_name)
             file_names.append((full_file_name, file_name,))
@@ -106,21 +100,10 @@ def generate_multi_csv_extract(root_dir, episodes, user):
 
 def get_description_with_fields(episodes, user, description, fields):
     field_description = []
-    slugs_to_serialisers = ExtractCsvSerialiser.api_name_to_serialiser_cls()
-
-    for serialiser_api_name, subrecord_fields in fields.items():
-        serialiser_cls = slugs_to_serialisers.get(serialiser_api_name, None)
-        if not serialiser_cls:
-            continue
-        model = ExtractCsvSerialiser.get_model_for_api_name(
-            serialiser_api_name
-        )
-
-        serialiser = serialiser_cls(model, episodes, user, fields=fields)
-
-        field_names = ", ".join(
-            serialiser.get_field_title(i) for i in subrecord_fields
-        )
+    for serialiser in CsvSerializer.list(user):
+        field_names = [
+            i.get_display_name() for i in serialiser.get_fields() if i in fields
+        ]
         field_description.append(
             "{} - {}".format(
                 serialiser.get_display_name(),

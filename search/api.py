@@ -2,8 +2,8 @@ from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 
 from opal.core.views import json_response
-from search import schemas
-from search.extract import ExtractCsvSerialiser
+from search.extract_serializers import CsvSerializer
+from search.search_rule import SearchRule
 
 
 class ExtractSchemaViewSet(viewsets.ViewSet):
@@ -14,7 +14,9 @@ class ExtractSchemaViewSet(viewsets.ViewSet):
     permission_classes = (IsAuthenticated,)
 
     def list(self, request):
-        return json_response(schemas.extract_search_schema())
+        return json_response(
+            SearchRule.get_schemas(request.user)
+        )
 
 
 class DataDictionaryViewSet(viewsets.ViewSet):
@@ -25,4 +27,6 @@ class DataDictionaryViewSet(viewsets.ViewSet):
     permission_classes = (IsAuthenticated,)
 
     def list(self, request):
-        return json_response(ExtractCsvSerialiser.get_data_dictionary_schema())
+        return json_response(
+            CsvSerializer.get_schemas(request.user)
+        )

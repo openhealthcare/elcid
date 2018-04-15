@@ -132,7 +132,7 @@ class DatabaseQuery(QueryBackend):
         Given one set of criteria, return episodes that match it.
         """
         column_name = criteria['column']
-        search_rule = SearchRule.get(column_name)
+        search_rule = SearchRule.get(column_name, self.user)
         return search_rule.query(criteria)
 
     def get_aggregate_patients_from_episodes(self, episodes):
@@ -216,7 +216,7 @@ class DatabaseQuery(QueryBackend):
         line_description = []
 
         for idx, query_line in enumerate(self.query):
-            search_rule = SearchRule.get(query_line["column"])
+            search_rule = SearchRule.get(query_line["column"], self.user)
             display_name = search_rule.get_display_name()
             search_rule_field = search_rule.get_field(query_line["field"])
             field_display_name = search_rule_field.get_display_name()
