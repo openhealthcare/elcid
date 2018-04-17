@@ -1,7 +1,6 @@
 from django.db import models as djangomodels
 from django.utils.encoding import force_str
 from opal.core import fields
-from opal.utils import camelcase_to_underscore
 from opal import models
 from search.exceptions import SearchException
 from search import model_queries
@@ -43,54 +42,6 @@ class ModelSearchRuleField(SearchRuleField):
         self.model = model
         self.field_name = field_name
 
-    @property
-    def field(self):
-        if isinstance(
-            getattr(self.model, self.field_name), fields.ForeignKeyOrFreeText
-        ):
-            return getattr(self.model, self.field_name)
-        return self.model._meta.get_field(self.field_name)
-
-    @property
-    def model_name(self):
-        return self.model.__name__.lower()
-
-    def to_dict(self):
-        return self.model.build_schema_for_field_name(self.field_name)
-
-    def get_slug(self):
-        return self.field_name
-
-    def get_display_name(self):
-        return self.model._get_field_title(self.field_name)
-
-    def get_description(self):
-        field = self.field
-        description = self.description
-
-        if description:
-            return description
-
-        enum = self.model.get_field_enum(self.field_name)
-
-        if enum:
-            return "One of {}".format(", ".join([force_str(e) for e in enum]))
-
-        related_fields = (
-            models.ForeignKey, models.ManyToManyField,
-        )
-
-        if isinstance(field, fields.ForeignKeyOrFreeText):
-            t = "Text"
-
-        if isinstance(field, related_fields):
-            if isinstance(field, models.ForeignKey):
-                t = "One of the {}"
-            else:
-                t = "Some of the {}"
-            related = field.rel.to
-            return t.format(related._meta.verbose_name_plural.title())
-
     def get_model_query_args(self, query):
         """
             if we wanted all conditions in diagnosis beginning with C
@@ -127,18 +78,11 @@ class ModelSearchRuleField(SearchRuleField):
             raise NotImplementedError("we do not support this")
 
 
-class EpisodeTeam(SearchRuleField):
+class EpisodeTeam(
+    SearchRuleField
+):
     ALL_OF = "All Of"
     ANY_OF = "Any Of"
-
-    display_name = "Team"
-    description = "The team(s) related to an episode of care"
-    field_type = "many_to_many_multi_select"
-    type_display_name = "Text Field"
-
-    @property
-    def enum(self):
-        return [i["title"] for i in models.Tagging.build_field_schema()]
 
     def translate_titles_to_names(self, titles):
         result = []

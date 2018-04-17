@@ -51,11 +51,11 @@ def generate_nested_csv_extract(root_dir, episodes, user, field_dict):
     renderers = []
 
     for model_api_name, model_fields in field_dict.items():
-        serialiser = CsvSerializer.get(model_api_name)
+        serialiser = CsvSerializer.get(model_api_name, user)
         renderer_cls = serialiser.get_renderer()
 
         renderers.append(renderer_cls(
-            serialiser, episodes, user, fields=field_dict[model_api_name]
+            serialiser, episodes, user, chosen_fields_names=field_dict[model_api_name]
         ))
 
     with open(full_file_name, 'w') as csv_file:
@@ -89,7 +89,6 @@ def generate_multi_csv_extract(root_dir, episodes, user):
         file_name = "{}.csv".format(serialiser.get_api_name())
         full_file_name = os.path.join(root_dir, file_name)
         renderer_cls = serialiser.get_renderer()
-
         renderer = renderer_cls(serialiser, episodes, user)
         if renderer.exists():
             renderer.write_to_file(full_file_name)

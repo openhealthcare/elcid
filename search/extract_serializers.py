@@ -1,14 +1,14 @@
-from six import text_type
-
 from opal.core import discoverable
+from six import text_type
 from opal import models
+from opal.core import subrecords
 from elcid import models as emodels
-from search.subrecord_discoverable import (
-    SubrecordFieldWrapper, SubrecordDiscoverableMixin
-)
+from search import search_overrides
+from search import subrecord_discoverable
+from search.exceptions import SearchException
 
 
-class CsvFieldWrapper(SubrecordFieldWrapper):
+class CsvFieldWrapper(subrecord_discoverable.SubrecordFieldWrapper):
     def extract(self, obj):
         return getattr(obj, self.field_name)
 
@@ -30,10 +30,10 @@ class PatientIdForEpisodeSubrecord(CsvFieldWrapper):
 
 
 class CsvSerializer(
-    SubrecordDiscoverableMixin,
+    subrecord_discoverable.SubrecordDiscoverableMixin,
     discoverable.DiscoverableFeature
 ):
-    module_name = 'extract_serialisers'
+    module_name = 'extract_serializers'
 
     def get_model_fields(self):
         field_names = self.model._get_fieldnames_to_extract()
@@ -56,25 +56,19 @@ class CsvSerializer(
     def get_renderer(self):
         from search import extract_renderers
         if self.model:
-            if isinstance(self.model, models.PatientSubrecord):
+            if self.model in subrecords.patient_subrecords():
                 return extract_renderers.PatientSubrecordCsvRenderer
-            elif isinstance(self.model, models.EpisodeSubrecord):
+            elif self.model in subrecords.episode_subrecords():
                 return extract_renderers.EpisodeSubrecordCsvRenderer
-        return extract_renderers.CsvRenderer
+        raise SearchException(
+            "please implement get_renderer for {}".format(self)
+        )
 
     def cast_field_name_to_attribute(self, str):
         return CsvFieldWrapper(self.user, self.model, str)
 
 
-class EpisodeTeamExtractField(CsvFieldWrapper):
-    field_name = "team"
-    display_name = "Team"
-    description = "The team(s) related to an episode of care"
-
-    @property
-    def enum(self):
-        return [i["title"] for i in models.Tagging.build_field_schema()]
-
+class EpisodeTeamExtractField(search_overrides.TeamFieldInfo, CsvFieldWrapper):
     def extract(self, obj):
         return text_type(";".join(
             obj.get_tag_names(self.user, historic=True)
@@ -101,6 +95,6 @@ class EpisodeCsvSerializer(CsvSerializer):
         return extract_renderers.EpisodeCsvRenderer
 
 
-class ResultQuery(CsvSerializer):
+class ResultSerializer(CsvSerializer):
     exclude = True
     slug = emodels.Result.get_api_name()

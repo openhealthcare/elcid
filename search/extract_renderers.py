@@ -27,9 +27,9 @@ class CsvRenderer(object):
     non_field_csv_columns = []
 
     def __init__(self, serialiser, queryset, user, chosen_fields_names=None):
+        self.serialiser = serialiser
         self.queryset = queryset
         self.user = user
-        self.serialiser = serialiser
         self.chosen_fields_names = chosen_fields_names
 
     def get_fields(self):
@@ -137,7 +137,9 @@ class CsvRenderer(object):
 
 
 class PatientSubrecordCsvRenderer(CsvRenderer):
-    def __init__(self, serialiser, episode_queryset, user, fields=None):
+    def __init__(
+        self, serialiser, episode_queryset, user, chosen_fields_names=None
+    ):
         self.patient_to_episode = defaultdict(list)
 
         for episode in episode_queryset:
@@ -147,7 +149,7 @@ class PatientSubrecordCsvRenderer(CsvRenderer):
             patient__in=list(self.patient_to_episode.keys()))
 
         super(PatientSubrecordCsvRenderer, self).__init__(
-            serialiser.model, queryset, user, fields
+            serialiser, queryset, user, chosen_fields_names
         )
 
     def get_display_name(self):
@@ -187,11 +189,15 @@ class PatientSubrecordCsvRenderer(CsvRenderer):
 
 
 class EpisodeSubrecordCsvRenderer(CsvRenderer):
-    def __init__(self, model, episode_queryset, user, fields=None):
-        queryset = model.objects.filter(episode__in=episode_queryset)
+    def __init__(
+        self, serializer, episode_queryset, user, chosen_fields_names=None
+    ):
+        queryset = serializer.model.objects.filter(
+            episode__in=episode_queryset
+        )
 
         super(EpisodeSubrecordCsvRenderer, self).__init__(
-            model, queryset, user, fields
+            serializer, queryset, user, chosen_fields_names
         )
 
     def get_display_name(self):

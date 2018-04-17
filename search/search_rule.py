@@ -1,8 +1,8 @@
 from opal.core.discoverable import DiscoverableFeature
-from opal.models import Episode
-from elcid import models
+from opal import models
+from elcid import models as emodels
 from search.subrecord_discoverable import SubrecordDiscoverableMixin
-from search.search_rule_fields import ModelSearchRuleField, EpisodeTeam
+from search import search_rule_fields
 
 """
     A Search Rule a
@@ -27,13 +27,13 @@ from search.search_rule_fields import ModelSearchRuleField, EpisodeTeam
 
 
 class SearchRule(SubrecordDiscoverableMixin, DiscoverableFeature):
-    module_name = "search_rule"
+    module_name = "search_overrides"
     fields = None
     display_name = ""
     slug = ""
 
     def cast_field_name_to_attribute(self, str):
-        return ModelSearchRuleField(self.model, str)
+        return search_rule_fields.ModelSearchRuleField(self.model, str)
 
     def get_description(self):
         return getattr(self, "description", "")
@@ -50,10 +50,10 @@ class SearchRule(SubrecordDiscoverableMixin, DiscoverableFeature):
 class EpisodeQuery(SearchRule):
     display_name = "Episode"
     slug = "episode"
-    model = Episode
-    fields = (EpisodeTeam, "start", "end")
+    model = models.Episode
+    fields = (search_rule_fields.EpisodeTeam, "start", "end")
 
 
 class ResultQuery(SearchRule):
     exclude = True
-    slug = models.Result.get_api_name()
+    slug = emodels.Result.get_api_name()
