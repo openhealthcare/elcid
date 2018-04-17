@@ -74,5 +74,4 @@ class WalkinListGroup(patient_lists.TabbedPatientListGroup):
         WalkinDoctor,
         WalkinReview
     ]
-    display_name="Walkin"
-    include_member_lists_in_patient_list_switcher=False
+    display_name = "Walkin"
