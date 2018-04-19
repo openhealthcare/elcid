@@ -1,3 +1,4 @@
+from functools import wraps
 from django.utils.encoding import force_str
 from django.db import models as djangomodels
 
@@ -6,15 +7,29 @@ from opal.core import fields
 from search.exceptions import SearchException
 
 
+def get_locally_before_deferring_to_the_model(field_name):
+    def under_wrap(some_fun):
+        """
+        If we have a field, for example 'description'
+        check to see if that is set object before calling
+        through
+        """
+        @wraps(some_fun)
+        def func_wrapper(self):
+            locally = getattr(self, field_name)
+            if locally is not None:
+                return locally
+            return some_fun(self)
+        return func_wrapper
+    return under_wrap
+
+
 class SubrecordFieldWrapper(object):
     model = None
     field_name = None
     description = None
     display_name = None
     enum = None
-    # the fields that should be displayed, defaults to all the ones on the
-    # subrecord
-    fields = None
     # the lookup list associated
     lookup_list = None
     # the display name of the slug
@@ -23,8 +38,6 @@ class SubrecordFieldWrapper(object):
     type = None
 
     def __init__(self, user, model=None, field_name=None):
-        if not hasattr(user, "first_name"):
-            raise ValueError("wrong")
         if model is not None:
             self.model = model
         if field_name is not None:
@@ -42,48 +55,54 @@ class SubrecordFieldWrapper(object):
     def to_dict(self):
         if self.model:
             schema = self.model.build_schema_for_field_name(self.field_name)
+            del schema["title"]
         else:
             schema = {}
 
-        for i in ["field_name", "type_display_name", "lookup_list", "type"]:
-            attr = getattr(self, i)
-            if attr:
-                schema[i] = attr
-
-        for i in ["description", "enum", "display_name"]:
+        fields = [
+            "enum",
+            "name",
+            "display_name",
+            "type_display_name",
+            "lookup_list",
+            "description",
+        ]
+        for i in fields:
             attr = getattr(self, "get_{}".format(i))()
             if attr:
                 schema[i] = attr
 
-        schema.update(dict(
-            name=self.field_name,
-            title=self.get_display_name(),
-            enum=self.get_enum(),
-            description=self.get_description(),
-            type_display_name=self.type_display_name,
-            lookup_list=self.lookup_list
-        ))
+        field_type = self.get_field_type()
+        if field_type:
+            schema["type"] = field_type
         return schema
 
+    @get_locally_before_deferring_to_the_model("enum")
     def get_enum(self):
-        if self.enum is not None:
-            return self.enum
         return self.model.get_field_enum(self.field_name)
 
-    def get_slug(self):
+    def get_name(self):
         return self.field_name
 
+    def get_field_type(self):
+        return self.type
+
+    @get_locally_before_deferring_to_the_model("display_name")
     def get_display_name(self):
-        if self.display_name:
-            return self.display_name
         return self.model._get_field_title(self.field_name)
 
+    @get_locally_before_deferring_to_the_model("type_display_name")
+    def get_type_display_name(self):
+        return self.model.get_human_readable_type(
+            self.field_name
+        )
+
+    @get_locally_before_deferring_to_the_model("lookup_list")
+    def get_lookup_list(self):
+        return self.model.get_lookup_list_api_name(self.field_name)
+
+    @get_locally_before_deferring_to_the_model("description")
     def get_description(self):
-        description = self.description
-
-        if description:
-            return description
-
         field = self.field
         enum = self.model.get_field_enum(self.field_name)
 
@@ -202,7 +221,7 @@ class SubrecordDiscoverableMixin(object):
 
     def get_field(self, field_name):
         for i in self.get_fields():
-            if i.get_slug() == field_name:
+            if i.get_name() == field_name:
                 return i
         raise SearchException("Unable to find field {} for {}".format(
             field_name, self.get_display_name()

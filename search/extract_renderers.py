@@ -45,7 +45,7 @@ class CsvRenderer(object):
 
     def get_field(self, field_name):
         for i in self.get_fields():
-            if i.get_slug() == field_name:
+            if i.get_name() == field_name:
                 return i
         raise SearchException("Unable to find field {} for {}".format(
             field_name, self.get_display_name()

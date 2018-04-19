@@ -24,13 +24,13 @@ describe('ExtractCtrl', function(){
             "readOnly": true    ,
             "fields":[
                 {
-                    "title":"Name",
+                    "display_name":"Name",
                     "lookup_list":null,
                     "name":"name",
                     "type":"string"
                 },
                 {
-                    "title": "Deceased",
+                    "display_name": "Deceased",
                     "lookup_list": null,
                     "name": "dead",
                     "type": "boolean"
@@ -42,23 +42,23 @@ describe('ExtractCtrl', function(){
                     "lookup_list": "gender",
                     "model": "Demographics",
                     "name": "sex",
-                    "title": "Sex",
+                    "display_name": "Sex",
                     "type": "string"
                 },
                 {
-                    "title": "Age",
+                    "display_name": "Age",
                     "lookup_list": null,
                     "name": "age",
                     "type": "integer"
                 },
                 {
-                    "title": "Date of Birth",
+                    "display_name": "Date of Birth",
                     "lookup_list": null,
                     "name": "date_of_birth",
                     "type": "date"
                 },
                 {
-                    "title": "Last Appointment",
+                    "display_name": "Last Appointment",
                     "lookup_list": null,
                     "name": "last_appointment",
                     "type": "date_time"
@@ -72,13 +72,13 @@ describe('ExtractCtrl', function(){
             "readOnly": false,
             "fields": [
                 {
-                    "title": "Symptoms",
+                    "display_name": "Symptoms",
                     "lookup_list": "symptoms",
                     "name": "symptoms",
                     "type": "many_to_many"
                 },
                 {
-                    "title":"Created",
+                    "display_name":"Created",
                     "lookup_list":null,
                     "name":"created",
                     "type":"date_time"

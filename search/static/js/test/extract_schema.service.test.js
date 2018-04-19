@@ -11,7 +11,7 @@ describe('ExtractSchema', function(){
             "readOnly": true    ,
             "fields":[
                 {
-                    "title":"Name",
+                    "display_name":"Name",
                     "lookup_list":null,
                     "name":"name",
                     "type":"string"
@@ -41,7 +41,7 @@ describe('ExtractSchema', function(){
                 lookup_list: null,
                 model: "MicrobiologyTest",
                 name: "test",
-                title: "Test",
+                display_name: "Test",
                 type: "string"
               },
               {
@@ -51,7 +51,7 @@ describe('ExtractSchema', function(){
                 lookup_list: null,
                 model: "MicrobiologyTest",
                 name: "date_ordered",
-                title: "Date Ordered",
+                display_name: "Date Ordered",
                 type: "date"
               },
               {
@@ -61,7 +61,7 @@ describe('ExtractSchema', function(){
                 lookup_list: null,
                 model: "MicrobiologyTest",
                 name: "details",
-                title: "Details",
+                display_name: "Details",
                 type: "string"
               },
               {
@@ -71,7 +71,7 @@ describe('ExtractSchema', function(){
                 lookup_list: null,
                 model: "MicrobiologyTest",
                 name: "microscopy",
-                title: "Microscopy",
+                display_name: "Microscopy",
                 type: "string"
               },
               {
@@ -81,7 +81,7 @@ describe('ExtractSchema', function(){
                 lookup_list: null,
                 model: "MicrobiologyTest",
                 name: "organism",
-                title: "Organism",
+                display_name: "Organism",
                 type: "string"
               },
               {
@@ -91,7 +91,7 @@ describe('ExtractSchema', function(){
                 lookup_list: null,
                 model: "MicrobiologyTest",
                 name: "sensitive_antibiotics",
-                title: "Sensitive Antibiotics",
+                display_name: "Sensitive Antibiotics",
                 type: "string"
               },
               {
@@ -101,7 +101,7 @@ describe('ExtractSchema', function(){
                 lookup_list: null,
                 model: "MicrobiologyTest",
                 name: "resistant_antibiotics",
-                title: "Resistant Antibiotics",
+                display_name: "Resistant Antibiotics",
                 type: "string"
               },
               {
@@ -111,7 +111,7 @@ describe('ExtractSchema', function(){
                 lookup_list: null,
                 model: "MicrobiologyTest",
                 name: "igm",
-                title: "IGM",
+                display_name: "IGM",
                 type: "string"
               },
             ],
@@ -129,7 +129,7 @@ describe('ExtractSchema', function(){
                 lookup_list: null,
                 model: "Investigation",
                 name: "test",
-                title: "Test",
+                display_name: "Test",
                 type: "string"
               },
               {
@@ -139,7 +139,7 @@ describe('ExtractSchema', function(){
                 lookup_list: null,
                 model: "Investigation",
                 name: "date_ordered",
-                title: "Date Ordered",
+                display_name: "Date Ordered",
                 type: "date"
               },
               {
@@ -149,7 +149,7 @@ describe('ExtractSchema', function(){
                 lookup_list: null,
                 model: "Investigation",
                 name: "details",
-                title: "Details",
+                display_name: "Details",
                 type: "string"
               },
               {
@@ -159,7 +159,7 @@ describe('ExtractSchema', function(){
                 lookup_list: null,
                 model: "Investigation",
                 name: "microscopy",
-                title: "Microscopy",
+                display_name: "Microscopy",
                 type: "string"
               },
               {
@@ -169,7 +169,7 @@ describe('ExtractSchema', function(){
                 lookup_list: null,
                 model: "Investigation",
                 name: "organism",
-                title: "Organism",
+                display_name: "Organism",
                 type: "string"
               },
               {
@@ -179,7 +179,7 @@ describe('ExtractSchema', function(){
                 lookup_list: null,
                 model: "Investigation",
                 name: "sensitive_antibiotics",
-                title: "Sensitive Antibiotics",
+                display_name: "Sensitive Antibiotics",
                 type: "string"
               },
               {
@@ -189,7 +189,7 @@ describe('ExtractSchema', function(){
                 lookup_list: null,
                 model: "Investigation",
                 name: "resistant_antibiotics",
-                title: "Resistant Antibiotics",
+                display_name: "Resistant Antibiotics",
                 type: "string"
               },
               {
@@ -199,7 +199,7 @@ describe('ExtractSchema', function(){
                 lookup_list: null,
                 model: "Investigation",
                 name: "igm",
-                title: "IGM",
+                display_name: "IGM",
                 type: "string"
               },
             ],
@@ -231,7 +231,7 @@ describe('ExtractSchema', function(){
     it('should restrict the fields to searchable fields for micro test', function(){
         var microTest = schema.findColumn('microbiology_test');
         var found = _.map(microTest.fields, function(mtf){
-          return mtf.title;
+          return mtf.display_name;
         });
         var expected = [
           'Test',
@@ -249,7 +249,7 @@ describe('ExtractSchema', function(){
     it('should restrict the fields to searchable fields for investigations', function(){
         var microTest = schema.findColumn('microbiology_test');
         var found = _.map(microTest.fields, function(mtf){
-          return mtf.title;
+          return mtf.display_name;
         });
         var expected = [
           'Test',

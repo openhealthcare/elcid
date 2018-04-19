@@ -97,7 +97,7 @@
                                   tooltip-placement="top" uib-tooltip="2. Select a field"
                                   set-focus-if="query.field == null && query.column != null"
                                   >
-                            <option value="[[ field.name ]]" ng-repeat="field in extractSchema.findColumn(query.column).fields">[[ field.title ]]</option>
+                            <option value="[[ field.name ]]" ng-repeat="field in extractSchema.findColumn(query.column).fields">[[ field.display_name ]]</option>
                           </select>
                           <select class="form-control content-offset-25"
                                   ng-show="extractSchema.isText(query.column, query.field)"
@@ -224,7 +224,7 @@
                         <div class="content-offset-10"></div>
                       </div>
                       <div ng-show="selectedInfo.field">
-                        <strong>[[ extractSchema.findField(selectedInfo.column, selectedInfo.field).title ]]</strong>
+                        <strong>[[ extractSchema.findField(selectedInfo.column, selectedInfo.field).display_name ]]</strong>
                           [[ "[" + extractSchema.getTypeDisplay(selectedInfo.column, selectedInfo.field) + "]" ]]
                       </div>
                       <div ng-show="extractSchema.isText(selectedInfo.column, selectedInfo.field) && extractSchema.findField(selectedInfo.column, selectedInfo.field).lookup_list">
