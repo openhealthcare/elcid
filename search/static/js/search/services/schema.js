@@ -60,11 +60,8 @@ angular.module('opal.services').factory('Schema', function() {
       isText: function(columnName, field){
           return this.isType(columnName, field, "string") || this.isType(columnName, field, "text");
       },
-      isSelect: function(columnName, field){
-          return this.isType(columnName, field, "many_to_many");
-      },
       isSelectMany: function(columnName, field){
-          return this.isType(columnName, field, "many_to_many_multi_select");
+          return this.isType(columnName, field, "many_to_many");
       },
       isDate: function(columnName, field){
           return this.isType(columnName, field, "date");

@@ -12,9 +12,15 @@ class SubrecordFieldWrapper(object):
     description = None
     display_name = None
     enum = None
+    # the fields that should be displayed, defaults to all the ones on the
+    # subrecord
     fields = None
+    # the lookup list associated
     lookup_list = None
+    # the display name of the slug
     type_display_name = None
+    # the type of field as a slug
+    type = None
 
     def __init__(self, user, model=None, field_name=None):
         if not hasattr(user, "first_name"):
@@ -38,6 +44,17 @@ class SubrecordFieldWrapper(object):
             schema = self.model.build_schema_for_field_name(self.field_name)
         else:
             schema = {}
+
+        for i in ["field_name", "type_display_name", "lookup_list", "type"]:
+            attr = getattr(self, i)
+            if attr:
+                schema[i] = attr
+
+        for i in ["description", "enum", "display_name"]:
+            attr = getattr(self, "get_{}".format(i))()
+            if attr:
+                schema[i] = attr
+
         schema.update(dict(
             name=self.field_name,
             title=self.get_display_name(),

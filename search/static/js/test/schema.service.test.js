@@ -304,10 +304,6 @@ describe('Schema', function(){
         expect(schema.isText("demographics", "name")).toBe(true);
     });
 
-    it('should find select fields', function(){
-        expect(schema.isSelect("symptoms", "symptoms")).toBe(true);
-    });
-
     it('should find date fields', function(){
         expect(schema.isDate("demographics", "date_of_birth")).toBe(true);
     });

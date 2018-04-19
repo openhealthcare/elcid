@@ -1,5 +1,4 @@
 from django.db import models as djangomodels
-from django.utils.encoding import force_str
 from opal.core import fields
 from opal import models
 from search.exceptions import SearchException
@@ -83,6 +82,15 @@ class EpisodeTeam(
 ):
     ALL_OF = "All Of"
     ANY_OF = "Any Of"
+    display_name = "Team"
+    description = "The team(s) related to an episode of care"
+    type = "many_to_many"
+    type_display_name = "Text Field"
+    field_name = "Team"
+
+    @property
+    def enum(self):
+        return [i["title"] for i in models.Tagging.build_field_schema()]
 
     def translate_titles_to_names(self, titles):
         result = []

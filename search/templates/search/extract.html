@@ -161,14 +161,6 @@
                   	           placeholder="dd/mm/yyyy"
                                  set-focus-if="isDate(query.column, query.field) && query.queryType != null"
                                  />
-                            <span ng-if="extractSchema.isSelect(query.column, query.field)">
-                              <select ng-model="query.query" class="form-control content-offset-25"
-                                tooltip-trigger="focus"
-                                ng-keypress="$event.keyCode == 13 && search()"
-                                tooltip-placement="top" uib-tooltip="4. Select one of the below">
-                                <option ng-repeat="i in extractSchema.getChoices(query.column, query.field, referencedata) track by $index">[[ i ]]</option>
-                              </select>
-                            </span>
                             <span ng-if="extractSchema.isSelectMany(query.column, query.field)">
                               <select class="form-control content-offset-25"
                                       ng-model="query.queryType" tooltip-trigger="focus"
