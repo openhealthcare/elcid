@@ -8,7 +8,7 @@ When I open the Teams Modal
 When I select Micro Ortho
 Then the Patient should be Tagged to Micro Ortho
 
-Given a Pattient Tagged to Virology and Micro Ortho
+Given a Patient Tagged to Virology and Micro Ortho
 When I open the Teams Modal
 When I un-select Micro Ortho
 When I save the teams
