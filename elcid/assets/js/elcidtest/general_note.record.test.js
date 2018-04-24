@@ -13,7 +13,6 @@ describe('GeneralNote', function(){
     });
 
     describe('Initialization', function(){
-
         it('should set the date', function(){
             var today = moment().format('DD/MM/YY');
             var note = new GeneralNote({});

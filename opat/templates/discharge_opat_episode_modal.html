@@ -71,7 +71,7 @@
         </div>
       </div>
       {% input label="Other Reason" model="meta.rejection.reason" %}
-      {% datepicker label="Review Date" model="meta.review_date" %}
+      {% datepicker label="Review Date" model="meta.review_date" element_name="not_accepted_review" %}
 
       <div class="col-md-offset-3">
         {% checkbox label="Patient Choice" model="meta.rejection.patient_choice" %}
@@ -125,7 +125,7 @@
   <div ng-show="episode.tagging[0].opat_current && meta.completed">
     <p class="lead text-center">[[ episode.demographics[0].first_name ]] [[ episode.demographics[0].surname ]] will be <b>discharged</b></p>
     <form class="form-horizontal">
-      {% datepicker model="meta.review_date" label="OPAT Review date"%}
+      {% datepicker model="meta.review_date" label="OPAT Review date" element_name="current_completed_review" %}
       {% include 'opat/_stopped_antibiotics.html' %}
       {% include 'opat/_finished_opat.html' %}
     </form>
@@ -164,7 +164,7 @@
     <p>[[ episode.demographics[0].first_name ]] [[ episode.demographics[0].surname ]] will be discharged</p>
 
     <form class="form-horizontal">
-      {% datepicker model="meta.review_date" label="OPAT Review date" %}
+      {% datepicker model="meta.review_date" label="OPAT Review date" element_name="completed_followup_review" %}
       {% include 'opat/_stopped_antibiotics.html' %}
       {% include 'opat/_finished_opat.html' %}
     </form>
