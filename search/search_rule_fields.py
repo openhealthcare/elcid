@@ -2,7 +2,7 @@ from django.db import models as djangomodels
 from opal.core import fields
 from opal import models
 from search.exceptions import SearchException
-from search import model_queries
+from search import subrecord_queries
 from search.subrecord_discoverable import SubrecordFieldWrapper
 
 """
@@ -29,10 +29,10 @@ class SearchRuleField(SubrecordFieldWrapper):
 
 
 FIELD_TYPE_TO_QUERY = {
-    fields.ForeignKeyOrFreeText: model_queries.query_for_fkorft_fields,
-    djangomodels.BooleanField: model_queries.query_for_boolean_fields,
-    djangomodels.DateField: model_queries.query_for_date_fields,
-    djangomodels.ManyToManyField: model_queries.query_for_many_to_many_fields
+    fields.ForeignKeyOrFreeText: subrecord_queries.query_for_fkorft_fields,
+    djangomodels.BooleanField: subrecord_queries.query_for_boolean_fields,
+    djangomodels.DateField: subrecord_queries.query_for_date_fields,
+    djangomodels.ManyToManyField: subrecord_queries.query_for_many_to_many_fields
 }
 
 
@@ -70,11 +70,44 @@ class ModelSearchRuleField(SearchRuleField):
         elif isinstance(
             self.field, (djangomodels.CharField, djangomodels.TextField,)
         ):
-            return model_queries.query_for_text_fields(
+            return subrecord_queries.query_for_text_fields(
                 **self.get_model_query_args(query)
             )
         else:
             raise NotImplementedError("we do not support this")
+
+
+class EpisodeDateQuery(object):
+    def query(self, given_query):
+        query_type = given_query["queryType"]
+        value = models.deserialize_date(given_query["query"])
+        if query_type == 'Before':
+            qtype = '__lte'
+        elif query_type == 'After':
+            qtype = '__gte'
+        return models.Episode.objects.filter(
+            **{"{}{}".format(self.field_name, qtype): value}
+        )
+
+
+class EpisodeStart(
+    EpisodeDateQuery, SearchRuleField
+):
+    type = "date"
+    type_display_name = "Date"
+    description = "The date the episode started"
+    field_name = "start"
+    display_name = "Start"
+
+
+class EpisodeEnd(
+    EpisodeDateQuery, SearchRuleField
+):
+    type = "date"
+    type_display_name = "Date"
+    description = "The date the episode ended"
+    field_name = "end"
+    display_name = "End"
 
 
 class EpisodeTeam(
@@ -86,7 +119,7 @@ class EpisodeTeam(
     description = "The team(s) related to an episode of care"
     type = "many_to_many"
     type_display_name = "Text Field"
-    field_name = "Team"
+    field_name = "team"
 
     @property
     def enum(self):

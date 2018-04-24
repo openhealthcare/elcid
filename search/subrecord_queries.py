@@ -18,6 +18,10 @@ def query_episodes_by_kwargs(model, filter_kwargs):
         return models.Episode.objects.filter(
             patient__in=pats
         )
+    else:
+        raise NotImplementedError(
+            "please implement custom query types for non subrecords"
+        )
 
 
 def query_for_text_fields(model, field_name, query_type, value):
@@ -65,12 +69,12 @@ def query_for_number_fields(model, field_name, query_type, value):
 
 
 def query_for_boolean_fields(model, field_name, query_type, value):
-    if query_type not in {"true", "false"}:
+    if value not in {"true", "false"}:
         raise SearchException(
             "Boolean queries must be true or false"
         )
 
-    val = query_type == 'true'
+    val = value == 'true'
     kw = {'{0}__{1}'.format(model_name(model), field_name): val}
     return query_episodes_by_kwargs(model, kw)
 

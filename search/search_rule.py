@@ -26,11 +26,10 @@ from search import search_rule_fields
 """
 
 
-class SearchRule(SubrecordDiscoverableMixin, DiscoverableFeature):
-    module_name = "search_overrides"
-    fields = None
-    display_name = ""
-    slug = ""
+class SearchRule(
+    SubrecordDiscoverableMixin, DiscoverableFeature
+):
+    module_name = "search_rule"
 
     def cast_field_name_to_attribute(self, str):
         return search_rule_fields.ModelSearchRuleField(self.model, str)
@@ -51,7 +50,11 @@ class EpisodeQuery(SearchRule):
     display_name = "Episode"
     slug = "episode"
     model = models.Episode
-    fields = (search_rule_fields.EpisodeTeam, "start", "end")
+    fields = (
+        search_rule_fields.EpisodeTeam,
+        search_rule_fields.EpisodeStart,
+        search_rule_fields.EpisodeEnd
+    )
 
 
 class ResultQuery(SearchRule):

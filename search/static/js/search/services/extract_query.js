@@ -108,9 +108,10 @@ angular.module('opal.services').factory('ExtractQuery', function(){
       // remove incomplete criteria
       criteria = _.filter(this.criteria, function(c){
           // Ensure we have a query otherwise
-          if(c.column &&  c.field &&  c.queryType && c.query){
+          if(c.column &&  c.field &&  c.query){
               return true;
           }
+
           c.combine = combine;
           // If not, we ignore this clause
           return false;

@@ -81,7 +81,6 @@ angular.module('opal.controllers').controller( 'ExtractCtrl',
         }
 
         var queryParams = $scope.getQueryParams(pageNumber);
-
         if(queryParams.length){
             queryParams[0].page_number = pageNumber;
             ngProgressLite.set(0);

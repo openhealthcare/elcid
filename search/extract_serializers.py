@@ -3,7 +3,6 @@ from six import text_type
 from opal import models
 from opal.core import subrecords
 from elcid import models as emodels
-from search import search_overrides
 from search import subrecord_discoverable
 from search.exceptions import SearchException
 
@@ -31,7 +30,7 @@ class PatientIdForEpisodeSubrecord(CsvFieldWrapper):
 
 class CsvSerializer(
     subrecord_discoverable.SubrecordDiscoverableMixin,
-    discoverable.DiscoverableFeature
+    discoverable.DiscoverableFeature,
 ):
     module_name = 'extract_serializers'
 
@@ -68,7 +67,13 @@ class CsvSerializer(
         return CsvFieldWrapper(self.user, self.model, str)
 
 
-class EpisodeTeamExtractField(search_overrides.TeamFieldInfo, CsvFieldWrapper):
+class EpisodeTeamExtractField(CsvFieldWrapper):
+    display_name = "Team"
+    description = "The team(s) related to an episode of care"
+    type = "many_to_many"
+    type_display_name = "Text Field"
+    field_name = "Team"
+
     def extract(self, obj):
         return text_type(";".join(
             obj.get_tag_names(self.user, historic=True)
@@ -89,6 +94,7 @@ class EpisodeCsvSerializer(CsvSerializer):
     model = models.Episode
     display_name = "Episode"
     slug = "episode"
+    lookup_list = []
 
     def get_renderer(self):
         from search import extract_renderers

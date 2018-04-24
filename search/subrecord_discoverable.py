@@ -7,7 +7,7 @@ from opal.core import fields
 from search.exceptions import SearchException
 
 
-def get_locally_before_deferring_to_the_model(field_name):
+def get_locally_or_defer(field_name):
     def under_wrap(some_fun):
         """
         If we have a field, for example 'description'
@@ -30,6 +30,7 @@ class SubrecordFieldWrapper(object):
     description = None
     display_name = None
     enum = None
+    icon = None
     # the lookup list associated
     lookup_list = None
     # the display name of the slug
@@ -43,6 +44,10 @@ class SubrecordFieldWrapper(object):
         if field_name is not None:
             self.field_name = field_name
         self.user = user
+        if not self.field_name:
+            raise NotImplementedError(
+                "A subrecord field wrapper requires a field name"
+            )
 
     @property
     def field(self):
@@ -55,7 +60,7 @@ class SubrecordFieldWrapper(object):
     def to_dict(self):
         if self.model:
             schema = self.model.build_schema_for_field_name(self.field_name)
-            del schema["title"]
+            schema["display_name"] = schema.pop("title")
         else:
             schema = {}
 
@@ -77,9 +82,10 @@ class SubrecordFieldWrapper(object):
             schema["type"] = field_type
         return schema
 
-    @get_locally_before_deferring_to_the_model("enum")
+    @get_locally_or_defer("enum")
     def get_enum(self):
-        return self.model.get_field_enum(self.field_name)
+        if self.model:
+            return self.model.get_field_enum(self.field_name)
 
     def get_name(self):
         return self.field_name
@@ -87,21 +93,22 @@ class SubrecordFieldWrapper(object):
     def get_field_type(self):
         return self.type
 
-    @get_locally_before_deferring_to_the_model("display_name")
+    @get_locally_or_defer("display_name")
     def get_display_name(self):
         return self.model._get_field_title(self.field_name)
 
-    @get_locally_before_deferring_to_the_model("type_display_name")
+    @get_locally_or_defer("type_display_name")
     def get_type_display_name(self):
         return self.model.get_human_readable_type(
             self.field_name
         )
 
-    @get_locally_before_deferring_to_the_model("lookup_list")
+    @get_locally_or_defer("lookup_list")
     def get_lookup_list(self):
-        return self.model.get_lookup_list_api_name(self.field_name)
+        if self.model:
+            return self.model.get_lookup_list_api_name(self.field_name)
 
-    @get_locally_before_deferring_to_the_model("description")
+    @get_locally_or_defer("description")
     def get_description(self):
         field = self.field
         enum = self.model.get_field_enum(self.field_name)
@@ -146,9 +153,11 @@ class SubrecordDiscoverableMixin(object):
         the attribute_cls.
     """
     attribute_cls = None
-    description = ""
+    description = None
     model = None
     fields = None
+    display_name = None
+    slug = None
 
     # set this to True if you want it to be excluded
     # from the list, for example if the model should not be
@@ -184,6 +193,11 @@ class SubrecordDiscoverableMixin(object):
                 yield klass(user, subrecord)
 
     def cast_field_name_to_attribute(self, str):
+        if not self.attribute_cls:
+            raise NotImplementedError(
+                "Please set an attribute class on {}".format(self)
+            )
+
         return self.attribute_cls(self.user, self.model, str)
 
     def get_model_fields(self):
@@ -227,9 +241,8 @@ class SubrecordDiscoverableMixin(object):
             field_name, self.get_display_name()
         ))
 
+    @get_locally_or_defer("display_name")
     def get_display_name(self):
-        if self.display_name:
-            return self.display_name
         if self.model:
             return self.model.get_display_name()
         raise NotImplementedError("please implement a display name on {}")
@@ -244,6 +257,7 @@ class SubrecordDiscoverableMixin(object):
             return self.model.get_api_name()
         raise NotImplementedError("please implement a slug name on {}")
 
+    @get_locally_or_defer("icon")
     def get_icon(self):
         if self.model:
             return self.model.get_icon()
@@ -255,7 +269,7 @@ class SubrecordDiscoverableMixin(object):
     def get_schema(self):
         fields = [i.to_dict() for i in self.get_fields()]
         fields = sorted(
-            fields, key=lambda x: x["title"]
+            fields, key=lambda x: x["display_name"]
         )
         return dict(
             name=self.get_api_name(),
