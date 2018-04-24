@@ -74,4 +74,5 @@ class WalkinListGroup(patient_lists.TabbedPatientListGroup):
         WalkinDoctor,
         WalkinReview
     ]
+    default_tab = WalkinNurseTriage
     display_name = "Walkin"
