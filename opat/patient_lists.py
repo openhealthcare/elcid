@@ -54,3 +54,4 @@ class OPATListGroup(patient_lists.TabbedPatientListGroup):
         OPATCurrent,
         OPATFollowUp,
     ]
+    display_name = "OPAT"
