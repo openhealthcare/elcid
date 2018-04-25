@@ -31,6 +31,9 @@ class SearchRule(
     SubrecordDiscoverableMixin, DiscoverableFeature
 ):
     module_name = "search_rule"
+    FIELDS_TO_IGNORE = {
+        "id", "created", "updated", "created_by_id", "updated_by_id"
+    }
 
     def cast_field_name_to_attribute(self, str):
         return search_rule_fields.ModelSearchRuleField(self.model, str)
@@ -40,7 +43,7 @@ class SearchRule(
 
     def get_model_fields(self):
         result = self.model._get_fieldnames_to_serialize()
-        result = [i for i in result if not i == "id"]
+        result = [i for i in result if not i in self.FIELDS_TO_IGNORE]
         if issubclass(self.model, models.PatientSubrecord):
             result = [i for i in result if not i == "patient"]
 

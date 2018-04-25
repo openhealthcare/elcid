@@ -123,26 +123,10 @@ class SubrecordFieldWrapper(object):
 
     @get_locally_or_defer("description")
     def get_description(self):
-        field = self.field
-        enum = self.model.get_field_enum(self.field_name)
-
-        if enum:
-            return "One of {}".format(", ".join([force_str(e) for e in enum]))
-
-        related_fields = (
-            djangomodels.ForeignKey, djangomodels.ManyToManyField,
-        )
-
-        if isinstance(field, fields.ForeignKeyOrFreeText):
-            t = "Text"
-
-        if isinstance(field, related_fields):
-            if isinstance(field, djangomodels.ForeignKey):
-                t = "One of the {}"
-            else:
-                t = "Some of the {}"
-            related = field.rel.to
-            return t.format(related._meta.verbose_name_plural.title())
+        field = self.model._get_field(self.field_name)
+        description = getattr(field, 'help_text', "")
+        if description:
+            return description
 
 
 class SubrecordDiscoverableMixin(object):

@@ -139,7 +139,6 @@ class ModelSearchRuleField(SearchRuleField):
         )
 
 
-
 class EpisodeDateQuery(object):
     def query(self, given_query):
         query_type = given_query["queryType"]

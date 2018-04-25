@@ -13,7 +13,9 @@
   {% endif %}
   <div>
     <strong>{{ field.get_display_name }}</strong>
-    {{ field.get_type_display_name }}
+    {% if not field.get_lookup_list %}
+      {{ field.get_type_display_name }}
+    {% endif %}
   </div>
   {% if field.get_lookup_list %}
     Normally coded as a

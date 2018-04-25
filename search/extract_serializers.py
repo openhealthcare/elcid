@@ -104,3 +104,26 @@ class EpisodeCsvSerializer(CsvSerializer):
 class ResultSerializer(CsvSerializer):
     exclude = True
     slug = emodels.Result.get_api_name()
+
+
+class MicroTestRule(CsvSerializer):
+    slug = emodels.MicrobiologyTest.get_api_name()
+    model = emodels.MicrobiologyTest
+
+    MICRO_FIELDS_TO_IGNORE = [
+        "test",
+        "date_ordered",
+        "details",
+        "microscopy",
+        "organism",
+        "sensitive_antibiotics",
+        "resistant_antibiotics"
+    ]
+
+    def get_model_fields(self, *args, **kwargs):
+        model_fields = super(MicroTestRule, self).get_model_fields(
+            *args, **kwargs
+        )
+        return [
+            f for f in model_fields if f not in self.MICRO_FIELDS_TO_IGNORE
+        ]

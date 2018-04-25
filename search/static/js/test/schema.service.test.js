@@ -266,73 +266,6 @@ describe('Schema', function(){
     schema = new Schema(exampleSchemaData);
   });
 
-  describe('Chunk columns', function(){
-    it('should chunk columns into columns of 6', function(){
-      var example = [1, 2, 3, 4, 5, 6, 7, 8];
-      var chunked = schema.chunkColumns(example);
-      var expected = [[1, 2, 3, 4, 5, 6], [7, 8]];
-      expect(chunked).toEqual(expected);
-    });
-
-    it('should have chunked columns', function(){
-      expect(_.isArray(schema.chunkedColumns)).toBe(true);
-    });
-  });
-
-  describe('Checking field type', function(){
-    it('should be falsy for non fields', function(){
-        expect(schema.isType()).toBe(false);
-    });
-
-    it('should be falsy for nonexistent fields', function(){
-        expect(schema.isType("demographics", "towel_preference")).toBe(false);
-    });
-
-    it('should find boolean fields', function(){
-        expect(schema.isBoolean("demographics", "dead")).toEqual(true);
-    });
-
-    it('should find select many fields', function(){
-        spyOn(schema, "isType").and.returnValue(true);
-        expect(schema.isSelectMany("demographics", "dead")).toEqual(true);
-        expect(schema.isType).toHaveBeenCalledWith(
-          "demographics", "dead", "many_to_many_multi_select"
-        );
-    });
-
-    it('should find string fields', function(){
-        expect(schema.isText("demographics", "name")).toBe(true);
-    });
-
-    it('should find date fields', function(){
-        expect(schema.isDate("demographics", "date_of_birth")).toBe(true);
-    });
-
-    it('should find number fields', function(){
-        expect(schema.isNumber("demographics", "age")).toBe(true);
-    });
-
-    it('should find date time fields', function(){
-        expect(schema.isDateTime("demographics", "last_appointment")).toBe(true);
-    });
-
-    it('should find date type fields', function(){
-        expect(schema.isDateType("demographics", "date_of_birth")).toBe(true);
-    });
-  });
-
-  it('should keep a publically accessible version columns', function(){
-    var result = angular.copy(schema.columns);
-    _.each(result, function(subrecord){
-      _.each(subrecord.fields, function(field){
-        delete field.subrecord;
-      });
-    });
-    var expectedColumnNames = _.map(exampleSchemaData, function(c){ return c.name })
-    var foundColumnNames = _.map(result, function(r){ return r.name });
-    expect(foundColumnNames).toEqual(expectedColumnNames);
-  });
-
   it('should return the find the field', function(){
     expect(!!schema.findField("demographics", "name")).toEqual(true);
   });
@@ -344,7 +277,7 @@ describe('Schema', function(){
   it('should throw an error if the subrecord field has already been populated', function(){
     var flawedSchemaData = angular.copy(exampleSchemaData);
     flawedSchemaData[0].fields[0].subrecord = "bah";
-    expect(function(){ new ExtractSchema(flawedSchemaData);}).toThrow();
+    expect(function(){ new Schema(flawedSchemaData);}).toThrow();
   });
 
   describe('getChoices', function(){
