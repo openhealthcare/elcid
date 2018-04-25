@@ -30,6 +30,11 @@ class SearchRuleField(SubrecordFieldWrapper):
     def get_widget(self):
         return self.widget
 
+    def to_dict(self):
+        result = super(SearchRuleField, self).to_dict()
+        result["widget"] = self.get_widget()
+        return result
+
 
 def is_boolean(some_field):
     return isinstance(
@@ -89,6 +94,8 @@ FIELD_TYPE_TO_WIDGET = {
 
 
 class ModelSearchRuleField(SearchRuleField):
+    widget = None
+
     def __init__(self, model, field_name):
         self.model = model
         self.field_name = field_name
@@ -119,6 +126,8 @@ class ModelSearchRuleField(SearchRuleField):
         ))
 
     def get_widget(self):
+        if self.widget:
+            return self.widget
         for field_type_method, widget in FIELD_TYPE_TO_WIDGET.items():
             if field_type_method(self.field):
                 return widget
@@ -129,10 +138,6 @@ class ModelSearchRuleField(SearchRuleField):
             )
         )
 
-    def to_dict(self):
-        result = super(ModelSearchRuleField, self).to_dict()
-        result["widget"] = self.get_widget()
-        return result
 
 
 class EpisodeDateQuery(object):

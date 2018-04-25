@@ -134,11 +134,9 @@
                     </span>
                   </div>
                   <div class="col-md-3">
-                    <div>[[ fieldInfo.subrecord.name ]]</div>
-                    <div>[[ fieldInfo.name ]]</div>
                     {% for rule in search_rules %}
                       {% for field in rule.get_fields %}
-                        {% include "search/query_description.html" %}
+                        {% include field.get_description_template %}
                       {% endfor %}
                     {% endfor %}
                   </div>

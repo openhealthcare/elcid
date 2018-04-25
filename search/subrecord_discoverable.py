@@ -37,6 +37,7 @@ class SubrecordFieldWrapper(object):
     type_display_name = None
     # the type of field as a slug
     type = None
+    description_template = "search/description.html"
 
     def __init__(self, user, model=None, field_name=None):
         if model is not None:
@@ -48,6 +49,9 @@ class SubrecordFieldWrapper(object):
             raise NotImplementedError(
                 "A subrecord field wrapper requires a field name"
             )
+
+    def get_description_template(self):
+        return self.description_template
 
     @property
     def field(self):
@@ -68,9 +72,8 @@ class SubrecordFieldWrapper(object):
             "enum",
             "name",
             "display_name",
-            "type_display_name",
             "lookup_list",
-            "description",
+            "icon"
         ]
         for i in fields:
             attr = getattr(self, "get_{}".format(i))()
@@ -97,6 +100,11 @@ class SubrecordFieldWrapper(object):
     def get_display_name(self):
         return self.model._get_field_title(self.field_name)
 
+    @get_locally_or_defer("display_name")
+    def get_icon(self):
+        if self.model and hasattr(self.model, "get_icon"):
+            return self.model.get_icon()
+
     @get_locally_or_defer("type_display_name")
     def get_type_display_name(self):
         return self.model.get_human_readable_type(
@@ -107,6 +115,11 @@ class SubrecordFieldWrapper(object):
     def get_lookup_list(self):
         if self.model:
             return self.model.get_lookup_list_api_name(self.field_name)
+
+    def get_lookup_list_display_name(self):
+        ll = self.get_lookup_list()
+        if ll:
+            return ll.replace("_", " ").title()
 
     @get_locally_or_defer("description")
     def get_description(self):

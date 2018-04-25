@@ -22,7 +22,7 @@ from opal.core.views import (
 from search import queries
 from search import search_rule
 from search.extract import (
-    zip_archive, async_extract
+    zip_archive, async_extract, get_datadictionary_context
 )
 
 PAGINATION_AMOUNT = 10
@@ -57,6 +57,7 @@ class ExtractTemplateView(LoginRequiredMixin, TemplateView):
         ctx["search_rules"] = search_rule.SearchRule.list(
             self.request.user
         )
+        ctx.update(get_datadictionary_context(self.request.user, in_page=True))
         return ctx
 
 

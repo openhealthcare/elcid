@@ -41,13 +41,13 @@
       <div class="row">
         <div class="col-sm-12">
           <div class="row">
-            {% for columns in chunked_columns %}
-              <div class="col-md-2" ng-repeat="columns in dataDictionary.chunkedColumns">
-                {% for column in columns %}
+            {% for serializers in data_dictionary.chunked_columns %}
+              <div class="col-md-2">
+                {% for serializer in serializers %}
                   <div class="row content-offset-10">
                     <div class="col-md-12">
-                      <a class="data-dictionary-link" href="#{{ column.name }}">
-                        {{ column.display_name }}
+                      <a class="data-dictionary-link" href="#{{ serializer.get_api_name }}">
+                        {{ serializer.get_display_name }}
                       </a>
                     </div>
                   </div>
@@ -57,47 +57,7 @@
           </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col-md-12">
-          {% for subrecord in schema %}
-            <h3 id="{{ subrecord.name }}">{{ subrecord.display_name }}</h3>
-            {% if subrecord.description %}
-              <p class="lead">
-                  {{ subrecord.description }}
-              </p>
-            {% endif %}
-            <table class="table data-dictionary-table">
-              <tr>
-                <th class="col-md-3">
-                  Title
-                </th>
-                <th class="col-md-4">
-                  Type
-                </th>
-                <th class="col-md-5">
-                  Description
-                </th>
-              </tr>
-              {% for field in subrecord.fields %}
-              <tr>
-                <td class="col-md-3">
-                  {{ field.display_name }}
-                </td>
-                <td class="col-md-4">
-                  {{ field.type_display_name }}
-                </td>
-                <td class="col-md-5">
-                  {% if field.lookup_list %}
-                    Normally coded as a as {{ field.lookup_list | underscore_to_spaces }} but free text entries are possible.
-                  {% endif %}
-                  {{ field.description | default_if_none:"" }}
-                </td>
-              </tr>
-              {% endfor %}
-            </table>
-          {% endfor %}
-        </div>
-      </div>
+      {% include "partials/search/data_dictionary_include.html" %}
     </div>
   </body>
 </html>

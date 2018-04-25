@@ -11,7 +11,6 @@ import zipfile
 
 from search.extract_serializers import CsvSerializer
 
-from django.conf import settings
 from django.template import Context, loader
 
 
@@ -20,14 +19,20 @@ def chunk_list(some_list, amount):
         yield some_list[i:i + amount]
 
 
+def get_datadictionary_context(user, in_page=False):
+    serializers = list(CsvSerializer.list(user))
+    return dict(
+        data_dictionary=dict(
+            serializers=serializers,
+            chunked_columns=chunk_list(serializers, 5),
+            in_page=in_page
+        )
+    )
+
+
 def write_data_dictionary(file_name, user):
     t = loader.get_template("search/data_dictionary_download.html")
-    schema = CsvSerializer.get_schemas(user)
-    ctx = Context(dict(
-        settings=settings,
-        schema=schema,
-        chunked_columns=chunk_list(schema, 5)
-    ))
+    ctx = Context(get_datadictionary_context(user))
     rendered = t.render(ctx)
     with open(file_name, "w") as f:
         f.write(rendered)

@@ -41,6 +41,10 @@ angular.module('opal.controllers').controller( 'ExtractCtrl',
       // when we change the column, reset the rest of the query
       $scope.extractQuery.resetFilter(query, fieldsTypes);
       $scope.selectInfo(query);
+      if(query.field){
+        var field = $scope.extractSchema.findField(query.column, query.field);
+        $scope.setFieldInfo(field);
+      }
     };
 
     //
