@@ -79,6 +79,10 @@ def query_for_boolean_fields(model, field_name, query_type, value):
     return query_episodes_by_kwargs(model, kw)
 
 
+def query_for_related_fields(model, field_namne, query_type, value):
+    return models.Episode.objects.all()
+
+
 def query_for_fkorft_fields(model, field_name, query_type, value):
     """
     Returns episodes that match QUERY.

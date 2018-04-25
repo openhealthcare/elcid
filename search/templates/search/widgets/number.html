@@ -1,0 +1,19 @@
+<select class="form-control content-offset-25" ng-model="query.queryType"
+        ng-show="extractSchema.isNumber(query.column, query.field) && query.field != null"
+        tooltip-trigger="focus"
+        tooltip-placement="top" uib-tooltip="3. Select your query type"
+        set-focus-if="query.column && query.field"
+        ng-if="query.column && query.field"
+        >
+  <option>Greater Than</option>
+  <option>Less Than</option>
+</select>
+
+<input type="number"
+       class="form-control content-offset-25"
+       ng-model="query.query"
+       ng-if="query.column && query.field && query.queryType"
+       placeholder="4. Add your value"
+       ng-keypress="$event.keyCode == 13 && search()"
+       set-focus-if="query.column && query.field && query.queryType"
+       />

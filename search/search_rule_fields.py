@@ -27,12 +27,64 @@ class SearchRuleField(SubrecordFieldWrapper):
         """
         raise NotImplementedError("please implement a query")
 
+    def get_widget(self):
+        return self.widget
+
+
+def is_boolean(some_field):
+    return isinstance(
+        some_field, (djangomodels.BooleanField, djangomodels.NullBooleanField,)
+    )
+
+
+def is_text(some_field):
+    return isinstance(
+        some_field, (djangomodels.TextField, djangomodels.CharField,)
+    )
+
+
+def is_date_field(some_field):
+    return isinstance(
+        some_field, (djangomodels.DateField, djangomodels.DateTimeField,)
+    )
+
+
+def is_many_to_many_field(some_field):
+    return isinstance(
+        some_field, djangomodels.ManyToManyField
+    )
+
+
+def is_foreign_key_or_free_text(some_field):
+    return isinstance(
+        some_field, fields.ForeignKeyOrFreeText
+    )
+
+
+def is_select(some_field):
+    return isinstance(
+        some_field, djangomodels.ForeignKey
+    )
+
 
 FIELD_TYPE_TO_QUERY = {
-    fields.ForeignKeyOrFreeText: subrecord_queries.query_for_fkorft_fields,
-    djangomodels.BooleanField: subrecord_queries.query_for_boolean_fields,
-    djangomodels.DateField: subrecord_queries.query_for_date_fields,
-    djangomodels.ManyToManyField: subrecord_queries.query_for_many_to_many_fields
+    is_foreign_key_or_free_text: subrecord_queries.query_for_fkorft_fields,
+    fields.is_numeric: subrecord_queries.query_for_number_fields,
+    is_boolean: subrecord_queries.query_for_boolean_fields,
+    is_many_to_many_field: subrecord_queries.query_for_many_to_many_fields,
+    is_date_field: subrecord_queries.query_for_date_fields,
+    is_text: subrecord_queries.query_for_text_fields,
+    is_select: subrecord_queries.query_for_related_fields
+}
+
+FIELD_TYPE_TO_WIDGET = {
+    is_foreign_key_or_free_text: "search/widgets/text.html",
+    fields.is_numeric: "search/widgets/number.html",
+    is_boolean: "search/widgets/boolean.html",
+    is_many_to_many_field: "search/widgets/many_to_many.html",
+    is_date_field: "search/widgets/date.html",
+    is_text: "search/widgets/text.html",
+    is_select: "search/widgets/select.html",
 }
 
 
@@ -57,24 +109,30 @@ class ModelSearchRuleField(SearchRuleField):
         )
 
     def query(self, query):
-        for field_type, query_method in FIELD_TYPE_TO_QUERY.items():
-            if isinstance(self.field, field_type):
+        for field_type_method, query_method in FIELD_TYPE_TO_QUERY.items():
+            if field_type_method(self.field):
                 return query_method(
                     **self.get_model_query_args(query)
                 )
-        if fields.is_numeric(self.field):
-            return self.query_for_number_fields(
-                **self.get_model_query_args(query)
-            )
+        raise NotImplementedError("we cannot query this {}".format(
+            self.field.__class__
+        ))
 
-        elif isinstance(
-            self.field, (djangomodels.CharField, djangomodels.TextField,)
-        ):
-            return subrecord_queries.query_for_text_fields(
-                **self.get_model_query_args(query)
+    def get_widget(self):
+        for field_type_method, widget in FIELD_TYPE_TO_WIDGET.items():
+            if field_type_method(self.field):
+                return widget
+
+        raise NotImplementedError(
+            "we do not have a widget for {} {}".format(
+                self.field, self.field.__class__
             )
-        else:
-            raise NotImplementedError("we do not support this")
+        )
+
+    def to_dict(self):
+        result = super(ModelSearchRuleField, self).to_dict()
+        result["widget"] = self.get_widget()
+        return result
 
 
 class EpisodeDateQuery(object):
@@ -98,6 +156,7 @@ class EpisodeStart(
     description = "The date the episode started"
     field_name = "start"
     display_name = "Start"
+    widget = "search/widgets/date.html"
 
 
 class EpisodeEnd(
@@ -108,6 +167,7 @@ class EpisodeEnd(
     description = "The date the episode ended"
     field_name = "end"
     display_name = "End"
+    widget = "search/widgets/date.html"
 
 
 class EpisodeTeam(
@@ -120,6 +180,7 @@ class EpisodeTeam(
     type = "many_to_many"
     type_display_name = "Text Field"
     field_name = "team"
+    widget = "search/widgets/many_to_many.html"
 
     @property
     def enum(self):

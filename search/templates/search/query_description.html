@@ -1,0 +1,23 @@
+
+<div ng-show="fieldInfo.subrecord.name === '{{ rule.get_api_name }}' && fieldInfo.name === '{{ field.get_name }}'" class="search-info">
+  <div class="search-info-title">
+    <strong>[[ fieldInfo.subrecord.display_name ]]</strong>
+  </div>
+  <div ng-show="fieldInfo.subrecord.description">
+    [[ fieldInfo.subrecord.description ]]
+    <div class="content-offset-10"></div>
+  </div>
+   <div ng-show="fieldInfo.name">
+    <strong>[[ fieldInfo.title ]]</strong>
+    [[ "[" + dataDictionary.getTypeDisplay(fieldInfo.subrecord.name, fieldInfo.name) + "]"]]
+  </div>
+  <div ng-show="dataDictionary.isText(fieldInfo.subrecord.name, fieldInfo.name) && dataDictionary.findField(fieldInfo.subrecord.name, fieldInfo.name).lookup_list">
+    Normally coded as a
+    <a href=""
+       class="orange-link"
+       ng-click="open_modal('LookupListReferenceCtrl', '/templates/modals/lookuplist_reference.html', {lookuplist_name: dataDictionary.findField(fieldInfo.subrecord.name, fieldInfo.name, referencedata).lookup_list, lookuplist: dataDictionary.getChoices(fieldInfo.subrecord.name, fieldInfo.name, referencedata)  })">
+      [[ dataDictionary.findField(fieldInfo.subrecord.name, fieldInfo.name).lookup_list | underscoreToSpaces ]]</a>
+    but free text entries are possible.
+  </div>
+  [[ dataDictionary.findField(fieldInfo.subrecord.name, fieldInfo.name).description ]]
+</div>

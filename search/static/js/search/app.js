@@ -19,11 +19,11 @@
     $routeProvider
     .when('/', {
       controller: 'SearchCtrl',
-      templateUrl: '/search/templates/search/search.html',
+      templateUrl: '/search/templates/search.html',
     })
     .when('/extract', {
         controller: 'ExtractCtrl',
-        templateUrl: '/search/templates/search/extract.html',
+        templateUrl: '/search/templates/extract.html',
         resolve: {
           profile: function(UserProfile){ return UserProfile.load(); },
           extractSchema: function(extractSchemaLoader){ return extractSchemaLoader; },

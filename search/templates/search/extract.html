@@ -99,92 +99,11 @@
                                   >
                             <option value="[[ field.name ]]" ng-repeat="field in extractSchema.findColumn(query.column).fields">[[ field.display_name ]]</option>
                           </select>
-                          <select class="form-control content-offset-25"
-                                  ng-show="extractSchema.isText(query.column, query.field)"
-                                  ng-model="query.queryType" tooltip-trigger="focus"
-                                  tooltip-placement="top" uib-tooltip="3. Select your query type"
-                                  set-focus-if="extractSchema.isText(query.column, query.field)"
-                                  >
-                            <option>Equals</option>
-                            <option ng-show="extractSchema.isText(query.column, query.field)">Contains</option>
-                          </select>
-                          <select class="form-control content-offset-25"
-                                  ng-show="extractSchema.isDateType(query.column, query.field)"
-                                  ng-model="query.queryType" tooltip-trigger="focus"
-                                  tooltip-placement="top" uib-tooltip="3. Select your query type"
-                                  set-focus-if="extractSchema.isDateType(query.column, query.field)" >
-                            <option>Before</option>
-                            <option>After</option>
-                          </select>
-                          <select class="form-control content-offset-25" ng-model="query.queryType"
-                                  ng-show="extractSchema.isNumber(query.column, query.field) && query.field != null"
-                                  tooltip-trigger="focus"
-                                  tooltip-placement="top" uib-tooltip="3. Select your query type"
-                                  set-focus-if="extractSchema.isNumber(query.column, query.field) && query.field != null"
-                                  >
-                            <option>Greater Than</option>
-                            <option>Less Than</option>
-                          </select>
-                          <select class="form-control content-offset-25" ng-model="query.query"
-                                  ng-show="extractSchema.isBoolean(query.column, query.field) && query.field != null"
-                                  tooltip-trigger="focus"
-                                  tooltip-placement="top" uib-tooltip="3. Select your query type"
-                                  set-focus-if="extractSchema.isBoolean(query.column, query.field) && query.field != null"
-                                  >
-                            <option>true</option>
-                            <option>false</option>
-                          </select>
-                          <input type="number"
-                                 class="form-control content-offset-25"
-                                 ng-model="query.query"
-                                 ng-if="extractSchema.isNumber(query.column, query.field)"
-                                 placeholder="4. Add your value"
-                                 ng-keypress="$event.keyCode == 13 && search()"
-                                 set-focus-if="extractSchema.isNumber(query.column, query.field) && query.field != null  && query.queryType != null"
-                                 />
-                          <input type="text"
-                                 class="form-control content-offset-25"
-                                 ng-model="query.query"
-                                 ng-if="extractSchema.isText(query.column, query.field)"
-                                 uib-typeahead="x for x in extractSchema.getChoices(query.column, query.field, referencedata) | filter:$viewValue | limitTo:8"
-                                 placeholder="4. Add your value"
-                                 ng-keypress="$event.keyCode == 13 && search()"
-                                 set-focus-if="isText(query.column, query.field) && query.field != null  && query.queryType != null"
-                                 />
-                          <input type="text" ng-model="query.query"
-                                 class="form-control content-offset-25"
-                                 ng-if="extractSchema.isDateType(query.column, query.field)"
-                                 ng-keypress="$event.keyCode == 13 && search()"
-                                 tooltip-trigger="focus"
-                                 tooltip-placement="top" uib-tooltip="4. Add your value"
-                  	           ng-pattern="/^(0?[1-9]|[12][0-9]|3[01])\/(0?[1-9]|1[012])\/(\d{4})$/"
-                  	           placeholder="dd/mm/yyyy"
-                                 set-focus-if="isDate(query.column, query.field) && query.queryType != null"
-                                 />
-                            <span ng-if="extractSchema.isSelectMany(query.column, query.field)">
-                              <select class="form-control content-offset-25"
-                                      ng-model="query.queryType" tooltip-trigger="focus"
-                                      tooltip-placement="top" uib-tooltip="3. Select your query type"
-                                      set-focus-if="query.column && query.field" >
-                                <option>Any Of</option>
-                                <option>All Of</option>
-                              </select>
-                              <div class="row">
-                                <div class="col-sm-12 content-offset-10">
-                                  <ui-select multiple theme="bootstrap" ng-model="query.query" class="form-control"
-                                          style="min-width: 100%;"
-                                          tooltip-trigger="focus"
-                                          name="select-query"
-                                          ng-keypress="$event.keyCode == 13 && search()"
-                                        >
-                                      <ui-select-match placeholder="4. Select Some Of...">[[ $item ]]</ui-select-match>
-                                      <ui-select-choices repeat="i in extractSchema.getChoices(query.column, query.field, referencedata) | filter:$select.search">
-                                        <div ng-bind-html="i | highlight: $select.search"></div>
-                                      </ui-select-choices>
-                                  </ui-select>
-                                </div>
-                              </div>
+                          {% for widget in widgets %}
+                            <span ng-if="extractSchema.findField(query.column, query.field).widget === '{{ widget }}'">
+                              {% include widget %}
                             </span>
+                          {% endfor %}
                           </div>
                         <div class="col-md-1 text-right">
                           <div class="row">
@@ -215,28 +134,13 @@
                     </span>
                   </div>
                   <div class="col-md-3">
-                    <div class="search-info" ng-show="selectedInfo">
-                      <div class="search-info-title">
-                        <strong>[[ extractSchema.findColumn(selectedInfo.column).display_name ]]</strong>
-                      </div>
-                      <div ng-show="extractSchema.findColumn(selectedInfo.column).description">
-                        [[ extractSchema.findColumn(selectedInfo.column).description ]]
-                        <div class="content-offset-10"></div>
-                      </div>
-                      <div ng-show="selectedInfo.field">
-                        <strong>[[ extractSchema.findField(selectedInfo.column, selectedInfo.field).display_name ]]</strong>
-                          [[ "[" + extractSchema.getTypeDisplay(selectedInfo.column, selectedInfo.field) + "]" ]]
-                      </div>
-                      <div ng-show="extractSchema.isText(selectedInfo.column, selectedInfo.field) && extractSchema.findField(selectedInfo.column, selectedInfo.field).lookup_list">
-                        Normally coded as a
-                        <a href=""
-                           class="orange-link"
-                           ng-click="open_modal('LookupListReferenceCtrl', '/templates/modals/lookuplist_reference.html', {lookuplist_name: extractSchema.findField(selectedInfo.column, selectedInfo.field).lookup_list, lookuplist: extractSchema.getChoices(selectedInfo.column, selectedInfo.field, referencedata)  })">
-                          [[ extractSchema.findField(selectedInfo.column, selectedInfo.field).lookup_list | underscoreToSpaces ]]</a>
-                        but free text entries are possible.
-                      </div>
-                      [[ extractSchema.findField(selectedInfo.column, selectedInfo.field).description ]]
-                    </div>
+                    <div>[[ fieldInfo.subrecord.name ]]</div>
+                    <div>[[ fieldInfo.name ]]</div>
+                    {% for rule in search_rules %}
+                      {% for field in rule.get_fields %}
+                        {% include "search/query_description.html" %}
+                      {% endfor %}
+                    {% endfor %}
                   </div>
                 </div>
               </form>

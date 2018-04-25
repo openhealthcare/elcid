@@ -1,3 +1,4 @@
+import itertools
 from opal.core.discoverable import DiscoverableFeature
 from opal import models
 from elcid import models as emodels
@@ -38,12 +39,30 @@ class SearchRule(
         return getattr(self, "description", "")
 
     def get_model_fields(self):
-        return self.model._get_fieldnames_to_serialize()
+        result = self.model._get_fieldnames_to_serialize()
+        result = [i for i in result if not i == "id"]
+        if issubclass(self.model, models.PatientSubrecord):
+            result = [i for i in result if not i == "patient"]
+
+        if issubclass(self.model, models.EpisodeSubrecord):
+            result = [i for i in result if not i == "episode"]
+        return result
 
     def query(self, given_query):
         given_field = given_query['field']
         query_field = self.get_field(given_field)
         return query_field.query(given_query)
+
+    def get_widgets(self):
+        for i in self.get_fields():
+            yield i.get_widget()
+
+    @classmethod
+    def widgets(cls, user):
+        all_widgets = (i.get_widgets() for i in cls.list(user))
+        return {i for i in itertools.chain(
+            *all_widgets
+        )}
 
 
 class EpisodeQuery(SearchRule):

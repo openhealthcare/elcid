@@ -20,6 +20,7 @@ from opal.core.views import (
     json_response, _get_request_data, with_no_caching
 )
 from search import queries
+from search import search_rule
 from search.extract import (
     zip_archive, async_extract
 )
@@ -45,6 +46,18 @@ class SearchTemplateView(LoginRequiredMixin, TemplateView):
 
 class ExtractTemplateView(LoginRequiredMixin, TemplateView):
     template_name = 'search/extract.html'
+
+    def get_context_data(self, *args, **kwargs):
+        ctx = super(ExtractTemplateView, self).get_context_data(
+            *args, **kwargs
+        )
+        ctx["widgets"] = search_rule.SearchRule.widgets(
+            self.request.user
+        )
+        ctx["search_rules"] = search_rule.SearchRule.list(
+            self.request.user
+        )
+        return ctx
 
 
 def ajax_login_required(view):

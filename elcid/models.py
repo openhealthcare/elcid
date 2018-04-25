@@ -213,6 +213,7 @@ class PrimaryDiagnosis(EpisodeSubrecord):
 class Consultant(lookuplists.LookupList):
     pass
 
+
 class ConsultantAtDischarge(EpisodeSubrecord):
     _title = 'Consultant At Discharge'
     _is_singleton = True
