@@ -41,7 +41,7 @@ class SaveFilterModalView(TemplateView):
 
 
 class SearchTemplateView(LoginRequiredMixin, TemplateView):
-    template_name = 'search.html'
+    template_name = 'search/search.html'
 
 
 class ExtractTemplateView(LoginRequiredMixin, TemplateView):
@@ -102,7 +102,7 @@ def patient_search_view(request):
     criteria = [{
         "queryType": "Equals",
         "query": hospital_number,
-        "field": "Hospital Number",
+        "field": "hospital_number",
         'combine': 'and',
         'column': u'demographics',
     }]
