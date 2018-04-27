@@ -1,13 +1,27 @@
 import operator
 
-from django.db.models import Q
+from django.db import models
 from opal import models
+from opal.core import lookuplists
 from search.exceptions import SearchException
 from django.contrib.contenttypes.models import ContentType
 
 
 def model_name(model):
     return model.__name__.lower()
+
+
+def query_related_model(model, field_name, contains, value):
+    """ For related and many to many lists there is an assumption
+        that the related model is a lookup list.
+
+        TBH we can be at little flexible but the assumption is that
+        the model in question has a field called name and its a char field
+
+        validate that it is a char field and return the
+    """
+    related
+    pass
 
 
 def query_episodes_by_kwargs(model, filter_kwargs):
@@ -80,7 +94,7 @@ def query_for_boolean_fields(model, field_name, query_type, value):
 
 
 def query_for_related_fields(model, field_namne, query_type, value):
-    return models.Episode.objects.all()
+    raise NotImplementedError("elect queries need to be implement")
 
 
 def query_for_fkorft_fields(model, field_name, query_type, value):
@@ -133,7 +147,7 @@ def query_for_fkorft_fields(model, field_name, query_type, value):
         ): value
     }
 
-    q_objects = [Q(**foreign_key_query), Q(**free_text_query)]
+    q_objects = [models.Q(**foreign_key_query), models.Q(**free_text_query)]
 
     # 2.2
     if query_type == "Contains":
@@ -144,7 +158,7 @@ def query_for_fkorft_fields(model, field_name, query_type, value):
                 related_query_name,
                 field_name
             )
-            q_objects.append(Q(**{keyword: name}))
+            q_objects.append(models.Q(**{keyword: name}))
     else:
         if lookuplist_names:
             synonym_equals = {
@@ -157,7 +171,7 @@ def query_for_fkorft_fields(model, field_name, query_type, value):
                     # we just take the [0]
                 ): lookuplist_names[0]
             }
-            q_objects.append(Q(**synonym_equals))
+            q_objects.append(models.Q(**synonym_equals))
 
     qs = qs.filter(reduce(operator.or_, q_objects)).distinct()
 
@@ -211,6 +225,7 @@ def query_for_many_to_many_fields(model, field_name, query_type, value):
         contains = '__icontains'
 
     lookuplist = getattr(model, field_name).related_model
+
     lookuplist_names = get_lookuplist_names_for_query_string(
         lookuplist, contains, value
     )
@@ -222,7 +237,7 @@ def query_for_many_to_many_fields(model, field_name, query_type, value):
         ): value
     }
 
-    q_objects = [Q(**non_synonym_query)]
+    q_objects = [models.Q(**non_synonym_query)]
 
     # 2)
     if query_type == "Contains":
@@ -232,7 +247,7 @@ def query_for_many_to_many_fields(model, field_name, query_type, value):
             keyword = "{0}__{1}__name".format(
                 related_query_name, field_name
             )
-            q_objects.append(Q(**{keyword: name}))
+            q_objects.append(models.Q(**{keyword: name}))
     else:
         if lookuplist_names:
             synonym_equals = {
@@ -244,7 +259,7 @@ def query_for_many_to_many_fields(model, field_name, query_type, value):
                 # than looking for all matches inside synonym names so
                 # we just take the [0]
             }
-            q_objects.append(Q(**synonym_equals))
+            q_objects.append(models.Q(**synonym_equals))
 
     qs = qs.filter(reduce(operator.or_, q_objects)).distinct()
 
