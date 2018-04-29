@@ -73,7 +73,8 @@ class SubrecordFieldWrapper(object):
             "name",
             "display_name",
             "lookup_list",
-            "icon"
+            "icon",
+            "description"
         ]
         for i in fields:
             attr = getattr(self, "get_{}".format(i))()

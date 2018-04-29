@@ -3,40 +3,32 @@ import datetime
 
 from opal.core.test import OpalTestCase
 from search import search_rule
+from search import search_rule_fields
+from search import exceptions
 
 
 class SearchRuleFieldTestCase(OpalTestCase):
     def setUp(self, *args, **kwargs):
-        class SomeSearchRuleField(search_rule.SearchRuleField):
+        class SomeSearchRuleField(search_rule_fields.SearchRuleField):
             lookup_list = "some_list"
             enum = [1, 2, 3]
             description = "its a custom field"
             display_name = "custom field you know"
             field_type = "string"
-            slug = "some_slug"
+            field_name = "some_slug"
             type_display_name = "some field"
-        self.custom_field = SomeSearchRuleField()
+            widget = "some_widget.html"
+        self.custom_field = SomeSearchRuleField(self.user)
         super(SearchRuleFieldTestCase, self).setUp(*args, **kwargs)
 
     def test_slug_if_slug_provided(self):
-        self.assertEqual(self.custom_field.get_slug(), "some_slug")
-
-    def test_slug_if_slug_not_provided(self):
-        class SomeOtherSearchRuleField(search_rule.SearchRuleField):
-            lookuplist = "some_list"
-            enum = [1, 2, 3]
-            description = "its a custom field"
-            display_name = "custom field you know"
-            type_display_name = "some field"
-        self.assertEqual(
-            SomeOtherSearchRuleField().get_slug(), "customfieldyouknow"
-        )
+        self.assertEqual(self.custom_field.get_name(), "some_slug")
 
     def test_slug_if_no_slug_or_display_name(self):
-        class SluglessSearchRuleField(search_rule.SearchRuleField):
+        class SluglessSearchRuleField(search_rule_fields.SearchRuleField):
             description = "Invalid for slugs"
         with self.assertRaises(ValueError):
-            SluglessSearchRuleField.get_slug()
+            SluglessSearchRuleField.get_name()
 
     def test_query(self):
         with self.assertRaises(NotImplementedError) as nie:
@@ -50,9 +42,7 @@ class SearchRuleFieldTestCase(OpalTestCase):
             enum=[1, 2, 3],
             description="its a custom field",
             name="some_slug",
-            title='custom field you know',
-            type="string",
-            type_display_name="some field"
+            display_name='custom field you know',
         )
         self.assertEqual(
             self.custom_field.to_dict(),
@@ -65,20 +55,22 @@ class SearchRuleTestCase(OpalTestCase):
         some_mock_query = MagicMock()
         with patch.object(search_rule.SearchRule, "list") as get_list:
             get_list.return_value = [some_mock_query]
-            some_mock_query.get_slug.return_value = "tree"
-            result = search_rule.SearchRule.get("tree")
+            some_mock_query.get_name.return_value = "tree"
+            result = search_rule.SearchRule.get("tree", self.user)
             self.assertEqual(result, some_mock_query)
 
     def test_get_if_missing(self):
         some_mock_query = MagicMock()
         with patch.object(search_rule.SearchRule, "list") as get_list:
             get_list.return_value = [some_mock_query]
-            some_mock_query.get_slug.return_value = "tree"
-            result = search_rule.SearchRule.get("onion")
+            some_mock_query.get_name.return_value = "tree"
+            result = search_rule.SearchRule.get("onion", self.user)
             self.assertIsNone(result)
 
     def test_get_fields(self):
-        self.assertEqual(search_rule.SearchRule().get_fields(), [])
+        self.assertEqual(
+            [i for i in search_rule.SearchRule(self.user).get_fields()], []
+        )
 
     def test_query(self):
         some_mock_query = MagicMock()
@@ -87,10 +79,10 @@ class SearchRuleTestCase(OpalTestCase):
             search_rule.SearchRule, "get_fields"
         ) as get_fields:
             get_fields.return_value = [some_mock_query]
-            some_mock_query.get_slug.return_value = "tree"
+            some_mock_query.get_name.return_value = "tree"
             some_mock_query().query.return_value = "some_result"
             query = dict(field="tree")
-            result = search_rule.SearchRule().query(query)
+            result = search_rule.SearchRule(self.user).query(query)
             self.assertEqual(result, "some_result")
             some_mock_query().query.assert_called_once_with(query)
 
@@ -107,7 +99,7 @@ class SearchRuleTestCase(OpalTestCase):
             name="some_slug",
             fields=[]
         )
-        self.assertEqual(SomeSearchRule().to_dict(), expected)
+        self.assertEqual(SomeSearchRule(self.user).to_dict(), expected)
 
 
 class EpisodeQueryTestCase(OpalTestCase):
@@ -117,7 +109,7 @@ class EpisodeQueryTestCase(OpalTestCase):
         self.episode.start = datetime.date(2017, 1, 1)
         self.episode.end = datetime.date(2017, 1, 5)
         self.episode.save()
-        self.episode_query = search_rule.EpisodeQuery()
+        self.episode_query = search_rule.EpisodeQuery(self.user)
 
     def test_episode_end_start(self):
         query_end = dict(
@@ -167,7 +159,7 @@ class EpisodeQueryTestCase(OpalTestCase):
             query="1/8/2010",
             field="end"
         )
-        with self.assertRaises(search_rule.SearchException):
+        with self.assertRaises(exceptions.SearchException):
             self.episode_query.query(query_end)
 
     def test_episode_start_before(self):
@@ -218,7 +210,7 @@ class EpisodeQueryTestCase(OpalTestCase):
             query="1/8/2010",
             field="start"
         )
-        with self.assertRaises(search_rule.SearchException):
+        with self.assertRaises(exceptions.SearchException):
             self.episode_query.query(query_end)
 
 
@@ -228,7 +220,7 @@ class EpisodeTeamQueryTestCase(OpalTestCase):
         _, self.episode_1 = self.new_patient_and_episode_please()
         _, self.episode_2 = self.new_patient_and_episode_please()
         _, self.episode_3 = self.new_patient_and_episode_please()
-        self.episode_query = search_rule.EpisodeQuery()
+        self.episode_query = search_rule.EpisodeQuery(self.user)
 
     def test_episode_team_wrong_query_param(self):
         query_end = dict(
@@ -236,7 +228,7 @@ class EpisodeTeamQueryTestCase(OpalTestCase):
             query=["Some Team"],
             field="team"
         )
-        with self.assertRaises(search_rule.SearchException) as er:
+        with self.assertRaises(exceptions.SearchException) as er:
             self.episode_query.query(query_end)
         self.assertEqual(
             str(er.exception),
@@ -249,7 +241,7 @@ class EpisodeTeamQueryTestCase(OpalTestCase):
             query=["Some Team"],
             field="team"
         )
-        with self.assertRaises(search_rule.SearchException) as er:
+        with self.assertRaises(exceptions.SearchException) as er:
             self.episode_query.query(query_end)
         self.assertEqual(
             str(er.exception),
@@ -269,7 +261,7 @@ class EpisodeTeamQueryTestCase(OpalTestCase):
             query=["Plant"],
             field="team"
         )
-        with patch.object(search_rule.Tagging, "build_field_schema") as bfs:
+        with patch.object(search_rule_fields.models.Tagging, "build_field_schema") as bfs:
             bfs.return_value = [
                 dict(
                     name="plant",
@@ -295,7 +287,7 @@ class EpisodeTeamQueryTestCase(OpalTestCase):
             query=["Plant"],
             field="team"
         )
-        with patch.object(search_rule.Tagging, "build_field_schema") as bfs:
+        with patch.object(search_rule_fields.models.Tagging, "build_field_schema") as bfs:
             bfs.return_value = [
                 dict(
                     name="plant",
@@ -324,7 +316,9 @@ class EpisodeTeamQueryTestCase(OpalTestCase):
             query=["Plant", "Tree"],
             field="team"
         )
-        with patch.object(search_rule.Tagging, "build_field_schema") as bfs:
+        with patch.object(
+            search_rule_fields.models.Tagging, "build_field_schema"
+        ) as bfs:
             bfs.return_value = [
                 dict(
                     name="plant",
@@ -352,7 +346,9 @@ class EpisodeTeamQueryTestCase(OpalTestCase):
             query=["Plant"],
             field="team"
         )
-        with patch.object(search_rule.Tagging, "build_field_schema") as bfs:
+        with patch.object(
+            search_rule_fields.models.Tagging, "build_field_schema"
+        ) as bfs:
             bfs.return_value = [
                 dict(
                     name="plant",
@@ -382,7 +378,10 @@ class EpisodeTeamQueryTestCase(OpalTestCase):
             query=["Plant", "Tree"],
             field="team"
         )
-        with patch.object(search_rule.Tagging, "build_field_schema") as bfs:
+
+        with patch.object(
+            search_rule_fields.models.Tagging, "build_field_schema"
+        ) as bfs:
             bfs.return_value = [
                 dict(
                     name="plant",

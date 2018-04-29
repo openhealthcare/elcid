@@ -1,14 +1,7 @@
 angular.module('opal.services').factory('ExtractQuery', function(){
-  var baseModel = {
-    column     : null,
-    field      : null,
-    queryType  : null,
-    query      : null
-  };
-
   var ExtractQuery = function(schema){
     // the seatch query
-    this.criteria = [_.clone(baseModel)];
+    this.criteria = [{}];
     this.combinations = ["all", "any"];
     this.requiredExtractFieldNames = [
       ['demographics', 'date_of_birth'],
@@ -76,6 +69,21 @@ angular.module('opal.services').factory('ExtractQuery', function(){
       });
       return result;
     },
+    getCriteriaToSend(){
+      // remove the angular hash key
+      var result = [];
+      _.each(this.criteria, function(query){
+        var query_row = {};
+        _.each(query, function(v, k){
+            if(k !== "$$hashKey"){
+              query_row[k] = v;
+            }
+        });
+        result.push(query_row);
+      });
+
+      return result;
+    },
     readableQueryType: function(someQuery){
       if(!someQuery){
         return someQuery;
@@ -124,7 +132,7 @@ angular.module('opal.services').factory('ExtractQuery', function(){
       return criteria
     },
     addFilter: function(){
-        this.criteria.push(_.clone(baseModel));
+        this.criteria.push({});
     },
     removeFilter: function(index){
         if(this.selectedInfo === this.criteria[index]){
@@ -140,13 +148,13 @@ angular.module('opal.services').factory('ExtractQuery', function(){
     resetFilter: function(queryRow, fieldsTypes){
       // when we change the column, reset the rest of the query
       _.each(queryRow, function(v, k){
-        if(!_.contains(fieldsTypes, k) && k in baseModel){
-          queryRow[k] = baseModel[k];
+        if(!_.contains(fieldsTypes, k)){
+          queryRow[k] = null;
         }
       });
     },
     removeCriteria: function(){
-        this.criteria = [_.clone(baseModel)];
+        this.criteria = [{}];
     }
   }
 

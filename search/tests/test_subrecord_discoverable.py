@@ -131,7 +131,7 @@ class SubrecordFieldWrapperTestCase(OpalTestCase):
             'name': 'name',
             'display_name': u'Name',
             'type': 'string',
-            'type_display_name': 'Text Field'
+            'icon': 'fa fa-comments'
         }
         self.assertEqual(field_wrapper.to_dict(), expected)
 
@@ -146,7 +146,7 @@ class SubrecordFieldWrapperTestCase(OpalTestCase):
             'name': 'name',
             'display_name': 'interesting',
             'type': 'string',
-            'type_display_name': 'something'
+            'icon': 'interesting'
         }
         self.assertEqual(field_wrapper.to_dict(), expected)
 
@@ -157,11 +157,11 @@ class SubrecordFieldWrapperTestCase(OpalTestCase):
         expected = {
             'lookup_list': 'first_names',
             'enum': ['Sarah', 'Michelle'],
-            'description': 'very interesting',
             'name': 'name',
-            'display_name': 'interesting',
+            'icon': 'interesting',
             'type': 'string',
-            'type_display_name': 'something'
+            'display_name': 'interesting',
+            'description': 'very interesting'
         }
         self.assertEqual(field_wrapper.to_dict(), expected)
 

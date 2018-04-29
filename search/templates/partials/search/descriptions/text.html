@@ -1,0 +1,9 @@
+<strong>[[ extractSchema.findColumn(query.column).display_name ]] [[ extractSchema.findField(query.column, query.field).display_name ]]</strong>
+<span ng-show="query.queryType === 'Equals'">
+  is
+</span>
+<span ng-show="query.queryType !== 'Equals'">
+  contains
+</span>
+[[ query.query ]]
+<span ng-hide="$last">[[ query.combine ]]</span>

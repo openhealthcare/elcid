@@ -168,8 +168,8 @@ class DatabaseQuery(QueryBackend):
 
     def _episodes_without_restrictions(self):
         all_matches = [
-            (q['combine'], self.episodes_for_criteria(q))
-            for q in self.query
+            (query_row['combine'], self.episodes_for_criteria(query_row))
+            for query_row in self.query
         ]
         if not all_matches:
             return []

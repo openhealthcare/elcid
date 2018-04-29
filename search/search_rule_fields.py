@@ -18,9 +18,12 @@ from search.subrecord_discoverable import SubrecordFieldWrapper
     to_dict, the serialised version of the field in the schema
     query, the dictionary that the rule receives
 """
+GENERIC_WIDGET_DESCRIPTION = "partials/search/descriptions/widget_description.html"
 
 
 class SearchRuleField(SubrecordFieldWrapper):
+    widget_description = GENERIC_WIDGET_DESCRIPTION
+
     def query(self, given_query):
         """
             takes in the full query and returns a list of episodes
@@ -30,9 +33,13 @@ class SearchRuleField(SubrecordFieldWrapper):
     def get_widget(self):
         return self.widget
 
+    def get_widget_description(self):
+        return self.widget_description
+
     def to_dict(self):
         result = super(SearchRuleField, self).to_dict()
         result["widget"] = self.get_widget()
+        result["widget_description"] = self.get_widget_description()
         return result
 
 
@@ -92,6 +99,16 @@ FIELD_TYPE_TO_WIDGET = {
     is_select: "search/widgets/select.html",
 }
 
+WIDGET_TO_DESCRIPTION = {
+    "search/widgets/text.html": "partials/search/descriptions/text.html",
+    "search/widgets/number.html": GENERIC_WIDGET_DESCRIPTION,
+    "search/widgets/many_to_many.html": "partials/search/descriptions/many_to_many.html",
+    "search/widgets/select.html": GENERIC_WIDGET_DESCRIPTION,
+    "search/widgets/number.html": GENERIC_WIDGET_DESCRIPTION,
+    "search/widgets/date.html": GENERIC_WIDGET_DESCRIPTION,
+    "search/widgets/boolean.html": GENERIC_WIDGET_DESCRIPTION
+}
+
 
 class ModelSearchRuleField(SearchRuleField):
     widget = None
@@ -108,12 +125,23 @@ class ModelSearchRuleField(SearchRuleField):
             the query_type would be beginning with
             the value would be 'C'
         """
+        query_args = {
+            i: v for i, v in query.items() if i not in {
+                "column", "field", "combine"
+            }
+        }
+        query_args["value"] = query_args.pop("query")
+        if "queryType" in query_args:
+            query_type = query_args.pop("queryType")
+            query_args["query_type"] = query_type
         return dict(
             model=self.model,
             field_name=self.field_name,
-            query_type=query["queryType"],
-            value=query["query"]
+            **query_args
         )
+
+    def get_widget_description(self):
+        return WIDGET_TO_DESCRIPTION[self.get_widget()]
 
     def query(self, query):
         for field_type_method, query_method in FIELD_TYPE_TO_QUERY.items():
@@ -142,6 +170,11 @@ class ModelSearchRuleField(SearchRuleField):
 class EpisodeDateQuery(object):
     def query(self, given_query):
         query_type = given_query["queryType"]
+        if query_type not in {"Before", "After"}:
+            raise SearchException(
+                "Date queries required before or after to be declared"
+            )
+
         value = models.deserialize_date(given_query["query"])
         if query_type == 'Before':
             qtype = '__lte'
@@ -185,6 +218,9 @@ class EpisodeTeam(
     type_display_name = "Text Field"
     field_name = "team"
     widget = "search/widgets/many_to_many.html"
+    widget_description = WIDGET_TO_DESCRIPTION[
+        "search/widgets/many_to_many.html"
+    ]
 
     @property
     def enum(self):

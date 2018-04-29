@@ -5,9 +5,10 @@
   <h4>Your Criteria</h4>
   Find patients where the
   <span ng-repeat="query in extractQuery.completeCriteria()">
-    <strong>[[ extractSchema.findColumn(query.column).display_name ]] [[ extractSchema.findField(query.column, query.field).title ]]</strong> [[ extractQuery.readableQueryType(query.queryType) ]]
-    <strong ng-show="query.queryType === 'Any Of'">[[ query.query|displayArray:"or" ]]</strong>
-    <strong ng-hide="query.queryType === 'Any Of'">[[ query.query|displayArray ]]</strong>
-    <span ng-hide="$last">[[ query.combine ]]</span>
+    {% for description in widget_descriptions %}
+      <span ng-if="extractSchema.findField(query.column, query.field).widget_description === '{{ description }}'">
+        {% include description %}
+      </span>
+    {% endfor %}
   </span>
 </span>

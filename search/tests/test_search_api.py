@@ -1,4 +1,4 @@
-from mock import patch
+from mock import patch, MagicMock
 
 from rest_framework.reverse import reverse
 from rest_framework import status
@@ -20,13 +20,17 @@ class ExtractSchemaTestCase(OpalTestCase):
 
 
 class DataDictionaryTestCase(OpalTestCase):
-    @patch('search.api.ExtractCsvSerialiser')
-    def test_records(self, serialiser):
-        serialiser.get_data_dictionary_schema.return_value = [{}]
-        self.assertEqual([{}], api.DataDictionaryViewSet().list(None).data)
+    @patch('search.api.CsvSerializer')
+    def test_records(self, serializer):
+        serializer.get_schemas.return_value = [{}]
+        request = MagicMock()
+        request.user = self.user
+        self.assertEqual([{}], api.DataDictionaryViewSet().list(request).data)
 
     def test_integration_records(self):
-        self.assertTrue(api.DataDictionaryViewSet().list(None).data)
+        request = MagicMock()
+        request.user = self.user
+        self.assertTrue(api.DataDictionaryViewSet().list(request).data)
 
 
 class LoginRequredTestCase(OpalTestCase):
@@ -44,10 +48,10 @@ class LoginRequredTestCase(OpalTestCase):
             reverse('data-dictionary-list', request=self.request),
         ]
 
-    def test_403(self):
+    def test_401(self):
         for url in self.get_urls():
             response = self.client.get(url)
             self.assertEqual(
                 response.status_code,
-                status.HTTP_403_FORBIDDEN
+                401
             )

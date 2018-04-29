@@ -9,7 +9,10 @@ from search.exceptions import SearchException
 
 class CsvFieldWrapper(subrecord_discoverable.SubrecordFieldWrapper):
     def extract(self, obj):
-        return getattr(obj, self.field_name)
+        result = getattr(obj, self.field_name)
+        if result is None:
+            return ""
+        return result
 
 
 class EpisodeIdForPatientSubrecord(CsvFieldWrapper):
@@ -89,7 +92,6 @@ class EpisodeCsvSerializer(CsvSerializer):
         "updated",
         "created_by_id",
         "updated_by_id",
-        "patient_id"
     ]
     model = models.Episode
     display_name = "Episode"

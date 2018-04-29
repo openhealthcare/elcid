@@ -1,27 +1,13 @@
 import operator
 
-from django.db import models
+from django.db.models import Q
 from opal import models
-from opal.core import lookuplists
 from search.exceptions import SearchException
 from django.contrib.contenttypes.models import ContentType
 
 
 def model_name(model):
     return model.__name__.lower()
-
-
-def query_related_model(model, field_name, contains, value):
-    """ For related and many to many lists there is an assumption
-        that the related model is a lookup list.
-
-        TBH we can be at little flexible but the assumption is that
-        the model in question has a field called name and its a char field
-
-        validate that it is a char field and return the
-    """
-    related
-    pass
 
 
 def query_episodes_by_kwargs(model, filter_kwargs):
@@ -38,7 +24,7 @@ def query_episodes_by_kwargs(model, filter_kwargs):
         )
 
 
-def query_for_text_fields(model, field_name, query_type, value):
+def query_for_text_fields(model, field_name, value, query_type, ):
     contains = '__iexact'
     if query_type == 'Contains':
         contains = '__icontains'
@@ -49,7 +35,7 @@ def query_for_text_fields(model, field_name, query_type, value):
     return query_episodes_by_kwargs(model, kw)
 
 
-def query_for_date_fields(model, field_name, query_type, value):
+def query_for_date_fields(model, field_name, value, query_type):
     value = models.deserialize_date(value)
     if query_type not in {"Before", "After"}:
         raise SearchException(
@@ -66,7 +52,7 @@ def query_for_date_fields(model, field_name, query_type, value):
     return query_episodes_by_kwargs(model, kw)
 
 
-def query_for_number_fields(model, field_name, query_type, value):
+def query_for_number_fields(model, field_name, value, query_type):
     if query_type not in {"Greater Than", "Less Than"}:
         raise SearchException(
             "Number queries must be greater than or less than"
@@ -82,7 +68,7 @@ def query_for_number_fields(model, field_name, query_type, value):
     return query_episodes_by_kwargs(model, kw)
 
 
-def query_for_boolean_fields(model, field_name, query_type, value):
+def query_for_boolean_fields(model, field_name, value):
     if value not in {"true", "false"}:
         raise SearchException(
             "Boolean queries must be true or false"
@@ -93,11 +79,11 @@ def query_for_boolean_fields(model, field_name, query_type, value):
     return query_episodes_by_kwargs(model, kw)
 
 
-def query_for_related_fields(model, field_namne, query_type, value):
+def query_for_related_fields(model, field_namne, value, query_type):
     raise NotImplementedError("elect queries need to be implement")
 
 
-def query_for_fkorft_fields(model, field_name, query_type, value):
+def query_for_fkorft_fields(model, field_name, value, query_type):
     """
     Returns episodes that match QUERY.
 
@@ -147,7 +133,7 @@ def query_for_fkorft_fields(model, field_name, query_type, value):
         ): value
     }
 
-    q_objects = [models.Q(**foreign_key_query), models.Q(**free_text_query)]
+    q_objects = [Q(**foreign_key_query), Q(**free_text_query)]
 
     # 2.2
     if query_type == "Contains":
@@ -158,7 +144,7 @@ def query_for_fkorft_fields(model, field_name, query_type, value):
                 related_query_name,
                 field_name
             )
-            q_objects.append(models.Q(**{keyword: name}))
+            q_objects.append(Q(**{keyword: name}))
     else:
         if lookuplist_names:
             synonym_equals = {
@@ -171,7 +157,7 @@ def query_for_fkorft_fields(model, field_name, query_type, value):
                     # we just take the [0]
                 ): lookuplist_names[0]
             }
-            q_objects.append(models.Q(**synonym_equals))
+            q_objects.append(Q(**synonym_equals))
 
     qs = qs.filter(reduce(operator.or_, q_objects)).distinct()
 
@@ -199,7 +185,7 @@ def get_lookuplist_names_for_query_string(
     return [synonym.content_object.name for synonym in synonyms]
 
 
-def query_for_many_to_many_fields(model, field_name, query_type, value):
+def query_for_many_to_many_fields(model, field_name, value, query_type):
     """
     Returns episodes that match QUERY.
 
@@ -224,7 +210,7 @@ def query_for_many_to_many_fields(model, field_name, query_type, value):
     if query_type == 'Contains':
         contains = '__icontains'
 
-    lookuplist = getattr(model, field_name).related_model
+    lookuplist = getattr(model, field_name).rel.model
 
     lookuplist_names = get_lookuplist_names_for_query_string(
         lookuplist, contains, value
@@ -233,11 +219,11 @@ def query_for_many_to_many_fields(model, field_name, query_type, value):
     # 1)
     non_synonym_query = {
         '{0}__{1}__name{2}'.format(
-            related_query_name, self.field_name, contains
+            related_query_name, field_name, contains
         ): value
     }
 
-    q_objects = [models.Q(**non_synonym_query)]
+    q_objects = [Q(**non_synonym_query)]
 
     # 2)
     if query_type == "Contains":
@@ -247,7 +233,7 @@ def query_for_many_to_many_fields(model, field_name, query_type, value):
             keyword = "{0}__{1}__name".format(
                 related_query_name, field_name
             )
-            q_objects.append(models.Q(**{keyword: name}))
+            q_objects.append(Q(**{keyword: name}))
     else:
         if lookuplist_names:
             synonym_equals = {
@@ -259,7 +245,7 @@ def query_for_many_to_many_fields(model, field_name, query_type, value):
                 # than looking for all matches inside synonym names so
                 # we just take the [0]
             }
-            q_objects.append(models.Q(**synonym_equals))
+            q_objects.append(Q(**synonym_equals))
 
     qs = qs.filter(reduce(operator.or_, q_objects)).distinct()
 

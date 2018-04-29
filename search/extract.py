@@ -4,6 +4,7 @@ Utilities for extracting data from Opal applications
 import csv
 import datetime
 import functools
+import logging
 
 import os
 import tempfile
@@ -56,11 +57,11 @@ def generate_nested_csv_extract(root_dir, episodes, user, field_dict):
     renderers = []
 
     for model_api_name, model_fields in field_dict.items():
-        serialiser = CsvSerializer.get(model_api_name, user)
-        renderer_cls = serialiser.get_renderer()
+        serializer = CsvSerializer.get(model_api_name, user)
+        renderer_cls = serializer.get_renderer()
 
         renderers.append(renderer_cls(
-            serialiser, episodes, user, chosen_fields_names=field_dict[model_api_name]
+            serializer, episodes, user, chosen_fields_names=field_dict[model_api_name]
         ))
 
     with open(full_file_name, 'w') as csv_file:
@@ -78,6 +79,22 @@ def generate_nested_csv_extract(root_dir, episodes, user, field_dict):
     return file_names
 
 
+def write_multi_csv_to_file(file_name, renderer):
+    logging.info("writing for {}".format(
+        renderer.serializer.get_display_name())
+    )
+
+    with open(file_name, "w") as csv_file:
+        writer = csv.writer(csv_file)
+        writer.writerow(renderer.get_headers())
+        for row in renderer.get_rows():
+            writer.writerow([i for i in row])
+
+    logging.info("finished writing for {}".format(
+        renderer.serializer.get_display_name())
+    )
+
+
 def generate_multi_csv_extract(root_dir, episodes, user):
     """ Generate the files and return a tuple of absolute_file_name, file_name
     """
@@ -90,30 +107,33 @@ def generate_multi_csv_extract(root_dir, episodes, user):
 
     full_file_name = os.path.join(root_dir, file_name)
 
-    for serialiser in CsvSerializer.list(user):
-        file_name = "{}.csv".format(serialiser.get_api_name())
+    for serializer in CsvSerializer.list(user):
+        file_name = "{}.csv".format(serializer.get_api_name())
         full_file_name = os.path.join(root_dir, file_name)
-        renderer_cls = serialiser.get_renderer()
-        renderer = renderer_cls(serialiser, episodes, user)
+        renderer_cls = serializer.get_renderer()
+        renderer = renderer_cls(serializer, episodes, user)
         if renderer.exists():
-            renderer.write_to_file(full_file_name)
-            file_names.append((full_file_name, file_name,))
+            write_multi_csv_to_file(full_file_name, renderer)
 
     return file_names
 
 
 def get_description_with_fields(episodes, user, description, fields):
     field_description = []
-    for serialiser in CsvSerializer.list(user):
-        field_names = [
-            i.get_display_name() for i in serialiser.get_fields() if i in fields
-        ]
-        field_description.append(
-            "{} - {}".format(
-                serialiser.get_display_name(),
-                field_names
+    for serializer_name, field_names in fields.items():
+        serializer = CsvSerializer.get(serializer_name, user)
+        if serializer:
+            serializer_fields = serializer.get_fields()
+            serializer_fields = [
+                i for i in serializer_fields if i.field_name in field_names
+            ]
+            field_names = [i.get_display_name() for i in serializer_fields]
+            field_description.append(
+                "{} - {}".format(
+                    serializer.get_display_name(),
+                    ", ".join(sorted(field_names))
+                )
             )
-        )
     if field_description:
         return "{description} \nExtracting:\n{fields}".format(
             description=description,

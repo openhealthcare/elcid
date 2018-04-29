@@ -89,7 +89,7 @@ class DatabaseQueryTestCase(OpalTestCase):
         self.name_criteria = [
             {
                 u'column': u'demographics',
-                u'field': u'Surname',
+                u'field': u'surname',
                 u'combine': u'and',
                 u'query': u'Stevens',
                 u'queryType': u'Equals'
@@ -98,8 +98,8 @@ class DatabaseQueryTestCase(OpalTestCase):
 
     def test_episodes_for_boolean_fields(self):
         criteria = dict(
-            column='demographics', field='Death Indicator',
-            combine='and', query='false', queryType='Equals'
+            column='demographics', field='death_indicator',
+            combine='and', query='false'
         )
         query = queries.DatabaseQuery(self.user, [criteria])
         self.assertEqual([self.episode], query.get_episodes())
@@ -142,8 +142,8 @@ class DatabaseQueryTestCase(OpalTestCase):
 
     def test_episodes_for_boolean_fields_episode_subrecord(self):
         criteria = dict(
-            column='hat_wearer', field='Wearing A Hat',
-            combine='and', query='true', queryType='Equals'
+            column='hat_wearer', field='wearing_a_hat',
+            combine='and', query='true'
         )
         hatwearer = testmodels.HatWearer(
             episode=self.episode, wearing_a_hat=True
@@ -154,8 +154,8 @@ class DatabaseQueryTestCase(OpalTestCase):
 
     def test_episodes_for_date_fields(self):
         criteria = dict(
-            column='dog_owner', field='Ownership Start Date',
-            combine='and', query='1/12/1999', queryType='Equals'
+            column='dog_owner', field='ownership_start_date',
+            combine='and', query='2/12/1999', queryType='Before'
         )
         dogowner = testmodels.DogOwner(
             episode=self.episode, ownership_start_date=date(1999, 12, 1))
@@ -165,8 +165,8 @@ class DatabaseQueryTestCase(OpalTestCase):
 
     def test_episodes_for_date_fields_patient_subrecord(self):
         criteria = dict(
-            column='birthday', field='Birth Date',
-            combine='and', query='1/12/1999', queryType='Equals'
+            column='birthday', field='birth_date',
+            combine='and', query='2/12/1999', queryType='Before'
         )
         birthday = testmodels.Birthday(
             patient=self.patient, birth_date=date(1999, 12, 1))
@@ -176,7 +176,7 @@ class DatabaseQueryTestCase(OpalTestCase):
 
     def test_episodes_for_date_fields_before(self):
         criteria = dict(
-            column='dog_owner', field='Ownership Start Date',
+            column='dog_owner', field='ownership_start_date',
             combine='and', query='1/12/2000', queryType='Before'
         )
         dogowner = testmodels.DogOwner(
@@ -187,7 +187,7 @@ class DatabaseQueryTestCase(OpalTestCase):
 
     def test_episodes_for_date_fields_after(self):
         criteria = dict(
-            column='dog_owner', field='Ownership Start Date',
+            column='dog_owner', field='ownership_start_date',
             combine='and', query='1/12/1998', queryType='After'
         )
         dogowner = testmodels.DogOwner(
@@ -253,7 +253,7 @@ and Hound Owner Hound Contains jeff
 
     def test_episodes_for_m2m_fields(self):
         criteria = dict(
-            column='hat_wearer', field='Hats',
+            column='hat_wearer', field='hats',
             combine='and', query='Bowler', queryType='Equals'
         )
 
@@ -270,7 +270,7 @@ and Hound Owner Hound Contains jeff
 
     def test_episodes_for_m2m_fields_equals_with_synonyms(self):
         criteria = dict(
-            column='hat_wearer', field='Hats',
+            column='hat_wearer', field='hats',
             combine='and', query='Derby', queryType='Equals'
         )
 
@@ -292,7 +292,7 @@ and Hound Owner Hound Contains jeff
 
     def test_episodes_for_m2m_fields_contains_synonym_and_name(self):
         criteria = dict(
-            column='hat_wearer', field='Hats',
+            column='hat_wearer', field='hats',
             combine='and', query='Der', queryType='Contains'
         )
 
@@ -351,7 +351,7 @@ and Hound Owner Hound Contains jeff
         self
     ):
         criteria = dict(
-            column='hat_wearer', field='Hats',
+            column='hat_wearer', field='hats',
             combine='and', query='Der', queryType='Contains'
         )
 
@@ -377,7 +377,7 @@ and Hound Owner Hound Contains jeff
 
     def test_episodes_for_m2m_fields_patient_subrecord(self):
         criteria = dict(
-            column='favourite_dogs', field='Dogs',
+            column='favourite_dogs', field='dogs',
             combine='and', query='Dalmation', queryType='Equals'
         )
 
@@ -586,7 +586,7 @@ and Hound Owner Hound Contains jeff
         criteria = [
             {
                 u'column': u'hat_wearer',
-                u'field': u'Name',
+                u'field': u'name',
                 u'combine': u'and',
                 u'query': u'Bowler',
                 u'queryType': u'Equals'
@@ -616,7 +616,9 @@ and Hound Owner Hound Contains jeff
                 search_rule_get.return_value = HatWearerQuery
                 query = queries.DatabaseQuery(self.user, criteria)
                 query.episodes_for_criteria(criteria[0])
-                search_rule_get.assert_called_once_with("hat_wearer")
+                search_rule_get.assert_called_once_with(
+                    "hat_wearer", self.user
+                )
                 hat_wearer_query.assert_called_once_with(criteria[0])
 
     def test_episodes_without_restrictions_no_matches(self):
@@ -633,7 +635,7 @@ and Hound Owner Hound Contains jeff
     def test_filter_restricted_only_user(self):
         self.user.profile.restricted_only = True
         self.user.profile.save()
-        self.patient.create_episode(category='Inpatient')
+        self.patient.create_episode()
         query = queries.DatabaseQuery(self.user, self.name_criteria)
         self.assertEqual([], query.get_episodes())
 
@@ -646,31 +648,6 @@ and Hound Owner Hound Contains jeff
         query = queries.DatabaseQuery(self.user, self.name_criteria)
         self.assertEqual([episode2], query.get_episodes())
 
-    def test_get_old_episode(self):
-        # episode's with old tags that have subsequently been removed
-        # should still be qiried
-
-        team_query = [dict(
-            column="tagging",
-            field='other_team',
-            combine='and',
-            query=None,
-            lookup_list=[],
-            queryType=None
-        )]
-
-        with transaction.atomic(), reversion.create_revision():
-            other_episode = self.patient.create_episode()
-            other_episode.set_tag_names(['other_team'], self.user)
-            query = queries.DatabaseQuery(self.user, team_query)
-
-        self.assertEqual([other_episode], query.get_episodes())
-
-        with transaction.atomic(), reversion.create_revision():
-            other_episode.set_tag_names([], self.user)
-
-        self.assertEqual([other_episode], query.get_episodes())
-
     def test_get_episodes(self):
         query = queries.DatabaseQuery(self.user, self.name_criteria)
         self.assertEqual([self.episode], query.get_episodes())
@@ -679,7 +656,7 @@ and Hound Owner Hound Contains jeff
         criteria = [
             {
                 u'column': u'demographics',
-                u'field': u'Sex',
+                u'field': u'sex',
                 u'combine': u'and',
                 u'query': u'Female',
                 u'queryType': u'Equals'
@@ -693,7 +670,7 @@ and Hound Owner Hound Contains jeff
         criteria = [
             {
                 u'column': u'demographics',
-                u'field': u'Sex',
+                u'field': u'sex',
                 u'combine': u'and',
                 u'query': u'Female',
                 u'queryType': u'Equals'
@@ -706,7 +683,7 @@ and Hound Owner Hound Contains jeff
         criteria = [
             {
                 u'column': u'demographics',
-                u'field': u'Sex',
+                u'field': u'sex',
                 u'combine': u'and',
                 u'query': u'F',
                 u'queryType': u'Equals'
@@ -726,7 +703,7 @@ and Hound Owner Hound Contains jeff
         criteria = [
             {
                 u'column': u'dog_owner',
-                u'field': u'Dog',
+                u'field': u'dog',
                 u'combine': u'and',
                 u'query': u'Terrier',
                 u'queryType': u'Equals'

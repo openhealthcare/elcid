@@ -8,7 +8,6 @@ from django.db.models import Count, Max
 from django.utils.encoding import force_bytes
 
 from search.exceptions import SearchException
-from search import schemas
 
 
 def _encode_to_utf8(some_var):
@@ -26,11 +25,14 @@ class CsvRenderer(object):
     # overrides of model fields for the csv columns
     non_field_csv_columns = []
 
-    def __init__(self, serialiser, queryset, user, chosen_fields_names=None):
-        self.serialiser = serialiser
+    def __init__(self, serializer, queryset, user, chosen_fields_names=None):
+        self.serializer = serializer
         self.queryset = queryset
         self.user = user
         self.chosen_fields_names = chosen_fields_names
+        # this tells us if its a flat or a nested extract
+        # this is useful because we don't show
+        self.is_flat = bool(self.chosen_fields_names)
 
     def get_fields(self):
         """
@@ -38,10 +40,10 @@ class CsvRenderer(object):
         """
         if self.chosen_fields_names:
             return [
-                self.serialiser.get_field(i) for i in self.chosen_fields_names
+                self.serializer.get_field(i) for i in self.chosen_fields_names
             ]
         else:
-            return self.serialiser.get_fields()
+            return self.serializer.get_fields()
 
     def get_field(self, field_name):
         for i in self.get_fields():
@@ -52,12 +54,17 @@ class CsvRenderer(object):
         ))
 
     def exists(self):
+        if self.serializer.model:
+            if self.serializer.model._is_singleton:
+                return self.queryset.exclude(updated=None).exists()
+
         if isinstance(self.queryset, list):
             return bool(self.queryset)
+
         return self.queryset.exists()
 
     def get_field_title(self, field_name):
-        return self.serialiser.get_field(field_name).get_display_name()
+        return self.serializer.get_field(field_name).get_display_name()
 
     def get_headers(self):
         result = []
@@ -87,21 +94,6 @@ class CsvRenderer(object):
     def count(self):
         return self.queryset.count()
 
-    def write_to_file(self, file_name):
-        logging.info("writing for {}".format(
-            self.serialiser.get_display_name())
-        )
-
-        with open(file_name, "w") as csv_file:
-            writer = csv.writer(csv_file)
-            writer.writerow(self.get_headers())
-            for row in self.get_rows():
-                writer.writerow([i for i in row])
-
-        logging.info("finished writing for {}".format(
-            self.serialiser.get_display_name())
-        )
-
     @cached_property
     def flat_row_length(self):
         return len(self.get_flat_headers())
@@ -112,7 +104,7 @@ class CsvRenderer(object):
         if self.flat_repetitions == 1:
             return [
                 "{0} {1}".format(
-                    self.serialiser.get_display_name(),
+                    self.serializer.get_display_name(),
                     i
                 ) for i in single_headers
             ]
@@ -123,7 +115,7 @@ class CsvRenderer(object):
             result.extend(
                 (
                     "{0} {1} {2}".format(
-                        self.serialiser.get_display_name(),
+                        self.serializer.get_display_name(),
                         rep + 1,
                         i
                     ) for i in single_headers
@@ -131,29 +123,25 @@ class CsvRenderer(object):
             )
         return result
 
-    @classmethod
-    def get_schema(cls, some_model):
-        return schemas.extract_download_schema_for_model(some_model)
-
 
 class PatientSubrecordCsvRenderer(CsvRenderer):
     def __init__(
-        self, serialiser, episode_queryset, user, chosen_fields_names=None
+        self, serializer, episode_queryset, user, chosen_fields_names=None
     ):
         self.patient_to_episode = defaultdict(list)
 
         for episode in episode_queryset:
             self.patient_to_episode[episode.patient_id].append(episode.id)
 
-        queryset = serialiser.model.objects.filter(
+        queryset = serializer.model.objects.filter(
             patient__in=list(self.patient_to_episode.keys()))
 
         super(PatientSubrecordCsvRenderer, self).__init__(
-            serialiser, queryset, user, chosen_fields_names
+            serializer, queryset, user, chosen_fields_names
         )
 
     def get_display_name(self):
-        return self.serialiser.get_display_name()
+        return self.serializer.get_display_name()
 
     def get_rows(self):
         for sub in self.queryset:
@@ -163,9 +151,9 @@ class PatientSubrecordCsvRenderer(CsvRenderer):
     @cached_property
     def flat_repetitions(self):
         if not self.queryset.exists():
-            return 0
+            return 1
 
-        if self.serialiser.model._is_singleton:
+        if self.serializer.model._is_singleton:
             return 1
 
         annotated = self.queryset.values('patient_id').annotate(
@@ -192,6 +180,7 @@ class EpisodeSubrecordCsvRenderer(CsvRenderer):
     def __init__(
         self, serializer, episode_queryset, user, chosen_fields_names=None
     ):
+
         queryset = serializer.model.objects.filter(
             episode__in=episode_queryset
         )
@@ -201,14 +190,14 @@ class EpisodeSubrecordCsvRenderer(CsvRenderer):
         )
 
     def get_display_name(self):
-        return self.serialiser.get_display_name()
+        return self.serializer.get_display_name()
 
     @cached_property
     def flat_repetitions(self):
         if not self.queryset:
-            return 0
+            return 1
 
-        if self.serialiser.model._is_singleton:
+        if self.serializer.model._is_singleton:
             return 1
 
         annotated = self.queryset.values('episode_id').annotate(

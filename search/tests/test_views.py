@@ -270,7 +270,7 @@ class ExtractSearchViewTestCase(BaseSearchTestCase):
             {
                 u'page_number': 1,
                 u'column': u'demographics',
-                u'field': u'Surname',
+                u'field': u'surname',
                 u'combine': u'and',
                 u'query': u'Connery',
                 u'queryType': u'Equals'
@@ -437,23 +437,28 @@ class DownloadTestCase(BaseSearchTestCase):
     @override_settings(
         EXTRACT_ASYNC=True
     )
-    def test_async_integrations(self):
+    @patch('search.views.async_extract')
+    def test_async_integrations(self, async_extract):
+        async_extract.return_value = 1
         self.assertTrue(
             self.client.login(
                 username=self.user.username, password=self.PASSWORD
             )
         )
+        query = dict(
+            criteria=[{
+                "combine": "and",
+                "column": "demographics",
+                "field": "hospital_number",
+                "queryType": "Contains",
+                "query": "a",
+            }],
+            data_slice={}
+        )
         post_data = json.dumps({
             "criteria":
-                json.dumps([{
-                    "combine": "and",
-                    "column": "demographics",
-                    "field": "hospital_number",
-                    "queryType": "Contains",
-                    "query": "a",
-                    "lookup_list": [],
-                }]),
-            "data_slice": json.dumps({})
+                json.dumps(query["criteria"]),
+            "data_slice": json.dumps(query["data_slice"])
         })
         create_task = self.client.post(
             self.url, post_data, content_type='appliaction/json'
@@ -470,7 +475,10 @@ class DownloadTestCase(BaseSearchTestCase):
             json.loads(status_result.content.decode())['state'],
             "PENDING"
         )
+        self.assertEqual(async_extract.call_count, 1)
+        async_extract.assert_called_once_with(self.user, query)
 
+    @override_settings(EXTRACT_ASYNC=False)
     def test_non_async_extract(self):
         # a vanilla check to make sure that the view returns a zip file
         url = reverse("extract_download")
@@ -482,7 +490,6 @@ class DownloadTestCase(BaseSearchTestCase):
                     "field": "hospital_number",
                     "queryType": "Contains",
                     "query": "a",
-                    "lookup_list": [],
                 }]),
         }
 
@@ -506,7 +513,6 @@ class DownloadTestCase(BaseSearchTestCase):
                     "field": "hospital_number",
                     "queryType": "Contains",
                     "query": "a",
-                    "lookup_list": [],
                 }]),
             "data_slice":
                 json.dumps({
@@ -533,7 +539,6 @@ class DownloadTestCase(BaseSearchTestCase):
             "field": "hospital_number",
             "queryType": "Contains",
             "query": "007",
-            "lookup_list": [],
         }]
 
         data_slice = {

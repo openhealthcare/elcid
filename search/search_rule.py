@@ -60,11 +60,24 @@ class SearchRule(
         for i in self.get_fields():
             yield i.get_widget()
 
+    def get_widget_descriptions(self):
+        for i in self.get_fields():
+            yield i.get_widget_description()
+
     @classmethod
     def widgets(cls, user):
         all_widgets = (i.get_widgets() for i in cls.list(user))
         return {i for i in itertools.chain(
             *all_widgets
+        )}
+
+    @classmethod
+    def widget_descriptions(cls, user):
+        widget_descriptions = (
+            i.get_widget_descriptions() for i in cls.list(user)
+        )
+        return {i for i in itertools.chain(
+            *widget_descriptions
         )}
 
 

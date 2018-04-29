@@ -54,6 +54,10 @@ class ExtractTemplateView(LoginRequiredMixin, TemplateView):
         ctx["widgets"] = search_rule.SearchRule.widgets(
             self.request.user
         )
+        descriptions = search_rule.SearchRule.widget_descriptions(
+            self.request.user
+        )
+        ctx["widget_descriptions"] = descriptions
         ctx["search_rules"] = search_rule.SearchRule.list(
             self.request.user
         )

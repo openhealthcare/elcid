@@ -1,25 +1,23 @@
-<span ng-if="extractSchema.isSelectMany(query.column, query.field)">
-  <select class="form-control content-offset-25"
-          ng-model="query.queryType" tooltip-trigger="focus"
-          tooltip-placement="top" uib-tooltip="3. Select your query type"
-          set-focus-if="query.column && query.field"
-          ng-if="query.column && query.field">
-    <option>Any Of</option>
-    <option>All Of</option>
-  </select>
-  <div class="row">
-    <div ng-if="query.column && query.field && query.queryType" class="col-sm-12 content-offset-10">
-      <ui-select multiple theme="bootstrap" ng-model="query.query" class="form-control"
-              style="min-width: 100%;"
-              tooltip-trigger="focus"
-              name="select-query"
-              ng-keypress="$event.keyCode == 13 && search()"
-            >
-          <ui-select-match placeholder="4. Select Some Of...">[[ $item ]]</ui-select-match>
-          <ui-select-choices repeat="i in extractSchema.getChoices(query.column, query.field, referencedata) | filter:$select.search">
-            <div ng-bind-html="i | highlight: $select.search"></div>
-          </ui-select-choices>
-      </ui-select>
-    </div>
+<select class="form-control content-offset-25"
+        ng-model="query.queryType" tooltip-trigger="focus"
+        tooltip-placement="top" uib-tooltip="3. Select your query type"
+        set-focus-if="query.column && query.field"
+        ng-if="query.column && query.field">
+  <option>Any Of</option>
+  <option>All Of</option>
+</select>
+<div class="row">
+  <div ng-if="query.column && query.field && query.queryType" class="col-sm-12 content-offset-10">
+    <ui-select multiple theme="bootstrap" ng-model="query.query" class="form-control"
+            style="min-width: 100%;"
+            tooltip-trigger="focus"
+            name="select-query"
+            ng-keypress="$event.keyCode == 13 && search()"
+          >
+        <ui-select-match placeholder="4. Select Some Of...">[[ $item ]]</ui-select-match>
+        <ui-select-choices repeat="i in extractSchema.getChoices(query.column, query.field, referencedata) | filter:$select.search">
+          <div ng-bind-html="i | highlight: $select.search"></div>
+        </ui-select-choices>
+    </ui-select>
   </div>
-</span>
+</div>

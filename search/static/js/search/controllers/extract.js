@@ -72,7 +72,7 @@ angular.module('opal.controllers').controller( 'ExtractCtrl',
       // remove the angular hash key
       _.each(queryParams, function(query){
           query = _.filter(query, function(v, k){
-            return k === "%%hashKey";
+            return k === "$$hashKey";
           });
       });
 
@@ -145,7 +145,9 @@ angular.module('opal.controllers').controller( 'ExtractCtrl',
             });
         };
         $scope.async_waiting = true;
-        var postArgs = {criteria: JSON.stringify($scope.extractQuery.criteria)};
+        var postArgs = {
+          criteria: JSON.stringify($scope.extractQuery.getCriteriaToSend())
+        };
         if(usingDataSlice){
           postArgs['data_slice'] = JSON.stringify(
             $scope.extractQuery.getDataSlices()
