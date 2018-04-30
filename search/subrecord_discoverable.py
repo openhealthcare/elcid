@@ -262,7 +262,10 @@ class SubrecordDiscoverableMixin(object):
 
     @classmethod
     def get_schemas(cls, user):
-        return [i.get_schema() for i in cls.list(user)]
+        return sorted(
+            (i.get_schema() for i in cls.list(user)),
+            key=lambda x: x["display_name"]
+        )
 
     def get_schema(self):
         fields = [i.to_dict() for i in self.get_fields()]

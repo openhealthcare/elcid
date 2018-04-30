@@ -94,7 +94,7 @@ FIELD_TYPE_TO_WIDGET = {
     is_foreign_key_or_free_text: "search/widgets/text.html",
     fields.is_numeric: "search/widgets/number.html",
     is_boolean: "search/widgets/boolean.html",
-    is_many_to_many_field: "search/widgets/many_to_many.html",
+    is_many_to_many_field: "search/widgets/text.html",
     is_date_field: "search/widgets/date.html",
     is_text: "search/widgets/text.html",
     is_select: "search/widgets/select.html",
@@ -189,7 +189,6 @@ class EpisodeDateQuery(object):
 class EpisodeStart(
     EpisodeDateQuery, SearchRuleField
 ):
-    type = "date"
     type_display_name = "Date"
     description = "The date the episode started"
     field_name = "start"
@@ -200,7 +199,6 @@ class EpisodeStart(
 class EpisodeEnd(
     EpisodeDateQuery, SearchRuleField
 ):
-    type = "date"
     type_display_name = "Date"
     description = "The date the episode ended"
     field_name = "end"
@@ -215,10 +213,9 @@ class EpisodeTeam(
     ANY_OF = "Any Of"
     display_name = "Team"
     description = "The team(s) related to an episode of care"
-    type = "many_to_many"
     type_display_name = "Text Field"
     field_name = "team"
-    widget = "search/widgets/many_to_many.html"
+    widget = "search/widgets/team_many_to_many.html"
     widget_description = WIDGET_TO_DESCRIPTION[
         "search/widgets/many_to_many.html"
     ]

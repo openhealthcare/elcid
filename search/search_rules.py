@@ -100,3 +100,8 @@ class EpisodeQuery(SearchRule):
 class ResultQuery(SearchRule):
     exclude = True
     slug = emodels.Result.get_api_name()
+
+
+class DuplicatePatientQuery(SearchRule):
+    exclude = True
+    slug = emodels.DuplicatePatient.get_api_name()
