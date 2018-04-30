@@ -20,7 +20,7 @@ from opal.core.views import (
     json_response, _get_request_data, with_no_caching
 )
 from search import queries
-from search import search_rule
+from search import search_rules
 from search.extract import (
     zip_archive, async_extract, get_datadictionary_context
 )
@@ -51,14 +51,14 @@ class ExtractTemplateView(LoginRequiredMixin, TemplateView):
         ctx = super(ExtractTemplateView, self).get_context_data(
             *args, **kwargs
         )
-        ctx["widgets"] = search_rule.SearchRule.widgets(
+        ctx["widgets"] = search_rules.SearchRule.widgets(
             self.request.user
         )
-        descriptions = search_rule.SearchRule.widget_descriptions(
+        descriptions = search_rules.SearchRule.widget_descriptions(
             self.request.user
         )
         ctx["widget_descriptions"] = descriptions
-        ctx["search_rules"] = search_rule.SearchRule.list(
+        ctx["search_rules"] = search_rules.SearchRule.list(
             self.request.user
         )
         ctx.update(get_datadictionary_context(self.request.user, in_page=True))

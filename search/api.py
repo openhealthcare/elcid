@@ -2,7 +2,7 @@ from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 
 from opal.core.views import json_response
-from search.extract_serializers import CsvSerializer
+from search.extract_serializers import ExtractSerializer
 from search.search_rules import SearchRule
 
 
@@ -28,5 +28,5 @@ class DataDictionaryViewSet(viewsets.ViewSet):
 
     def list(self, request):
         return json_response(
-            CsvSerializer.get_schemas(request.user)
+            ExtractSerializer.get_schemas(request.user)
         )

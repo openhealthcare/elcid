@@ -10,7 +10,7 @@ import os
 import tempfile
 import zipfile
 
-from search.extract_serializers import CsvSerializer
+from search.extract_serializers import ExtractSerializer
 
 from django.template import Context, loader
 
@@ -21,7 +21,7 @@ def chunk_list(some_list, amount):
 
 
 def get_datadictionary_context(user, in_page=False):
-    serializers = list(CsvSerializer.list(user))
+    serializers = list(ExtractSerializer.list(user))
     return dict(
         data_dictionary=dict(
             serializers=serializers,
@@ -57,7 +57,7 @@ def generate_nested_csv_extract(root_dir, episodes, user, field_dict):
     renderers = []
 
     for model_api_name, model_fields in field_dict.items():
-        serializer = CsvSerializer.get(model_api_name, user)
+        serializer = ExtractSerializer.get(model_api_name, user)
         renderer_cls = serializer.get_renderer()
 
         renderers.append(renderer_cls(
@@ -107,7 +107,7 @@ def generate_multi_csv_extract(root_dir, episodes, user):
 
     full_file_name = os.path.join(root_dir, file_name)
 
-    for serializer in CsvSerializer.list(user):
+    for serializer in ExtractSerializer.list(user):
         file_name = "{}.csv".format(serializer.get_api_name())
         full_file_name = os.path.join(root_dir, file_name)
         renderer_cls = serializer.get_renderer()
@@ -121,7 +121,7 @@ def generate_multi_csv_extract(root_dir, episodes, user):
 def get_description_with_fields(episodes, user, description, fields):
     field_description = []
     for serializer_name, field_names in fields.items():
-        serializer = CsvSerializer.get(serializer_name, user)
+        serializer = ExtractSerializer.get(serializer_name, user)
         if serializer:
             serializer_fields = serializer.get_fields()
             serializer_fields = [

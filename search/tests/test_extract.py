@@ -56,7 +56,7 @@ class AbstractExtractTestCase(OpalTestCase):
             episodes,
             self.user
         )
-        with patch("search.extract.CsvSerializer.list") as l:
+        with patch("search.extract.ExtractSerializer.list") as l:
             l.return_value = serializers
             result = self.mock_extract(p)
 
@@ -615,7 +615,7 @@ class MultiFileCsvExtractTestCase(AbstractExtractTestCase):
         )
         result = self.get_multi_file_extract(
             models.Episode.objects.all(),
-            [extract_serializers.CsvSerializer.get(api_name, self.user)]
+            [extract_serializers.ExtractSerializer.get(api_name, self.user)]
         )
         general_note_fields = [
             u'Created',
@@ -646,7 +646,7 @@ class MultiFileCsvExtractTestCase(AbstractExtractTestCase):
         episode.save()
         result = self.get_multi_file_extract(
             models.Episode.objects.all(),
-            [extract_serializers.CsvSerializer.get("episode", self.user)]
+            [extract_serializers.ExtractSerializer.get("episode", self.user)]
         )
         expected_result = [
             '', '2018-02-01', '', '', '', '', ''
@@ -683,7 +683,7 @@ class MultiFileCsvExtractTestCase(AbstractExtractTestCase):
         api_name = emodels.Allergies.get_api_name()
         result = self.get_multi_file_extract(
             models.Episode.objects.all(),
-            [extract_serializers.CsvSerializer.get(api_name, self.user)]
+            [extract_serializers.ExtractSerializer.get(api_name, self.user)]
         )
         allergy_fields = [
             'External System',
@@ -753,8 +753,8 @@ class MultiFileCsvExtractTestCase(AbstractExtractTestCase):
         result = self.get_multi_file_extract(
             models.Episode.objects.all(),
             [
-                extract_serializers.CsvSerializer.get("episode", self.user),
-                extract_serializers.CsvSerializer.get(api_name, self.user)
+                extract_serializers.ExtractSerializer.get("episode", self.user),
+                extract_serializers.ExtractSerializer.get(api_name, self.user)
             ]
         )
         expected_result = [
