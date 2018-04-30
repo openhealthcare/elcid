@@ -2,7 +2,7 @@ from mock import MagicMock, patch
 import datetime
 
 from opal.core.test import OpalTestCase
-from search import search_rule
+from search import search_rules
 from search import search_rule_fields
 from search import exceptions
 
@@ -52,12 +52,12 @@ class SearchRuleTestCase(OpalTestCase):
         some_mock_query = MagicMock()
 
         with patch.object(
-            search_rule.SearchRule, "get_field"
+            search_rules.SearchRule, "get_field"
         ) as get_field:
             get_field.return_value = some_mock_query
             some_mock_query.query.return_value = "some_result"
             query = dict(field="tree")
-            result = search_rule.SearchRule(self.user).query(query)
+            result = search_rules.SearchRule(self.user).query(query)
             self.assertEqual(result, "some_result")
             some_mock_query.query.assert_called_once_with(query)
 
@@ -69,7 +69,7 @@ class EpisodeQueryTestCase(OpalTestCase):
         self.episode.start = datetime.date(2017, 1, 1)
         self.episode.end = datetime.date(2017, 1, 5)
         self.episode.save()
-        self.episode_query = search_rule.EpisodeQuery(self.user)
+        self.episode_query = search_rules.EpisodeQuery(self.user)
 
     def test_episode_end_start(self):
         query_end = dict(
@@ -180,7 +180,7 @@ class EpisodeTeamQueryTestCase(OpalTestCase):
         _, self.episode_1 = self.new_patient_and_episode_please()
         _, self.episode_2 = self.new_patient_and_episode_please()
         _, self.episode_3 = self.new_patient_and_episode_please()
-        self.episode_query = search_rule.EpisodeQuery(self.user)
+        self.episode_query = search_rules.EpisodeQuery(self.user)
 
     def test_episode_team_wrong_query_param(self):
         query_end = dict(

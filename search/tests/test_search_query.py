@@ -9,7 +9,7 @@ from mock import patch, MagicMock
 import reversion
 from opal.tests.episodes import RestrictedEpisodeCategory
 
-from search.search_rule import SearchRule
+from search.search_rules import SearchRule
 from opal.models import Synonym, Gender
 
 from opal.core.test import OpalTestCase

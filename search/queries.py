@@ -8,7 +8,7 @@ from django.conf import settings
 from opal import models
 from opal.core import subrecords
 from opal.utils import stringport
-from search.search_rule import SearchRule
+from search.search_rules import SearchRule
 
 
 def get_model_name_from_column_name(column_name):

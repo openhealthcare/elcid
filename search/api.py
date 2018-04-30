@@ -3,7 +3,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from opal.core.views import json_response
 from search.extract_serializers import CsvSerializer
-from search.search_rule import SearchRule
+from search.search_rules import SearchRule
 
 
 class ExtractSchemaViewSet(viewsets.ViewSet):

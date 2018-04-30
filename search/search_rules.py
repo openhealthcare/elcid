@@ -30,9 +30,14 @@ from search import search_rule_fields
 class SearchRule(
     SubrecordDiscoverableMixin, DiscoverableFeature
 ):
-    module_name = "search_rule"
+    module_name = "search_rules"
     FIELDS_TO_IGNORE = {
-        "id", "created", "updated", "created_by_id", "updated_by_id"
+        "id",
+        "created",
+        "updated",
+        "created_by_id",
+        "updated_by_id",
+        "consistency_token"
     }
 
     def cast_field_name_to_attribute(self, str):

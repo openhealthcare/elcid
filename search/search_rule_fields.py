@@ -107,7 +107,7 @@ WIDGET_TO_DESCRIPTION = {
     "search/widgets/select.html": GENERIC_WIDGET_DESCRIPTION,
     "search/widgets/number.html": GENERIC_WIDGET_DESCRIPTION,
     "search/widgets/date.html": GENERIC_WIDGET_DESCRIPTION,
-    "search/widgets/boolean.html": GENERIC_WIDGET_DESCRIPTION
+    "search/widgets/boolean.html": "partials/search/descriptions/boolean.html"
 }
 
 

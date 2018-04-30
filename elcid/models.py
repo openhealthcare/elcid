@@ -391,6 +391,7 @@ class Todo(EpisodeSubrecord):
 
     details = models.TextField(blank=True)
 
+
 class Hiv_no(lookuplists.LookupList):
     class Meta:
         verbose_name = "HIV refusal reason"
