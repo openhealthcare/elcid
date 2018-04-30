@@ -1,7 +1,6 @@
 from mock import patch, MagicMock
 
 from rest_framework.reverse import reverse
-from rest_framework import status
 
 from search import api
 from opal.core.test import OpalTestCase
@@ -9,14 +8,19 @@ from opal.tests.models import HatWearer
 
 
 class ExtractSchemaTestCase(OpalTestCase):
+    def setUp(self):
+        self.request = self.rf.get("/")
+        self.request.user = self.user
 
-    @patch('search.api.schemas')
-    def test_records(self, schemas):
-        schemas.extract_search_schema.return_value = [{}]
-        self.assertEqual([{}], api.ExtractSchemaViewSet().list(None).data)
-
-    def test_integration_records(self):
-        self.assertTrue(api.ExtractSchemaViewSet().list(None).data)
+    @patch('search.api.SearchRule.get_schemas')
+    def test_records(self, get_schemas):
+        get_schemas.return_value = [{}]
+        request = self.rf.get("/")
+        request.user = self.user
+        self.assertEqual(
+            [{}],
+            api.ExtractSchemaViewSet().list(self.request).data
+        )
 
 
 class DataDictionaryTestCase(OpalTestCase):

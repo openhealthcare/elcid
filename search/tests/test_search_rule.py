@@ -24,12 +24,6 @@ class SearchRuleFieldTestCase(OpalTestCase):
     def test_slug_if_slug_provided(self):
         self.assertEqual(self.custom_field.get_name(), "some_slug")
 
-    def test_slug_if_no_slug_or_display_name(self):
-        class SluglessSearchRuleField(search_rule_fields.SearchRuleField):
-            description = "Invalid for slugs"
-        with self.assertRaises(ValueError):
-            SluglessSearchRuleField.get_name()
-
     def test_query(self):
         with self.assertRaises(NotImplementedError) as nie:
             self.custom_field.query("some query")
@@ -42,6 +36,9 @@ class SearchRuleFieldTestCase(OpalTestCase):
             enum=[1, 2, 3],
             description="its a custom field",
             name="some_slug",
+            icon='custom field you know',
+            widget='some_widget.html',
+            widget_description='partials/search/descriptions/widget_description.html',
             display_name='custom field you know',
         )
         self.assertEqual(
@@ -51,55 +48,18 @@ class SearchRuleFieldTestCase(OpalTestCase):
 
 
 class SearchRuleTestCase(OpalTestCase):
-    def test_get(self):
-        some_mock_query = MagicMock()
-        with patch.object(search_rule.SearchRule, "list") as get_list:
-            get_list.return_value = [some_mock_query]
-            some_mock_query.get_name.return_value = "tree"
-            result = search_rule.SearchRule.get("tree", self.user)
-            self.assertEqual(result, some_mock_query)
-
-    def test_get_if_missing(self):
-        some_mock_query = MagicMock()
-        with patch.object(search_rule.SearchRule, "list") as get_list:
-            get_list.return_value = [some_mock_query]
-            some_mock_query.get_name.return_value = "tree"
-            result = search_rule.SearchRule.get("onion", self.user)
-            self.assertIsNone(result)
-
-    def test_get_fields(self):
-        self.assertEqual(
-            [i for i in search_rule.SearchRule(self.user).get_fields()], []
-        )
-
     def test_query(self):
         some_mock_query = MagicMock()
 
         with patch.object(
-            search_rule.SearchRule, "get_fields"
-        ) as get_fields:
-            get_fields.return_value = [some_mock_query]
-            some_mock_query.get_name.return_value = "tree"
-            some_mock_query().query.return_value = "some_result"
+            search_rule.SearchRule, "get_field"
+        ) as get_field:
+            get_field.return_value = some_mock_query
+            some_mock_query.query.return_value = "some_result"
             query = dict(field="tree")
             result = search_rule.SearchRule(self.user).query(query)
             self.assertEqual(result, "some_result")
-            some_mock_query().query.assert_called_once_with(query)
-
-    def test_to_dict(self):
-        class SomeSearchRule(search_rule.SearchRule):
-            description = "its a custom rule"
-            display_name = "custom field you know"
-            slug = "some_slug"
-            fields = []
-
-        expected = dict(
-            description="its a custom rule",
-            display_name="custom field you know",
-            name="some_slug",
-            fields=[]
-        )
-        self.assertEqual(SomeSearchRule(self.user).to_dict(), expected)
+            some_mock_query.query.assert_called_once_with(query)
 
 
 class EpisodeQueryTestCase(OpalTestCase):

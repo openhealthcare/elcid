@@ -1,6 +1,7 @@
 from django.db import models as djangomodels
 from opal.core import fields
 from opal import models
+from opal.core import serialization
 from search.exceptions import SearchException
 from search import subrecord_queries
 from search.subrecord_discoverable import SubrecordFieldWrapper
@@ -175,7 +176,7 @@ class EpisodeDateQuery(object):
                 "Date queries required before or after to be declared"
             )
 
-        value = models.deserialize_date(given_query["query"])
+        value = serialization.deserialize_date(given_query["query"])
         if query_type == 'Before':
             qtype = '__lte'
         elif query_type == 'After':
