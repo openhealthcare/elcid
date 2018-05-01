@@ -270,50 +270,6 @@ describe('ExtractQuery', function(){
   });
 
 
-  describe('readableQueryType()', function(){
-    it('should return null if its handed a null', function(){
-      // we hand the function null if we're looking at tagging
-      expect(extractQuery.readableQueryType(null)).toBe(null);
-    });
-
-    it('should lower case the result', function(){
-      expect(extractQuery.readableQueryType('Contains')).toBe('contains');
-    });
-
-    it('should add "is" as a prefix for time queries', function(){
-      expect(extractQuery.readableQueryType('Before')).toBe('is before');
-      expect(extractQuery.readableQueryType('After')).toBe('is after');
-    });
-
-    it('should change equals to "is"', function(){
-      expect(extractQuery.readableQueryType('Equals')).toBe('is');
-    });
-
-    it('should change All Of to "is"', function(){
-      expect(extractQuery.readableQueryType('All Of')).toBe('is');
-    });
-
-    it('should change Any Of to "is"', function(){
-      expect(extractQuery.readableQueryType('Any Of')).toBe('is');
-    });
-  });
-
-  describe('removeFilter()', function(){
-    it('should always leave an empty filter', function(){
-        expect(extractQuery.criteria.length).toBe(1);
-        extractQuery.removeFilter();
-        expect(extractQuery.criteria.length).toBe(1);
-        expect(extractQuery.criteria[0].column).toBe(null);
-    });
-
-    it('should remove a criteria', function(){
-        extractQuery.addFilter();
-        expect(extractQuery.criteria.length).toBe(2);
-        extractQuery.removeFilter();
-        expect(extractQuery.criteria.length).toBe(1);
-    });
-  });
-
   describe('resetFilter()', function(){
     var criteria;
     beforeEach(function(){

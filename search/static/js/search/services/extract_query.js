@@ -84,24 +84,6 @@ angular.module('opal.services').factory('ExtractQuery', function(){
 
       return result;
     },
-    readableQueryType: function(someQuery){
-      if(!someQuery){
-        return someQuery;
-      }
-      var result = someQuery;
-      if(someQuery === "Equals"){
-        result = "is";
-      }
-      if(someQuery === "Before" || someQuery === "After"){
-        result = "is " + result;
-      }
-      if(someQuery === "All Of" || someQuery === "Any Of"){
-        result = "is"
-      }
-
-      return result.toLowerCase();
-    },
-
     completeCriteria: function(){
       var combine;
       // queries can look at either all of the options, or any of them
@@ -149,7 +131,7 @@ angular.module('opal.services').factory('ExtractQuery', function(){
       // when we change the column, reset the rest of the query
       _.each(queryRow, function(v, k){
         if(!_.contains(fieldsTypes, k)){
-          queryRow[k] = null;
+          queryRow[k] = undefined;
         }
       });
     },
