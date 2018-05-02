@@ -43,6 +43,10 @@ class ExtractSerializer(
             field_names.remove("consistency_token")
         if "id" in field_names:
             field_names.remove("id")
+        if "episode_id" in field_names:
+            field_names.remove("episode_id")
+        if "patient_id" in field_names:
+            field_names.remove("patient_id")
         return field_names
 
     def get_fields(self):

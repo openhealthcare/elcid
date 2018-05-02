@@ -37,7 +37,6 @@ class SubrecordFieldWrapper(object):
     type_display_name = None
     # the type of field as a slug
     type = None
-    description_template = "search/description.html"
 
     def __init__(self, user, model=None, field_name=None):
         if model is not None:
@@ -50,8 +49,6 @@ class SubrecordFieldWrapper(object):
                 "A subrecord field wrapper requires a field name"
             )
 
-    def get_description_template(self):
-        return self.description_template
 
     @property
     def field(self):

@@ -134,8 +134,8 @@
                     </span>
                   </div>
                   <div class="col-md-3">
-                    {% for rule in search_rules %}
-                      {% for field in rule.get_fields %}
+                    {% for rule in extract_serializers %}
+                      {% for field in extract_serializer.get_fields %}
                         {% include field.get_description_template %}
                       {% endfor %}
                     {% endfor %}
