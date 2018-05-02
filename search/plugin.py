@@ -18,10 +18,10 @@ class SearchPlugin(plugins.OpalPlugin):
             'js/search/services/filter_resource.js',
             "js/search/services/paginator.js",
             "js/search/services/patient_summary.js",
-            "js/search/services/extract_schema_loader.js",
+            "js/search/services/extract_query_schema_loader.js",
             "js/search/services/schema.js",
             "js/search/services/extract_query.js",
-            "js/search/services/data_dictionary_loader.js"
+            "js/search/services/extract_slice_schema_loader.js"
         ],
         'opal.controllers': [
             'js/search/app.js',

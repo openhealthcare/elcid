@@ -2,7 +2,7 @@ angular.module('opal.controllers').controller( 'ExtractCtrl',
   function(
     $scope, $http, $window, $modal, $timeout, $location, $anchorScroll,
     PatientSummary, Paginator, referencedata, ngProgressLite, profile, filters,
-    extractSchema, dataDictionary, ExtractQuery
+    extractQuerySchema, extractSliceSchema, ExtractQuery
   ){
     "use strict";
 
@@ -10,15 +10,16 @@ angular.module('opal.controllers').controller( 'ExtractCtrl',
     $scope.limit = 10;
     $scope.JSON = window.JSON;
     $scope.filters = filters;
-    $scope.extractSchema = extractSchema;
-    $scope.dataDictionary = dataDictionary;
+    $scope.extractQuerySchema = extractQuerySchema;
+    $scope.extractSliceSchema = extractSliceSchema;
     // used by the download extract
     // a slice is a cut of data, a field that we want to download
     $scope.selectSliceSubrecord = function(sliceSubrecord){
+      $scope.setExtractSliceInfo(null);
       $scope.sliceSubrecord = sliceSubrecord;
     }
-    $scope.setFieldInfo = function(field){
-      $scope.fieldInfo = field
+    $scope.setExtractSliceInfo = function(field){
+      $scope.extractSliceInfo = field
     }
 
     $scope.searched = false;
@@ -26,24 +27,26 @@ angular.module('opal.controllers').controller( 'ExtractCtrl',
     $scope.paginator = new Paginator($scope.search);
     $scope.state = 'query';
     $scope.referencedata = referencedata;
-    $scope.selectSliceSubrecord(dataDictionary.columns[0]);
-    $scope.setFieldInfo($scope.sliceSubrecord.fields[0]);
+    $scope.selectSliceSubrecord(extractSliceSchema.columns[0]);
+    $scope.setExtractSliceInfo($scope.sliceSubrecord.fields[0]);
 
-    $scope.extractQuery = new ExtractQuery(dataDictionary);
+    $scope.extractQuery = new ExtractQuery(extractSliceSchema);
 
-    $scope.selectedInfo = undefined;
+    $scope.extractQueryInfo = undefined;
 
-    $scope.selectInfo = function(query){
-      $scope.selectedInfo = query;
+    $scope.selectExtractQueryInfo = function(query){
+      var field = $scope.extractQuerySchema.findField(query.column, query.field);
+      $scope.extractQueryInfo = field;
     };
 
     $scope.resetFilter = function(query, fieldsTypes){
       // when we change the column, reset the rest of the query
       $scope.extractQuery.resetFilter(query, fieldsTypes);
-      $scope.selectInfo(query);
       if(query.field){
-        var field = $scope.extractSchema.findField(query.column, query.field);
-        $scope.setFieldInfo(field);
+        $scope.selectExtractQueryInfo(query);
+      }
+      else if(query.column){
+        $scope.selectExtractQueryInfo(null);
       }
     };
 

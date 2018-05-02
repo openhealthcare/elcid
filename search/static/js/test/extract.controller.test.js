@@ -3,7 +3,7 @@ describe('ExtractCtrl', function(){
 
     var $scope, $httpBackend, schema, $window, $timeout, $modal, Item;
     var PatientSummary, $controller, ExtractSchema, controller, $rootScope;
-    var extractSchema, Schema;
+    var extractQuerySchema, Schema;
 
     var referencedata = {
       dogs: ['Poodle', 'Dalmation'],
@@ -106,7 +106,7 @@ describe('ExtractCtrl', function(){
             Item = $injector.get('Item');
         });
 
-        var extractSchema = new ExtractSchema(angular.copy(columnsData));
+        var extractQuerySchema = new ExtractSchema(angular.copy(columnsData));
         var dataDictionary = new Schema(angular.copy(columnsData));
 
         var controller = $controller('ExtractCtrl',  {
@@ -114,7 +114,7 @@ describe('ExtractCtrl', function(){
             $modal: $modal,
             profile: {},
             filters: [],
-            extractSchema : extractSchema,
+            extractQuerySchema : extractQuerySchema,
             PatientSummary: PatientSummary,
             referencedata: referencedata,
             dataDictionary: dataDictionary
@@ -133,15 +133,15 @@ describe('ExtractCtrl', function(){
       });
 
       it('should set up the schema on the scope', function(){
-        expect(!!$scope.extractSchema.columns).toBe(true);
+        expect(!!$scope.extractQuerySchema.columns).toBe(true);
       });
 
       it('should set the selected info', function(){
         expect($scope.sliceSubrecord.name).toBe('demographics');
       });
 
-      it('should set the fieldInfo', function(){
-        expect($scope.fieldInfo.name).toBe('name');
+      it('should set the extractSliceInfo', function(){
+        expect($scope.extractSliceInfo.name).toBe('name');
       });
 
       it('should put the extract schema on the scope', function(){
@@ -173,9 +173,9 @@ describe('ExtractCtrl', function(){
         });
 
         it('should change the selected info', function(){
-            $scope.selectedInfo = "some info";
+            $scope.extractQueryInfo = "some info";
             $scope.resetFilter(criteria, ['column']);
-            expect($scope.selectedInfo).toBe(criteria);
+            expect($scope.extractQueryInfo).toBe(criteria);
         });
     });
 
@@ -523,10 +523,10 @@ describe('ExtractCtrl', function(){
       });
     });
 
-    describe('setFieldInfo', function(){
+    describe('setExtractSliceInfo', function(){
       it('should set the field info', function(){
-        $scope.setFieldInfo("something");
-        expect($scope.fieldInfo).toBe("something");
+        $scope.setExtractSliceInfo("something");
+        expect($scope.extractSliceInfo).toBe("something");
       });
     });
 });

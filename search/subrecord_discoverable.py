@@ -49,7 +49,6 @@ class SubrecordFieldWrapper(object):
                 "A subrecord field wrapper requires a field name"
             )
 
-
     @property
     def field(self):
         if isinstance(

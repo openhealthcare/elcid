@@ -26,8 +26,8 @@
         templateUrl: '/search/templates/extract.html',
         resolve: {
           profile: function(UserProfile){ return UserProfile.load(); },
-          extractSchema: function(extractSchemaLoader){ return extractSchemaLoader; },
-          dataDictionary: function(dataDictionaryLoader){ return dataDictionaryLoader.load(); },
+          extractQuerySchema: function(extractQuerySchemaLoader){ return extractQuerySchemaLoader; },
+          extractSliceSchema: function(extractSliceSchemaLoader){ return extractSliceSchemaLoader.load(); },
           filters: function(filtersLoader){ return filtersLoader(); },
           referencedata: function(Referencedata){ return Referencedata.load(); }
         }

@@ -15,7 +15,7 @@
             ng-keypress="$event.keyCode == 13 && search()"
           >
         <ui-select-match placeholder="4. Select Some Of...">[[ $item ]]</ui-select-match>
-        <ui-select-choices repeat="i in extractSchema.getChoices(query.column, query.field, referencedata) | filter:$select.search">
+        <ui-select-choices repeat="i in extractQuerySchema.getChoices(query.column, query.field, referencedata) | filter:$select.search">
           <div ng-bind-html="i | highlight: $select.search"></div>
         </ui-select-choices>
     </ui-select>

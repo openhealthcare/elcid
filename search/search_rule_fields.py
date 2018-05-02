@@ -24,7 +24,7 @@ GENERIC_WIDGET_DESCRIPTION = "partials/search/descriptions/widget_description.ht
 
 class SearchRuleField(SubrecordFieldWrapper):
     widget_description = GENERIC_WIDGET_DESCRIPTION
-    description_template = "search/description.html"
+    description_template = "search/search_rule_description.html"
 
     def get_description_template(self):
         return self.description_template

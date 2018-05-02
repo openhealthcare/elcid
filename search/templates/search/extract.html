@@ -74,7 +74,7 @@
                       <div class="row">
                         <div class="col-md-1">
                           <button type="button" class="btn btn-default square-button content-offset-25" ng-disabled="!query.column"
-                                  ng-click="selectInfo(query)" ng-class="{'btn-default': selectedInfo !== query, 'btn-info': selectedInfo === query}"
+                                  ng-click="selectExtractQueryInfo(query)" ng-class="{'btn-default': extractQueryInfo !== query, 'btn-info': extractQueryInfo === query}"
                                   >
                             <span class="fa fa-info"></span>
                           </button>
@@ -86,7 +86,7 @@
                                   tooltip-placement="top" uib-tooltip="1. Select a Column"
                                   set-focus-if="!query.column"
                                   >
-                            <option ng-repeat="col in extractSchema.columns" value="[[ col.name ]]">
+                            <option ng-repeat="col in extractQuerySchema.columns" value="[[ col.name ]]">
                               [[ col.display_name ]]
                             </option>
                           </select>
@@ -97,10 +97,10 @@
                                   tooltip-placement="top" uib-tooltip="2. Select a field"
                                   set-focus-if="query.field == null && query.column != null"
                                   >
-                            <option value="[[ field.name ]]" ng-repeat="field in extractSchema.findColumn(query.column).fields">[[ field.display_name ]]</option>
+                            <option value="[[ field.name ]]" ng-repeat="field in extractQuerySchema.findColumn(query.column).fields">[[ field.display_name ]]</option>
                           </select>
                           {% for widget in widgets %}
-                            <span ng-if="extractSchema.findField(query.column, query.field).widget === '{{ widget }}'">
+                            <span ng-if="extractQuerySchema.findField(query.column, query.field).widget === '{{ widget }}'">
                               {% include widget %}
                             </span>
                           {% endfor %}
@@ -134,8 +134,8 @@
                     </span>
                   </div>
                   <div class="col-md-3">
-                    {% for rule in extract_serializers %}
-                      {% for field in extract_serializer.get_fields %}
+                    {% for rule in search_rules %}
+                      {% for field in rule.get_fields %}
                         {% include field.get_description_template %}
                       {% endfor %}
                     {% endfor %}

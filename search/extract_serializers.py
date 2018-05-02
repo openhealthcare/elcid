@@ -8,11 +8,16 @@ from search.exceptions import SearchException
 
 
 class CsvFieldWrapper(subrecord_discoverable.SubrecordFieldWrapper):
+    description_template = "search/extract_rule_description.html"
+
     def extract(self, obj):
         result = getattr(obj, self.field_name)
         if result is None:
             return ""
         return result
+
+    def get_description_template(self):
+        return self.description_template
 
 
 class EpisodeIdForPatientSubrecord(CsvFieldWrapper):

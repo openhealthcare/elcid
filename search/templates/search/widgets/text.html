@@ -10,7 +10,7 @@
 <input type="text"
        class="form-control content-offset-25"
        ng-model="query.query"
-       uib-typeahead="x for x in extractSchema.getChoices(query.column, query.field, referencedata) | filter:$viewValue | limitTo:8"
+       uib-typeahead="x for x in extractQuerySchema.getChoices(query.column, query.field, referencedata) | filter:$viewValue | limitTo:8"
        placeholder="4. Add your value"
        ng-keypress="$event.keyCode == 13 && search()"
        ng-if="query.column && query.field && query.queryType"

@@ -117,8 +117,8 @@ angular.module('opal.services').factory('ExtractQuery', function(){
         this.criteria.push({});
     },
     removeFilter: function(index){
-        if(this.selectedInfo === this.criteria[index]){
-          this.selectedInfo = undefined;
+        if(this.extractQueryInfo === this.criteria[index]){
+          this.extractQueryInfo = undefined;
         }
         if(this.criteria.length == 1){
             this.removeCriteria();

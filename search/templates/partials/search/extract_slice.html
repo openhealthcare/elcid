@@ -63,7 +63,7 @@
             <h5>Records</h5>
           </div>
           <div class="extract-selector-rows">
-            <div class="extract-hover extract-selector-row" ng-class="{selected: extractQuery.isSubrecordAdded(column), active: column.name === sliceSubrecord.name}" ng-repeat="column in dataDictionary.columns">
+            <div class="extract-hover extract-selector-row" ng-class="{selected: extractQuery.isSubrecordAdded(column), active: column.name === sliceSubrecord.name}" ng-repeat="column in extractSliceSchema.columns">
               <a ng-click="selectSliceSubrecord(column)" class="pointer extract-slice-table-link">
                 [[ column.display_name ]]
               </a>
@@ -84,8 +84,8 @@
             </h5>
           </div>
           <div class="extract-selector-rows">
-            <div class="extract-hover extract-selector-row" ng-class="{active: field.name === fieldInfo.name, selected: extractQuery.isSliceAdded(field)}" ng-repeat="field in sliceSubrecord.fields">
-              <a ng-click="setFieldInfo(field)" class="pointer extract-slice-table-link">
+            <div class="extract-hover extract-selector-row" ng-class="{active: field.name === extractSliceInfo.name, selected: extractQuery.isSliceAdded(field)}" ng-repeat="field in sliceSubrecord.fields">
+              <a ng-click="setExtractSliceInfo(field)" class="pointer extract-slice-table-link">
                 [[ field.display_name ]]
                 <i ng-show="!extractQuery.isSliceAdded(field)" ng-click="extractQuery.addSlice(field)" class="fa fa-plus-circle scroll-icon"></i>
                 <i ng-show="extractQuery.isSliceAdded(field)" ng-click="extractQuery.removeSlice(field)" class="fa fa-minus-circle scroll-icon"></i>
@@ -136,7 +136,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr ng-click="setFieldInfo(field)" class="extract-hover pointer" ng-class="{active: field.name === fieldInfo.name}" ng-repeat="field in extractQuery.slices">
+            <tr ng-click="setExtractSliceInfo(field)" class="extract-hover pointer" ng-class="{active: field.name === extractSliceInfo.name}" ng-repeat="field in extractQuery.slices">
               <td><div></div>[[ field.subrecord.display_name ]]</td>
               <td>[[ field.display_name ]] <a ng-hide="extractQuery.sliceIsRequired(field)" class="pull-right" ng-click="extractQuery.removeSlice(field)" href="">{% icon "fa-minus-circle" %}</a></td>
             </tr>

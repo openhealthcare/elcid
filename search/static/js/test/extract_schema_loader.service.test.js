@@ -3,13 +3,13 @@ describe('ExtractSchemaLoader', function() {
 
     var $httpBackend, $q, $rootScope;
     var columns, $window;
-    var mock, extractSchemaLoader;
+    var mock, extractQuerySchemaLoader;
 
     beforeEach(function() {
       module('opal');
 
       inject(function($injector){
-        extractSchemaLoader = $injector.get('extractSchemaLoader');
+        extractQuerySchemaLoader = $injector.get('extractQuerySchemaLoader');
         $httpBackend       = $injector.get('$httpBackend');
         $rootScope         = $injector.get('$rootScope');
         $q                 = $injector.get('$q');
@@ -35,7 +35,7 @@ describe('ExtractSchemaLoader', function() {
       var result;
 
       $httpBackend.whenGET('/search/api/extract/').respond(columns);
-      extractSchemaLoader.then(
+      extractQuerySchemaLoader.then(
           function(r){ result = r; }
       );
       $rootScope.$apply();
@@ -47,7 +47,7 @@ describe('ExtractSchemaLoader', function() {
     it('should alert if the http request errors', function(){
       var result;
       $httpBackend.whenGET('/search/api/extract/').respond(500, 'NO');
-      extractSchemaLoader.then( function(r){ result = r; } );
+      extractQuerySchemaLoader.then( function(r){ result = r; } );
       $rootScope.$apply();
       $httpBackend.flush();
 

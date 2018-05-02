@@ -1,5 +1,5 @@
 angular.module('opal.services')
-    .factory('dataDictionaryLoader', function($q, $http, $window, Schema){
+    .factory('extractSliceSchemaLoader', function($q, $http, $window, Schema){
 
     return {
       load: function(){

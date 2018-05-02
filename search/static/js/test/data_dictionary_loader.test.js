@@ -1,7 +1,7 @@
-describe('dataDictionaryLoader', function(){
+describe('extractSliceSchemaLoader', function(){
     "use strict"
 
-    var $httpBackend, $rootScope, dataDictionaryLoader;
+    var $httpBackend, $rootScope, extractSliceSchemaLoader;
     var mock, opalTestHelper;
     var dictionarySchema = {
         'demographics': {
@@ -23,7 +23,7 @@ describe('dataDictionaryLoader', function(){
         var mockSchema = function(x){ return x; };
 
         inject(function($injector){
-            dataDictionaryLoader   = $injector.get('dataDictionaryLoader');
+            extractSliceSchemaLoader   = $injector.get('extractSliceSchemaLoader');
             $httpBackend   = $injector.get('$httpBackend');
             $rootScope     = $injector.get('$rootScope');
         });
@@ -32,7 +32,7 @@ describe('dataDictionaryLoader', function(){
     it('should fetch the record data', function(){
         var result;
         $httpBackend.whenGET('/search/api/data_dictionary/').respond(dictionarySchema);
-        dataDictionaryLoader.load().then(function(r){ result = r; });
+        extractSliceSchemaLoader.load().then(function(r){ result = r; });
         $rootScope.$apply()
         $httpBackend.flush();
         var expectedSubrecordNames = _.pluck(dictionarySchema, "name");
@@ -43,7 +43,7 @@ describe('dataDictionaryLoader', function(){
     it('should alert if the HTTP request errors', function(){
         var result;
         $httpBackend.whenGET('/search/api/data_dictionary/').respond(500, 'NO');
-        dataDictionaryLoader.load().then(function(r){ result = r; });
+        extractSliceSchemaLoader.load().then(function(r){ result = r; });
         $rootScope.$apply();
         $httpBackend.flush();
         expect(mock.alert).toHaveBeenCalledWith(
