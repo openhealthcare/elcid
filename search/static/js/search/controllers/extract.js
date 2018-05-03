@@ -35,8 +35,13 @@ angular.module('opal.controllers').controller( 'ExtractCtrl',
     $scope.extractQueryInfo = undefined;
 
     $scope.selectExtractQueryInfo = function(query){
-      var field = $scope.extractQuerySchema.findField(query.column, query.field);
-      $scope.extractQueryInfo = field;
+      if(!query){
+        $scope.extractQueryInfo = null;
+      }
+      else{
+        var field = $scope.extractQuerySchema.findField(query.column, query.field);
+        $scope.extractQueryInfo = field;
+      }
     };
 
     $scope.resetFilter = function(query, fieldsTypes){
