@@ -96,7 +96,7 @@
       </div>
       <div class="col-md-4">
         <div class="content-offset">
-          {% for rule in extract_serializers %}
+          {% for rule in extract_rules %}
             {% for field in rule.get_fields %}
               {% include field.get_description_template %}
             {% endfor %}

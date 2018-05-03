@@ -24,7 +24,7 @@ class ExtractSchemaTestCase(OpalTestCase):
 
 
 class DataDictionaryTestCase(OpalTestCase):
-    @patch('search.api.ExtractSerializer')
+    @patch('search.api.ExtractRule')
     def test_records(self, serializer):
         serializer.get_schemas.return_value = [{}]
         request = MagicMock()

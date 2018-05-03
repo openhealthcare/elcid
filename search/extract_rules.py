@@ -45,11 +45,11 @@ class PatientIdForEpisodeSubrecord(CsvFieldWrapper):
         return obj.patient.id
 
 
-class ExtractSerializer(
+class ExtractRule(
     subrecord_discoverable.SubrecordDiscoverableMixin,
     discoverable.DiscoverableFeature,
 ):
-    module_name = 'extract_serializers'
+    module_name = 'extract_rule_description'
 
     def get_model_fields(self):
         if self.user.profile.roles.filter(
@@ -70,7 +70,7 @@ class ExtractSerializer(
         return field_names
 
     def get_fields(self):
-        fields = super(ExtractSerializer, self).get_fields()
+        fields = super(ExtractRule, self).get_fields()
         if self.model:
             if isinstance(self.model, models.PatientSubrecord):
                 fields.insert(EpisodeIdForPatientSubrecord(), 0)
@@ -107,7 +107,7 @@ class EpisodeTeamExtractField(CsvFieldWrapper):
         ))
 
 
-class EpisodeExtractSerializer(ExtractSerializer):
+class EpisodeExtractRule(ExtractRule):
     fields = [
         EpisodeTeamExtractField,
         "start",
@@ -127,7 +127,7 @@ class EpisodeExtractSerializer(ExtractSerializer):
         return extract_renderers.EpisodeCsvRenderer
 
 
-class ResultSerializer(ExtractSerializer):
+class ResultSerializer(ExtractRule):
     exclude = True
     slug = emodels.Result.get_api_name()
 
@@ -144,14 +144,14 @@ class DemographicsDateOfBirthField(CsvFieldWrapper):
     required = True
 
 
-class DemographicsSerializer(ExtractSerializer):
+class DemographicsSerializer(ExtractRule):
     slug = emodels.Demographics.get_api_name()
     model = emodels.Demographics
     field_sex = DemographicsSexField
     field_date_of_birth = DemographicsDateOfBirthField
 
 
-class MicroTestRule(ExtractSerializer):
+class MicroTestRule(ExtractRule):
     slug = emodels.MicrobiologyTest.get_api_name()
     model = emodels.MicrobiologyTest
 
@@ -174,6 +174,6 @@ class MicroTestRule(ExtractSerializer):
         ]
 
 
-class DuplicatePatientQuery(ExtractSerializer):
+class DuplicatePatientQuery(ExtractRule):
     exclude = True
     slug = emodels.DuplicatePatient.get_api_name()

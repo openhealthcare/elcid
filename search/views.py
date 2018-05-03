@@ -21,7 +21,7 @@ from opal.core.views import (
 )
 from search import queries
 from search import search_rules
-from search import extract_serializers as es
+from search import extract_rules as es
 from search.extract import (
     zip_archive, async_extract, get_datadictionary_context
 )
@@ -62,7 +62,7 @@ class ExtractTemplateView(LoginRequiredMixin, TemplateView):
         ctx["search_rules"] = search_rules.SearchRule.list(
             self.request.user
         )
-        ctx["extract_serializers"] = es.ExtractSerializer.list(
+        ctx["extract_rules"] = es.ExtractRule.list(
             self.request.user
         )
 

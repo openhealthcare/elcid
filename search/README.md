@@ -26,11 +26,11 @@ all data including hospital number/name
 TO DO
 rename column to row in the query
 rename the schema.subrecord to schema.rule
-fix the description box
 figure out a way where we can choose to sended a nested extract, or not
-bring down required fields by declaration in the extract
 remove the and or combination in its current state
 extract the subrecord discoverable into a subrecord wrapper
 extract the fields into fields wrappers
 allow loading in of data
 order nested extracts, patient, episode then subrecords
+required fields are coming through twice
+if you add primary diagnosis slice to an extract and secondary diagnsosis, both fields are highlighted...
