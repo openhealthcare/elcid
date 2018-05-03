@@ -9,6 +9,7 @@ from search.exceptions import SearchException
 
 class CsvFieldWrapper(subrecord_discoverable.SubrecordFieldWrapper):
     description_template = "search/extract_rule_description.html"
+    required = False
 
     def extract(self, obj):
         result = getattr(obj, self.field_name)
@@ -18,6 +19,14 @@ class CsvFieldWrapper(subrecord_discoverable.SubrecordFieldWrapper):
 
     def get_description_template(self):
         return self.description_template
+
+    def to_dict(self):
+        as_dict = super(CsvFieldWrapper, self).to_dict()
+        as_dict["required"] = self.get_required()
+        return as_dict
+
+    def get_required(self):
+        return self.required
 
 
 class EpisodeIdForPatientSubrecord(CsvFieldWrapper):
@@ -43,7 +52,13 @@ class ExtractSerializer(
     module_name = 'extract_serializers'
 
     def get_model_fields(self):
-        field_names = self.model._get_fieldnames_to_extract()
+        if self.user.profile.roles.filter(
+            name="extract_personal_details"
+        ).exists():
+            field_names = self.model._get_fieldnames_to_serialize()
+        else:
+            field_names = self.model._get_fieldnames_to_extract()
+
         if "consistency_token" in field_names:
             field_names.remove("consistency_token")
         if "id" in field_names:
@@ -115,6 +130,25 @@ class EpisodeExtractSerializer(ExtractSerializer):
 class ResultSerializer(ExtractSerializer):
     exclude = True
     slug = emodels.Result.get_api_name()
+
+
+class DemographicsSexField(CsvFieldWrapper):
+    field_name = "sex"
+    model = emodels.Demographics
+    required = True
+
+
+class DemographicsDateOfBirthField(CsvFieldWrapper):
+    field_name = "date_of_birth"
+    model = emodels.Demographics
+    required = True
+
+
+class DemographicsSerializer(ExtractSerializer):
+    slug = emodels.Demographics.get_api_name()
+    model = emodels.Demographics
+    field_sex = DemographicsSexField
+    field_date_of_birth = DemographicsDateOfBirthField
 
 
 class MicroTestRule(ExtractSerializer):

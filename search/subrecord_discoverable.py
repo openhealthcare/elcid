@@ -217,6 +217,11 @@ class SubrecordDiscoverableMixin(object):
 
         for field in fields:
             if isinstance(field, (str, unicode,)):
+                # you can override individual fields by declaring at an attr
+                # field_{} field_name
+                local_field_name = "field_{}".format(field)
+                if hasattr(self, local_field_name):
+                    yield getattr(self, local_field_name)(self.user)
                 if not hasattr(self.model, field):
                     raise SearchException(
                         "Unable to find field {} for {}".format(

@@ -57,7 +57,9 @@ def generate_nested_csv_extract(root_dir, episodes, user, field_dict):
     renderers = []
 
     for model_api_name, model_fields in field_dict.items():
-        serializer = ExtractSerializer.get(model_api_name, user)
+        serializer = ExtractSerializer.get(
+            model_api_name, user, flat=not bool(field_dict)
+        )
         renderer_cls = serializer.get_renderer()
 
         renderers.append(renderer_cls(

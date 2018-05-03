@@ -30,9 +30,6 @@ class CsvRenderer(object):
         self.queryset = queryset
         self.user = user
         self.chosen_fields_names = chosen_fields_names
-        # this tells us if its a flat or a nested extract
-        # this is useful because we don't show
-        self.is_flat = bool(self.chosen_fields_names)
 
     def get_fields(self):
         """

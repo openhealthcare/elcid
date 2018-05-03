@@ -39,6 +39,13 @@ angular.module('opal.services').factory('Schema', function() {
         if(modelField.enum){
           return modelField.enum;
         }
+      },
+      getFields: function(){
+        // returns all fields
+        var result = []
+        _.each(this.columns, function(c){
+          result = result.concat(c.fields);
+        });
       }
     }
 

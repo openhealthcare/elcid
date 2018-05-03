@@ -1,18 +1,15 @@
 angular.module('opal.services').factory('ExtractQuery', function(){
-  var ExtractQuery = function(schema){
+  var ExtractQuery = function(extractSliceSchema){
     // the seatch query
     this.criteria = [{}];
     this.combinations = ["all", "any"];
-    this.requiredExtractFieldNames = [
-      ['demographics', 'date_of_birth'],
-      ['demographics', 'sex'],
-    ]
     this.requiredExtractFields = [];
-    _.each(this.requiredExtractFieldNames, function(subrecordAndFieldName){
-      this.requiredExtractFields.push(
-        schema.findField(subrecordAndFieldName[0], subrecordAndFieldName[1])
-      );
+    _.each(extractSliceSchema.getFields(), function(f){
+      if(f.required){
+        this.requiredExtractFields.push(f)
+      }
     }, this);
+
 
     // whether the user would like an 'or' conjunction or and 'and'
     this.anyOrAll = this.combinations[0];
