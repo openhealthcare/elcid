@@ -27,7 +27,7 @@
   <span ng-repeat="symptom in walkinSymptom.symptoms">[[ symptom.toLowerCase() ]][[ $last ? '' : $index + 2 === episode.symptom[0].symptoms.length ? ' and ' : ', ']]</span>
 </p>
 <p>
-  <b>On examination:</b>
+  <b>Observations:</b>
 </p>
 <p>
   Temperature [[episode.observation[0].temperature]]
@@ -92,10 +92,6 @@
     {% include 'records/microbiology_test.html' %}
   </div>
 </div>
-<p><b>Management:</b></p>
-<p>
-  The most likely diagnosis was [[ episode.diagnosis[0].condition ]]
-</p>
 <p ng-show="episode.management[0].advice">
   <b>Advice:</b>
 </p>
@@ -119,7 +115,7 @@
 </p>
 <div ng-show="episode.microbiology_input && episode.microbiology_input.length > 0">
   <p>
-    <b>Advice Given in Clinic / Telephone Discussion:</b>
+    <b>Clinic / Telephone Discussion:</b>
   </p>
   <p ng-repeat="ca in episode.microbiology_input">
     [[ ca.clinical_discussion ]]
