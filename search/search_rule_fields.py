@@ -23,8 +23,15 @@ GENERIC_WIDGET_DESCRIPTION = "partials/search/descriptions/widget_description.ht
 
 
 class SearchRuleField(SubrecordFieldWrapper):
+    # the description of the widget as shown on the right hand side
     widget_description = GENERIC_WIDGET_DESCRIPTION
+
+    # the description of the query the user has selected when it is
+    # shown at the top
     description_template = "search/search_rule_description.html"
+
+    # the arguments that are required for this query
+    query_args = ["value", "query_type"]
 
     def get_description_template(self):
         return self.description_template
@@ -36,15 +43,30 @@ class SearchRuleField(SubrecordFieldWrapper):
         raise NotImplementedError("please implement a query")
 
     def get_widget(self):
+        if not self.widget:
+            raise SearchException(
+                "{} requires a widget".format(self)
+            )
         return self.widget
 
     def get_widget_description(self):
         return self.widget_description
 
+    def get_query_args(self):
+        return self.query_args
+
+    def get_query_description(self, query):
+        return "{} {} {}".format(
+            self.get_display_name(),
+            query["query_type"].lower(),
+            query["value"]
+        )
+
     def to_dict(self):
         result = super(SearchRuleField, self).to_dict()
         result["widget"] = self.get_widget()
         result["widget_description"] = self.get_widget_description()
+        result["query_args"] = self.get_query_args()
         return result
 
 
@@ -84,97 +106,72 @@ def is_select(some_field):
     )
 
 
-FIELD_TYPE_TO_QUERY = {
-    is_foreign_key_or_free_text: subrecord_queries.query_for_fkorft_fields,
-    fields.is_numeric: subrecord_queries.query_for_number_fields,
-    is_boolean: subrecord_queries.query_for_boolean_fields,
-    is_many_to_many_field: subrecord_queries.query_for_many_to_many_fields,
-    is_date_field: subrecord_queries.query_for_date_fields,
-    is_text: subrecord_queries.query_for_text_fields,
-    is_select: subrecord_queries.query_for_related_fields
-}
-
-FIELD_TYPE_TO_WIDGET = {
-    is_foreign_key_or_free_text: "search/widgets/text.html",
-    fields.is_numeric: "search/widgets/number.html",
-    is_boolean: "search/widgets/boolean.html",
-    is_many_to_many_field: "search/widgets/text.html",
-    is_date_field: "search/widgets/date.html",
-    is_text: "search/widgets/text.html",
-    is_select: "search/widgets/select.html",
-}
-
-WIDGET_TO_DESCRIPTION = {
-    "search/widgets/text.html": "partials/search/descriptions/text.html",
-    "search/widgets/number.html": GENERIC_WIDGET_DESCRIPTION,
-    "search/widgets/many_to_many.html": "partials/search/descriptions/many_to_many.html",
-    "search/widgets/select.html": GENERIC_WIDGET_DESCRIPTION,
-    "search/widgets/number.html": GENERIC_WIDGET_DESCRIPTION,
-    "search/widgets/date.html": GENERIC_WIDGET_DESCRIPTION,
-    "search/widgets/boolean.html": "partials/search/descriptions/boolean.html"
-}
-
-
 class ModelSearchRuleField(SearchRuleField):
+    query_method = None
     widget = None
 
     def __init__(self, model, field_name):
         self.model = model
         self.field_name = field_name
 
-    def get_model_query_args(self, query):
-        """
-            if we wanted all conditions in diagnosis beginning with C
-            the model would be diagnosis
-            the field_name would be condition
-            the query_type would be beginning with
-            the value would be 'C'
-        """
-        query_args = {
-            i: v for i, v in query.items() if i not in {
-                "column", "field", "combine"
-            }
-        }
-        query_args["value"] = query_args.pop("query")
-        if "queryType" in query_args:
-            query_type = query_args.pop("queryType")
-            query_args["query_type"] = query_type
-        return dict(
-            model=self.model,
-            field_name=self.field_name,
-            **query_args
-        )
-
-    def get_widget_description(self):
-        return WIDGET_TO_DESCRIPTION[self.get_widget()]
-
     def query(self, query):
-        for field_type_method, query_method in FIELD_TYPE_TO_QUERY.items():
-            if field_type_method(self.field):
-                return query_method(
-                    **self.get_model_query_args(query)
-                )
-        raise NotImplementedError("we cannot query this {}".format(
-            self.field.__class__
-        ))
+        query_args = self.get_query_args()
+        query_params = {i: query[i] for i in query_args}
+        query_params["model"] = self.model
+        query_params["field_name"] = self.field_name
+        return self.query_method(**query_params)
 
-    def get_widget(self):
-        if self.widget:
-            return self.widget
-        for field_type_method, widget in FIELD_TYPE_TO_WIDGET.items():
-            if field_type_method(self.field):
-                return widget
 
-        raise NotImplementedError(
-            "we do not have a widget for {} {}".format(
-                self.field, self.field.__class__
-            )
-        )
+class BooleanSearchRuleField(ModelSearchRuleField):
+    widget = "search/widgets/boolean.html"
+    widget_description = "partials/search/descriptions/boolean.html"
+    query_method = staticmethod(subrecord_queries.query_for_boolean_fields)
+    query_args = ["value"]
+
+
+class NumberSearchRuleField(ModelSearchRuleField):
+    widget = "search/widgets/number.html"
+    query_method = staticmethod(subrecord_queries.query_for_number_fields)
+
+
+class DateSearchRuleField(ModelSearchRuleField):
+    widget = "search/widgets/date.html"
+    query_method = staticmethod(subrecord_queries.query_for_date_fields)
+
+
+class SelectSearchRuleField(ModelSearchRuleField):
+    widget = "search/widgets/text.html"
+    query_method = staticmethod(
+        subrecord_queries.query_for_many_to_many_fields
+    )
+
+
+class TextSearchRuleField(ModelSearchRuleField):
+    widget = "search/widgets/text.html"
+    widget_description = "partials/search/descriptions/text.html"
+    query_method = staticmethod(subrecord_queries.query_for_text_fields)
+
+
+class FkOrFtSearchRuleField(ModelSearchRuleField):
+    widget = "search/widgets/text.html"
+    widget_description = "partials/search/descriptions/text.html"
+    query_method = staticmethod(subrecord_queries.query_for_fk_or_ft_fields)
+
+
+FIELD_TYPE_TO_SEARCH_RULE_FIELD = {
+    is_foreign_key_or_free_text: FkOrFtSearchRuleField,
+    fields.is_numeric: NumberSearchRuleField,
+    is_boolean: BooleanSearchRuleField,
+    is_many_to_many_field: SelectSearchRuleField,
+    is_date_field: DateSearchRuleField,
+    is_text: TextSearchRuleField,
+    is_select: SelectSearchRuleField,
+}
 
 
 class EpisodeDateQuery(object):
     def query(self, given_query):
-        query_type = given_query["queryType"]
+        query_type = given_query["query_type"]
         if query_type not in {"Before", "After"}:
             raise SearchException(
                 "Date queries required before or after to be declared"
@@ -220,9 +217,7 @@ class EpisodeTeam(
     type_display_name = "Text Field"
     field_name = "team"
     widget = "search/widgets/team_many_to_many.html"
-    widget_description = WIDGET_TO_DESCRIPTION[
-        "search/widgets/many_to_many.html"
-    ]
+    widget_description = "partials/search/descriptions/many_to_many.html"
 
     @property
     def enum(self):
@@ -244,9 +239,10 @@ class EpisodeTeam(
             )
         return result
 
+
     def query(self, given_query):
-        query_type = given_query["queryType"]
-        team_display_names = given_query['query']
+        query_type = given_query["query_type"]
+        team_display_names = given_query['value']
         if not query_type == self.ALL_OF:
             if not query_type == self.ANY_OF:
                 err = """
@@ -256,7 +252,7 @@ class EpisodeTeam(
 
         team_names = self.translate_titles_to_names(team_display_names)
         qs = models.Episode.objects.all()
-        if given_query["queryType"] == self.ALL_OF:
+        if given_query["query_type"] == self.ALL_OF:
             for team_name in team_names:
                 qs = qs.filter(tagging__value=team_name)
         else:

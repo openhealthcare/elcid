@@ -1,36 +1,36 @@
 angular.module('opal.services').factory('Schema', function() {
     "use strict";
-    var Schema = function(columns){
-      this.columns = angular.copy(columns);
-      _.each(this.columns, function(c){
+    var Schema = function(rules){
+      this.rules = angular.copy(rules);
+      _.each(this.rules, function(c){
         _.each(c.fields, function(f){
-          if(f.subrecord){
+          if(f.rule){
             throw 'the subrecord field has been declared on a namespace we need'
           }
-          f.subrecord = c;
+          f.rule = c;
         });
       });
     };
 
     Schema.prototype = {
-      findColumn: function(columnName){
-        if(!columnName){
+      findRule: function(ruleName){
+        if(!ruleName){
           return;
         }
-        return _.findWhere(this.columns, {name: columnName});
+        return _.findWhere(this.rules, {name: ruleName});
       },
-      findField: function(columnName, fieldName){
+      findField: function(ruleName, fieldName){
         /*
         * returns the field object from the schema when given column.name and field.name
         */
-        var column = this.findColumn(columnName);
-        if(!column){return;}
+        var rule = this.findRule(ruleName);
+        if(!rule){return;}
         return _.findWhere(
-            column.fields, {name: fieldName}
+            rule.fields, {name: fieldName}
         );
       },
-      getChoices: function(column, field, referencedata){
-        var modelField = this.findField(column, field);
+      getChoices: function(rule, field, referencedata){
+        var modelField = this.findField(rule, field);
 
         if(modelField.lookup_list && modelField.lookup_list.length){
           return referencedata.get(modelField.lookup_list);
@@ -43,7 +43,7 @@ angular.module('opal.services').factory('Schema', function() {
       getFields: function(){
         // returns all fields
         var result = []
-        _.each(this.columns, function(c){
+        _.each(this.rules, function(c){
           result = result.concat(c.fields);
         });
       }

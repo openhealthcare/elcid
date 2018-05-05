@@ -1,7 +1,7 @@
 angular.module('opal.services')
     .factory('extractQuerySchemaLoader', function($q, $http, $window, Schema){
     var deferred = $q.defer();
-    $http.get('/search/api/extract/').then(function(response) {
+    $http.get('/search/api/extract_query_schema/').then(function(response) {
 	    var columns = response.data;
 	    deferred.resolve(new Schema(columns));
     }, function() {

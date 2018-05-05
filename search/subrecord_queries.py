@@ -25,7 +25,7 @@ def query_episodes_by_kwargs(model, filter_kwargs):
         )
 
 
-def query_for_text_fields(model, field_name, value, query_type, ):
+def query_for_text_fields(model, field_name, value, query_type):
     contains = '__iexact'
     if query_type == 'Contains':
         contains = '__icontains'
@@ -80,11 +80,7 @@ def query_for_boolean_fields(model, field_name, value):
     return query_episodes_by_kwargs(model, kw)
 
 
-def query_for_related_fields(model, field_namne, value, query_type):
-    raise NotImplementedError("elect queries need to be implement")
-
-
-def query_for_fkorft_fields(model, field_name, value, query_type):
+def query_for_fk_or_ft_fields(model, field_name, value, query_type):
     """
     Returns episodes that match QUERY.
 

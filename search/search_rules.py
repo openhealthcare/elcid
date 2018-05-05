@@ -1,9 +1,12 @@
 import itertools
+from opal.core import fields
 from opal.core.discoverable import DiscoverableFeature
 from opal import models
 from elcid import models as emodels
 from search.subrecord_discoverable import SubrecordDiscoverableMixin
 from search import search_rule_fields
+from search.exceptions import SearchException
+
 
 """
     A Search Rule a
@@ -43,7 +46,24 @@ class SearchRule(
     }
 
     def cast_field_name_to_attribute(self, str):
-        return search_rule_fields.ModelSearchRuleField(self.model, str)
+        if isinstance(
+            getattr(self.model, str), fields.ForeignKeyOrFreeText
+        ):
+            field = getattr(self.model, str)
+        else:
+            field = self.model._meta.get_field(str)
+
+        field_mapping = search_rule_fields.FIELD_TYPE_TO_SEARCH_RULE_FIELD
+
+        for find_field_type, search_rule_field_cls in field_mapping.items():
+            if find_field_type(field):
+                return search_rule_field_cls(self.model, str)
+
+        raise SearchException(
+            "unable to find a field type for {} {}".format(
+                self.model, str
+            )
+        )
 
     def get_description(self):
         return getattr(self, "description", "")
@@ -70,6 +90,14 @@ class SearchRule(
     def get_widget_descriptions(self):
         for i in self.get_fields():
             yield i.get_widget_description()
+
+    def get_query_description(self, given_query):
+        """ This is the description used by in the downloaded query.txt
+        """
+        field = self.get_field(given_query["field"])
+        return "{} {}".format(
+            self.get_display_name(), field.get_query_description(given_query)
+        )
 
     @classmethod
     def widgets(cls, user):

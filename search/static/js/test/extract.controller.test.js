@@ -160,7 +160,7 @@ describe('ExtractCtrl', function(){
             column: "demographics",
             field: "name",
             query: "Jane",
-            queryType: "contains"
+            query_type: "contains"
           };
         });
 
@@ -211,7 +211,7 @@ describe('ExtractCtrl', function(){
               combine    : "and",
               column     : "symptoms",
               field      : "symptoms",
-              queryType  : "contains",
+              query_type  : "contains",
               query      : "cough",
               lookup_list: []
           }];
@@ -226,7 +226,7 @@ describe('ExtractCtrl', function(){
               combine    : "and",
               column     : "symptoms",
               field      : "symptoms",
-              queryType  : "contains",
+              query_type  : "contains",
               query      : "cough",
               lookup_list: [],
           }];
@@ -244,7 +244,7 @@ describe('ExtractCtrl', function(){
             combine    : "and",
             column     : "symptoms",
             field      : "symptoms",
-            queryType  : "contains",
+            query_type  : "contains",
             query      : "cough",
             lookup_list: []
         }];
@@ -272,7 +272,7 @@ describe('ExtractCtrl', function(){
                 combine    : "and",
                 column     : "symptoms",
                 field      : "symptoms",
-                queryType  : "contains",
+                query_type  : "contains",
                 query      : "cough",
                 lookup_list: []
             }
@@ -303,7 +303,7 @@ describe('ExtractCtrl', function(){
                 combine    : "and",
                 column     : "symptoms",
                 field      : "symptoms",
-                queryType  : "contains",
+                query_type  : "contains",
                 query      : "cough",
                 lookup_list: []
             };
@@ -314,7 +314,7 @@ describe('ExtractCtrl', function(){
                 combine    : "and",
                 column     : "diagnosis",
                 field      : "condition",
-                queryType  : "contains",
+                query_type  : "contains",
                 query      : "cough",
                 lookup_list: []
             };
@@ -333,7 +333,7 @@ describe('ExtractCtrl', function(){
                 combine    : "and",
                 column     : "symptoms",
                 field      : "symptoms",
-                queryType  : "contains",
+                query_type  : "contains",
                 query      : "cough",
                 lookup_list: []
             }
@@ -431,7 +431,7 @@ describe('ExtractCtrl', function(){
           $scope.extractQuery.criteria = [{
             "column": "demographics",
             "field": "first_name",
-            "queryType":"Contains",
+            "query_type":"Contains",
             "query":"a",
             "combine":"and"
           }];
@@ -443,7 +443,7 @@ describe('ExtractCtrl', function(){
             criteria: JSON.stringify([{
               "column": "demographics",
               "field": "first_name",
-              "queryType":"Contains",
+              "query_type":"Contains",
               "query":"a",
               "combine":"and"
             }]),

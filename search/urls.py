@@ -41,14 +41,13 @@ urlpatterns = [
         views.ExtractFileView.as_view(), name='extract_file'),
 
     url(
-        r'^search/api/extract/$',
-        api.ExtractSchemaViewSet.as_view({'get': 'list'}),
-        name="extract-schema-list"
+        r'^search/api/extract_query_schema/$',
+        api.ExtractQuerySchemaViewSet.as_view({'get': 'list'}),
+        name="extract-query-list"
     ),
-
     url(
-        r'^search/api/data_dictionary/$',
-        api.DataDictionaryViewSet.as_view({'get': 'list'}),
-        name="data-dictionary-list"
+        r'^search/api/extract_slice_schema/$',
+        api.ExtractSliceSchemaViewSet.as_view({'get': 'list'}),
+        name="extract-slice-list"
     ),
 ]

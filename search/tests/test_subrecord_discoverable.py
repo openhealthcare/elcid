@@ -23,7 +23,6 @@ class SomeSubrecordWithModelOverrides(
     model = Colour
     field_name = "name"
     display_name = "interesting"
-    description = "very interesting"
     enum = ["Sarah", "Michelle"]
     lookup_list = "first_names"
     type_display_name = "something"
@@ -34,7 +33,6 @@ class SubrecordFieldWrapperWithoutUnderlyingField(
     subrecord_discoverable.SubrecordFieldWrapper
 ):
     display_name = "interesting"
-    description = "very interesting"
     enum = ["Sarah", "Michelle"]
     lookup_list = "first_names"
     type_display_name = "something"
@@ -126,8 +124,8 @@ class SubrecordFieldWrapperTestCase(OpalTestCase):
             'model': 'Colour',
             'lookup_list': None,
             'default': None,
-            'enum': None,
             'description': None,
+            'enum': None,
             'name': 'name',
             'display_name': u'Name',
             'type': 'string',
@@ -141,8 +139,8 @@ class SubrecordFieldWrapperTestCase(OpalTestCase):
             'model': 'Colour',
             'lookup_list': 'first_names',
             'default': None,
+            'description': None,
             'enum': ['Sarah', 'Michelle'],
-            'description': 'very interesting',
             'name': 'name',
             'display_name': 'interesting',
             'type': 'string',
@@ -161,7 +159,6 @@ class SubrecordFieldWrapperTestCase(OpalTestCase):
             'icon': 'interesting',
             'type': 'string',
             'display_name': 'interesting',
-            'description': 'very interesting'
         }
         self.assertEqual(field_wrapper.to_dict(), expected)
 
@@ -519,11 +516,11 @@ class SubrecordDiscoverableMixinTestCase(OpalTestCase):
         with patch.object(colour_override, "get_schema") as gs:
             with patch.object(SubrecordDiscoverable, "list") as l:
                 l.return_value = [colour_override]
-                gs.return_value = {"title": "schema"}
+                gs.return_value = {"display_name": "schema"}
 
                 self.assertEqual(
                     SubrecordDiscoverable.get_schemas(self.user),
-                    [{"title": "schema"}]
+                    [{"display_name": "schema"}]
                 )
 
     def test_get_schema(self):

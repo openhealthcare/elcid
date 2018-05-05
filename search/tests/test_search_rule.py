@@ -34,7 +34,7 @@ class SearchRuleFieldTestCase(OpalTestCase):
         expected = dict(
             lookup_list="some_list",
             enum=[1, 2, 3],
-            description="its a custom field",
+            query_args=['value', 'query_type'],
             name="some_slug",
             icon='custom field you know',
             widget='some_widget.html',
@@ -73,7 +73,7 @@ class EpisodeQueryTestCase(OpalTestCase):
 
     def test_episode_end_start(self):
         query_end = dict(
-            queryType="Before",
+            query_type="Before",
             query="1/8/2017",
             field="end"
         )
@@ -85,7 +85,7 @@ class EpisodeQueryTestCase(OpalTestCase):
         self.episode.end = None
         self.episode.save()
         query_end = dict(
-            queryType="Before",
+            query_type="Before",
             query="1/8/2017",
             field="end"
         )
@@ -95,7 +95,7 @@ class EpisodeQueryTestCase(OpalTestCase):
 
     def test_episode_end_after(self):
         query_end = dict(
-            queryType="After",
+            query_type="After",
             query="1/8/2015",
             field="end"
         )
@@ -105,7 +105,7 @@ class EpisodeQueryTestCase(OpalTestCase):
 
     def test_episode_end_not_found(self):
         query_end = dict(
-            queryType="Before",
+            query_type="Before",
             query="1/8/2010",
             field="end"
         )
@@ -115,7 +115,7 @@ class EpisodeQueryTestCase(OpalTestCase):
 
     def test_episode_end_wrong_query_param(self):
         query_end = dict(
-            queryType="asdfsadf",
+            query_type="asdfsadf",
             query="1/8/2010",
             field="end"
         )
@@ -124,7 +124,7 @@ class EpisodeQueryTestCase(OpalTestCase):
 
     def test_episode_start_before(self):
         query_end = dict(
-            queryType="Before",
+            query_type="Before",
             query="1/8/2017",
             field="start"
         )
@@ -134,7 +134,7 @@ class EpisodeQueryTestCase(OpalTestCase):
 
     def test_episode_start_after(self):
         query_end = dict(
-            queryType="After",
+            query_type="After",
             query="1/8/2015",
             field="start"
         )
@@ -146,7 +146,7 @@ class EpisodeQueryTestCase(OpalTestCase):
         self.episode.start = None
         self.episode.save()
         query_end = dict(
-            queryType="Before",
+            query_type="Before",
             query="1/8/2017",
             field="start"
         )
@@ -156,7 +156,7 @@ class EpisodeQueryTestCase(OpalTestCase):
 
     def test_episode_start_not_found(self):
         query_end = dict(
-            queryType="Before",
+            query_type="Before",
             query="1/8/2011",
             field="start"
         )
@@ -166,7 +166,7 @@ class EpisodeQueryTestCase(OpalTestCase):
 
     def test_episode_start_wrong_query_param(self):
         query_end = dict(
-            queryType="asdfsadf",
+            query_type="asdfsadf",
             query="1/8/2010",
             field="start"
         )
@@ -184,8 +184,8 @@ class EpisodeTeamQueryTestCase(OpalTestCase):
 
     def test_episode_team_wrong_query_param(self):
         query_end = dict(
-            queryType="asdfsadf",
-            query=["Some Team"],
+            query_type="asdfsadf",
+            value=["Some Team"],
             field="team"
         )
         with self.assertRaises(exceptions.SearchException) as er:
@@ -197,8 +197,8 @@ class EpisodeTeamQueryTestCase(OpalTestCase):
 
     def test_episode_team_unknown_team(self):
         query_end = dict(
-            queryType="Any Of",
-            query=["Some Team"],
+            query_type="Any Of",
+            value=["Some Team"],
             field="team"
         )
         with self.assertRaises(exceptions.SearchException) as er:
@@ -217,8 +217,8 @@ class EpisodeTeamQueryTestCase(OpalTestCase):
         self.episode_2.tagging_set.create(value="plant", archived=False)
         self.episode_3.tagging_set.create(value="tree", archived=False)
         query_end = dict(
-            queryType="All Of",
-            query=["Plant"],
+            query_type="All Of",
+            value=["Plant"],
             field="team"
         )
         with patch.object(search_rule_fields.models.Tagging, "build_field_schema") as bfs:
@@ -243,8 +243,8 @@ class EpisodeTeamQueryTestCase(OpalTestCase):
         """
         self.episode_1.tagging_set.create(value="plant", archived=True)
         query_end = dict(
-            queryType="All Of",
-            query=["Plant"],
+            query_type="All Of",
+            value=["Plant"],
             field="team"
         )
         with patch.object(search_rule_fields.models.Tagging, "build_field_schema") as bfs:
@@ -272,8 +272,8 @@ class EpisodeTeamQueryTestCase(OpalTestCase):
         self.episode_2.tagging_set.create(value="plant", archived=False)
         self.episode_3.tagging_set.create(value="tree", archived=False)
         query_end = dict(
-            queryType="All Of",
-            query=["Plant", "Tree"],
+            query_type="All Of",
+            value=["Plant", "Tree"],
             field="team"
         )
         with patch.object(
@@ -302,8 +302,8 @@ class EpisodeTeamQueryTestCase(OpalTestCase):
         self.episode_2.tagging_set.create(value="plant", archived=False)
         self.episode_3.tagging_set.create(value="tree", archived=False)
         query_end = dict(
-            queryType="Any Of",
-            query=["Plant"],
+            query_type="Any Of",
+            value=["Plant"],
             field="team"
         )
         with patch.object(
@@ -334,8 +334,8 @@ class EpisodeTeamQueryTestCase(OpalTestCase):
         self.episode_2.tagging_set.create(value="plant", archived=False)
         self.episode_3.tagging_set.create(value="tree", archived=False)
         query_end = dict(
-            queryType="Any Of",
-            query=["Plant", "Tree"],
+            query_type="Any Of",
+            value=["Plant", "Tree"],
             field="team"
         )
 

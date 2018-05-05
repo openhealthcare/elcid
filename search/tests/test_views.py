@@ -269,11 +269,11 @@ class ExtractSearchViewTestCase(BaseSearchTestCase):
         data = json.dumps([
             {
                 u'page_number': 1,
-                u'column': u'demographics',
+                u'rule': u'demographics',
                 u'field': u'surname',
                 u'combine': u'and',
-                u'query': u'Connery',
-                u'queryType': u'Equals'
+                u'value': u'Connery',
+                u'query_type': u'Equals'
             }
         ])
         request = self.rf.post('extract')
@@ -448,10 +448,10 @@ class DownloadTestCase(BaseSearchTestCase):
         query = dict(
             criteria=[{
                 "combine": "and",
-                "column": "demographics",
+                "rule": "demographics",
                 "field": "hospital_number",
-                "queryType": "Contains",
-                "query": "a",
+                "query_type": "Contains",
+                "value": "a",
             }],
             data_slice={}
         )
@@ -486,10 +486,10 @@ class DownloadTestCase(BaseSearchTestCase):
             "criteria":
                 json.dumps([{
                     "combine": "and",
-                    "column": "demographics",
+                    "rule": "demographics",
                     "field": "hospital_number",
-                    "queryType": "Contains",
-                    "query": "a",
+                    "query_type": "Contains",
+                    "value": "a",
                 }]),
         }
 
@@ -509,10 +509,10 @@ class DownloadTestCase(BaseSearchTestCase):
             "criteria":
                 json.dumps([{
                     "combine": "and",
-                    "column": "demographics",
+                    "rule": "demographics",
                     "field": "hospital_number",
-                    "queryType": "Contains",
-                    "query": "a",
+                    "query_type": "Contains",
+                    "value": "a",
                 }]),
             "data_slice":
                 json.dumps({
@@ -535,10 +535,10 @@ class DownloadTestCase(BaseSearchTestCase):
         url = reverse("extract_download")
         criteria = [{
             "combine": "and",
-            "column": "demographics",
+            "rule": "demographics",
             "field": "hospital_number",
-            "queryType": "Contains",
-            "query": "007",
+            "query_type": "Contains",
+            "value": "007",
         }]
 
         data_slice = {

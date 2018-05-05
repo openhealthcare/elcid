@@ -1,8 +1,8 @@
-<select class="form-control content-offset-25" ng-model="query.queryType"
+<select class="form-control content-offset-25" ng-model="query.query_type"
         tooltip-trigger="focus"
         tooltip-placement="top" uib-tooltip="3. Select your query type"
-        set-focus-if="query.column && query.field"
-        ng-if="query.column && query.field"
+        set-focus-if="query.rule && query.field"
+        ng-if="query.rule && query.field"
         >
   <option>Greater Than</option>
   <option>Less Than</option>
@@ -10,9 +10,9 @@
 
 <input type="number"
        class="form-control content-offset-25"
-       ng-model="query.query"
-       ng-if="query.column && query.field && query.queryType"
+       ng-model="query.value"
+       ng-if="query.rule && query.field && query.query_type"
        placeholder="4. Add your value"
        ng-keypress="$event.keyCode == 13 && search()"
-       set-focus-if="query.column && query.field && query.queryType"
+       set-focus-if="query.rule && query.field && query.query_type"
        />

@@ -1,5 +1,5 @@
 angular.module('opal.services').factory('ExtractQuery', function(){
-  var ExtractQuery = function(extractSliceSchema){
+  var ExtractQuery = function(extractQuerySchema, extractSliceSchema){
     // the seatch query
     this.criteria = [{}];
     this.combinations = ["all", "any"];
@@ -9,12 +9,14 @@ angular.module('opal.services').factory('ExtractQuery', function(){
         this.requiredExtractFields.push(f)
       }
     }, this);
+    this.extractQuerySchema = extractQuerySchema;
+    this.extractSliceSchema = extractSliceSchema;
 
 
     // whether the user would like an 'or' conjunction or and 'and'
     this.anyOrAll = this.combinations[0];
 
-    // the columns in the download
+    // the rules in the download
     // shallow copies ftw
     this.slices = _.clone(this.requiredExtractFields);
   };
@@ -94,15 +96,18 @@ angular.module('opal.services').factory('ExtractQuery', function(){
 
       // remove incomplete criteria
       criteria = _.filter(this.criteria, function(c){
-          // Ensure we have a query otherwise
-          if(c.column &&  c.field &&  c.query){
-              return true;
+          var field = this.extractQuerySchema.findField(c.rule, c.field);
+          if(!field){
+            return false;
           }
 
-          c.combine = combine;
+          result = _.all(field.query_args, function(queryArg){
+            return !!c[queryArg];
+          });
+
           // If not, we ignore this clause
-          return false;
-      });
+          return result;
+      }, this);
 
       _.each(criteria, function(c){
         c.combine = combine;
@@ -125,7 +130,7 @@ angular.module('opal.services').factory('ExtractQuery', function(){
         }
     },
     resetFilter: function(queryRow, fieldsTypes){
-      // when we change the column, reset the rest of the query
+      // when we change the rule, reset the rest of the query
       _.each(queryRow, function(v, k){
         if(!_.contains(fieldsTypes, k)){
           queryRow[k] = undefined;

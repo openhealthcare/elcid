@@ -1,7 +1,4 @@
 from functools import wraps
-from django.utils.encoding import force_str
-from django.db import models as djangomodels
-
 from opal.core import subrecords
 from opal.core import fields
 from search.exceptions import SearchException
@@ -70,7 +67,6 @@ class SubrecordFieldWrapper(object):
             "display_name",
             "lookup_list",
             "icon",
-            "description"
         ]
         for i in fields:
             attr = getattr(self, "get_{}".format(i))()

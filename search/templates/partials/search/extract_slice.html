@@ -137,7 +137,7 @@
           </thead>
           <tbody>
             <tr ng-click="setExtractSliceInfo(field)" class="extract-hover pointer" ng-class="{active: field.name === extractSliceInfo.name}" ng-repeat="field in extractQuery.slices">
-              <td><div></div>[[ field.subrecord.display_name ]]</td>
+              <td><div></div>[[ field.rule.display_name ]]</td>
               <td>[[ field.display_name ]] <a ng-hide="extractQuery.sliceIsRequired(field)" class="pull-right" ng-click="extractQuery.removeSlice(field)" href="">{% icon "fa-minus-circle" %}</a></td>
             </tr>
           </tbody>

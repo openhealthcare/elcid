@@ -24,7 +24,7 @@ If a user has the role 'extract_personal_details' they will be able to extract
 all data including hospital number/name
 
 TO DO
-rename column to row in the query
+rename column to rule in the query
 rename the schema.subrecord to schema.rule
 figure out a way where we can choose to sended a nested extract, or not
 remove the and or combination in its current state

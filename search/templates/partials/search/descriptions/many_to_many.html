@@ -1,5 +1,5 @@
 <strong>[[ extractQuerySchema.findColumn(query.column).display_name ]] [[ extractQuerySchema.findField(query.column, query.field).display_name ]]</strong>
-[[ query.queryType | lowercase ]]
-<strong ng-show="query.queryType === 'Any Of'">[[ query.query|displayArray:"or" ]]</strong>
-<strong ng-hide="query.queryType === 'Any Of'">[[ query.query|displayArray ]]</strong>
+[[ query.query_type | lowercase ]]
+<strong ng-show="query.query_type === 'Any Of'">[[ query.value|displayArray:"or" ]]</strong>
+<strong ng-hide="query.query_type === 'Any Of'">[[ query.value|displayArray ]]</strong>
 <span ng-hide="$last">[[ query.combine ]]</span>

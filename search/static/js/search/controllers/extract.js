@@ -27,10 +27,12 @@ angular.module('opal.controllers').controller( 'ExtractCtrl',
     $scope.paginator = new Paginator($scope.search);
     $scope.state = 'query';
     $scope.referencedata = referencedata;
-    $scope.selectSliceSubrecord(extractSliceSchema.columns[0]);
+    $scope.selectSliceSubrecord(extractSliceSchema.rules[0]);
     $scope.setExtractSliceInfo($scope.sliceSubrecord.fields[0]);
 
-    $scope.extractQuery = new ExtractQuery(extractSliceSchema);
+    $scope.extractQuery = new ExtractQuery(
+      extractQuerySchema, extractSliceSchema
+    );
 
     $scope.extractQueryInfo = undefined;
 
@@ -39,18 +41,18 @@ angular.module('opal.controllers').controller( 'ExtractCtrl',
         $scope.extractQueryInfo = null;
       }
       else{
-        var field = $scope.extractQuerySchema.findField(query.column, query.field);
+        var field = $scope.extractQuerySchema.findField(query.rule, query.field);
         $scope.extractQueryInfo = field;
       }
     };
 
     $scope.resetFilter = function(query, fieldsTypes){
-      // when we change the column, reset the rest of the query
+      // when we change the rule, reset the rest of the query
       $scope.extractQuery.resetFilter(query, fieldsTypes);
       if(query.field){
         $scope.selectExtractQueryInfo(query);
       }
-      else if(query.column){
+      else if(query.rule){
         $scope.selectExtractQueryInfo(null);
       }
     };

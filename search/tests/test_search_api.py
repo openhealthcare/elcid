@@ -19,22 +19,24 @@ class ExtractSchemaTestCase(OpalTestCase):
         request.user = self.user
         self.assertEqual(
             [{}],
-            api.ExtractSchemaViewSet().list(self.request).data
+            api.ExtractQuerySchemaViewSet().list(self.request).data
         )
 
 
-class DataDictionaryTestCase(OpalTestCase):
+class ExtractSliceQueryViewSeTestCase(OpalTestCase):
     @patch('search.api.ExtractRule')
     def test_records(self, serializer):
         serializer.get_schemas.return_value = [{}]
         request = MagicMock()
         request.user = self.user
-        self.assertEqual([{}], api.DataDictionaryViewSet().list(request).data)
+        self.assertEqual(
+            [{}], api.ExtractSliceSchemaViewSet().list(request).data
+        )
 
     def test_integration_records(self):
         request = MagicMock()
         request.user = self.user
-        self.assertTrue(api.DataDictionaryViewSet().list(request).data)
+        self.assertTrue(api.ExtractSliceSchemaViewSet().list(request).data)
 
 
 class LoginRequredTestCase(OpalTestCase):
@@ -48,8 +50,8 @@ class LoginRequredTestCase(OpalTestCase):
 
     def get_urls(self):
         return [
-            reverse('extract-schema-list', request=self.request),
-            reverse('data-dictionary-list', request=self.request),
+            reverse('extract-query-list', request=self.request),
+            reverse('extract-slice-list', request=self.request),
         ]
 
     def test_401(self):

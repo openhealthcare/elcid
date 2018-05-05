@@ -6,7 +6,7 @@ from search.extract_rules import ExtractRule
 from search.search_rules import SearchRule
 
 
-class ExtractSchemaViewSet(viewsets.ViewSet):
+class ExtractQuerySchemaViewSet(viewsets.ViewSet):
     """
     Returns the schema to build our extract query builder
     """
@@ -19,7 +19,7 @@ class ExtractSchemaViewSet(viewsets.ViewSet):
         )
 
 
-class DataDictionaryViewSet(viewsets.ViewSet):
+class ExtractSliceSchemaViewSet(viewsets.ViewSet):
     """
     Returns data dictionary for the extract slice
     """

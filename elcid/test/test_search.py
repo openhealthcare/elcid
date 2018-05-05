@@ -30,7 +30,7 @@ class SearchTestCase(OpalTestCase):
     }
 
     criteria = [{
-        "queryType": "Equals",
+        "query_type": "Equals",
         "query": "1231111",
         "field": "Hospital Number",
         'combine': 'and',

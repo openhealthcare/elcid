@@ -15,11 +15,11 @@ class ExtractTestCase(OpalTestCase):
         data_slice = {}
         criteria = [
             {
-                u'column': u'demographics',
+                u'rule': u'demographics',
                 u'field': u'surname',
                 u'combine': u'and',
-                u'query': u'Stevens',
-                u'queryType': u'Equals'
+                u'value': u'Stevens',
+                u'query_type': u'Equals'
             }
         ]
         extract_query = dict(

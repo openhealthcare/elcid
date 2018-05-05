@@ -228,7 +228,7 @@ describe('ExtractQuery', function(){
     it('should be true if we have a query', function(){
         extractQuery.criteria[0].column = 'demographics';
         extractQuery.criteria[0].field = 'surname';
-        extractQuery.criteria[0].queryType = 'contains';
+        extractQuery.criteria[0].query_type = 'contains';
         extractQuery.criteria[0].query = 'jane';
         expect(extractQuery.completeCriteria().length).toBe(1);
     });
@@ -236,7 +236,7 @@ describe('ExtractQuery', function(){
     it('should be false if we have no query', function(){
         extractQuery.criteria[0].column = 'demographics';
         extractQuery.criteria[0].field = 'name';
-        extractQuery.criteria[0].queryType = 'contains';
+        extractQuery.criteria[0].query_type = 'contains';
         expect(extractQuery.completeCriteria().length).toBe(0);
     });
 
@@ -244,7 +244,7 @@ describe('ExtractQuery', function(){
       extractQuery.anyOrAll = "any";
       extractQuery.criteria[0].column = 'demographics';
       extractQuery.criteria[0].field = 'surname';
-      extractQuery.criteria[0].queryType = 'contains';
+      extractQuery.criteria[0].query_type = 'contains';
       extractQuery.criteria[0].query = 'jane';
       var result = extractQuery.completeCriteria();
       expect(result[0].combine).toBe('or');
@@ -254,7 +254,7 @@ describe('ExtractQuery', function(){
       extractQuery.anyOrAll = "all";
       extractQuery.criteria[0].column = 'demographics';
       extractQuery.criteria[0].field = 'surname';
-      extractQuery.criteria[0].queryType = 'contains';
+      extractQuery.criteria[0].query_type = 'contains';
       extractQuery.criteria[0].query = 'jane';
       var result = extractQuery.completeCriteria();
       expect(result[0].combine).toBe('and');
@@ -277,7 +277,7 @@ describe('ExtractQuery', function(){
         column: "demographics",
         field: "name",
         query: "Jane",
-        queryType: "contains"
+        query_type: "contains"
       };
     });
 
@@ -286,7 +286,7 @@ describe('ExtractQuery', function(){
         expect(criteria.column).toEqual("demographics");
         expect(criteria.field).toEqual(null);
         expect(criteria.query).toEqual(null);
-        expect(criteria.queryType).toEqual(null);
+        expect(criteria.query_type).toEqual(null);
     });
 
     it('should reset the field', function(){
@@ -294,7 +294,7 @@ describe('ExtractQuery', function(){
         expect(criteria.column).toEqual("demographics");
         expect(criteria.field).toEqual("name");
         expect(criteria.query).toEqual(null);
-        expect(criteria.queryType).toEqual(null);
+        expect(criteria.query_type).toEqual(null);
     });
   });
 

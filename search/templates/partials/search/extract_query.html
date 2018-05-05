@@ -1,0 +1,163 @@
+<div class="panel-body">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-6">
+          {% include "partials/search/query_description.html" %}
+        </div>
+        <div class="col-md-6 text-right">
+          <button ng-disabled="searched && !extractQuery.completeCriteria().length" ng-click="search()"
+                  class="btn btn-primary btn-lg"
+                  >
+            <span class="glyphicon glyphicon-search"></span>
+            Search
+          </button>
+        </div>
+      </div>
+      <hr class="bold" />
+      <form class="form form-inline">
+        <div class="row">
+          <div class="col-md-9 content-offset-10">
+            <div class="form-inline">
+              <div class="form-group">
+                Match patients for
+                <select class="form-control" ng-model="extractQuery.anyOrAll">
+                  <option ng-repeat="combination in extractQuery.combinations">[[ combination ]]</option>
+                </select>
+                of the following rules
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-9">
+            <span ng-repeat="query in extractQuery.criteria">
+              <div class="row">
+                <div class="col-md-1">
+                  <button type="button" class="btn btn-default square-button content-offset-25" ng-disabled="!query.rule"
+                          ng-click="selectExtractQueryInfo(query)" ng-class="{'btn-default': extractQueryInfo !== query, 'btn-info': extractQueryInfo === query}"
+                          >
+                    <span class="fa fa-info"></span>
+                  </button>
+                </div>
+                <div class="col-md-10">
+                  <select class="form-control content-offset-25" ng-model="query.rule"
+                          ng-change="resetFilter(query, ['rule'])"
+                          tooltip-trigger="focus"
+                          tooltip-placement="top" uib-tooltip="1. Select a Column"
+                          set-focus-if="!query.rule"
+                          >
+                    <option ng-repeat="col in extractQuerySchema.rules" value="[[ col.name ]]">
+                      [[ col.display_name ]]
+                    </option>
+                  </select>
+                  <select class="form-control content-offset-25" ng-model="query.field"
+                          tooltip-trigger="focus"
+                          ng-show="query.rule"
+                          ng-change="resetFilter(query, ['rule', 'field'])"
+                          tooltip-placement="top" uib-tooltip="2. Select a field"
+                          set-focus-if="query.field == null && query.rule != null"
+                          >
+                    <option value="[[ field.name ]]" ng-repeat="field in extractQuerySchema.findRule(query.rule).fields">[[ field.display_name ]]</option>
+                  </select>
+                  {% for widget in widgets %}
+                    <span ng-if="extractQuerySchema.findField(query.rule, query.field).widget === '{{ widget }}'">
+                      {% include widget %}
+                    </span>
+                  {% endfor %}
+                  </div>
+                <div class="col-md-1 text-right">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <button type="button" class="btn btn-dange content-offset-25"
+                              ng-click="extractQuery.removeFilter($index)"
+                              >
+                        <span class="glyphicon glyphicon-minus"></span>
+                      </button>
+                    </div>
+                  </div>
+                  <div ng-show="$last" class="row  content-offset">
+                    <div class="col-md-12">
+                      <button type="button" class="btn btn-primary"
+                              ng-click="extractQuery.addFilter()"
+                              >
+                        <span class="glyphicon glyphicon-plus"></span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div ng-hide="$last" class="row">
+                <div class="col-md-10 col-md-push-1">
+                  <hr class="divider" />
+                </div>
+              </div>
+            </span>
+          </div>
+          <div class="col-md-3">
+            {% for rule in search_rules %}
+              {% for field in rule.get_fields %}
+                {% include field.get_description_template %}
+              {% endfor %}
+            {% endfor %}
+          </div>
+        </div>
+      </form>
+      <div class="row">
+        <div class="col-sm-4">
+          {% if user.profile.can_extract and EXTRACT_PERSONAL_DETAILS %}
+            <h4>Users who can extract personal details must specify fields</h4>
+          {% endif %}
+          {% if user.profile.can_extract and not EXTRACT_PERSONAL_DETAILS %}
+            {% if EXTRACT_ASYNC %}
+              <button class="btn btn-lg"
+                      ng-class="{'btn-primary': async_ready, 'btn-secondary': !async_ready}"
+                      ng-show="searched && results.length > 0"
+                      analytics-category="search" analytics-event="extract-download"
+                      analytics-on
+                      ng-click="async_extract()">
+                <span ng-hide="async_waiting">
+                  <i class="glyphicon glyphicon-download"></i>
+                  Download this data
+                </span>
+                <span ng-show="async_waiting && !async_ready">
+                  <i class="fa fa-cog fa-spin" ></i>
+                  Building your extract... this could take some time...
+                </span>
+                <span ng-show="async_ready">
+                  <i class="glyphicon glyphicon-download"></i>
+                  Ready - Download your extract
+                </span>
+              </button>
+            {% else %}
+              <form action="/search/extract/download" method="post" target="_blank">
+                <input name="criteria" type="hidden" value="[[ JSON.stringify(extractQuery.getCriteriaToSend()) ]]">
+                <input name="data_slice" type="hidden" value="[[ JSON.stringify(extractQuery.getDataSlices()) ]]">
+                {% csrf_token %}
+                <button type="submit"
+                        class="btn btn-secondary btn-lg"
+                        analytics-category="search" analytics-event="extract-download"
+                        ng-show="searched && results.length > 0">
+                  <span class="glyphicon glyphicon-download"></span>
+                  Download these results
+                </button>
+              </form>
+            {% endif %}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div ng-show="searched" class="row">
+    <div ng-show="extractQuery.completeCriteria().length && !results.length" class="col-sm-4 col-sm-push-4 lead text-center">
+      Sorry, no results match your search.
+    </div>
+    <div ng-show="!extractQuery.completeCriteria().length" class="col-sm-4 col-sm-push-4 lead text-center">
+      Sorry, we need at least one search filter to run a search
+    </div>
+  </div>
+  <div class="content-offset-below" ng-show="searched && results.length">
+    {% include 'partials/_patient_summary_list.html' %}
+  </div>
+</div>
+{% include 'search/extract_footer.html' %}

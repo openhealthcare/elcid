@@ -5,6 +5,7 @@ from opal.core import subrecords
 from elcid import models as emodels
 from search import subrecord_discoverable
 from search.exceptions import SearchException
+from search import constants
 
 
 class CsvFieldWrapper(subrecord_discoverable.SubrecordFieldWrapper):
@@ -53,7 +54,7 @@ class ExtractRule(
 
     def get_model_fields(self):
         if self.user.profile.roles.filter(
-            name="extract_personal_details"
+            name=constants.EXTRACT_PERSONAL_DETAILS
         ).exists():
             field_names = self.model._get_fieldnames_to_serialize()
         else:
@@ -63,10 +64,6 @@ class ExtractRule(
             field_names.remove("consistency_token")
         if "id" in field_names:
             field_names.remove("id")
-        if "episode_id" in field_names:
-            field_names.remove("episode_id")
-        if "patient_id" in field_names:
-            field_names.remove("patient_id")
         return field_names
 
     def get_fields(self):

@@ -22,6 +22,7 @@ from opal.core.views import (
 from search import queries
 from search import search_rules
 from search import extract_rules as es
+from search import constants
 from search.extract import (
     zip_archive, async_extract, get_datadictionary_context
 )
@@ -66,6 +67,12 @@ class ExtractTemplateView(LoginRequiredMixin, TemplateView):
             self.request.user
         )
 
+        pd = self.request.user.profile.roles.filter(
+            name=constants.EXTRACT_PERSONAL_DETAILS
+        ).exists()
+
+        ctx["EXTRACT_PERSONAL_DETAILS"] = pd
+
         ctx.update(get_datadictionary_context(self.request.user, in_page=True))
         return ctx
 
@@ -109,11 +116,11 @@ def patient_search_view(request):
         return json_response({'error': "No search terms"}, 400)
 
     criteria = [{
-        "queryType": "Equals",
-        "query": hospital_number,
+        "query_type": "Equals",
+        "value": hospital_number,
         "field": "hospital_number",
         'combine': 'and',
-        'column': u'demographics',
+        'rule': u'demographics',
     }]
 
     query = queries.create_query(request.user, criteria)
