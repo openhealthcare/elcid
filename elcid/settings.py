@@ -202,7 +202,8 @@ if ON_TEST:
         'opat': 'opat.nomigrations',
         'microhaem': 'microhaem.nomigrations',
         'infectiousdiseases': 'infectiousdiseases.nomigrations',
-        'obs': 'obs.nomigrations'
+        'obs': 'obs.nomigrations',
+        'search': 'search.nomigrations'
     }
 
 LOGGING = {

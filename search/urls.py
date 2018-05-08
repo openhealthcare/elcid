@@ -28,12 +28,6 @@ urlpatterns = [
     url(r'^search/extract/download$',
         views.DownloadSearchView.as_view(), name="extract_download"),
 
-    url(r'^search/filters/?$',
-        views.FilterView.as_view(), name="extract_filters"),
-
-    url(r'^search/filters/(?P<pk>\d+)/?$',
-        views.FilterDetailView.as_view(), name="extract_filters"),
-
     url(r'^search/extract/status/(?P<task_id>[a-zA-Z0-9-]*)',
         views.ExtractStatusView.as_view(), name='extract_status'),
 
@@ -49,5 +43,10 @@ urlpatterns = [
         r'^search/api/extract_slice_schema/$',
         api.ExtractSliceSchemaViewSet.as_view({'get': 'list'}),
         name="extract-slice-list"
+    ),
+    url(
+        r'^search/api/extract_query/(?P<pk>[0-9]+)/',
+        api.ExtractQueryViewSet.as_view({'get': 'retrieve'}),
+        name="extract-query-detail"
     ),
 ]

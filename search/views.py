@@ -7,7 +7,7 @@ from functools import wraps
 
 from django.core.exceptions import PermissionDenied
 from django.conf import settings
-from django.http import HttpResponse, HttpResponseNotFound
+from django.http import HttpResponse
 from django.views.decorators.http import require_http_methods
 from django.views.generic import View, TemplateView
 from django.core.paginator import Paginator
@@ -26,6 +26,7 @@ from search import constants
 from search.extract import (
     zip_archive, async_extract, get_datadictionary_context
 )
+from search import models as search_models
 
 PAGINATION_AMOUNT = 10
 
@@ -191,6 +192,10 @@ class DownloadSearchView(View):
             )
             if data_slice:
                 extract_query["data_slice"] = json.loads(data_slice)
+            search_models.ExtractQuery.objects.create(
+                user=self.request.user,
+                query_params=extract_query
+            )
             extract_id = async_extract(
                 self.request.user,
                 extract_query
@@ -202,6 +207,16 @@ class DownloadSearchView(View):
             data_slice = json.loads(self.request.POST['data_slice'])
         else:
             data_slice = None
+
+        to_save = dict(
+            criteria=criteria,
+            data_slice=data_slice
+        )
+
+        search_models.ExtractQuery.objects.create(
+            user=self.request.user,
+            query_params=to_save
+        )
 
         query = queries.create_query(
             self.request.user, criteria
@@ -218,45 +233,6 @@ class DownloadSearchView(View):
             settings.OPAL_BRAND_NAME, datetime.datetime.now().isoformat())
         resp['Content-Disposition'] = disp
         return resp
-
-
-class FilterView(View):
-
-    @ajax_login_required_view
-    def dispatch(self, *args, **kwargs):
-        return super(FilterView, self).dispatch(*args, **kwargs)
-
-    def get(self, *args, **kwargs):
-        filters = models.Filter.objects.filter(user=self.request.user)
-        return json_response([f.to_dict() for f in filters])
-
-    def post(self, *args, **kwargs):
-        data = _get_request_data(self.request)
-        self.filter = models.Filter(user=self.request.user)
-        self.filter.update_from_dict(data)
-        return json_response(self.filter.to_dict())
-
-
-class FilterDetailView(View):
-    @ajax_login_required_view
-    def dispatch(self, *args, **kwargs):
-        try:
-            self.filter = models.Filter.objects.get(pk=kwargs['pk'])
-        except models.Filter.DoesNotExist:
-            return HttpResponseNotFound()
-        return super(FilterDetailView, self).dispatch(*args, **kwargs)
-
-    def get(self, *args, **kwargs):
-        return json_response(self.filter.to_dict())
-
-    def put(self, *args, **kwargs):
-        data = _get_request_data(self.request)
-        self.filter.update_from_dict(data)
-        return json_response(self.filter.to_dict())
-
-    def delete(self, *args, **kwargs):
-        self.filter.delete()
-        return json_response('')
 
 
 class ExtractStatusView(View):

@@ -63,7 +63,7 @@
             <h5>Records</h5>
           </div>
           <div class="extract-selector-rows">
-            <div class="extract-hover extract-selector-row" ng-class="{selected: extractQuery.isSubrecordAdded(column), active: column.name === sliceSubrecord.name}" ng-repeat="column in extractSliceSchema.columns">
+            <div class="extract-hover extract-selector-row" ng-class="{selected: extractQuery.isSubrecordAdded(column), active: column.name === sliceSubrecord.name}" ng-repeat="column in extractSliceSchema.rules">
               <a ng-click="selectSliceSubrecord(column)" class="pointer extract-slice-table-link">
                 [[ column.display_name ]]
               </a>

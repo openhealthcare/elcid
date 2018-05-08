@@ -1,24 +1,46 @@
 angular.module('opal.services').factory('ExtractQuery', function(){
-  var ExtractQuery = function(extractQuerySchema, extractSliceSchema){
-    // the seatch query
-    this.criteria = [{}];
-    this.combinations = ["all", "any"];
+  var ExtractQuery = function(extractQuerySchema, extractSliceSchema, queryParams){
     this.requiredExtractFields = [];
+    this.slices = [];
+    this.extractQuerySchema = extractQuerySchema;
+    this.extractSliceSchema = extractSliceSchema;
+
+    // whether the user would like an 'or' conjunction or and 'and'
+    this.combinations = ["all", "any"];
     _.each(extractSliceSchema.getFields(), function(f){
       if(f.required){
         this.requiredExtractFields.push(f)
       }
     }, this);
-    this.extractQuerySchema = extractQuerySchema;
-    this.extractSliceSchema = extractSliceSchema;
 
-
-    // whether the user would like an 'or' conjunction or and 'and'
-    this.anyOrAll = this.combinations[0];
-
-    // the rules in the download
-    // shallow copies ftw
-    this.slices = _.clone(this.requiredExtractFields);
+    // the seatch query
+    if(queryParams){
+      this.criteria = queryParams.criteria;
+      // this.slices = queryParams.slices;
+      _.each(queryParams.data_slice, function(fields, ruleName){
+        _.each(fields, function(field){
+          var slice = this.extractSliceSchema.findField(ruleName, field);
+          if(slice){
+            this.slices.push(
+              slice
+            );
+          }
+        }, this);
+      }, this);
+      if(this.criteria[0].combine === 'and'){
+        this.anyOrAll = "all";
+      }
+      else{
+        this.anyOrAll = "any";
+      }
+    }
+    else{
+      // the rules in the download
+      // shallow copies ftw
+      this.slices = _.clone(this.requiredExtractFields);
+      this.criteria = [{}];
+      this.anyOrAll = this.combinations[0];
+    }
   };
 
   ExtractQuery.prototype = {
@@ -31,21 +53,21 @@ angular.module('opal.services').factory('ExtractQuery', function(){
         this.slices.push(someField);
       }
     },
-    isSubrecordAdded: function(someSubrecord){
-      return someSubrecord.fields.length === _.filter(this.slices, function(field){
-        return field.subrecord === someSubrecord;
+    isSubrecordAdded: function(someRule){
+      return someRule.fields.length === _.filter(this.slices, function(field){
+        return field.rule === someRule;
       }).length;
     },
     isSliceAdded: function(someField){
       return _.indexOf(this.slices, someField) !== -1
     },
-    addSubrecordSlices: function(someSubrecord){
-      // adds all fields for a subrecord
-      _.each(someSubrecord.fields, this.addSlice, this);
+    addSubrecordSlices: function(someRule){
+      // adds all fields for a rule
+      _.each(someRule.fields, this.addSlice, this);
     },
-    removeSubrecordSlices: function(someSubrecord){
-      // adds all fields for a subrecord
-      _.each(someSubrecord.fields, this.removeSlice, this);
+    removeSubrecordSlices: function(someRule){
+      // adds all fields for a rule
+      _.each(someRule.fields, this.removeSlice, this);
     },
     removeSlice: function(someField){
       // remove a field from the extract fields
@@ -59,10 +81,10 @@ angular.module('opal.services').factory('ExtractQuery', function(){
     getDataSlices: function(){
       var result = {}
       _.each(this.slices, function(field){
-        if(!(field.subrecord.name in result)){
-          result[field.subrecord.name] = [];
+        if(!(field.rule.name in result)){
+          result[field.rule.name] = [];
         }
-        result[field.subrecord.name].push(
+        result[field.rule.name].push(
           field.name
         );
       });

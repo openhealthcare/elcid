@@ -21,14 +21,27 @@
       controller: 'SearchCtrl',
       templateUrl: '/search/templates/search.html',
     })
+    .when('/extract/:extractFilterId', {
+        controller: 'ExtractCtrl',
+        templateUrl: '/search/templates/extract.html',
+        resolve: {
+          profile: function(UserProfile){ return UserProfile.load(); },
+          extractQuerySchema: function(extractQuerySchemaLoader){ return extractQuerySchemaLoader.load(); },
+          extractSliceSchema: function(extractSliceSchemaLoader){ return extractSliceSchemaLoader.load(); },
+          extractQuery: function(extractQueryLoader, $route){
+            return extractQueryLoader.load($route.current.params.extractFilterId);
+          },
+          referencedata: function(Referencedata){ return Referencedata.load(); }
+        }
+    })
     .when('/extract', {
         controller: 'ExtractCtrl',
         templateUrl: '/search/templates/extract.html',
         resolve: {
           profile: function(UserProfile){ return UserProfile.load(); },
-          extractQuerySchema: function(extractQuerySchemaLoader){ return extractQuerySchemaLoader; },
+          extractQuerySchema: function(extractQuerySchemaLoader){ return extractQuerySchemaLoader.load(); },
           extractSliceSchema: function(extractSliceSchemaLoader){ return extractSliceSchemaLoader.load(); },
-          filters: function(filtersLoader){ return filtersLoader(); },
+          extractQuery: function(){ return null; },
           referencedata: function(Referencedata){ return Referencedata.load(); }
         }
     })

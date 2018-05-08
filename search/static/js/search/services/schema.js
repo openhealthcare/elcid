@@ -1,6 +1,6 @@
-angular.module('opal.services').factory('Schema', function() {
+angular.module('opal.services').factory('ExtractSchema', function() {
     "use strict";
-    var Schema = function(rules){
+    var ExtractSchema = function(rules){
       this.rules = angular.copy(rules);
       _.each(this.rules, function(c){
         _.each(c.fields, function(f){
@@ -12,7 +12,7 @@ angular.module('opal.services').factory('Schema', function() {
       });
     };
 
-    Schema.prototype = {
+    ExtractSchema.prototype = {
       findRule: function(ruleName){
         if(!ruleName){
           return;
@@ -46,8 +46,10 @@ angular.module('opal.services').factory('Schema', function() {
         _.each(this.rules, function(c){
           result = result.concat(c.fields);
         });
+
+        return result;
       }
     }
 
-    return Schema
+    return ExtractSchema
 });

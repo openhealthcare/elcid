@@ -1,8 +1,8 @@
 angular.module('opal.controllers').controller( 'ExtractCtrl',
   function(
     $scope, $http, $window, $modal, $timeout, $location, $anchorScroll,
-    PatientSummary, Paginator, referencedata, ngProgressLite, profile, filters,
-    extractQuerySchema, extractSliceSchema, ExtractQuery
+    PatientSummary, Paginator, referencedata, ngProgressLite, profile,
+    extractQuerySchema, extractSliceSchema, ExtractQuery, extractQuery
   ){
     "use strict";
 
@@ -25,13 +25,18 @@ angular.module('opal.controllers').controller( 'ExtractCtrl',
     $scope.searched = false;
     $scope.currentPageNumber = 1;
     $scope.paginator = new Paginator($scope.search);
-    $scope.state = 'query';
+    if(extractQuery.data_slice){
+      $scope.state = 'slice';
+    }
+    else{
+      $scope.state = 'query';
+    }
     $scope.referencedata = referencedata;
     $scope.selectSliceSubrecord(extractSliceSchema.rules[0]);
     $scope.setExtractSliceInfo($scope.sliceSubrecord.fields[0]);
 
     $scope.extractQuery = new ExtractQuery(
-      extractQuerySchema, extractSliceSchema
+      extractQuerySchema, extractSliceSchema, extractQuery
     );
 
     $scope.extractQueryInfo = undefined;
@@ -56,20 +61,6 @@ angular.module('opal.controllers').controller( 'ExtractCtrl',
         $scope.selectExtractQueryInfo(null);
       }
     };
-
-    //
-    // Determine the appropriate lookup list for this field if
-    // one exists.
-    //
-    $scope.refresh = function(){
-      $scope.async_waiting = false;
-      $scope.async_ready = false;
-      $scope.searched = false;
-      $scope.results = [];
-      $scope.extractQuery.reset();
-    };
-
-    $scope.$watch('extractQuery.criteria', $scope.refresh, true);
 
     $scope.getQueryParams = function(pageNumber){
       // the query params are the complete criteria and the

@@ -121,6 +121,14 @@ class SubrecordFieldWrapper(object):
         if description:
             return description
 
+    def __str__(self):
+        return "{}: {} - {}".format(
+            self.__class__, self.get_display_name(), self.get_name()
+        )
+
+    def __unicode__(self):
+        return self.__str__()
+
 
 class SubrecordDiscoverableMixin(object):
     """
@@ -159,6 +167,12 @@ class SubrecordDiscoverableMixin(object):
 
         if model is not None:
             self.model = model
+
+    def __unicode__(self):
+        return self.__str__()
+
+    def __str__(self):
+        return "{}: {}".format(self.__class__, self.get_display_name())
 
     @classmethod
     def get(cls, slug, user):
@@ -218,13 +232,14 @@ class SubrecordDiscoverableMixin(object):
                 local_field_name = "field_{}".format(field)
                 if hasattr(self, local_field_name):
                     yield getattr(self, local_field_name)(self.user)
-                if not hasattr(self.model, field):
+                elif hasattr(self.model, field):
+                    yield self.cast_field_name_to_attribute(field)
+                else:
                     raise SearchException(
                         "Unable to find field {} for {}".format(
                             field, self.get_display_name()
                         )
                     )
-                yield self.cast_field_name_to_attribute(field)
             else:
                 yield field(self.user)
 
