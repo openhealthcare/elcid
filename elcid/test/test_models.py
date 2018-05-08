@@ -201,6 +201,7 @@ class PresentingComplaintTest(OpalTestCase, AbstractEpisodeTestCase):
             consistency_token=self.presenting_complaint.consistency_token,
             symptoms=["alertness", "apathy"],
             duration="a week",
+            onset=None,
             details="information",
             episode_id=1,
             updated=None,
