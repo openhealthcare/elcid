@@ -184,7 +184,7 @@ class EpisodeDateQuery(object):
                 "Date queries required before or after to be declared"
             )
 
-        value = serialization.deserialize_date(given_query["query"])
+        value = serialization.deserialize_date(given_query["value"])
         if query_type == 'Before':
             qtype = '__lte'
         elif query_type == 'After':
