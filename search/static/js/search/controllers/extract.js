@@ -25,7 +25,10 @@ angular.module('opal.controllers').controller( 'ExtractCtrl',
     $scope.searched = false;
     $scope.currentPageNumber = 1;
     $scope.paginator = new Paginator($scope.search);
-    if(extractQuery.data_slice){
+
+    // if we have a preloaded extract query with fields, then
+    // go straight to the extract query page
+    if(extractQuery && extractQuery.data_slice){
       $scope.state = 'slice';
     }
     else{

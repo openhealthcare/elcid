@@ -21,7 +21,7 @@ from opal.core.views import (
 )
 from search import queries
 from search import search_rules
-from search import extract_rules as es
+from search import extract_rules
 from search import constants
 from search.extract import (
     zip_archive, async_extract, get_datadictionary_context
@@ -47,6 +47,44 @@ class SearchTemplateView(LoginRequiredMixin, TemplateView):
     template_name = 'search/search.html'
 
 
+class ExtractQueryDescriptionView(LoginRequiredMixin, TemplateView):
+    def get_template_names(self):
+        rule = search_rules.SearchRule.get(
+            self.kwargs["rule_api_name"], self.request.user
+        )
+        field = rule.get_field(self.kwargs["field_api_name"])
+        return field.get_description_template()
+
+    def get_context_data(self, *args, **kwargs):
+        ctx = super(ExtractQueryDescriptionView, self).get_context_data(
+            *args, **kwargs
+        )
+        ctx["rule"] = search_rules.SearchRule.get(
+            self.kwargs["rule_api_name"], self.request.user
+        )
+        ctx["field"] = ctx["rule"].get_field(self.kwargs["field_api_name"])
+        return ctx
+
+
+class ExtractSliceDescriptionView(LoginRequiredMixin, TemplateView):
+    def get_template_names(self):
+        rule = extract_rules.ExtractRule.get(
+            self.kwargs["rule_api_name"], self.request.user
+        )
+        field = rule.get_field(self.kwargs["field_api_name"])
+        return field.get_description_template()
+
+    def get_context_data(self, *args, **kwargs):
+        ctx = super(ExtractSliceDescriptionView, self).get_context_data(
+            *args, **kwargs
+        )
+        ctx["rule"] = extract_rules.ExtractRule.get(
+            self.kwargs["rule_api_name"], self.request.user
+        )
+        ctx["field"] = ctx["rule"].get_field(self.kwargs["field_api_name"])
+        return ctx
+
+
 class ExtractTemplateView(LoginRequiredMixin, TemplateView):
     template_name = 'search/extract.html'
 
@@ -61,12 +99,34 @@ class ExtractTemplateView(LoginRequiredMixin, TemplateView):
             self.request.user
         )
         ctx["widget_descriptions"] = descriptions
-        ctx["search_rules"] = search_rules.SearchRule.list(
+
+        search_descriptions = []
+
+        rules = search_rules.SearchRule.list(
             self.request.user
         )
-        ctx["extract_rules"] = es.ExtractRule.list(
+
+        for rule in rules:
+            for field in rule.get_fields():
+                search_descriptions.append(
+                    (rule, field, field.get_description_template_url(rule),)
+                )
+
+        ctx["search_descriptions"] = search_descriptions
+
+        extract_descriptions = []
+
+        rules = extract_rules.ExtractRule.list(
             self.request.user
         )
+
+        for rule in rules:
+            for field in rule.get_fields():
+                extract_descriptions.append(
+                    (rule, field, field.get_description_template_url(rule),)
+                )
+
+        ctx["extract_descriptions"] = extract_descriptions
 
         pd = self.request.user.profile.roles.filter(
             name=constants.EXTRACT_PERSONAL_DETAILS

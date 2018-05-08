@@ -1,5 +1,6 @@
-from opal.core import discoverable
 from six import text_type
+from django.core.urlresolvers import reverse
+from opal.core import discoverable
 from opal import models
 from opal.core import subrecords
 from elcid import models as emodels
@@ -9,7 +10,7 @@ from search import constants
 
 
 class CsvFieldWrapper(subrecord_discoverable.SubrecordFieldWrapper):
-    description_template = "search/extract_rule_description.html"
+    description_template = "partials/search/rule_description.html"
     required = False
 
     def extract(self, obj):
@@ -28,6 +29,12 @@ class CsvFieldWrapper(subrecord_discoverable.SubrecordFieldWrapper):
 
     def get_required(self):
         return self.required
+
+    def get_description_template_url(self, rule):
+        return reverse('extract_slice_description', kwargs=dict(
+            rule_api_name=rule.get_api_name(),
+            field_api_name=self.get_name()
+        ))
 
 
 class EpisodeIdForPatientSubrecord(CsvFieldWrapper):

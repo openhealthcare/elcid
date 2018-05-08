@@ -1,4 +1,5 @@
 from django.db import models as djangomodels
+from django.core.urlresolvers import reverse
 from opal.core import fields
 from opal import models
 from opal.core import serialization
@@ -28,13 +29,19 @@ class SearchRuleField(SubrecordFieldWrapper):
 
     # the description of the query the user has selected when it is
     # shown at the top
-    description_template = "search/search_rule_description.html"
+    description_template = "partials/search/rule_description.html"
 
     # the arguments that are required for this query
     query_args = ["value", "query_type"]
 
     def get_description_template(self):
         return self.description_template
+
+    def get_description_template_url(self, rule):
+        return reverse('extract_query_description', kwargs=dict(
+            rule_api_name=rule.get_api_name(),
+            field_api_name=self.get_name()
+        ))
 
     def query(self, given_query):
         """
@@ -238,7 +245,6 @@ class EpisodeTeam(
                 )
             )
         return result
-
 
     def query(self, given_query):
         query_type = given_query["query_type"]

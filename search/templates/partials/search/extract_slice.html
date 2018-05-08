@@ -96,10 +96,10 @@
       </div>
       <div class="col-md-4">
         <div class="content-offset">
-          {% for rule in extract_rules %}
-            {% for field in rule.get_fields %}
-              {% include field.get_description_template %}
-            {% endfor %}
+          {% for rule, field, extract_description in extract_descriptions %}
+            <div ng-show="extractSliceInfo.rule.name === '{{ rule.get_api_name }}' && extractSliceInfo.name === '{{ field.get_name }}'">
+              <div ng-include="'{{ extract_description }}'"></div>
+            </div>
           {% endfor %}
         </div>
       </div>

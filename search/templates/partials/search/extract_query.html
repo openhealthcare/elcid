@@ -95,10 +95,10 @@
             </span>
           </div>
           <div class="col-md-3">
-            {% for rule in search_rules %}
-              {% for field in rule.get_fields %}
-                {% include field.get_description_template %}
-              {% endfor %}
+            {% for rule, field, search_description in search_descriptions %}
+              <div ng-show="extractQueryInfo.rule.name === '{{ rule.get_api_name }}' && extractQueryInfo.name === '{{ field.get_name }}'">
+                <div ng-include="'{{ search_description }}'"></div>
+              </div>
             {% endfor %}
           </div>
         </div>
