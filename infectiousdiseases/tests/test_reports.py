@@ -82,10 +82,11 @@ class IdLiasionReportTestCase(OpalTestCase):
 
     def test_get_demographics_row(self):
         patient, episode = self.new_patient_and_episode_please()
+        year = datetime.date.today().year - 7
         patient.demographics_set.update(
             first_name="Sandra",
             surname="Wallis",
-            date_of_birth=datetime.date(2010, 5, 1),
+            date_of_birth=datetime.date(year, 1, 1),
             sex_ft=""
         )
         self.assertEqual(
@@ -280,18 +281,20 @@ class IdLiasionReportTestCase(OpalTestCase):
             archived=True,
         )
         episode_2.save()
+        year_1 = datetime.date.today().year - 7
+        year_2 = datetime.date.today().year - 17
 
         patient.demographics_set.update(
             first_name="Sandra",
             surname="Wallis",
-            date_of_birth=datetime.date(2010, 5, 1),
+            date_of_birth=datetime.date(year_1, 1, 1),
             sex_ft="Unknown"
         )
 
         patient_2.demographics_set.update(
             first_name="Gemma",
             surname="Potts",
-            date_of_birth=datetime.date(2000, 5, 1),
+            date_of_birth=datetime.date(year_2, 5, 1),
             sex_ft="Female"
         )
 
