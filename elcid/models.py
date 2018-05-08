@@ -160,7 +160,6 @@ class PresentingComplaint(EpisodeSubrecord):
     HELP_DURATION = "The duration for which the patient had been experiencing \
 these symptoms when recorded."
 
-    symptom = ForeignKeyOrFreeText(omodels.Symptom)
     symptoms = models.ManyToManyField(
         omodels.Symptom, related_name="presenting_complaints"
     )
@@ -191,6 +190,10 @@ these symptoms when recorded."
         removed_fields = {u'symptom_fk_id', 'symptom_ft', 'symptom'}
         field_names = [i for i in field_names if i not in removed_fields]
         return field_names
+
+    # deprecated fields 9/11/2015
+    onset = models.CharField(max_length=255, blank=True, null=True)
+    symptom = ForeignKeyOrFreeText(omodels.Symptom)
 
 
 class PrimaryDiagnosis(EpisodeSubrecord):
