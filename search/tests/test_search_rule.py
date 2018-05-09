@@ -74,7 +74,7 @@ class EpisodeQueryTestCase(OpalTestCase):
     def test_episode_end_start(self):
         query_end = dict(
             query_type="Before",
-            query="1/8/2017",
+            value="1/8/2017",
             field="end"
         )
         self.assertEqual(
@@ -86,7 +86,7 @@ class EpisodeQueryTestCase(OpalTestCase):
         self.episode.save()
         query_end = dict(
             query_type="Before",
-            query="1/8/2017",
+            value="1/8/2017",
             field="end"
         )
         self.assertEqual(
@@ -96,7 +96,7 @@ class EpisodeQueryTestCase(OpalTestCase):
     def test_episode_end_after(self):
         query_end = dict(
             query_type="After",
-            query="1/8/2015",
+            value="1/8/2015",
             field="end"
         )
         self.assertEqual(
@@ -106,7 +106,7 @@ class EpisodeQueryTestCase(OpalTestCase):
     def test_episode_end_not_found(self):
         query_end = dict(
             query_type="Before",
-            query="1/8/2010",
+            value="1/8/2010",
             field="end"
         )
         self.assertEqual(
@@ -116,7 +116,7 @@ class EpisodeQueryTestCase(OpalTestCase):
     def test_episode_end_wrong_query_param(self):
         query_end = dict(
             query_type="asdfsadf",
-            query="1/8/2010",
+            value="1/8/2010",
             field="end"
         )
         with self.assertRaises(exceptions.SearchException):
@@ -125,7 +125,7 @@ class EpisodeQueryTestCase(OpalTestCase):
     def test_episode_start_before(self):
         query_end = dict(
             query_type="Before",
-            query="1/8/2017",
+            value="1/8/2017",
             field="start"
         )
         self.assertEqual(
@@ -135,7 +135,7 @@ class EpisodeQueryTestCase(OpalTestCase):
     def test_episode_start_after(self):
         query_end = dict(
             query_type="After",
-            query="1/8/2015",
+            value="1/8/2015",
             field="start"
         )
         self.assertEqual(
@@ -147,7 +147,7 @@ class EpisodeQueryTestCase(OpalTestCase):
         self.episode.save()
         query_end = dict(
             query_type="Before",
-            query="1/8/2017",
+            value="1/8/2017",
             field="start"
         )
         self.assertEqual(
@@ -157,7 +157,7 @@ class EpisodeQueryTestCase(OpalTestCase):
     def test_episode_start_not_found(self):
         query_end = dict(
             query_type="Before",
-            query="1/8/2011",
+            value="1/8/2011",
             field="start"
         )
         self.assertEqual(
@@ -167,7 +167,7 @@ class EpisodeQueryTestCase(OpalTestCase):
     def test_episode_start_wrong_query_param(self):
         query_end = dict(
             query_type="asdfsadf",
-            query="1/8/2010",
+            value="1/8/2010",
             field="start"
         )
         with self.assertRaises(exceptions.SearchException):
