@@ -11,7 +11,7 @@ module.exports = function(config){
     __dirname + '/../microhaem/static/js/haem/controllers/*',
     __dirname + '/../walkin/static/js/walkin/controllers/*',
     __dirname + '/../research/static/js/research/controllers/*.js',
-    // __dirname + '/../search/static/js/search/*',
+    __dirname + '/../search/static/js/search/**/*',
     __dirname + '/../infectiousdiseases/static/js/infectiousdiseases/controllers/*.js',
   ];
   var includedFiles = [
@@ -23,7 +23,7 @@ module.exports = function(config){
     __dirname + '/../research/static/js/test/*.js',
     __dirname + '/../microhaem/static/js/test/*.js',
     __dirname + '/../walkin/static/js/walkintest/*.js',
-    // __dirname + '/../search/static/js/test/*.js',
+    __dirname + '/../search/static/js/test/*.js',
     __dirname + '/../infectiousdiseases/static/js/infectiousdiseasestest/*.js',
     '../../core/pathway/static/js/pathway/**/*.js',
 

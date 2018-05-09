@@ -1,4 +1,6 @@
 angular.module('opal.services').factory('ExtractQuery', function(){
+  "use strict";
+
   var ExtractQuery = function(extractQuerySchema, extractSliceSchema, queryParams){
     this.requiredExtractFields = [];
     this.slices = [];
@@ -44,6 +46,9 @@ angular.module('opal.services').factory('ExtractQuery', function(){
   };
 
   ExtractQuery.prototype = {
+    getRequiredFields: function(){
+
+    },
     reset: function(){
       this.slices = _.clone(this.requiredExtractFields);
     },
@@ -90,7 +95,7 @@ angular.module('opal.services').factory('ExtractQuery', function(){
       });
       return result;
     },
-    getCriteriaToSend(){
+    getCriteriaToSend: function(){
       // remove the angular hash key
       var result = [];
       _.each(this.criteria, function(query){

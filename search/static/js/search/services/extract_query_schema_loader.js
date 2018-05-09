@@ -9,7 +9,7 @@ angular.module('opal.services').factory('extractQuerySchemaLoader', function(
       	    deferred.resolve(new ExtractSchema(columns));
           }, function() {
       	    // handle error better
-      	    $window.alert('Extract schema could not be loaded');
+      	    $window.alert('Extract query schema could not be loaded');
           });
 
           return deferred.promise;

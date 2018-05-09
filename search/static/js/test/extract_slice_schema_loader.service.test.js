@@ -31,23 +31,23 @@ describe('extractSliceSchemaLoader', function(){
 
     it('should fetch the record data', function(){
         var result;
-        $httpBackend.whenGET('/search/api/data_dictionary/').respond(dictionarySchema);
+        $httpBackend.whenGET('/search/api/extract_slice_schema/').respond(dictionarySchema);
         extractSliceSchemaLoader.load().then(function(r){ result = r; });
         $rootScope.$apply()
         $httpBackend.flush();
         var expectedSubrecordNames = _.pluck(dictionarySchema, "name");
-        var foundSubrecordNames = _.pluck(result.columns, "name");
+        var foundSubrecordNames = _.pluck(result.rules, "name");
         expect(expectedSubrecordNames).toEqual(foundSubrecordNames);
     });
 
     it('should alert if the HTTP request errors', function(){
         var result;
-        $httpBackend.whenGET('/search/api/data_dictionary/').respond(500, 'NO');
+        $httpBackend.whenGET('/search/api/extract_slice_schema/').respond(500, 'NO');
         extractSliceSchemaLoader.load().then(function(r){ result = r; });
         $rootScope.$apply();
         $httpBackend.flush();
         expect(mock.alert).toHaveBeenCalledWith(
-          'Data dictionary could not be loaded'
+          'Extract slice schema could not be loaded'
         );
     });
 });
