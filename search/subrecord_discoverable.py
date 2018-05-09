@@ -155,6 +155,7 @@ class SubrecordDiscoverableMixin(object):
     model = None
     fields = None
     display_name = None
+    include_in_schema = True
     slug = None
 
     # set this to True if you want it to be excluded
@@ -279,8 +280,13 @@ class SubrecordDiscoverableMixin(object):
             key=lambda x: x["display_name"]
         )
 
+    def get_fields_for_schema(self):
+        """ Whether this field should appear in the schema
+        """
+        return (i for i in self.get_fields())
+
     def get_schema(self):
-        fields = [i.to_dict() for i in self.get_fields()]
+        fields = [i.to_dict() for i in self.get_fields_for_schema()]
         fields = sorted(
             fields, key=lambda x: x["display_name"]
         )

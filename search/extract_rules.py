@@ -94,6 +94,13 @@ class ExtractRule(
             "please implement get_renderer for {}".format(self)
         )
 
+    def get_fields_for_schema(self):
+        """ Whether this field should appear in the schema
+        """
+        fields = super(ExtractRule, self).get_fields_for_schema()
+        to_exclude = {"episode_id", "patient_id"}
+        return (i for i in fields if i.get_name() not in to_exclude)
+
     def cast_field_name_to_attribute(self, str):
         return CsvFieldWrapper(self.user, self.model, str)
 
