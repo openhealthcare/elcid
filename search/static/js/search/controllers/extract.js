@@ -65,6 +65,16 @@ angular.module('opal.controllers').controller( 'ExtractCtrl',
       }
     };
 
+    $scope.refresh = function(){
+      $scope.async_waiting = false;
+      $scope.async_ready = false;
+      $scope.searched = false;
+      $scope.results = [];
+    };
+
+    $scope.$watch(function($scope){ return $scope.extractQuery.getCriteriaToSend() }, $scope.refresh, true);
+    $scope.$watch(function($scope){ return $scope.extractQuery.getDataSlices() }, $scope.refresh, true);
+
     $scope.getQueryParams = function(pageNumber){
       // the query params are the complete criteria and the
       // page number without the angular hash key
@@ -95,7 +105,6 @@ angular.module('opal.controllers').controller( 'ExtractCtrl',
             ngProgressLite.start();
             $http.post('/search/extract/', queryParams).success(
                 function(response){
-
                     // if the criteria has changed after the search has been
                     // send, don't update the search results, just discard them
                     var currentQueryParams = $scope.getQueryParams(pageNumber);

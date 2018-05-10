@@ -2,23 +2,17 @@ angular.module('opal.services').factory('ExtractQuery', function(){
   "use strict";
 
   var ExtractQuery = function(extractQuerySchema, extractSliceSchema, queryParams){
-    this.requiredExtractFields = [];
     this.slices = [];
     this.extractQuerySchema = extractQuerySchema;
     this.extractSliceSchema = extractSliceSchema;
+    this.requiredExtractFields = this.getRequiredFields();
 
     // whether the user would like an 'or' conjunction or and 'and'
     this.combinations = ["all", "any"];
-    _.each(extractSliceSchema.getFields(), function(f){
-      if(f.required){
-        this.requiredExtractFields.push(f)
-      }
-    }, this);
 
     // the seatch query
     if(queryParams){
       this.criteria = queryParams.criteria;
-      // this.slices = queryParams.slices;
       _.each(queryParams.data_slice, function(fields, ruleName){
         _.each(fields, function(field){
           var slice = this.extractSliceSchema.findField(ruleName, field);
@@ -47,7 +41,13 @@ angular.module('opal.services').factory('ExtractQuery', function(){
 
   ExtractQuery.prototype = {
     getRequiredFields: function(){
-
+      var result = [];
+      _.each(this.extractSliceSchema.getFields(), function(f){
+        if(f.required){
+          result.push(f)
+        }
+      }, this);
+      return result;
     },
     reset: function(){
       this.slices = _.clone(this.requiredExtractFields);
@@ -128,7 +128,7 @@ angular.module('opal.services').factory('ExtractQuery', function(){
             return false;
           }
 
-          result = _.all(field.query_args, function(queryArg){
+          var result = _.all(field.query_args, function(queryArg){
             return !!c[queryArg];
           });
 
