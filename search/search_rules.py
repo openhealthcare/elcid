@@ -127,6 +127,12 @@ class EpisodeQuery(SearchRule):
     )
 
 
+class ContactDetailsSearchRule(SearchRule):
+    slug = emodels.ContactDetails.get_api_name()
+    display_name = "Patient Contact Details"
+    model = emodels.ContactDetails
+
+
 class ResultQuery(SearchRule):
     exclude = True
     slug = emodels.Result.get_api_name()

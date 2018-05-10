@@ -10,7 +10,7 @@
 //     });
 //     schema = jasmine.createSpyObj(["findField", "getFields"]);
 //     var createFakeSubrecord = function(y, x){
-// 
+//
 //       return {
 //         name: x,
 //         subrecord: {name: y}

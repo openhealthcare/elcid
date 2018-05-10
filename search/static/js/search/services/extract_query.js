@@ -122,7 +122,7 @@ angular.module('opal.services').factory('ExtractQuery', function(){
       }
 
       // remove incomplete criteria
-      criteria = _.filter(this.criteria, function(c){
+      var criteria = _.filter(this.criteria, function(c){
           var field = this.extractQuerySchema.findField(c.rule, c.field);
           if(!field){
             return false;
