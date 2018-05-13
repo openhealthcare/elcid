@@ -24,13 +24,5 @@ If a user has the role 'extract_personal_details' they will be able to extract
 all data including hospital number/name
 
 TO DO
-rename column to rule in the query
-rename the schema.subrecord to schema.rule
-figure out a way where we can choose to sended a nested extract, or not
-remove the and or combination in its current state
-extract the subrecord discoverable into a subrecord wrapper
-extract the fields into fields wrappers
-allow loading in of data
 order nested extracts, patient, episode then subrecords
-required fields are coming through twice
-if you add primary diagnosis slice to an extract and secondary diagnsosis, both fields are highlighted...
+investigation test drop down
