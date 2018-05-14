@@ -10,6 +10,11 @@ class Command(BaseCommand):
 
         for wsymptom in wsymptoms:
             elcid_pc = emodels.PresentingComplaint.objects.create(
+                created=wsymptom.created,
+                updated=wsymptom.updated,
+                created_by=wsymptom.created_by,
+                updated_by=wsymptom.updated_by,
+                consistency_token=wsymptom.consistency_token,
                 details=wsymptom.details,
                 duration=wsymptom.duration,
                 onset=wsymptom.onset,
