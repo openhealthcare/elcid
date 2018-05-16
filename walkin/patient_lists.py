@@ -11,7 +11,7 @@ from walkin import models as wimodels
 # defined separately in order to be able to override title of column to Symptoms
 presenting_complaint_column = patient_lists.Column(
     name=models.PresentingComplaint.get_api_name(),
-    title="Symptoms8",
+    title="Symptoms",
     singleton=models.PresentingComplaint._is_singleton,
     icon=getattr(models.PresentingComplaint, '_icon', ''),
     limit=getattr(models.PresentingComplaint, '_list_limit', None),
