@@ -8,6 +8,16 @@ from elcid import models
 
 from walkin import models as wimodels
 
+# defined separately in order to be able to override title of column to Symptoms
+presenting_complaint_column = patient_lists.Column(
+    name=models.PresentingComplaint.get_api_name(),
+    title="Symptoms8",
+    singleton=models.PresentingComplaint._is_singleton,
+    icon=getattr(models.PresentingComplaint, '_icon', ''),
+    limit=getattr(models.PresentingComplaint, '_list_limit', None),
+    template_path="records/walkin/presenting_complaint.html",
+    detail_template_path="records/walkin/presenting_complaint.html",
+)
 
 class WalkinDoctor(patient_lists.TaggedPatientList):
     display_name = 'Walkin Doctor'
@@ -20,7 +30,7 @@ class WalkinDoctor(patient_lists.TaggedPatientList):
         models.Demographics,
         models.Location,
         models.Travel,
-        wimodels.Symptom,
+        presenting_complaint_column,
         wimodels.ClinicalFindings,
         models.MicrobiologyTest,
         models.Diagnosis,
@@ -42,7 +52,7 @@ class WalkinNurseTriage(patient_lists.TaggedPatientList):
         models.Location,
         models.Allergies,
         models.Travel,
-        wimodels.Symptom,
+        presenting_complaint_column,
         models.MicrobiologyTest,
         obsmodels.Observation,
     ]
@@ -59,7 +69,7 @@ class WalkinReview(patient_lists.TaggedPatientList):
         models.Demographics,
         models.Location,
         models.Travel,
-        wimodels.Symptom,
+        presenting_complaint_column,
         wimodels.ClinicalFindings,
         models.MicrobiologyTest,
         models.Diagnosis,
