@@ -10,9 +10,6 @@ from django.contrib.auth.models import AnonymousUser
 from django.core.exceptions import PermissionDenied
 from django.test import override_settings
 from mock import patch, mock_open
-
-from opal import models
-from opal.tests import models as tmodels
 from opal.core.test import OpalTestCase
 from search import views, queries, extract
 
@@ -91,6 +88,19 @@ class PatientSearchTestCase(BaseSearchTestCase):
         url = "/search/patient/"
         resp = self.get_response(url)
         self.assertEqual(400, resp.status_code)
+
+
+class ExtractTemplateView(BaseSearchTestCase):
+
+    def test_get(self):
+        self.assertTrue(
+            self.client.login(
+                username=self.user.username, password=self.PASSWORD
+            )
+        )
+        url = reverse("extract_template")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
 
 
 class SimpleSearchViewTestCase(BaseSearchTestCase):

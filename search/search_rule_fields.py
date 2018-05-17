@@ -95,6 +95,12 @@ def is_date_field(some_field):
     )
 
 
+def is_time_field(some_field):
+    return isinstance(
+        some_field, djangomodels.TimeField
+    )
+
+
 def is_many_to_many_field(some_field):
     return isinstance(
         some_field, djangomodels.ManyToManyField
@@ -165,6 +171,11 @@ class FkOrFtSearchRuleField(ModelSearchRuleField):
     query_method = staticmethod(subrecord_queries.query_for_fk_or_ft_fields)
 
 
+class TimeSearchRuleField(ModelSearchRuleField):
+    widget = "search/widgets/time.html"
+    query_method = staticmethod(subrecord_queries.query_for_time_fields)
+
+
 FIELD_TYPE_TO_SEARCH_RULE_FIELD = {
     is_foreign_key_or_free_text: FkOrFtSearchRuleField,
     fields.is_numeric: NumberSearchRuleField,
@@ -172,6 +183,7 @@ FIELD_TYPE_TO_SEARCH_RULE_FIELD = {
     is_many_to_many_field: SelectSearchRuleField,
     is_date_field: DateSearchRuleField,
     is_text: TextSearchRuleField,
+    is_time_field: TimeSearchRuleField,
     is_select: SelectSearchRuleField,
 }
 

@@ -9,9 +9,11 @@ urlpatterns = [
     url(r'^search/$', views.SearchIndexView.as_view(), name="search_index"),
     url(r'^search/templates/search.html/?$',
         views.SearchTemplateView.as_view()),
-
-    url(r'^search/templates/extract.html/?$',
-        views.ExtractTemplateView.as_view()),
+    url(
+        r'^search/templates/extract.html/?$',
+        views.ExtractTemplateView.as_view(),
+        name="extract_template"
+    ),
 
     url(r'^search/templates/modals/save_filter_modal.html/?$',
         views.SaveFilterModalView.as_view()),

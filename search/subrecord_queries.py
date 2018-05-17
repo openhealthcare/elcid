@@ -53,6 +53,23 @@ def query_for_date_fields(model, field_name, value, query_type):
     return query_episodes_by_kwargs(model, kw)
 
 
+def query_for_time_fields(model, field_name, value, query_type):
+    value = serialization.deserialize_time(value)
+    if query_type not in {"Before", "After"}:
+        raise SearchException(
+            "Time queries required before or after to be declared"
+        )
+    if query_type == 'Before':
+        qtype = '__lte'
+    elif query_type == 'After':
+        qtype = '__gte'
+
+    kw = {
+        '{0}__{1}{2}'.format(model_name(model), field_name, qtype): value
+    }
+    return query_episodes_by_kwargs(model, kw)
+
+
 def query_for_number_fields(model, field_name, value, query_type):
     if query_type not in {"Greater Than", "Less Than"}:
         raise SearchException(
