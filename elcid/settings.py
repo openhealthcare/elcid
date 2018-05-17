@@ -172,6 +172,7 @@ INSTALLED_APPS = (
     'opal.core.pathway',
     'elcid',
     'obs',
+    'reporting',
     'django.contrib.admin',
     'opat',
     'walkin',
@@ -188,7 +189,6 @@ INSTALLED_APPS = (
 if ON_TEST:
     INSTALLED_APPS += (
         'opal.tests',
-        'reporting',
     )
     PASSWORD_HASHERS = (
         'django.contrib.auth.hashers.MD5PasswordHasher',
