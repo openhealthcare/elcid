@@ -3,7 +3,7 @@
 from __future__ import unicode_literals
 
 from django.db import migrations
-from elcid.migrations.utils.migrate_symptoms import migrate_forwards
+from elcid.migrations.utils.migrate_symptom import migrate_forwards
 
 
 def migrate_backwards(*args, **kwargs):
