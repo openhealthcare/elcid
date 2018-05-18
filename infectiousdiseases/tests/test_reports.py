@@ -1,5 +1,4 @@
 import datetime
-from dateutil.relativedelta import relativedelta
 from mock import patch
 
 from opal.core.test import OpalTestCase
@@ -48,6 +47,27 @@ class IdLiasionReportTestCase(OpalTestCase):
         )
         result = self.report.get_queryset(datetime.date(2017, 5, 1))
         self.assertFalse(result.exists())
+
+    def test_get_queryset_end_of_february(self):
+        """ lets just make sure we handle short months sufficiently
+        """
+        _, e1 = self.new_patient_and_episode_please()
+        e1.end = datetime.date(2017, 2, 27)
+        e1.save()
+        e1.tagging_set.create(
+            value="id_liaison",
+            archived=True,
+        )
+        _, e2 = self.new_patient_and_episode_please()
+        e2.end = datetime.date(2017, 3, 1)
+        e2.save()
+        e2.tagging_set.create(
+            value="id_liaison",
+            archived=True,
+        )
+        result = self.report.get_queryset(datetime.date(2017, 2, 1))
+        self.assertEqual(result.count(), 1)
+        self.assertEqual(result.get().id, e1.id)
 
     @patch("infectiousdiseases.reports.datetime")
     def test_get_age_earlier_year(self, dt):

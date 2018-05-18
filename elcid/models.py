@@ -30,13 +30,6 @@ class Demographics(omodels.Demographics, omodels.ExternallySourcedModel):
     class Meta:
         verbose_name_plural = "Demographics"
 
-    @classmethod
-    def get_form_template(cls, patient_list=None, episode_type=None):
-        if settings.GLOSS_ENABLED:
-            return super(Demographics, cls).get_form_template(patient_list=None, episode_type=None)
-        else:
-            return "forms/demographics_form_pre_gloss.html"
-
 
 class ContactDetails(PatientSubrecord):
     _is_singleton = True
@@ -460,15 +453,3 @@ class Appointment(EpisodeSubrecord):
         choices=APPOINTMENT_CHOICES)
     appointment_with = models.CharField(max_length=200, blank=True, null=True, verbose_name="With")
     date             = models.DateField(blank=True, null=True)
-
-
-@receiver(post_save, sender=Episode)
-def get_information_from_gloss(sender, **kwargs):
-    from elcid import gloss_api
-
-    episode = kwargs.pop("instance")
-    created = kwargs.pop("created")
-    if created and settings.GLOSS_ENABLED:
-        hospital_number = episode.patient.demographics_set.first().hospital_number
-        gloss_api.subscribe(hospital_number)
-        gloss_api.patient_query(hospital_number, episode=episode)
