@@ -1,0 +1,43 @@
+<div class="container content-offset extract-search">
+    <div class="panel panel-primary extract-panel panel-container">
+      <!-- Default panel contents -->
+      <div class="panel-heading">
+        <h2>
+          <i class="fa fa-search"></i>
+          Patient Search
+        </h2>
+      </div>
+      <div class="row content-offset-below-25">
+        <div class="col-md-12">
+          <div class="patient-list-group">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" ng-class="{active: state==='query'}">
+                <a href="" ng-click="state='query'" aria-controls="home" role="tab" data-toggle="tab">
+                  Query
+                </a>
+              </li>
+              <li role="presentation" ng-class="{active: state==='slice'}">
+                <a href="" ng-click="state='slice'" aria-controls="home" role="tab" data-toggle="tab">
+                  Extract
+                </a>
+              </li>
+              <li role="presentation" ng-class="{active: state==='data_dictionary'}">
+                <a href="" ng-click="state='data_dictionary'" aria-controls="home" role="tab" data-toggle="tab">
+                  Data Dictionary
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div ng-show="state === 'data_dictionary'" class="panel-body">
+        {% include 'partials/search/data_dictionary.html' %}
+      </div>
+      <div ng-show="state === 'slice'" class="panel-body">
+        {% include 'partials/search/extract_slice.html' %}
+      </div>
+      <div ng-show="state === 'query'">
+        {% include 'partials/search/extract_query.html' %}
+      </div>
+      </div> <!-- Row -->
+  </div>

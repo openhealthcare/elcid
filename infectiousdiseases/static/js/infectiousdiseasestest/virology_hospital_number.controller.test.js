@@ -168,7 +168,7 @@ describe('VirologyHospitalNumberCtrl', function(){
     }
 
     beforeEach(function(){
-        module('opal');
+        module('opal.controllers');
         module('opal.services', function($provide) {
             $provide.value('UserProfile', function(){ return profile; });
         });

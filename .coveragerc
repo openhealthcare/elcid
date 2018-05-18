@@ -5,6 +5,7 @@ source =
        infectiousdiseases
        opat
        walkin
+       search
 
 omit =
     */migrations/*
@@ -16,6 +17,7 @@ omit =
     opat/tests/*
     research/tests/*
     walkin/tests/*
+    search/tests/*
 
 [report]
 

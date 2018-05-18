@@ -1,0 +1,18 @@
+<select class="form-control content-offset-25"
+        ng-model="query.query_type" tooltip-trigger="focus"
+        tooltip-placement="top" uib-tooltip="3. Select your query type"
+        set-focus-if="query.rule && query.field"
+        ng-if="query.rule && query.field"
+        >
+  <option>Equals</option>
+  <option>Contains</option>
+</select>
+<input type="text"
+       class="form-control content-offset-25"
+       ng-model="query.value"
+       uib-typeahead="x for x in extractQuerySchema.getChoices(query.rule, query.field, referencedata) | filter:$viewValue | limitTo:8"
+       placeholder="4. Add your value"
+       ng-keypress="$event.keyCode == 13 && search()"
+       ng-if="query.rule && query.field && query.query_type"
+       set-focus-if="query.rule && query.field && query.query_type"
+       />

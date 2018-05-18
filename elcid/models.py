@@ -213,6 +213,7 @@ class PrimaryDiagnosis(EpisodeSubrecord):
 class Consultant(lookuplists.LookupList):
     pass
 
+
 class ConsultantAtDischarge(EpisodeSubrecord):
     _title = 'Consultant At Discharge'
     _is_singleton = True
@@ -389,6 +390,7 @@ class Todo(EpisodeSubrecord):
     _icon = 'fa fa-th-list'
 
     details = models.TextField(blank=True)
+
 
 class Hiv_no(lookuplists.LookupList):
     class Meta:

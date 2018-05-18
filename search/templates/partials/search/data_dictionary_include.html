@@ -1,0 +1,57 @@
+{% comment %}
+  this is the data dictionary used by both the download
+  and included in the page.
+
+  If its included in the page it gets passed in data_dictionary.in_page=True
+{% endcomment %}
+<div class="row">
+  <div class="col-md-12">
+    {% for serializer in data_dictionary.serializers %}
+      <h3 id="{{ subrecord.name }}">{{ serializer.get_display_name }}</h3>
+      {% if serializer.get_description %}
+        <p class="lead">
+            {{ serializer.get_description }}
+        </p>
+      {% endif %}
+      <table class="table data-dictionary-table">
+        <tr>
+          <th class="col-md-3">
+            Title
+          </th>
+          <th class="col-md-4">
+            Type
+          </th>
+          <th class="col-md-5">
+            Description
+          </th>
+        </tr>
+        {% for field in serializer.get_fields %}
+        <tr>
+          <td class="col-md-3">
+            {{ field.get_display_name }}
+          </td>
+          <td class="col-md-4">
+            {{ field.get_type_display_name }}
+          </td>
+          <td class="col-md-5">
+            {% if field.get_lookup_list %}
+              {% if data_dictionary.in_page %}
+                Normally coded as a
+                <a href=""
+                   class="orange-link"
+                   ng-click="open_modal('LookupListReferenceCtrl', '/templates/modals/lookuplist_reference.html', {lookuplist_name: '{{ field.get_lookup_list }}', lookuplist: referencedata.get('{{ field.get_lookup_list }}')})">
+                   {{ field.get_lookup_list_display_name }}
+                </a>
+                but free text entries are possible.
+              {% else %}
+                Normally coded as a {{ field.get_lookup_list_display_name }} but free text entries are possible.
+              {% endif %}
+            {% endif %}
+            {{ field.get_description | default_if_none:"" }}
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+    {% endfor %}
+  </div>
+</div>

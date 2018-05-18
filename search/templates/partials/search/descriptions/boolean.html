@@ -1,0 +1,8 @@
+<strong>[[ extractQuerySchema.findColumn(query.rule).display_name ]] [[ extractQuerySchema.findField(query.rule, query.field).display_name ]]</strong>
+<span ng-show="query.value === 'true'">
+  is <strong>true</strong>
+</span>
+<span ng-show="query.value !== 'true'">
+  is <strong>false</strong>
+</span>
+<span ng-hide="$last">[[ query.combine ]]</span>
