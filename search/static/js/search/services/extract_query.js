@@ -1,11 +1,9 @@
 angular.module('opal.services').factory('ExtractQuery', function(){
   "use strict";
 
-  var ExtractQuery = function(extractQuerySchema, extractSliceSchema, queryParams){
+  var ExtractQuery = function(requiredFields, queryParams){
     this.slices = [];
-    this.extractQuerySchema = extractQuerySchema;
-    this.extractSliceSchema = extractSliceSchema;
-    this.requiredExtractFields = this.getRequiredFields();
+    this.requiredExtractFields = requiredFields;
 
     // whether the user would like an 'or' conjunction or and 'and'
     this.combinations = ["all", "any"];
@@ -13,16 +11,7 @@ angular.module('opal.services').factory('ExtractQuery', function(){
     // the seatch query
     if(queryParams){
       this.criteria = queryParams.criteria;
-      _.each(queryParams.data_slice, function(fields, ruleName){
-        _.each(fields, function(field){
-          var slice = this.extractSliceSchema.findField(ruleName, field);
-          if(slice){
-            this.slices.push(
-              slice
-            );
-          }
-        }, this);
-      }, this);
+      this.slices = queryParams.slices;
       if(this.criteria[0].combine === 'and'){
         this.anyOrAll = "all";
       }
@@ -40,16 +29,7 @@ angular.module('opal.services').factory('ExtractQuery', function(){
   };
 
   ExtractQuery.prototype = {
-    getRequiredFields: function(){
-      var result = [];
-      _.each(this.extractSliceSchema.getFields(), function(f){
-        if(f.required){
-          result.push(f)
-        }
-      }, this);
-      return result;
-    },
-    reset: function(){
+    resetExtractSlice: function(){
       this.slices = _.clone(this.requiredExtractFields);
     },
     addSlice: function(someField){
@@ -58,7 +38,9 @@ angular.module('opal.services').factory('ExtractQuery', function(){
         this.slices.push(someField);
       }
     },
-    isSubrecordAdded: function(someRule){
+    isRuleAdded: function(someRule){
+      /* Have all the fields for a certain rule been added?
+      */
       return someRule.fields.length === _.filter(this.slices, function(field){
         return field.rule === someRule;
       }).length;
@@ -66,11 +48,17 @@ angular.module('opal.services').factory('ExtractQuery', function(){
     isSliceAdded: function(someField){
       return _.indexOf(this.slices, someField) !== -1
     },
-    addSubrecordSlices: function(someRule){
+    isQuerySelected: function(someQuery){
+      // takes in a part of the query and returns whether it is selected
+      return _.any(this.criteria, function(x){
+        return x.rule === someQuery.rule.name && x.field === someQuery.name
+      });
+    },
+    addRuleSlices: function(someRule){
       // adds all fields for a rule
       _.each(someRule.fields, this.addSlice, this);
     },
-    removeSubrecordSlices: function(someRule){
+    removeRuleSlices: function(someRule){
       // adds all fields for a rule
       _.each(someRule.fields, this.removeSlice, this);
     },
@@ -83,7 +71,12 @@ angular.module('opal.services').factory('ExtractQuery', function(){
     sliceIsRequired: function(someField){
       return _.indexOf(this.requiredExtractFields, someField) !== -1;
     },
-    getDataSlices: function(){
+    getDataSlicesToSend: function(){
+      /*
+        it should return an array to send back to the server of the data
+        slicers
+        {ruleName: [fieldName1, fieldName2]}
+      */
       var result = {}
       _.each(this.slices, function(field){
         if(!(field.rule.name in result)){
@@ -96,6 +89,10 @@ angular.module('opal.services').factory('ExtractQuery', function(){
       return result;
     },
     getCriteriaToSend: function(){
+      /*
+        it should return all the compiled search query to send to the
+        server
+      */
       // remove the angular hash key
       var result = [];
       _.each(this.criteria, function(query){
@@ -110,7 +107,7 @@ angular.module('opal.services').factory('ExtractQuery', function(){
 
       return result;
     },
-    completeCriteria: function(){
+    completeCriteria: function(extractQuerySchema){
       var combine;
       // queries can look at either all of the options, or any of them
       // ie 'and' conjunctions or 'or'
@@ -123,7 +120,7 @@ angular.module('opal.services').factory('ExtractQuery', function(){
 
       // remove incomplete criteria
       var criteria = _.filter(this.criteria, function(c){
-          var field = this.extractQuerySchema.findField(c.rule, c.field);
+          var field = extractQuerySchema.findField(c.rule, c.field);
           if(!field){
             return false;
           }
@@ -146,15 +143,12 @@ angular.module('opal.services').factory('ExtractQuery', function(){
         this.criteria.push({});
     },
     removeFilter: function(index){
-        if(this.extractQueryInfo === this.criteria[index]){
-          this.extractQueryInfo = undefined;
-        }
-        if(this.criteria.length == 1){
-            this.removeCriteria();
-        }
-        else{
-            this.criteria.splice(index, 1);
-        }
+      if(this.criteria.length == 1){
+          this.removeCriteria();
+      }
+      else{
+          this.criteria.splice(index, 1);
+      }
     },
     resetFilter: function(queryRow, fieldsTypes){
       // when we change the rule, reset the rest of the query

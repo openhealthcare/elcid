@@ -48,6 +48,25 @@ angular.module('opal.services').factory('ExtractSchema', function() {
         });
 
         return result;
+      },
+      getRequiredFields: function(){
+        var result = [];
+        _.each(this.getFields(), function(f){
+          if(f.required){
+            result.push(f)
+          }
+        }, this);
+        return result;
+      },
+      getRequiredArgsForField: function(rule, field){
+        // for example date fields require a queryType field
+        // that is 'before' or 'after'
+        // and a 'value' field
+        var field = this.findField(rule, field);
+
+        if(field){
+          return field.query_args;
+        }
       }
     }
 
