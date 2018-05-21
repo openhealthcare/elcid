@@ -4,6 +4,7 @@ from django.core.management import call_command
 from django.utils import timezone
 
 from opal.core.test import OpalTestCase
+from opal import models as omodels
 from elcid.models import PresentingComplaint
 from walkin.models import Symptom
 
@@ -25,7 +26,6 @@ class SymptomToPresentingComplaintTest(OpalTestCase):
             onset=             u'charfield onset',
             symptom=           u'ftfk symptom',
         )
-        self.symptom1.save()
         self.symptom2 = Symptom.objects.create(
             id=2,
             created=           timezone.now()-timedelta(1),
@@ -39,7 +39,8 @@ class SymptomToPresentingComplaintTest(OpalTestCase):
             onset=             u'charfield some onset',
             symptom=           u'ftfk a different symptom',
         )
-        self.symptom2.save()
+        omodels.Symptom.objects.create(name="some_symptom")
+
 
     def test_there_are_no_symptom_objects_to_migrate(self):
         self.symptom1.delete()
