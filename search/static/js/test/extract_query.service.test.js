@@ -1,15 +1,16 @@
 describe('ExtractQuery', function(){
   "use strict";
 
-  var ExtractQuery, someQuery, criteria;
+  var ExtractQuery, someQuery, criteria, _criteria;
 
-  var _criteria = [{
+  _criteria = [{
     combine: "and",
     field: "drug",
     query_type: "Contains",
     rule: "Allergies",
     value: "a"
   }];
+
   var field1 = {
     rule: "Allergies",
     name: "drug",
@@ -38,9 +39,9 @@ describe('ExtractQuery', function(){
 
   beforeEach(function(){
     module('opal.services');
-    criteria = angular.copy(_criteria);
     inject(function($injector){
       ExtractQuery  = $injector.get('ExtractQuery');
+      criteria = angular.copy(_criteria);
       someQuery = angular.copy({
         criteria: criteria,
         slices: [field1, field2]

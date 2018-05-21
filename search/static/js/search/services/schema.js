@@ -4,9 +4,6 @@ angular.module('opal.services').factory('ExtractSchema', function() {
       this.rules = angular.copy(rules);
       _.each(this.rules, function(c){
         _.each(c.fields, function(f){
-          if(f.rule){
-            throw 'the subrecord field has been declared on a namespace we need'
-          }
           f.rule = c;
         });
       });
@@ -57,16 +54,6 @@ angular.module('opal.services').factory('ExtractSchema', function() {
           }
         }, this);
         return result;
-      },
-      getRequiredArgsForField: function(rule, field){
-        // for example date fields require a queryType field
-        // that is 'before' or 'after'
-        // and a 'value' field
-        var field = this.findField(rule, field);
-
-        if(field){
-          return field.query_args;
-        }
       }
     }
 

@@ -10,7 +10,6 @@ angular.module('opal.controllers').controller( 'ExtractCtrl',
     $scope.JSON = window.JSON;
     $scope.filters = filters;
     $scope.extractQuerySchema = extractQuerySchema;
-    debugger;
     $scope.extractSliceSchema = extractSliceSchema;
     // used by the download extract
     // a slice is a cut of data, a field that we want to download
@@ -56,10 +55,13 @@ angular.module('opal.controllers').controller( 'ExtractCtrl',
       return result;
     }
 
+    if(extractQuery){
+      extractQuery = $scope.constructQuery(extractQuery);
+    }
 
     $scope.extractQuery = new ExtractQuery(
       extractSliceSchema.getRequiredFields(),
-      $scope.constructQuery(extractQuery)
+      extractQuery
     );
 
     $scope.extractQueryInfo = undefined;
