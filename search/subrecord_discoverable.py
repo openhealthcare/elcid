@@ -1,4 +1,5 @@
 from functools import wraps
+import itertools
 from opal.core import subrecords
 from opal.core import fields
 from search.exceptions import SearchException
@@ -209,6 +210,10 @@ class SubrecordDiscoverableMixin(object):
     include_in_schema = True
     slug = None
 
+    # defines the order used by list, otherwise gets added to the end
+    # alphabetically
+    order = None
+
     # set this to True if you want it to be excluded
     # from the list, for example if the model should not be
     # searchable
@@ -233,20 +238,38 @@ class SubrecordDiscoverableMixin(object):
                 return field
 
     @classmethod
+    def sort_rules(klass, rules):
+        ordered = []
+        alphabetical = []
+
+        for i in rules:
+            if i.order:
+                ordered.append(i)
+            else:
+                alphabetical.append(i)
+
+        ordered = sorted(ordered, key=lambda x: x.order)
+        alphabetical = sorted(alphabetical, key=lambda x: x.get_display_name())
+        return itertools.chain(ordered, alphabetical)
+
+    @classmethod
     def list_rules(klass, user):
         declared_classes = super(SubrecordDiscoverableMixin, klass).list()
         declared_slugs = set()
+        result = []
 
         for declared_class in declared_classes:
             declared_slugs.add(declared_class.get_slug())
-            if declared_class.exclude:
+            declared_instance = declared_class(user)
+            if declared_instance.exclude:
                 continue
             else:
-                yield declared_class(user)
+                result.append(declared_instance)
 
         for subrecord in subrecords.subrecords():
             if subrecord.get_api_name() not in declared_slugs:
-                yield klass(user, subrecord)
+                result.append(klass(user, subrecord))
+        return klass.sort_rules(result)
 
     def cast_field_name_to_attribute(self, str):
         if not self.attribute_cls:
@@ -326,10 +349,7 @@ class SubrecordDiscoverableMixin(object):
 
     @classmethod
     def get_schemas(cls, user):
-        return sorted(
-            (i.get_schema() for i in cls.list_rules(user)),
-            key=lambda x: x["display_name"]
-        )
+        return [i.get_schema() for i in cls.list_rules(user)]
 
     def get_fields_for_schema(self):
         """ Whether this field should appear in the schema

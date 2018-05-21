@@ -117,6 +117,7 @@ class SearchRule(
 
 
 class EpisodeQuery(SearchRule):
+    order = 1
     display_name = "Episode"
     slug = "episode"
     model = models.Episode
@@ -125,6 +126,12 @@ class EpisodeQuery(SearchRule):
         search_rule_fields.EpisodeStart,
         search_rule_fields.EpisodeEnd
     )
+
+
+class DemographicsExtractRule(SearchRule):
+    order = 2
+    slug = emodels.Demographics.get_api_name()
+    model = emodels.Demographics
 
 
 class DuplicatePatientQuery(SearchRule):

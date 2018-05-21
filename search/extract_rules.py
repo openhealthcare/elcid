@@ -81,6 +81,7 @@ class UpdatedByField(CsvFieldWrapper):
     def extract(self, obj):
         if obj.updated_by:
             return obj.updated_by.username
+        return ""
 
     def get_description_template(self):
         return "search/field_descriptions/changed_by.html"
@@ -93,6 +94,7 @@ class CreatedByField(CsvFieldWrapper):
     def extract(self, obj):
         if obj.created_by:
             return obj.created_by.username
+        return ""
 
     def get_description_template(self):
         return "search/field_descriptions/changed_by.html"
@@ -181,6 +183,7 @@ class EpisodeEndExtractField(CsvFieldWrapper):
 
 
 class EpisodeExtractRule(ExtractRule):
+    order = 1
     fields = [
         EpisodeTeamExtractField,
         EpisodeStartExtractField,
@@ -217,7 +220,8 @@ class DemographicsDateOfBirthField(CsvFieldWrapper):
     required = True
 
 
-class DemographicsSerializer(ExtractRule):
+class DemographicsExtractRule(ExtractRule):
+    order = 2
     slug = emodels.Demographics.get_api_name()
     model = emodels.Demographics
     field_sex = DemographicsSexField

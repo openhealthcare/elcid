@@ -88,7 +88,7 @@
               <a ng-click="setExtractSliceInfo(field)" class="pointer extract-slice-table-link">
                 [[ field.display_name ]]
                 <i ng-show="!extractQuery.isSliceAdded(field)" ng-click="extractQuery.addSlice(field)" class="fa fa-plus-circle scroll-icon"></i>
-                <i ng -show="extractQuery.isSliceAdded(field)" ng-click="extractQuery.removeSlice(field)" class="fa fa-minus-circle scroll-icon"></i>
+                <i ng-show="extractQuery.isSliceAdded(field)" ng-click="extractQuery.removeSlice(field)" class="fa fa-minus-circle scroll-icon"></i>
               </a>
             </div>
           </div>
@@ -140,7 +140,10 @@
           <tbody>
             <tr ng-click="setExtractSliceInfo(field)" class="extract-hover pointer" ng-class="{active: field.name === extractSliceInfo.name}" ng-repeat="field in extractQuery.slices">
               <td><div></div>[[ field.rule.display_name ]]</td>
-              <td>[[ field.display_name ]] <a ng-hide="extractQuery.sliceIsRequired(field)" class="pull-right" ng-click="extractQuery.removeSlice(field)" href="">{% icon "fa-minus-circle" %}</a></td>
+              <td>
+                [[ field.display_name ]]
+                <a ng-hide="extractQuery.sliceIsRequired(field)" class="pull-right" ng-click="extractQuery.removeSlice(field)" href="">{% icon "fa-minus-circle" %}</a>
+              </td>
             </tr>
           </tbody>
         </table>

@@ -24,5 +24,6 @@ If a user has the role 'extract_personal_details' they will be able to extract
 all data including hospital number/name
 
 TO DO
-order nested extracts, patient, episode then subrecords
 investigation test drop down
+fix fields ordering
+add elcid link to the episode
