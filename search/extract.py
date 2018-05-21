@@ -21,7 +21,7 @@ def chunk_list(some_list, amount):
 
 
 def get_datadictionary_context(user, in_page=False):
-    serializers = list(ExtractRule.list(user))
+    serializers = list(ExtractRule.list_rules(user))
     return dict(
         data_dictionary=dict(
             serializers=serializers,
@@ -57,7 +57,7 @@ def generate_nested_csv_extract(root_dir, episodes, user, field_dict):
     renderers = []
 
     for model_api_name, model_fields in field_dict.items():
-        serializer = ExtractRule.get(
+        serializer = ExtractRule.get_rule(
             model_api_name, user
         )
         renderer_cls = serializer.get_renderer()
@@ -109,7 +109,7 @@ def generate_multi_csv_extract(root_dir, episodes, user):
 
     full_file_name = os.path.join(root_dir, file_name)
 
-    for serializer in ExtractRule.list(user):
+    for serializer in ExtractRule.list_rules(user):
         file_name = "{}.csv".format(serializer.get_api_name())
         full_file_name = os.path.join(root_dir, file_name)
         renderer_cls = serializer.get_renderer()
@@ -123,7 +123,7 @@ def generate_multi_csv_extract(root_dir, episodes, user):
 def get_description_with_fields(episodes, user, description, fields):
     field_description = []
     for serializer_name, field_names in fields.items():
-        serializer = ExtractRule.get(serializer_name, user)
+        serializer = ExtractRule.get_rule(serializer_name, user)
         if serializer:
             serializer_fields = serializer.get_fields()
             serializer_fields = [

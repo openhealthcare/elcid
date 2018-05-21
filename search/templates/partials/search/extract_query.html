@@ -97,7 +97,9 @@
           <div class="col-md-3">
             {% for rule, field, search_description in search_descriptions %}
               <div ng-show="extractQueryInfo.rule.name === '{{ rule.get_api_name }}' && extractQueryInfo.name === '{{ field.get_name }}'">
-                <div ng-include="'{{ search_description }}'"></div>
+                <div ng-repeat="info in [extractQueryInfo]">
+                  <div ng-include="'/{{ search_description }}'"></div>
+                </div>
               </div>
             {% endfor %}
           </div>

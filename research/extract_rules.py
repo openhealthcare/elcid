@@ -2,31 +2,31 @@ from research import models
 from search.extract_rules import ExtractRule
 
 
-class LabSpeciminSearchRule(ExtractRule):
+class LabSpeciminExtractRule(ExtractRule):
     exclude = True
     slug = models.LabSpecimin.get_api_name()
 
 
-class LabTestSearchRule(ExtractRule):
+class LabTestExtractRule(ExtractRule):
     exclude = True
     slug = models.LabTest.get_api_name()
 
 
-class StudyParticipationSearchRule(ExtractRule):
+class StudyParticipationExtractRule(ExtractRule):
     exclude = True
     slug = models.StudyParticipation.get_api_name()
 
 
-class RidRTIStudyDiagnosisSearchRule(ExtractRule):
+class RidRTIStudyDiagnosisExtractRule(ExtractRule):
     exclude = True
     slug = models.RidRTIStudyDiagnosis.get_api_name()
 
 
-class RidRTITestSearchRule(ExtractRule):
+class RidRTITestExtractRule(ExtractRule):
     exclude = True
     slug = models.RidRTITest.get_api_name()
 
 
-class CheckpointsAssaySearchRule(ExtractRule):
+class CheckpointsAssayExtractRule(ExtractRule):
     exclude = True
     slug = models.CheckpointsAssay.get_api_name()

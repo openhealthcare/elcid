@@ -2,6 +2,7 @@ from functools import wraps
 from opal.core import subrecords
 from opal.core import fields
 from search.exceptions import SearchException
+from django.db import models as djangomodels
 
 
 def get_locally_or_defer(field_name):
@@ -19,6 +20,54 @@ def get_locally_or_defer(field_name):
             return some_fun(self)
         return func_wrapper
     return under_wrap
+
+
+def is_boolean(some_field):
+    return isinstance(
+        some_field, (djangomodels.BooleanField, djangomodels.NullBooleanField,)
+    )
+
+
+def is_text(some_field):
+    return isinstance(
+        some_field, (djangomodels.TextField, djangomodels.CharField,)
+    )
+
+
+def is_date_field(some_field):
+    return isinstance(
+        some_field, (djangomodels.DateField, djangomodels.DateTimeField,)
+    )
+
+
+def is_date_time_field(some_field):
+    return isinstance(
+        some_field, djangomodels.DateTimeField
+    )
+
+
+def is_time_field(some_field):
+    return isinstance(
+        some_field, djangomodels.TimeField
+    )
+
+
+def is_many_to_many_field(some_field):
+    return isinstance(
+        some_field, djangomodels.ManyToManyField
+    )
+
+
+def is_foreign_key_or_free_text(some_field):
+    return isinstance(
+        some_field, fields.ForeignKeyOrFreeText
+    )
+
+
+def is_select(some_field):
+    return isinstance(
+        some_field, djangomodels.ForeignKey
+    )
 
 
 class SubrecordFieldWrapper(object):
@@ -49,10 +98,12 @@ class SubrecordFieldWrapper(object):
     @property
     def field(self):
         if isinstance(
-            getattr(self.model, self.field_name), fields.ForeignKeyOrFreeText
+            getattr(self.model, self.field_name, None),
+            fields.ForeignKeyOrFreeText
         ):
             return getattr(self.model, self.field_name)
-        return self.model._meta.get_field(self.field_name)
+        if self.model:
+            return self.model._meta.get_field(self.field_name)
 
     def to_dict(self):
         if self.model:
@@ -176,13 +227,13 @@ class SubrecordDiscoverableMixin(object):
         return "{}: {}".format(self.__class__, self.get_display_name())
 
     @classmethod
-    def get(cls, slug, user):
-        for field in cls.list(user):
+    def get_rule(cls, slug, user):
+        for field in cls.list_rules(user):
             if field.get_api_name() == slug:
                 return field
 
     @classmethod
-    def list(klass, user):
+    def list_rules(klass, user):
         declared_classes = super(SubrecordDiscoverableMixin, klass).list()
         declared_slugs = set()
 
@@ -276,7 +327,7 @@ class SubrecordDiscoverableMixin(object):
     @classmethod
     def get_schemas(cls, user):
         return sorted(
-            (i.get_schema() for i in cls.list(user)),
+            (i.get_schema() for i in cls.list_rules(user)),
             key=lambda x: x["display_name"]
         )
 

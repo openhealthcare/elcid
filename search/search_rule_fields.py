@@ -1,11 +1,10 @@
-from django.db import models as djangomodels
 from django.core.urlresolvers import reverse
-from opal.core import fields
 from opal import models
+from opal.core import fields
 from opal.core import serialization
 from search.exceptions import SearchException
 from search import subrecord_queries
-from search.subrecord_discoverable import SubrecordFieldWrapper
+from search import subrecord_discoverable
 
 """
     A search rule field is a field declared by a search rule.
@@ -23,25 +22,21 @@ from search.subrecord_discoverable import SubrecordFieldWrapper
 GENERIC_WIDGET_DESCRIPTION = "partials/search/descriptions/widget_description.html"
 
 
-class SearchRuleField(SubrecordFieldWrapper):
+class SearchRuleField(subrecord_discoverable.SubrecordFieldWrapper):
     # the description of the widget as shown on the right hand side
     widget_description = GENERIC_WIDGET_DESCRIPTION
 
     # the description of the query the user has selected when it is
     # shown at the top
-    description_template = "partials/search/rule_description.html"
+    description_template = None
 
     # the arguments that are required for this query
     query_args = ["value", "query_type"]
 
     def get_description_template(self):
-        return self.description_template
-
-    def get_description_template_url(self, rule):
-        return reverse('extract_query_description', kwargs=dict(
-            rule_api_name=rule.get_api_name(),
-            field_api_name=self.get_name()
-        ))
+        if self.description_template:
+            return self.description_template
+        return "search/field_descriptions/generic.html"
 
     def query(self, given_query):
         """
@@ -77,48 +72,6 @@ class SearchRuleField(SubrecordFieldWrapper):
         return result
 
 
-def is_boolean(some_field):
-    return isinstance(
-        some_field, (djangomodels.BooleanField, djangomodels.NullBooleanField,)
-    )
-
-
-def is_text(some_field):
-    return isinstance(
-        some_field, (djangomodels.TextField, djangomodels.CharField,)
-    )
-
-
-def is_date_field(some_field):
-    return isinstance(
-        some_field, (djangomodels.DateField, djangomodels.DateTimeField,)
-    )
-
-
-def is_time_field(some_field):
-    return isinstance(
-        some_field, djangomodels.TimeField
-    )
-
-
-def is_many_to_many_field(some_field):
-    return isinstance(
-        some_field, djangomodels.ManyToManyField
-    )
-
-
-def is_foreign_key_or_free_text(some_field):
-    return isinstance(
-        some_field, fields.ForeignKeyOrFreeText
-    )
-
-
-def is_select(some_field):
-    return isinstance(
-        some_field, djangomodels.ForeignKey
-    )
-
-
 class ModelSearchRuleField(SearchRuleField):
     query_method = None
     widget = None
@@ -140,16 +93,25 @@ class BooleanSearchRuleField(ModelSearchRuleField):
     widget_description = "partials/search/descriptions/boolean.html"
     query_method = staticmethod(subrecord_queries.query_for_boolean_fields)
     query_args = ["value"]
+    description_template = "search/field_descriptions/boolean.html"
 
 
 class NumberSearchRuleField(ModelSearchRuleField):
     widget = "search/widgets/number.html"
     query_method = staticmethod(subrecord_queries.query_for_number_fields)
+    description_template = "search/field_descriptions/number.html"
 
 
 class DateSearchRuleField(ModelSearchRuleField):
     widget = "search/widgets/date.html"
     query_method = staticmethod(subrecord_queries.query_for_date_fields)
+
+    def get_description_template(self):
+        if subrecord_discoverable.is_date_time_field(
+            self.field
+        ):
+            return "search/field_descriptions/date_time.html"
+        return "search/field_descriptions/date.html"
 
 
 class SelectSearchRuleField(ModelSearchRuleField):
@@ -163,12 +125,14 @@ class TextSearchRuleField(ModelSearchRuleField):
     widget = "search/widgets/text.html"
     widget_description = "partials/search/descriptions/text.html"
     query_method = staticmethod(subrecord_queries.query_for_text_fields)
+    description_template = "search/field_descriptions/text.html"
 
 
 class FkOrFtSearchRuleField(ModelSearchRuleField):
     widget = "search/widgets/text.html"
     widget_description = "partials/search/descriptions/text.html"
     query_method = staticmethod(subrecord_queries.query_for_fk_or_ft_fields)
+    description_template = "search/field_descriptions/text.html"
 
 
 class TimeSearchRuleField(ModelSearchRuleField):
@@ -177,14 +141,14 @@ class TimeSearchRuleField(ModelSearchRuleField):
 
 
 FIELD_TYPE_TO_SEARCH_RULE_FIELD = {
-    is_foreign_key_or_free_text: FkOrFtSearchRuleField,
+    subrecord_discoverable.is_foreign_key_or_free_text: FkOrFtSearchRuleField,
     fields.is_numeric: NumberSearchRuleField,
-    is_boolean: BooleanSearchRuleField,
-    is_many_to_many_field: SelectSearchRuleField,
-    is_date_field: DateSearchRuleField,
-    is_text: TextSearchRuleField,
-    is_time_field: TimeSearchRuleField,
-    is_select: SelectSearchRuleField,
+    subrecord_discoverable.is_boolean: BooleanSearchRuleField,
+    subrecord_discoverable.is_many_to_many_field: SelectSearchRuleField,
+    subrecord_discoverable.is_date_field: DateSearchRuleField,
+    subrecord_discoverable.is_text: TextSearchRuleField,
+    subrecord_discoverable.is_time_field: TimeSearchRuleField,
+    subrecord_discoverable.is_select: SelectSearchRuleField,
 }
 
 
@@ -214,6 +178,7 @@ class EpisodeStart(
     field_name = "start"
     display_name = "Start"
     widget = "search/widgets/date.html"
+    description_template = "search/field_descriptions/date.html"
 
 
 class EpisodeEnd(
@@ -224,6 +189,7 @@ class EpisodeEnd(
     field_name = "end"
     display_name = "End"
     widget = "search/widgets/date.html"
+    description_template = "search/field_descriptions/date.html"
 
 
 class EpisodeTeam(
@@ -232,11 +198,12 @@ class EpisodeTeam(
     ALL_OF = "All Of"
     ANY_OF = "Any Of"
     display_name = "Team"
-    description = "The team(s) related to an episode of care"
+    description = ""
     type_display_name = "Text Field"
     field_name = "team"
     widget = "search/widgets/team_many_to_many.html"
     widget_description = "partials/search/descriptions/many_to_many.html"
+    description_template = "search/field_descriptions/episode/team.html"
 
     @property
     def enum(self):

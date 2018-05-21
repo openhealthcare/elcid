@@ -1,0 +1,24 @@
+<div class="search-info">
+  <div class="search-info-title">
+    <strong>[[ info.rule.display_name ]]</strong>
+  </div>
+  <div ng-show="info.rule.description">
+    [[ info.rule.description ]]
+    <div class="content-offset-10"></div>
+  </div>
+  <span>
+    [Text]
+    <div ng-show="info.lookup_list">
+      Normally coded as a
+      <a href=""
+         class="orange-link"
+         ng-click="open_modal('LookupListReferenceCtrl', '/templates/modals/lookuplist_reference.html', {lookuplist_name: findField(selectedInfo.column, selectedInfo.field).lookup_list, lookuplist: info.lookup_list })">
+        [[ info.lookup_list | underscoreToSpaces ]]</a>
+      but free text entries are possible.
+    </div>
+    <div ng-show="info.enum && info.enum.length">
+      one of <span ng-repeat="i in info.enum">[[ i ]] </span>
+    </div>
+  </span>
+  [[ info.description ]]
+</div>

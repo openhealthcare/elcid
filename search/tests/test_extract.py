@@ -615,7 +615,7 @@ class MultiFileCsvExtractTestCase(AbstractExtractTestCase):
         )
         result = self.get_multi_file_extract(
             models.Episode.objects.all(),
-            [extract_rules.ExtractRule.get(api_name, self.user)]
+            [extract_rules.ExtractRule.get_rule(api_name, self.user)]
         )
         general_note_fields = [
             u'Created',
@@ -646,7 +646,7 @@ class MultiFileCsvExtractTestCase(AbstractExtractTestCase):
         episode.save()
         result = self.get_multi_file_extract(
             models.Episode.objects.all(),
-            [extract_rules.ExtractRule.get("episode", self.user)]
+            [extract_rules.ExtractRule.get_rule("episode", self.user)]
         )
         expected_result = [
             '', '2018-02-01', '', '', '', '', ''
@@ -683,7 +683,7 @@ class MultiFileCsvExtractTestCase(AbstractExtractTestCase):
         api_name = emodels.Allergies.get_api_name()
         result = self.get_multi_file_extract(
             models.Episode.objects.all(),
-            [extract_rules.ExtractRule.get(api_name, self.user)]
+            [extract_rules.ExtractRule.get_rule(api_name, self.user)]
         )
         allergy_fields = [
             'External System',

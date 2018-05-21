@@ -88,7 +88,7 @@
               <a ng-click="setExtractSliceInfo(field)" class="pointer extract-slice-table-link">
                 [[ field.display_name ]]
                 <i ng-show="!extractQuery.isSliceAdded(field)" ng-click="extractQuery.addSlice(field)" class="fa fa-plus-circle scroll-icon"></i>
-                <i ng-show="extractQuery.isSliceAdded(field)" ng-click="extractQuery.removeSlice(field)" class="fa fa-minus-circle scroll-icon"></i>
+                <i ng -show="extractQuery.isSliceAdded(field)" ng-click="extractQuery.removeSlice(field)" class="fa fa-minus-circle scroll-icon"></i>
               </a>
             </div>
           </div>
@@ -98,7 +98,9 @@
         <div class="content-offset">
           {% for rule, field, extract_description in extract_descriptions %}
             <div ng-show="extractSliceInfo.rule.name === '{{ rule.get_api_name }}' && extractSliceInfo.name === '{{ field.get_name }}'">
-              <div ng-include="'{{ extract_description }}'"></div>
+              <div ng-repeat="info in [extractSliceInfo]">
+                <div ng-include="'/{{ extract_description }}'"></div>
+              </div>
             </div>
           {% endfor %}
         </div>

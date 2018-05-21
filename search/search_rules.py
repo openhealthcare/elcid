@@ -101,7 +101,7 @@ class SearchRule(
 
     @classmethod
     def widgets(cls, user):
-        all_widgets = (i.get_widgets() for i in cls.list(user))
+        all_widgets = (i.get_widgets() for i in cls.list_rules(user))
         return {i for i in itertools.chain(
             *all_widgets
         )}
@@ -109,7 +109,7 @@ class SearchRule(
     @classmethod
     def widget_descriptions(cls, user):
         widget_descriptions = (
-            i.get_widget_descriptions() for i in cls.list(user)
+            i.get_widget_descriptions() for i in cls.list_rules(user)
         )
         return {i for i in itertools.chain(
             *widget_descriptions
