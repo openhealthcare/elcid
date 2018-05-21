@@ -41,11 +41,11 @@ class SymptomToPresentingComplaintTest(OpalTestCase):
         )
         self.symptom2.save()
 
-    def test_there_are_no_symptom_obejcts_to_migrate(self):
+    def test_there_are_no_symptom_objects_to_migrate(self):
         self.symptom1.delete()
         self.symptom2.delete()
         call_command('move_symptoms_to_presentingcomplaints')
-        pc1 = PresentingComplaint.objects.first()
+        pc1 = PresentingComplaint.objects.get(details='some details')
         self.assertIsNone(pc1)
 
     def test_both_symptoms_are_migrated(self):
