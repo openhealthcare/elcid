@@ -22,5 +22,4 @@ class Command(BaseCommand):
                 symptom_fk_id=wsymptom.symptom_fk_id,
                 symptom_ft=wsymptom.symptom_ft,
             )
-            elcid_pc.save()
             elcid_pc.symptoms.add(*wsymptom.symptoms.all())
