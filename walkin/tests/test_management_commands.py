@@ -3,6 +3,7 @@ from datetime import timedelta
 from django.core.management import call_command
 from django.utils import timezone
 
+from opal.core import exceptions
 from opal.core.test import OpalTestCase
 from opal import models as omodels
 from elcid.models import PresentingComplaint
@@ -12,7 +13,10 @@ from walkin.models import Symptom
 class SymptomToPresentingComplaintTest(OpalTestCase):
 
     def setUp(self):
+        osymptom1 = omodels.Symptom.objects.create(name="some_symptom")
+        osymptom2 = omodels.Symptom.objects.create(name="different_symptom")
         self.patient, self.episode = self.new_patient_and_episode_please()
+
         self.symptom1 = Symptom.objects.create(
             id=1,
             created=           timezone.now(),
@@ -24,8 +28,11 @@ class SymptomToPresentingComplaintTest(OpalTestCase):
             duration=          u'charfield some duration',
             details=           u'some details',
             onset=             u'charfield onset',
-            symptom=           u'ftfk symptom',
         )
+        self.symptom1.symptom = "some_symptom"  # deprecated FTFK field
+        self.symptom1.symptoms.add(osymptom1)  # current M2M field
+        self.symptom1.save()
+
         self.symptom2 = Symptom.objects.create(
             id=2,
             created=           timezone.now()-timedelta(1),
@@ -37,17 +44,16 @@ class SymptomToPresentingComplaintTest(OpalTestCase):
             duration=          u'charfield some other duration',
             details=           u'some other details',
             onset=             u'charfield some onset',
-            symptom=           u'ftfk a different symptom',
         )
-        omodels.Symptom.objects.create(name="some_symptom")
-
+        self.symptom2.symptom = "different_symptom"  # deprecated FTFK field
+        self.symptom2.symptoms.add(osymptom2)  # current M2M field
+        self.symptom2.save()
 
     def test_there_are_no_symptom_objects_to_migrate(self):
         self.symptom1.delete()
         self.symptom2.delete()
         call_command('move_symptoms_to_presentingcomplaints')
-        pc1 = PresentingComplaint.objects.get(details='some details')
-        self.assertIsNone(pc1)
+        self.assertEqual(0, PresentingComplaint.objects.count())
 
     def test_both_symptoms_are_migrated(self):
         call_command('move_symptoms_to_presentingcomplaints')
@@ -65,6 +71,7 @@ class SymptomToPresentingComplaintTest(OpalTestCase):
         self.assertEqual(self.symptom1.onset, pc1.onset)
         self.assertEqual(self.symptom1.symptom_fk_id, pc1.symptom_fk_id)
         self.assertEqual(self.symptom1.symptom_ft, pc1.symptom_ft)
+        self.assertEqual(self.symptom1.symptom_fk, pc1.symptom_fk)
 
         self.assertEqual(self.symptom2.created, pc2.created)
         self.assertEqual(self.symptom2.updated, pc2.updated)
@@ -77,59 +84,60 @@ class SymptomToPresentingComplaintTest(OpalTestCase):
         self.assertEqual(self.symptom2.onset, pc2.onset)
         self.assertEqual(self.symptom2.symptom_fk_id, pc2.symptom_fk_id)
         self.assertEqual(self.symptom2.symptom_ft, pc2.symptom_ft)
+        self.assertEqual(self.symptom2.symptom_fk, pc2.symptom_fk)
 
 
     def test_symptom_created(self):
         call_command('move_symptoms_to_presentingcomplaints')
-        pc1 = PresentingComplaint.objects.first()
+        pc1 = PresentingComplaint.objects.get(details='some details')
         self.assertEqual(self.symptom1.created, pc1.created)
 
     def test_symptom_updated(self):
         call_command('move_symptoms_to_presentingcomplaints')
-        pc1 = PresentingComplaint.objects.first()
+        pc1 = PresentingComplaint.objects.get(details='some details')
         self.assertEqual(self.symptom1.updated, pc1.updated)
 
     def test_symptom_created_by(self):
         call_command('move_symptoms_to_presentingcomplaints')
-        pc1 = PresentingComplaint.objects.first()
+        pc1 = PresentingComplaint.objects.get(details='some details')
         self.assertEqual(self.symptom1.created_by, pc1.created_by)
 
     def test_symptom_updated_by(self):
         call_command('move_symptoms_to_presentingcomplaints')
-        pc1 = PresentingComplaint.objects.first()
+        pc1 = PresentingComplaint.objects.get(details='some details')
         self.assertEqual(self.symptom1.updated_by, pc1.updated_by)
 
     def test_symptom_consistency_token(self):
         call_command('move_symptoms_to_presentingcomplaints')
-        pc1 = PresentingComplaint.objects.first()
+        pc1 = PresentingComplaint.objects.get(details='some details')
         self.assertEqual(self.symptom1.consistency_token, pc1.consistency_token)
 
     def test_symptom_episode(self):
         call_command('move_symptoms_to_presentingcomplaints')
-        pc1 = PresentingComplaint.objects.first()
+        pc1 = PresentingComplaint.objects.get(details='some details')
         self.assertEqual(self.symptom1.episode, pc1.episode)
 
     def test_symptom_duration(self):
         call_command('move_symptoms_to_presentingcomplaints')
-        pc1 = PresentingComplaint.objects.first()
+        pc1 = PresentingComplaint.objects.get(details='some details')
         self.assertEqual(self.symptom1.duration, pc1.duration)
 
     def test_symptom_details(self):
         call_command('move_symptoms_to_presentingcomplaints')
-        pc1 = PresentingComplaint.objects.first()
+        pc1 = PresentingComplaint.objects.get(details='some details')
         self.assertEqual(self.symptom1.details, pc1.details)
 
     def test_symptom_onset(self):
         call_command('move_symptoms_to_presentingcomplaints')
-        pc1 = PresentingComplaint.objects.first()
+        pc1 = PresentingComplaint.objects.get(details='some details')
         self.assertEqual(self.symptom1.onset, pc1.onset)
 
     def test_symptom_symptom_fk_id(self):
         call_command('move_symptoms_to_presentingcomplaints')
-        pc1 = PresentingComplaint.objects.first()
+        pc1 = PresentingComplaint.objects.get(details='some details')
         self.assertEqual(self.symptom1.symptom_fk_id, pc1.symptom_fk_id)
 
     def test_symptom_symptom_ft(self):
         call_command('move_symptoms_to_presentingcomplaints')
-        pc1 = PresentingComplaint.objects.first()
+        pc1 = PresentingComplaint.objects.get(details='some details')
         self.assertEqual(self.symptom1.symptom_ft, pc1.symptom_ft)
