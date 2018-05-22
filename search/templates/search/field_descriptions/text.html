@@ -12,7 +12,7 @@
       Normally coded as a
       <a href=""
          class="orange-link"
-         ng-click="open_modal('LookupListReferenceCtrl', '/templates/modals/lookuplist_reference.html', {lookuplist_name: findField(selectedInfo.column, selectedInfo.field).lookup_list, lookuplist: info.lookup_list })">
+         ng-click="open_modal('LookupListReferenceCtrl', '/templates/modals/lookuplist_reference.html', {lookuplist_name: info.lookup_list, lookuplist: referencedata.get(info.lookup_list)})">
         [[ info.lookup_list | underscoreToSpaces ]]</a>
       but free text entries are possible.
     </div>

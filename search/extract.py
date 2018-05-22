@@ -122,6 +122,7 @@ def generate_multi_csv_extract(root_dir, episodes, user):
         renderer = renderer_cls(serializer, episodes, user)
         if renderer.exists():
             write_multi_csv_to_file(full_file_name, renderer)
+            file_names.append((full_file_name, file_name,))
 
     return file_names
 
