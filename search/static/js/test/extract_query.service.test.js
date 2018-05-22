@@ -1,308 +1,293 @@
-// describe('ExtractQuery', function(){
-//   "use strict";
-//
-//   var ExtractQuery, extractQuery, schema;
-//
-//   beforeEach(function(){
-//     module('opal.services');
-//     inject(function($injector){
-//       ExtractQuery = $injector.get('ExtractQuery');
-//     });
-//     schema = jasmine.createSpyObj(["findField", "getFields"]);
-//     var createFakeSubrecord = function(y, x){
-//
-//       return {
-//         name: x,
-//         subrecord: {name: y}
-//       }
-//     };
-//     schema.findField.and.callFake(createFakeSubrecord);
-//     extractQuery = new ExtractQuery(schema, schema);
-//   });
-//
-//   describe('setUp', function(){
-//     it('should set up any or all options', function(){
-//       expect(extractQuery.combinations).toEqual(["all", "any"]);
-//     });
-//
-//     it('should set up any or all default', function(){
-//       expect(extractQuery.anyOrAll).toBe("all");
-//     });
-//
-//     it('should setUp required extract fields', function(){
-//       expect(extractQuery.requiredExtractFields).toEqual([
-//         {name: "date_of_birth", subrecord: {name: "demographics"}},
-//         {name: "sex", subrecord: {name: "demographics"}},
-//       ]);
-//     });
-//   });
-//
-//   describe('addSubrecordSlices', function(){
-//     it('should add all fields for a subrecord', function(){
-//       extractQuery.slices = [];
-//       extractQuery.addSlice("someField");
-//
-//       var someSubrecord = {
-//         fields: [
-//           "someField", "someOtherField"
-//         ]
-//       }
-//       extractQuery.addSubrecordSlices(someSubrecord);
-//       var expected = ["someField", "someOtherField"];
-//       var found = _.clone(extractQuery.slices);
-//       expect(found).toEqual(expected);
-//     });
-//   });
-//
-//   describe('addSlice()', function(){
-//     it('should add a field to the slice', function(){
-//       extractQuery.addSlice("someField");
-//       expect(_.last(extractQuery.slices)).toEqual("someField");
-//     });
-//
-//     it('should not add a field to the slice if the field already exists', function(){
-//       // a single slice should only be allowed to be added once.
-//       extractQuery.addSlice("someField");
-//       var expected = _.clone(extractQuery.slices);
-//       extractQuery.addSlice("someField");
-//       var found = _.clone(extractQuery.slices);
-//       expect(found).toEqual(expected);
-//     });
-//
-//   });
-//
-//   describe('sliceIsRequired()', function(){
-//     it('should be true if the slice is required', function(){
-//       var required = extractQuery.requiredExtractFields[0];
-//       expect(extractQuery.sliceIsRequired(required)).toBe(true);
-//     });
-//
-//     it('should be false if the slice is not required', function(){
-//       var required = extractQuery.requiredExtractFields[0];
-//       expect(extractQuery.sliceIsRequired(required)).toBe(true);
-//     });
-//   });
-//
-//   describe('isSliceAdded()', function(){
-//     it('should be true if the slice is added', function(){
-//       extractQuery.addSlice("something");
-//       expect(extractQuery.isSliceAdded("something")).toBe(true);
-//     });
-//
-//     it('should be false if the slice is added', function(){
-//       extractQuery.addSlice("something else");
-//       expect(extractQuery.isSliceAdded("something")).toBe(false);
-//     });
-//   });
-//
-//   describe('isSubrecordAdded()', function(){
-//     it('should be true if all fields for the subrecord have been added', function(){
-//       var someSubrecord = {}
-//       var field1 = {
-//         name: "someField",
-//         subrecord: someSubrecord
-//       }
-//
-//       var field2 = {
-//         name: "someOtherField",
-//         subrecord: someSubrecord
-//       }
-//       someSubrecord.fields = [
-//           field1, field2
-//       ];
-//       extractQuery.addSlice(field1);
-//       extractQuery.addSlice(field2);
-//       expect(extractQuery.isSubrecordAdded(someSubrecord)).toBe(true);
-//     });
-//
-//     it('should be false if only some of the fields for the subrecord have been added', function(){
-//       var someSubrecord = {}
-//       var field1 = {
-//         name: "someField",
-//         subrecord: someSubrecord
-//       }
-//
-//       var field2 = {
-//         name: "someOtherField",
-//         subrecord: someSubrecord
-//       }
-//       someSubrecord.fields = [
-//           field1, field2
-//       ];
-//
-//       extractQuery.addSlice(field1);
-//       expect(extractQuery.isSubrecordAdded(someSubrecord)).toBe(false);
-//     });
-//   });
-//
-//   describe('addSubrecordSlices()', function(){
-//     it('it should add all fields for the subrecord', function(){
-//       var someSubrecord = {}
-//       var field1 = {
-//         name: "someField",
-//         subrecord: someSubrecord
-//       }
-//
-//       var field2 = {
-//         name: "someOtherField",
-//         subrecord: someSubrecord
-//       }
-//       someSubrecord.fields = [
-//           field1, field2
-//       ];
-//
-//       extractQuery.addSubrecordSlices(someSubrecord);
-//       var slices = _.pluck(extractQuery.slices, "name");
-//       expect(slices.indexOf("someField") !== -1).toBe(true);
-//       expect(slices.indexOf("someOtherField") !== -1).toBe(true);
-//     });
-//   });
-//
-//   describe('removeSubrecordSlices', function(){
-//     it('it should remove all fields for the subrecord', function(){
-//       var someSubrecord = {}
-//       var field1 = {
-//         name: "someField",
-//         subrecord: someSubrecord
-//       }
-//
-//       var field2 = {
-//         name: "someOtherField",
-//         subrecord: someSubrecord
-//       }
-//       someSubrecord.fields = [
-//           field1, field2
-//       ];
-//       extractQuery.addSubrecordSlices(someSubrecord);
-//       extractQuery.removeSubrecordSlices(someSubrecord);
-//       var slices = _.pluck(extractQuery.slices, "name");
-//       expect(slices.indexOf("someField") === -1).toBe(true);
-//       expect(slices.indexOf("someOtherField") === -1).toBe(true);
-//     });
-//   });
-//
-//   describe('removeSlice()', function(){
-//     it('should add a field to the slice', function(){
-//       extractQuery.slices.push("someField");
-//       extractQuery.removeSlice("someField");
-//       expect(extractQuery.slices.length).toBe(
-//         extractQuery.requiredExtractFields.length
-//       );
-//     });
-//
-//     it('should not remove a required field', function(){
-//       extractQuery.removeSlice(extractQuery.requiredExtractFields[0]);
-//       expect(extractQuery.slices.length).toBe(
-//         extractQuery.requiredExtractFields.length
-//       );
-//     });
-//   });
-//
-//   describe('getDataSlices()', function(){
-//     it('should handle the case where there are many slices', function(){
-//       extractQuery.slices = [
-//         {
-//           subrecord: {name: "episode"},
-//           name: "start"
-//         },
-//         {
-//           subrecord: {name: "episode"},
-//           name: "end"
-//         },
-//         {
-//           subrecord: {name: "diagnosis"},
-//           name: "condition"
-//         }
-//       ];
-//       var result = extractQuery.getDataSlices();
-//       var expected = {
-//         episode: ["start", "end"],
-//         diagnosis: ["condition"]
-//       };
-//
-//       expect(result).toEqual(expected);
-//     });
-//   });
-//
-//   describe('Getting Complete Criteria', function(){
-//     it('should be true if we have a query', function(){
-//         extractQuery.criteria[0].column = 'demographics';
-//         extractQuery.criteria[0].field = 'surname';
-//         extractQuery.criteria[0].query_type = 'contains';
-//         extractQuery.criteria[0].query = 'jane';
-//         expect(extractQuery.completeCriteria().length).toBe(1);
-//     });
-//
-//     it('should be false if we have no query', function(){
-//         extractQuery.criteria[0].column = 'demographics';
-//         extractQuery.criteria[0].field = 'name';
-//         extractQuery.criteria[0].query_type = 'contains';
-//         expect(extractQuery.completeCriteria().length).toBe(0);
-//     });
-//
-//     it("should update the critieria to or if we're of anyOrAll is 'any'", function(){
-//       extractQuery.anyOrAll = "any";
-//       extractQuery.criteria[0].column = 'demographics';
-//       extractQuery.criteria[0].field = 'surname';
-//       extractQuery.criteria[0].query_type = 'contains';
-//       extractQuery.criteria[0].query = 'jane';
-//       var result = extractQuery.completeCriteria();
-//       expect(result[0].combine).toBe('or');
-//     });
-//
-//     it("should update the critieria to and if we're of anyOrAll is 'all'", function(){
-//       extractQuery.anyOrAll = "all";
-//       extractQuery.criteria[0].column = 'demographics';
-//       extractQuery.criteria[0].field = 'surname';
-//       extractQuery.criteria[0].query_type = 'contains';
-//       extractQuery.criteria[0].query = 'jane';
-//       var result = extractQuery.completeCriteria();
-//       expect(result[0].combine).toBe('and');
-//     });
-//   });
-//
-//   describe('addFilter()', function(){
-//     it('should add a criteria', function(){
-//         expect(extractQuery.criteria.length).toBe(1);
-//         extractQuery.addFilter();
-//         expect(extractQuery.criteria.length).toBe(2);
-//     });
-//   });
-//
-//
-//   describe('resetFilter()', function(){
-//     var criteria;
-//     beforeEach(function(){
-//       criteria = {
-//         column: "demographics",
-//         field: "name",
-//         query: "Jane",
-//         query_type: "contains"
-//       };
-//     });
-//
-//     it('should reset the column', function(){
-//         extractQuery.resetFilter(criteria, ['column']);
-//         expect(criteria.column).toEqual("demographics");
-//         expect(criteria.field).toEqual(null);
-//         expect(criteria.query).toEqual(null);
-//         expect(criteria.query_type).toEqual(null);
-//     });
-//
-//     it('should reset the field', function(){
-//         extractQuery.resetFilter(criteria, ['column', 'field']);
-//         expect(criteria.column).toEqual("demographics");
-//         expect(criteria.field).toEqual("name");
-//         expect(criteria.query).toEqual(null);
-//         expect(criteria.query_type).toEqual(null);
-//     });
-//   });
-//
-//   describe('removeCriteria', function(){
-//       it('should reset the criteria', function(){
-//           extractQuery.criteria.push('hello world');
-//           extractQuery.removeCriteria();
-//           expect(extractQuery.criteria.length).toBe(1);
-//       });
-//   });
-// });
+describe('ExtractQuery', function(){
+  "use strict";
+
+  var ExtractQuery, someQuery, criteria, _criteria;
+
+  _criteria = [{
+    combine: "and",
+    field: "drug",
+    query_type: "Contains",
+    rule: "Allergies",
+    value: "a"
+  }];
+
+  var field1 = {
+    rule: "Allergies",
+    name: "drug",
+    default: null,
+    desciption: null,
+    display_name: "Drug"
+  };
+
+  var field2 = {
+    rule: "Allergies",
+    name: "provisional",
+    default: null,
+    desciption: null,
+    display_name: "Provisional"
+  };
+
+  var rule = {
+    display_name: "Allergies",
+    name: "allergies",
+    fields: [field1, field2]
+  }
+  field1.rule = rule;
+  field2.rule = rule;
+
+  var requiredFields = [field1];
+
+  beforeEach(function(){
+    module('opal.services');
+    inject(function($injector){
+      ExtractQuery  = $injector.get('ExtractQuery');
+      criteria = angular.copy(_criteria);
+      someQuery = angular.copy({
+        criteria: criteria,
+        slices: [field1, field2]
+      });
+    });
+  });
+
+
+  describe('setUp', function(){
+    describe("load in existing query", function(){
+      it('should load in an existing query', function(){
+        var extractQuery = new ExtractQuery(requiredFields, someQuery);
+        expect(extractQuery.criteria).toBe(someQuery.criteria);
+        expect(extractQuery.slices).toBe(someQuery.slices)
+      });
+
+      it('should set the criteria to all for an existing query', function(){
+        var extractQuery = new ExtractQuery(requiredFields, someQuery);
+        expect(extractQuery.anyOrAll).toBe("all");
+      });
+
+      it('should set the criteria to any for an existing query', function(){
+        var ourQuery = angular.copy(someQuery);
+        ourQuery.criteria[0].combine = "or";
+        var extractQuery = new ExtractQuery(requiredFields, ourQuery);
+        expect(extractQuery.anyOrAll).toBe("any");
+      });
+    });
+
+    describe("sets up the a basic query", function(){
+      it("should set the required fields", function(){
+        var extractQuery = new ExtractQuery(requiredFields);
+        expect(extractQuery.requiredExtractFields).toEqual(requiredFields);
+        expect(extractQuery.slices).toEqual(requiredFields);
+        expect(extractQuery.criteria).toEqual([{}]);
+        expect(extractQuery.anyOrAll).toBe("all");
+      });
+    });
+  });
+
+  describe("resetExtractSlice", function(){
+    it("reset all slices to the required fields", function(){
+      var extractQuery = new ExtractQuery(requiredFields);
+      extractQuery.slices = [field1, field2];
+      extractQuery.resetExtractSlice();
+      expect(extractQuery.slices).toEqual(requiredFields);
+    });
+  });
+
+  describe("addSlice", function(){
+    it("should add the slice if the slice is currently not added", function(){
+      var extractQuery = new ExtractQuery(requiredFields);
+      extractQuery.addSlice(field2);
+      expect(extractQuery.slices).toEqual([field1, field2]);
+    });
+
+    it("should not add the slice if the slice is already added", function(){
+      var extractQuery = new ExtractQuery(requiredFields);
+      extractQuery.addSlice(field1);
+      expect(extractQuery.slices).toEqual([field1]);
+    });
+  });
+
+  describe("isRuleAdded", function(){
+    it("should return true if the rule is added", function(){
+      var extractQuery = new ExtractQuery(requiredFields);
+      extractQuery.addSlice(field2);
+      expect(extractQuery.isRuleAdded(rule)).toBe(true);
+    });
+
+    it("should return false if the subrecord is not added", function(){
+      var extractQuery = new ExtractQuery(requiredFields);
+      expect(extractQuery.isRuleAdded(rule)).toBe(false);
+    });
+  });
+
+  describe("isSliceAdded", function(){
+    it("should return true if a field is added is added", function(){
+      var extractQuery = new ExtractQuery(requiredFields);
+      expect(extractQuery.isSliceAdded(field1)).toBe(true);
+    });
+
+    it("should return false if a subrecord is not added", function(){
+      var extractQuery = new ExtractQuery(requiredFields);
+      expect(extractQuery.isSliceAdded(field2)).toBe(false);
+    });
+  });
+
+  describe("addRuleSlices", function(){
+    it("should add all slices for a rule", function(){
+      var extractQuery = new ExtractQuery(requiredFields);
+      expect(extractQuery.isSliceAdded(field2)).toBe(false);
+      extractQuery.addRuleSlices(rule);
+      expect(extractQuery.isSliceAdded(field2)).toBe(true);
+    });
+  });
+
+  describe("removeRuleSlices", function(){
+    it("should remove remove all slices for a subrecord", function(){
+      // an extract query with no required fields
+      var extractQuery = new ExtractQuery([]);
+      extractQuery.addRuleSlices(rule);
+      extractQuery.removeRuleSlices(rule);
+      expect(extractQuery.isSliceAdded(field1)).toBe(false);
+      expect(extractQuery.isSliceAdded(field2)).toBe(false);
+    });
+
+    it("should not remove required fields", function(){
+      var extractQuery = new ExtractQuery(requiredFields);
+      extractQuery.addRuleSlices(rule);
+      extractQuery.removeRuleSlices(rule);
+      expect(extractQuery.isSliceAdded(field1)).toBe(true);
+      expect(extractQuery.isSliceAdded(field2)).toBe(false);
+    });
+  });
+
+  describe("removeSlice", function(){
+    it("should find and remove a slice if its not required", function(){
+      var extractQuery = new ExtractQuery(requiredFields);
+      extractQuery.addSlice(field2);
+      extractQuery.removeSlice(field2);
+      expect(extractQuery.isSliceAdded(field2)).toBe(false);
+    });
+
+    it("should not remove the slice if it is required", function(){
+      var extractQuery = new ExtractQuery(requiredFields);
+      extractQuery.removeSlice(field1);
+      expect(extractQuery.isSliceAdded(field1)).toBe(true);
+    });
+  });
+
+  describe("sliceIsRequired", function(){
+    it("should return true if a slice is required", function(){
+      var extractQuery = new ExtractQuery(requiredFields);
+      expect(extractQuery.sliceIsRequired(field1)).toBe(true);
+    });
+
+    it("should return false if a slice is not required", function(){
+      var extractQuery = new ExtractQuery(requiredFields);
+      expect(extractQuery.sliceIsRequired(field2)).toBe(false);
+    });
+  });
+
+  describe("getDataSlicesToSend", function(){
+    it("should return a rule to field name arrary", function(){
+      var extractQuery = new ExtractQuery(requiredFields);
+      extractQuery.addSlice(field2);
+      expect(extractQuery.getDataSlicesToSend()).toEqual(
+        {allergies: [ 'drug', 'provisional' ]}
+      );
+    });
+  });
+
+  describe("getCriteriaToSend", function(){
+    it("should create the search criteria to send to the server", function(){
+      var extractQuery = new ExtractQuery(requiredFields);
+      extractQuery.criteria = criteria;
+      expect(extractQuery.getCriteriaToSend()).toEqual([
+        {
+          combine: 'and',
+          field: 'drug',
+          query_type: 'Contains',
+          rule: 'Allergies',
+          value: 'a'
+        }
+      ]);
+    });
+  });
+
+  describe("completeCriteria", function(){
+    it('should return the complete criteria', function(){
+      var extractQuery = new ExtractQuery(requiredFields);
+      extractQuery.criteria = criteria;
+      var extractQuerySchema = jasmine.createSpyObj(["findField"]);
+      extractQuerySchema.findField.and.returnValue({
+        query_args: ["value", "query_type"]
+      });
+      expect(extractQuery.completeCriteria(extractQuerySchema)).toEqual(criteria);
+    });
+
+    it("should return false if the criteria is not complete", function(){
+      var extractQuery = new ExtractQuery(requiredFields);
+      extractQuery.criteria = criteria;
+      var extractQuerySchema = jasmine.createSpyObj(["findField"]);
+      extractQuerySchema.findField.and.returnValue({
+        query_args: ["value", "query_type", "something_else"]
+      });
+      expect(extractQuery.completeCriteria(extractQuerySchema)).toEqual([]);
+    });
+
+    it("should ignore fields we can't find", function(){
+      var extractQuery = new ExtractQuery(requiredFields);
+      extractQuery.criteria = criteria;
+      var extractQuerySchema = jasmine.createSpyObj(["findField"]);
+      extractQuerySchema.findField.and.returnValue(null);
+      expect(extractQuery.completeCriteria(extractQuerySchema)).toEqual([]);
+    });
+  });
+
+  describe("addFilter", function(){
+    it("should add a filter", function(){
+      var extractQuery = new ExtractQuery(requiredFields);
+      extractQuery.criteria = criteria;
+      extractQuery.addFilter();
+      expect(extractQuery.criteria[0]).toEqual(criteria[0]);
+      expect(extractQuery.criteria.length).toBe(2);
+      expect(extractQuery.criteria[1]).toEqual({});
+    });
+  });
+
+  describe("removeFilter", function(){
+    it("should remove replace the criteria with an empty obj if its the last one", function(){
+      var extractQuery = new ExtractQuery(requiredFields);
+      extractQuery.criteria = criteria;
+      extractQuery.removeFilter(0);
+      expect(extractQuery.criteria).toEqual([{}]);
+    });
+
+    it("should just remove the element of an array if it is not the last one", function(){
+      var extractQuery = new ExtractQuery(requiredFields);
+      extractQuery.criteria = criteria;
+      extractQuery.criteria.push({
+        rule: "Demographics", field: "date_of_birth"
+      });
+      extractQuery.removeFilter(1);
+      expect(extractQuery.criteria).toEqual(criteria);
+    });
+  });
+
+  describe("resetFilter", function(){
+    it("should reset the current query", function(){
+      var extractQuery = new ExtractQuery(requiredFields);
+      extractQuery.criteria = angular.copy(criteria);
+      extractQuery.resetFilter(0, ["rule"])
+      expect(extractQuery.value).toBe(undefined);
+      expect(extractQuery.query_type).toBe(undefined);
+      expect(extractQuery.field).toBe(undefined);
+    });
+  });
+
+  describe("removeCriteria", function(){
+    it("should completely resync the criteria", function(){
+      var extractQuery = new ExtractQuery(requiredFields);
+      extractQuery.criteria = angular.copy(criteria);
+      extractQuery.removeCriteria();
+      expect(extractQuery.criteria).toEqual([{}]);
+    });
+  });
+});

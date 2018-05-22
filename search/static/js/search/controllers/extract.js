@@ -1,12 +1,11 @@
 angular.module('opal.controllers').controller( 'ExtractCtrl',
   function(
     $scope, $http, $window, $modal, $timeout, $location, $anchorScroll,
-    PatientSummary, Paginator, referencedata, ngProgressLite, profile,
+    PatientSummary, Paginator, referencedata, ngProgressLite,
     extractQuerySchema, extractSliceSchema, ExtractQuery, extractQuery
   ){
     "use strict";
 
-    $scope.profile = profile;
     $scope.limit = 10;
     $scope.JSON = window.JSON;
     $scope.filters = filters;
@@ -14,9 +13,9 @@ angular.module('opal.controllers').controller( 'ExtractCtrl',
     $scope.extractSliceSchema = extractSliceSchema;
     // used by the download extract
     // a slice is a cut of data, a field that we want to download
-    $scope.selectSliceSubrecord = function(sliceSubrecord){
+    $scope.selectSliceRule = function(sliceRule){
       $scope.setExtractSliceInfo(null);
-      $scope.sliceSubrecord = sliceSubrecord;
+      $scope.sliceRule = sliceRule;
     }
     $scope.setExtractSliceInfo = function(field){
       $scope.extractSliceInfo = field
@@ -35,11 +34,34 @@ angular.module('opal.controllers').controller( 'ExtractCtrl',
       $scope.state = 'query';
     }
     $scope.referencedata = referencedata;
-    $scope.selectSliceSubrecord(extractSliceSchema.rules[0]);
-    $scope.setExtractSliceInfo($scope.sliceSubrecord.fields[0]);
+    $scope.selectSliceRule(extractSliceSchema.rules[0]);
+    $scope.setExtractSliceInfo($scope.sliceRule.fields[0]);
+
+
+    $scope.constructQuery = function(queryParams){
+      var result = {criteria: extractQuery.criteria};
+      result.slices = [];
+      _.each(queryParams.data_slice, function(fields, ruleName){
+        _.each(fields, function(field){
+          var slice = extractSliceSchema.findField(ruleName, field);
+          if(slice){
+            result.slices.push(
+              slice
+            );
+          }
+        });
+      });
+
+      return result;
+    }
+
+    if(extractQuery){
+      extractQuery = $scope.constructQuery(extractQuery);
+    }
 
     $scope.extractQuery = new ExtractQuery(
-      extractQuerySchema, extractSliceSchema, extractQuery
+      extractSliceSchema.getRequiredFields(),
+      extractQuery
     );
 
     $scope.extractQueryInfo = undefined;
@@ -65,6 +87,17 @@ angular.module('opal.controllers').controller( 'ExtractCtrl',
       }
     };
 
+    $scope.removeFilter = function(index){
+      $scope.extractQuery.removeFilter(index)
+      if(!$scope.extractQuery.isQuerySelected($scope.extractQueryInfo)){
+        $scope.extractQueryInfo = null;
+      }
+    };
+
+    $scope.completeCriteria = function(){
+      return $scope.extractQuery.completeCriteria($scope.extractQuerySchema);
+    }
+
     $scope.refresh = function(){
       $scope.async_waiting = false;
       $scope.async_ready = false;
@@ -73,12 +106,12 @@ angular.module('opal.controllers').controller( 'ExtractCtrl',
     };
 
     $scope.$watch(function($scope){ return $scope.extractQuery.getCriteriaToSend() }, $scope.refresh, true);
-    $scope.$watch(function($scope){ return $scope.extractQuery.getDataSlices() }, $scope.refresh, true);
+    $scope.$watch(function($scope){ return $scope.extractQuery.getDataSlicesToSend() }, $scope.refresh, true);
 
     $scope.getQueryParams = function(pageNumber){
       // the query params are the complete criteria and the
       // page number without the angular hash key
-      var queryParams = angular.copy($scope.extractQuery.completeCriteria());
+      var queryParams = angular.copy($scope.completeCriteria());
       if(queryParams.length){
         queryParams[0].page_number = pageNumber;
       }
@@ -163,7 +196,7 @@ angular.module('opal.controllers').controller( 'ExtractCtrl',
         };
         if(usingDataSlice){
           postArgs['data_slice'] = JSON.stringify(
-            $scope.extractQuery.getDataSlices()
+            $scope.extractQuery.getDataSlicesToSend()
           );
         }
         $http.post(
@@ -198,7 +231,7 @@ angular.module('opal.controllers').controller( 'ExtractCtrl',
         templateUrl: '/search/templates/modals/save_filter_modal.html/',
         controller: 'SaveFilterCtrl',
         resolve: {
-          params: function() { return {name: null, criteria: $scope.extractQuery.completeCriteria()}; }
+          params: function() { return {name: null, criteria: $scope.completeCriteria()}; }
         }
       }).result.then(function(result){
         $scope.filters.push(result);

@@ -4,9 +4,6 @@ angular.module('opal.services').factory('ExtractSchema', function() {
       this.rules = angular.copy(rules);
       _.each(this.rules, function(c){
         _.each(c.fields, function(f){
-          if(f.rule){
-            throw 'the subrecord field has been declared on a namespace we need'
-          }
           f.rule = c;
         });
       });
@@ -47,6 +44,15 @@ angular.module('opal.services').factory('ExtractSchema', function() {
           result = result.concat(c.fields);
         });
 
+        return result;
+      },
+      getRequiredFields: function(){
+        var result = [];
+        _.each(this.getFields(), function(f){
+          if(f.required){
+            result.push(f)
+          }
+        }, this);
         return result;
       }
     }

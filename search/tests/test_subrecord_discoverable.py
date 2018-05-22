@@ -168,6 +168,10 @@ class DiscoverableMock(object):
     def list(cls):
         return []
 
+    @classmethod
+    def list_rules(cls, user):
+        return []
+
 
 class ColourOverride(
     subrecord_discoverable.SubrecordDiscoverableMixin,
@@ -214,19 +218,21 @@ class SubrecordDiscoverableMixinTestCase(OpalTestCase):
         ):
             pass
 
-        with patch.object(DiscoverableMock, "list") as l:
-            l.return_value = [SubrecordDiscoverableSubclass]
+        with patch.object(DiscoverableMock, "list_rules") as l:
+            l.return_value = (
+                i for i in [SubrecordDiscoverableSubclass(self.user)]
+            )
+            found_rules = list(DiscoverableMock.list_rules(self.user))
             self.assertEqual(
-                len(list(SubrecordDiscoverable.list(self.user))), 1
+                len(found_rules), 1
             )
             self.assertEqual(
-                next(SubrecordDiscoverable.list(self.user)).slug,
+                found_rules[0].slug,
                 "something"
             )
 
-            self.assertEqual(
-                next(SubrecordDiscoverable.list(self.user)).__class__,
-                SubrecordDiscoverableSubclass
+            self.assertTrue(
+                isinstance(found_rules[0], SubrecordDiscoverableSubclass),
             )
 
     @patch("search.subrecord_discoverable.subrecords.subrecords")
@@ -251,19 +257,22 @@ class SubrecordDiscoverableMixinTestCase(OpalTestCase):
         ):
             pass
 
-        with patch.object(DiscoverableMock, "list") as l:
+        with patch.object(DiscoverableMock, "list_rules") as l:
             l.return_value = [SubrecordDiscoverableSubclass]
 
             self.assertEqual(
-                len(list(SubrecordDiscoverable.list(self.user))), 1
+                len(list(SubrecordDiscoverable.list_rules(self.user))), 1
             )
+            api_name = next(
+                SubrecordDiscoverable.list_rules(self.user)
+            ).get_api_name()
             self.assertEqual(
-                next(SubrecordDiscoverable.list(self.user)).get_slug(),
+                api_name,
                 Colour.get_api_name()
             )
 
-            self.assertEqual(
-                next(SubrecordDiscoverable.list(self.user)).__class__,
+            self.assertTrue(
+                next(SubrecordDiscoverable.list_rules(self.user)),
                 SubrecordDiscoverableSubclass
             )
 
@@ -280,15 +289,15 @@ class SubrecordDiscoverableMixinTestCase(OpalTestCase):
                 return None
 
         self.assertEqual(
-            len(list(SubrecordDiscoverable.list(self.user))), 1
+            len(list(SubrecordDiscoverable.list_rules(self.user))), 1
         )
         self.assertEqual(
-            next(SubrecordDiscoverable.list(self.user)).get_api_name(),
+            next(SubrecordDiscoverable.list_rules(self.user)).get_api_name(),
             Colour.get_api_name()
         )
 
         self.assertEqual(
-            next(SubrecordDiscoverable.list(self.user)).__class__,
+            next(SubrecordDiscoverable.list_rules(self.user)).__class__,
             SubrecordDiscoverable
         )
 
@@ -318,7 +327,7 @@ class SubrecordDiscoverableMixinTestCase(OpalTestCase):
         with patch.object(DiscoverableMock, "list") as l:
             l.return_value = [ColourOverride]
             self.assertEqual(
-                len(list(SubrecordDiscoverable.list(self.user))), 0
+                len(list(SubrecordDiscoverable.list_rules(self.user))), 0
             )
 
     def test_cast_field_name_to_attribute(self):
@@ -514,7 +523,7 @@ class SubrecordDiscoverableMixinTestCase(OpalTestCase):
 
         colour_override = ColourOverride(self.user)
         with patch.object(colour_override, "get_schema") as gs:
-            with patch.object(SubrecordDiscoverable, "list") as l:
+            with patch.object(SubrecordDiscoverable, "list_rules") as l:
                 l.return_value = [colour_override]
                 gs.return_value = {"display_name": "schema"}
 

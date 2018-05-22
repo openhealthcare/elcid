@@ -35,11 +35,6 @@ urlpatterns = [
 
     url(r'^search/extract/download/(?P<task_id>[a-zA-Z0-9-]*)',
         views.ExtractFileView.as_view(), name='extract_file'),
-
-    url(r'^search/extract/descriptions/slice/(?P<rule_api_name>[a-zA-Z0-9-_]*)/(?P<field_api_name>[a-zA-Z0-9-_]*)',
-        views.ExtractSliceDescriptionView.as_view(), name='extract_slice_description'),
-    url(r'^search/extract/descriptions/query/(?P<rule_api_name>[a-zA-Z0-9-_]*)/(?P<field_api_name>[a-zA-Z0-9-_]*)',
-        views.ExtractQueryDescriptionView.as_view(), name='extract_query_description'),
     url(
         r'^search/api/extract_query_schema/$',
         api.ExtractQuerySchemaViewSet.as_view({'get': 'list'}),

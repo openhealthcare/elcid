@@ -10,7 +10,7 @@
                 ng-class="{'btn-primary': async_ready, 'btn-secondary': !async_ready}"
                 analytics-category="search" analytics-event="extract-download-slice"
                 analytics-on
-                ng-disabled="!extractQuery.completeCriteria().length"
+                ng-disabled="!completeCriteria().length"
                 ng-click="async_extract(true)">
           <span ng-hide="async_waiting">
             {% icon "fa-cloud-download" %} Get Data
@@ -27,11 +27,11 @@
       {% else %}
         <form action="/search/extract/download" method="post" target="_blank">
           <input name="criteria" type="hidden" value="[[ JSON.stringify(extractQuery.getCriteriaToSend()) ]]">
-          <input name="data_slice" type="hidden" value="[[ JSON.stringify(extractQuery.getDataSlices()) ]]">
+          <input name="data_slice" type="hidden" value="[[ JSON.stringify(extractQuery.getDataSlicesToSend()) ]]">
           {% csrf_token %}
           <button type="submit"
                   class="btn btn-primary btn-lg"
-                  ng-disabled="!extractQuery.completeCriteria().length"
+                  ng-disabled="!completeCriteria().length"
                   analytics-category="search" analytics-event="extract-download-slice"
             >
             {% icon "fa-cloud-download" %} Get Data
@@ -63,9 +63,9 @@
             <h5>Records</h5>
           </div>
           <div class="extract-selector-rows">
-            <div class="extract-hover extract-selector-row" ng-class="{selected: extractQuery.isSubrecordAdded(column), active: column.name === sliceSubrecord.name}" ng-repeat="column in extractSliceSchema.rules">
-              <a ng-click="selectSliceSubrecord(column)" class="pointer extract-slice-table-link">
-                [[ column.display_name ]]
+            <div class="extract-hover extract-selector-row" ng-class="{selected: extractQuery.isRuleAdded(rule), active: rule.name === sliceRule.name}" ng-repeat="rule in extractSliceSchema.rules">
+              <a ng-click="selectSliceRule(rule)" class="pointer extract-slice-table-link">
+                [[ rule.display_name ]]
               </a>
             </div>
           </div>
@@ -74,17 +74,17 @@
       <div class="col-md-4">
         <div class="extract-selector">
           <div class="extract-selector-header">
-            <h5><i ng-show="sliceSubrecord.icon" class="[[ sliceSubrecord.icon ]]"></i> [[ sliceSubrecord.display_name ]]
-              <a href="" ng-show="!extractQuery.isSubrecordAdded(sliceSubrecord)" ng-click="extractQuery.addSubrecordSlices(sliceSubrecord)" class="pull-right">
+            <h5><i ng-show="sliceRule.icon" class="[[ sliceRule.icon ]]"></i> [[ sliceRule.display_name ]]
+              <a href="" ng-show="!extractQuery.isRuleAdded(sliceRule)" ng-click="extractQuery.addRuleSlices(sliceRule)" class="pull-right">
                 <i class="fa fa-plus-circle scroll-icon"></i>
               </a>
-              <a href="" ng-show="extractQuery.isSubrecordAdded(sliceSubrecord)" ng-click="extractQuery.removeSubrecordSlices(sliceSubrecord)" class="pull-right">
+              <a href="" ng-show="extractQuery.isRuleAdded(sliceRule)" ng-click="extractQuery.removeRuleSlices(sliceRule)" class="pull-right">
                 <i class="fa fa-minus-circle scroll-icon"></i>
               </a>
             </h5>
           </div>
           <div class="extract-selector-rows">
-            <div class="extract-hover extract-selector-row" ng-class="{active: field.name === extractSliceInfo.name, selected: extractQuery.isSliceAdded(field)}" ng-repeat="field in sliceSubrecord.fields">
+            <div class="extract-hover extract-selector-row" ng-class="{active: field.name === extractSliceInfo.name, selected: extractQuery.isSliceAdded(field)}" ng-repeat="field in sliceRule.fields">
               <a ng-click="setExtractSliceInfo(field)" class="pointer extract-slice-table-link">
                 [[ field.display_name ]]
                 <i ng-show="!extractQuery.isSliceAdded(field)" ng-click="extractQuery.addSlice(field)" class="fa fa-plus-circle scroll-icon"></i>
@@ -98,7 +98,9 @@
         <div class="content-offset">
           {% for rule, field, extract_description in extract_descriptions %}
             <div ng-show="extractSliceInfo.rule.name === '{{ rule.get_api_name }}' && extractSliceInfo.name === '{{ field.get_name }}'">
-              <div ng-include="'{{ extract_description }}'"></div>
+              <div ng-repeat="info in [extractSliceInfo]">
+                <div ng-include="'/{{ extract_description }}'"></div>
+              </div>
             </div>
           {% endfor %}
         </div>
@@ -138,7 +140,10 @@
           <tbody>
             <tr ng-click="setExtractSliceInfo(field)" class="extract-hover pointer" ng-class="{active: field.name === extractSliceInfo.name}" ng-repeat="field in extractQuery.slices">
               <td><div></div>[[ field.rule.display_name ]]</td>
-              <td>[[ field.display_name ]] <a ng-hide="extractQuery.sliceIsRequired(field)" class="pull-right" ng-click="extractQuery.removeSlice(field)" href="">{% icon "fa-minus-circle" %}</a></td>
+              <td>
+                [[ field.display_name ]]
+                <a ng-hide="extractQuery.sliceIsRequired(field)" class="pull-right" ng-click="extractQuery.removeSlice(field)" href="">{% icon "fa-minus-circle" %}</a>
+              </td>
             </tr>
           </tbody>
         </table>

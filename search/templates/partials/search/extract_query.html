@@ -6,7 +6,7 @@
           {% include "partials/search/query_description.html" %}
         </div>
         <div class="col-md-6 text-right">
-          <button ng-disabled="searched && !extractQuery.completeCriteria().length" ng-click="search()"
+          <button ng-disabled="searched && completeCriteria().length" ng-click="search()"
                   class="btn btn-primary btn-lg"
                   >
             <span class="glyphicon glyphicon-search"></span>
@@ -69,8 +69,8 @@
                 <div class="col-md-1 text-right">
                   <div class="row">
                     <div class="col-md-12">
-                      <button type="button" class="btn btn-dange content-offset-25"
-                              ng-click="extractQuery.removeFilter($index)"
+                      <button ng-hide="$index === 0 && !completeCriteria().length" type="button" class="btn btn-dange content-offset-25"
+                              ng-click="removeFilter($index)"
                               >
                         <span class="glyphicon glyphicon-minus"></span>
                       </button>
@@ -97,7 +97,9 @@
           <div class="col-md-3">
             {% for rule, field, search_description in search_descriptions %}
               <div ng-show="extractQueryInfo.rule.name === '{{ rule.get_api_name }}' && extractQueryInfo.name === '{{ field.get_name }}'">
-                <div ng-include="'{{ search_description }}'"></div>
+                <div ng-repeat="info in [extractQueryInfo]">
+                  <div ng-include="'/{{ search_description }}'"></div>
+                </div>
               </div>
             {% endfor %}
           </div>
@@ -148,10 +150,10 @@
     </div>
   </div>
   <div ng-show="searched" class="row">
-    <div ng-show="extractQuery.completeCriteria().length && !results.length" class="col-sm-4 col-sm-push-4 lead text-center">
+    <div ng-show="completeCriteria().length && !results.length" class="col-sm-4 col-sm-push-4 lead text-center">
       Sorry, no results match your search.
     </div>
-    <div ng-show="!extractQuery.completeCriteria().length" class="col-sm-4 col-sm-push-4 lead text-center">
+    <div ng-show="!completeCriteria().length" class="col-sm-4 col-sm-push-4 lead text-center">
       Sorry, we need at least one search filter to run a search
     </div>
   </div>

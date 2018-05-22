@@ -435,7 +435,7 @@
 //             "query":"a",
 //             "combine":"and"
 //           }];
-//           spyOn($scope.extractQuery, "getDataSlices").and.returnValue([{
+//           spyOn($scope.extractQuery, "getDataSlicesToSend").and.returnValue([{
 //             "demographics": ["first_name", "surname"]
 //           }]);
 //
@@ -516,9 +516,9 @@
 //         });
 //     });
 //
-//     describe('selectSliceSubrecord', function(){
+//     describe('selectSliceRule', function(){
 //       it('should select the slice subrecord', function(){
-//         $scope.selectSliceSubrecord("something");
+//         $scope.selectSliceRule("something");
 //         expect($scope.sliceSubrecord).toBe("something");
 //       });
 //     });

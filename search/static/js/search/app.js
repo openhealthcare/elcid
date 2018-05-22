@@ -38,7 +38,6 @@
         controller: 'ExtractCtrl',
         templateUrl: '/search/templates/extract.html',
         resolve: {
-          profile: function(UserProfile){ return UserProfile.load(); },
           extractQuerySchema: function(extractQuerySchemaLoader){ return extractQuerySchemaLoader.load(); },
           extractSliceSchema: function(extractSliceSchemaLoader){ return extractSliceSchemaLoader.load(); },
           extractQuery: function(){ return null; },

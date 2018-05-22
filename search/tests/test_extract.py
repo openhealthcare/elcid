@@ -56,7 +56,7 @@ class AbstractExtractTestCase(OpalTestCase):
             episodes,
             self.user
         )
-        with patch("search.extract.ExtractRule.list") as l:
+        with patch("search.extract.ExtractRule.list_rules") as l:
             l.return_value = serializers
             result = self.mock_extract(p)
 
@@ -260,10 +260,10 @@ class NestedEpisodeSubrecordTestCase(AbstractExtractTestCase):
             field_dict
         )
         self.assertEqual(
-            result[0], ['Travel Destination', 'General Notes Comment']
+            result[0], ['General Notes Comment', 'Travel Destination']
         )
         self.assertEqual(
-            result[1], ["France", "This will need to be searched"]
+            result[1], ["This will need to be searched", "France"]
         )
 
     def test_with_multiple_episode_subrecords_across_episodes(self):
@@ -290,13 +290,13 @@ class NestedEpisodeSubrecordTestCase(AbstractExtractTestCase):
             field_dict
         )
         self.assertEqual(
-            result[0], ['Travel Destination', 'General Notes Comment']
+            result[0], ['General Notes Comment', 'Travel Destination']
         )
         self.assertEqual(
-            result[1], ["France", "This will need to be searched"]
+            result[1], ["This will need to be searched", "France"]
         )
         self.assertEqual(
-            result[2], ["Germany", "This will also need to be searched"]
+            result[2], ["This will also need to be searched", "Germany"]
         )
 
     def test_with_multiple_episodes_where_some_subrecords_are_none(self):
@@ -319,13 +319,13 @@ class NestedEpisodeSubrecordTestCase(AbstractExtractTestCase):
             field_dict
         )
         self.assertEqual(
-            result[0], ['Travel Destination', 'General Notes Comment']
+            result[0], ['General Notes Comment', 'Travel Destination']
         )
         self.assertEqual(
-            result[1], ["France", ""]
+            result[1], ["", "France"]
         )
         self.assertEqual(
-            result[2], ["", "This will also need to be searched"]
+            result[2], ["This will also need to be searched", ""]
         )
 
     def test_with_some_episodes_that_are_not_required(self):
@@ -348,10 +348,10 @@ class NestedEpisodeSubrecordTestCase(AbstractExtractTestCase):
             field_dict
         )
         self.assertEqual(
-            result[0], ['Travel Destination', 'General Notes Comment']
+            result[0], ['General Notes Comment', 'Travel Destination']
         )
         self.assertEqual(
-            result[1], ["France", ""]
+            result[1], ["", "France"]
         )
         self.assertEqual(len(result), 2)
 
@@ -480,16 +480,16 @@ class NestedMixedTestCase(AbstractExtractTestCase):
         )
         self.assertEqual(
             result[0], [
-                'Allergies Drug', 'General Notes Comment', 'Episode Start'
+                'Episode Start', 'Allergies Drug', 'General Notes Comment'
             ]
         )
         self.assertEqual(
             result[1],
-            ['Penicillin', 'So this is one episode', '2018-01-03']
+            ['2018-01-03', 'Penicillin', 'So this is one episode']
         )
         self.assertEqual(
             result[2],
-            ['Penicillin', 'So this is another episode', '2018-02-03']
+            ['2018-02-03', 'Penicillin', 'So this is another episode', ]
         )
 
     def test_nested_where_some_fields_are_none(self):
@@ -519,20 +519,20 @@ class NestedMixedTestCase(AbstractExtractTestCase):
         )
         self.assertEqual(
             result[0], [
-                'Allergies Drug', 'General Notes Comment', 'Episode Start'
+                'Episode Start', 'Allergies Drug', 'General Notes Comment'
             ]
         )
         self.assertEqual(
             result[1],
-            ['Penicillin', '', '2018-01-03']
+            ['2018-01-03', 'Penicillin', '']
         )
         self.assertEqual(
             result[2],
-            ['Penicillin', 'So this is another episode', '']
+            ['', 'Penicillin', 'So this is another episode', ]
         )
         self.assertEqual(
             result[3],
-            ['Penicillin', '', '']
+            ['', 'Penicillin', '']
         )
 
     def test_nested_where_some_episodes_are_excluded(self):
@@ -567,16 +567,16 @@ class NestedMixedTestCase(AbstractExtractTestCase):
         )
         self.assertEqual(
             result[0], [
-                'Allergies Drug', 'General Notes Comment', 'Episode Start'
+                'Episode Start', 'Allergies Drug', 'General Notes Comment'
             ]
         )
         self.assertEqual(
             result[1],
-            ['Penicillin', 'So this is another episode', '']
+            ['', 'Penicillin', 'So this is another episode']
         )
         self.assertEqual(
             result[2],
-            ['Aspirin', '', '']
+            ['', 'Aspirin', '']
         )
 
 
@@ -615,7 +615,7 @@ class MultiFileCsvExtractTestCase(AbstractExtractTestCase):
         )
         result = self.get_multi_file_extract(
             models.Episode.objects.all(),
-            [extract_rules.ExtractRule.get(api_name, self.user)]
+            [extract_rules.ExtractRule.get_rule(api_name, self.user)]
         )
         general_note_fields = [
             u'Created',
@@ -646,7 +646,7 @@ class MultiFileCsvExtractTestCase(AbstractExtractTestCase):
         episode.save()
         result = self.get_multi_file_extract(
             models.Episode.objects.all(),
-            [extract_rules.ExtractRule.get("episode", self.user)]
+            [extract_rules.ExtractRule.get_rule("episode", self.user)]
         )
         expected_result = [
             '', '2018-02-01', '', '', '', '', ''
@@ -672,7 +672,7 @@ class MultiFileCsvExtractTestCase(AbstractExtractTestCase):
         )
         self.assertEqual(len(result), 2)
 
-    def test_mutli_csv_extract_for_patient_subrecords(self):
+    def test_multi_csv_extract_for_patient_subrecords(self):
         patient, _ = self.new_patient_and_episode_please()
         api_name = emodels.Allergies.get_api_name()
         allergy = emodels.Allergies.objects.create(
@@ -683,7 +683,7 @@ class MultiFileCsvExtractTestCase(AbstractExtractTestCase):
         api_name = emodels.Allergies.get_api_name()
         result = self.get_multi_file_extract(
             models.Episode.objects.all(),
-            [extract_rules.ExtractRule.get(api_name, self.user)]
+            [extract_rules.ExtractRule.get_rule(api_name, self.user)]
         )
         allergy_fields = [
             'External System',
@@ -753,8 +753,8 @@ class MultiFileCsvExtractTestCase(AbstractExtractTestCase):
         result = self.get_multi_file_extract(
             models.Episode.objects.all(),
             [
-                extract_rules.ExtractRule.get("episode", self.user),
-                extract_rules.ExtractRule.get(api_name, self.user)
+                extract_rules.ExtractRule.get_rule("episode", self.user),
+                extract_rules.ExtractRule.get_rule(api_name, self.user)
             ]
         )
         expected_result = [

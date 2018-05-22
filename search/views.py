@@ -2,6 +2,7 @@
 Opal Search views
 """
 import datetime
+import itertools
 import json
 from functools import wraps
 
@@ -47,44 +48,6 @@ class SearchTemplateView(LoginRequiredMixin, TemplateView):
     template_name = 'search/search.html'
 
 
-class ExtractQueryDescriptionView(LoginRequiredMixin, TemplateView):
-    def get_template_names(self):
-        rule = search_rules.SearchRule.get(
-            self.kwargs["rule_api_name"], self.request.user
-        )
-        field = rule.get_field(self.kwargs["field_api_name"])
-        return field.get_description_template()
-
-    def get_context_data(self, *args, **kwargs):
-        ctx = super(ExtractQueryDescriptionView, self).get_context_data(
-            *args, **kwargs
-        )
-        ctx["rule"] = search_rules.SearchRule.get(
-            self.kwargs["rule_api_name"], self.request.user
-        )
-        ctx["field"] = ctx["rule"].get_field(self.kwargs["field_api_name"])
-        return ctx
-
-
-class ExtractSliceDescriptionView(LoginRequiredMixin, TemplateView):
-    def get_template_names(self):
-        rule = extract_rules.ExtractRule.get(
-            self.kwargs["rule_api_name"], self.request.user
-        )
-        field = rule.get_field(self.kwargs["field_api_name"])
-        return field.get_description_template()
-
-    def get_context_data(self, *args, **kwargs):
-        ctx = super(ExtractSliceDescriptionView, self).get_context_data(
-            *args, **kwargs
-        )
-        ctx["rule"] = extract_rules.ExtractRule.get(
-            self.kwargs["rule_api_name"], self.request.user
-        )
-        ctx["field"] = ctx["rule"].get_field(self.kwargs["field_api_name"])
-        return ctx
-
-
 class ExtractTemplateView(LoginRequiredMixin, TemplateView):
     template_name = 'search/extract.html'
 
@@ -102,31 +65,34 @@ class ExtractTemplateView(LoginRequiredMixin, TemplateView):
 
         search_descriptions = []
 
-        rules = search_rules.SearchRule.list(
+        rules = search_rules.SearchRule.list_rules(
             self.request.user
         )
 
         for rule in rules:
             for field in rule.get_fields():
                 search_descriptions.append(
-                    (rule, field, field.get_description_template_url(rule),)
+                    (rule, field, field.get_description_template(),)
                 )
 
         ctx["search_descriptions"] = search_descriptions
 
         extract_descriptions = []
 
-        rules = extract_rules.ExtractRule.list(
+        rules = extract_rules.ExtractRule.list_rules(
             self.request.user
         )
 
         for rule in rules:
-            for field in rule.get_fields():
+            for field in rule.get_fields_for_schema():
                 extract_descriptions.append(
-                    (rule, field, field.get_description_template_url(rule),)
+                    (rule, field, field.get_description_template(),)
                 )
 
         ctx["extract_descriptions"] = extract_descriptions
+        ctx["description_templates"] = set(i[2] for i in itertools.chain(
+            ctx["search_descriptions"], ctx["extract_descriptions"]
+        ))
 
         pd = self.request.user.profile.roles.filter(
             name=constants.EXTRACT_PERSONAL_DETAILS

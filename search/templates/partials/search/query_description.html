@@ -1,10 +1,10 @@
-<span ng-hide="extractQuery.completeCriteria().length">
+<span ng-hide="completeCriteria().length">
   <h4>Please enter a query</h4>
 </span>
-<span ng-show="extractQuery.completeCriteria().length">
+<span ng-show="completeCriteria().length">
   <h4>Your Criteria</h4>
   Find patients where the
-  <span ng-repeat="query in extractQuery.completeCriteria()">
+  <span ng-repeat="query in completeCriteria()">
     {% for description in widget_descriptions %}
       <span ng-if="extractQuerySchema.findField(query.rule, query.field).widget_description === '{{ description }}'">
         {% include description %}

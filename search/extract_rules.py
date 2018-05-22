@@ -1,8 +1,8 @@
 from six import text_type
-from django.core.urlresolvers import reverse
 from opal.core import discoverable
 from opal import models
 from opal.core import subrecords
+from opal.core import fields
 from elcid import models as emodels
 from search import subrecord_discoverable
 from search.exceptions import SearchException
@@ -10,7 +10,7 @@ from search import constants
 
 
 class CsvFieldWrapper(subrecord_discoverable.SubrecordFieldWrapper):
-    description_template = "partials/search/rule_description.html"
+    description_template = None
     required = False
 
     def extract(self, obj):
@@ -18,9 +18,6 @@ class CsvFieldWrapper(subrecord_discoverable.SubrecordFieldWrapper):
         if result is None:
             return ""
         return result
-
-    def get_description_template(self):
-        return self.description_template
 
     def to_dict(self):
         as_dict = super(CsvFieldWrapper, self).to_dict()
@@ -30,11 +27,35 @@ class CsvFieldWrapper(subrecord_discoverable.SubrecordFieldWrapper):
     def get_required(self):
         return self.required
 
-    def get_description_template_url(self, rule):
-        return reverse('extract_slice_description', kwargs=dict(
-            rule_api_name=rule.get_api_name(),
-            field_api_name=self.get_name()
-        ))
+    def get_description_template(self):
+        if self.description_template:
+            return self.description_template
+
+        if self.field and subrecord_discoverable.is_boolean(self.field):
+            return "search/field_descriptions/boolean.html"
+
+        if self.field and subrecord_discoverable.is_date_time_field(
+            self.field
+        ):
+            return "search/field_descriptions/date_time.html"
+
+        if self.field and subrecord_discoverable.is_text(
+            self.field
+        ):
+            return "search/field_descriptions/text.html"
+
+        if self.field and fields.is_numeric(
+            self.field
+        ):
+            return "search/field_descriptions/number.html"
+
+        if self.field and subrecord_discoverable.is_date_field(self.field):
+            return "search/field_descriptions/date.html"
+
+        if self.field and subrecord_discoverable.is_text(self.field):
+            return "search/field_descriptions/text.html"
+
+        return "search/field_descriptions/generic.html"
 
 
 class EpisodeIdForPatientSubrecord(CsvFieldWrapper):
@@ -53,11 +74,37 @@ class PatientIdForEpisodeSubrecord(CsvFieldWrapper):
         return obj.patient.id
 
 
+class UpdatedByField(CsvFieldWrapper):
+    display_name = "Updated By"
+    field_name = "updated_by_id"
+
+    def extract(self, obj):
+        if obj.updated_by:
+            return obj.updated_by.username
+        return ""
+
+    def get_description_template(self):
+        return "search/field_descriptions/changed_by.html"
+
+
+class CreatedByField(CsvFieldWrapper):
+    display_name = "Created By"
+    field_name = "created_by_id"
+
+    def extract(self, obj):
+        if obj.created_by:
+            return obj.created_by.username
+        return ""
+
+    def get_description_template(self):
+        return "search/field_descriptions/changed_by.html"
+
+
 class ExtractRule(
     subrecord_discoverable.SubrecordDiscoverableMixin,
     discoverable.DiscoverableFeature,
 ):
-    module_name = 'extract_rule_description'
+    module_name = 'extract_rules'
 
     def get_model_fields(self):
         if self.user.profile.roles.filter(
@@ -102,6 +149,10 @@ class ExtractRule(
         return (i for i in fields if i.get_name() not in to_exclude)
 
     def cast_field_name_to_attribute(self, str):
+        if str == "created_by_id":
+            return CreatedByField(self.user, self.model, str)
+        elif str == "updated_by_id":
+            return UpdatedByField(self.user, self.model, str)
         return CsvFieldWrapper(self.user, self.model, str)
 
 
@@ -110,7 +161,8 @@ class EpisodeTeamExtractField(CsvFieldWrapper):
     description = "The team(s) related to an episode of care"
     type = "many_to_many"
     type_display_name = "Text Field"
-    field_name = "Team"
+    field_name = "team"
+    description_template = "search/field_descriptions/episode/team.html"
 
     def extract(self, obj):
         return text_type(";".join(
@@ -118,11 +170,24 @@ class EpisodeTeamExtractField(CsvFieldWrapper):
         ))
 
 
+class EpisodeStartExtractField(CsvFieldWrapper):
+    field_name = "start"
+    description_template = "search/field_descriptions/date.html"
+    model = models.Episode
+
+
+class EpisodeEndExtractField(CsvFieldWrapper):
+    field_name = "end"
+    description_template = "search/field_descriptions/date.html"
+    model = models.Episode
+
+
 class EpisodeExtractRule(ExtractRule):
+    order = 1
     fields = [
         EpisodeTeamExtractField,
-        "start",
-        "end",
+        EpisodeStartExtractField,
+        EpisodeEndExtractField,
         "created",
         "updated",
         "created_by_id",
@@ -155,7 +220,8 @@ class DemographicsDateOfBirthField(CsvFieldWrapper):
     required = True
 
 
-class DemographicsSerializer(ExtractRule):
+class DemographicsExtractRule(ExtractRule):
+    order = 2
     slug = emodels.Demographics.get_api_name()
     model = emodels.Demographics
     field_sex = DemographicsSexField

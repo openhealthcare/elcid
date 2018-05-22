@@ -612,7 +612,7 @@ and Hound Owner Hound contains jeff
             def query(self, given_query):
                 pass
 
-        with patch.object(SearchRule, "get") as search_rule_get:
+        with patch.object(SearchRule, "get_rule") as search_rule_get:
             with patch.object(HatWearerQuery, "query") as hat_wearer_query:
                 search_rule_get.return_value = HatWearerQuery
                 query = queries.DatabaseQuery(self.user, criteria)

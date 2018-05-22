@@ -41,3 +41,8 @@
       </div>
       </div> <!-- Row -->
   </div>
+  {% for description_template in description_templates %}
+    <script type="text/ng-template" id="/{{ description_template }}">
+      {% include description_template %}
+    </script>
+  {% endfor %}

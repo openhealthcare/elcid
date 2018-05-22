@@ -1,7 +1,9 @@
 from functools import wraps
+import itertools
 from opal.core import subrecords
 from opal.core import fields
 from search.exceptions import SearchException
+from django.db import models as djangomodels
 
 
 def get_locally_or_defer(field_name):
@@ -19,6 +21,54 @@ def get_locally_or_defer(field_name):
             return some_fun(self)
         return func_wrapper
     return under_wrap
+
+
+def is_boolean(some_field):
+    return isinstance(
+        some_field, (djangomodels.BooleanField, djangomodels.NullBooleanField,)
+    )
+
+
+def is_text(some_field):
+    return isinstance(
+        some_field, (djangomodels.TextField, djangomodels.CharField,)
+    )
+
+
+def is_date_field(some_field):
+    return isinstance(
+        some_field, (djangomodels.DateField, djangomodels.DateTimeField,)
+    )
+
+
+def is_date_time_field(some_field):
+    return isinstance(
+        some_field, djangomodels.DateTimeField
+    )
+
+
+def is_time_field(some_field):
+    return isinstance(
+        some_field, djangomodels.TimeField
+    )
+
+
+def is_many_to_many_field(some_field):
+    return isinstance(
+        some_field, djangomodels.ManyToManyField
+    )
+
+
+def is_foreign_key_or_free_text(some_field):
+    return isinstance(
+        some_field, fields.ForeignKeyOrFreeText
+    )
+
+
+def is_select(some_field):
+    return isinstance(
+        some_field, djangomodels.ForeignKey
+    )
 
 
 class SubrecordFieldWrapper(object):
@@ -49,10 +99,12 @@ class SubrecordFieldWrapper(object):
     @property
     def field(self):
         if isinstance(
-            getattr(self.model, self.field_name), fields.ForeignKeyOrFreeText
+            getattr(self.model, self.field_name, None),
+            fields.ForeignKeyOrFreeText
         ):
             return getattr(self.model, self.field_name)
-        return self.model._meta.get_field(self.field_name)
+        if self.model:
+            return self.model._meta.get_field(self.field_name)
 
     def to_dict(self):
         if self.model:
@@ -158,6 +210,10 @@ class SubrecordDiscoverableMixin(object):
     include_in_schema = True
     slug = None
 
+    # defines the order used by list, otherwise gets added to the end
+    # alphabetically
+    order = None
+
     # set this to True if you want it to be excluded
     # from the list, for example if the model should not be
     # searchable
@@ -176,26 +232,44 @@ class SubrecordDiscoverableMixin(object):
         return "{}: {}".format(self.__class__, self.get_display_name())
 
     @classmethod
-    def get(cls, slug, user):
-        for field in cls.list(user):
+    def get_rule(cls, slug, user):
+        for field in cls.list_rules(user):
             if field.get_api_name() == slug:
                 return field
 
     @classmethod
-    def list(klass, user):
+    def sort_rules(klass, rules):
+        ordered = []
+        alphabetical = []
+
+        for i in rules:
+            if i.order:
+                ordered.append(i)
+            else:
+                alphabetical.append(i)
+
+        ordered = sorted(ordered, key=lambda x: x.order)
+        alphabetical = sorted(alphabetical, key=lambda x: x.get_display_name())
+        return itertools.chain(ordered, alphabetical)
+
+    @classmethod
+    def list_rules(klass, user):
         declared_classes = super(SubrecordDiscoverableMixin, klass).list()
         declared_slugs = set()
+        result = []
 
         for declared_class in declared_classes:
             declared_slugs.add(declared_class.get_slug())
-            if declared_class.exclude:
+            declared_instance = declared_class(user)
+            if declared_instance.exclude:
                 continue
             else:
-                yield declared_class(user)
+                result.append(declared_instance)
 
         for subrecord in subrecords.subrecords():
             if subrecord.get_api_name() not in declared_slugs:
-                yield klass(user, subrecord)
+                result.append(klass(user, subrecord))
+        return klass.sort_rules(result)
 
     def cast_field_name_to_attribute(self, str):
         if not self.attribute_cls:
@@ -275,10 +349,7 @@ class SubrecordDiscoverableMixin(object):
 
     @classmethod
     def get_schemas(cls, user):
-        return sorted(
-            (i.get_schema() for i in cls.list(user)),
-            key=lambda x: x["display_name"]
-        )
+        return [i.get_schema() for i in cls.list_rules(user)]
 
     def get_fields_for_schema(self):
         """ Whether this field should appear in the schema
