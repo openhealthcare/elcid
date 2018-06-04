@@ -23,7 +23,7 @@ class Demographics(omodels.Demographics, omodels.ExternallySourcedModel):
     _icon = 'fa fa-user'
 
     pid_fields       = (
-        'hospital_number', 'nhs_number', 'surname', 'first_name',
+        'nhs_number', 'surname', 'first_name',
         'middle_name', 'post_code',
     )
 
