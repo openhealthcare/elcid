@@ -208,11 +208,6 @@ angular.module('opal.controllers').controller( 'ExtractCtrl',
         });
     };
 
-    $scope.jumpToFilter = function($event, filter){
-        $event.preventDefault();
-        $scope.extractQuery.criteria = filter.criteria;
-    };
-
     $scope.editFilter = function($event, filter, $index){
       $event.preventDefault();
       var modal = $modal.open({
