@@ -2,7 +2,8 @@ angular.module('opal.controllers').controller( 'ExtractCtrl',
   function(
     $scope, $http, $window, $modal, $timeout, $location, $anchorScroll,
     PatientSummary, Paginator, referencedata, ngProgressLite,
-    extractQuerySchema, extractSliceSchema, ExtractQuery, extractQuery
+    extractQuerySchema, extractSliceSchema, ExtractQuery, extractQuery,
+    underscoreToSpacesFilter, titleFilter
   ){
     "use strict";
 
@@ -74,6 +75,10 @@ angular.module('opal.controllers').controller( 'ExtractCtrl',
         var field = $scope.extractQuerySchema.findField(query.rule, query.field);
         $scope.extractQueryInfo = field;
       }
+    };
+
+    $scope.lookupListDisplayName = function(lookupList){
+      return titleFilter(underscoreToSpacesFilter(lookupList));
     };
 
     $scope.resetFilter = function(query, fieldsTypes){
