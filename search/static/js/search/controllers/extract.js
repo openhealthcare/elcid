@@ -3,7 +3,7 @@ angular.module('opal.controllers').controller( 'ExtractCtrl',
     $scope, $http, $window, $modal, $timeout, $location, $anchorScroll,
     PatientSummary, Paginator, referencedata, ngProgressLite,
     ExtractQuery, extractQuerySchema, extractSliceSchema,
-    underscoreToSpacesFilter, titleFilter, extractQuery,
+    underscoreToSpacesFilter, titleFilter, extractQuery
   ){
     "use strict";
 
@@ -211,11 +211,6 @@ angular.module('opal.controllers').controller( 'ExtractCtrl',
             $scope.extract_id = result.data.extract_id;
             ping_until_success();
         });
-    };
-
-    $scope.jumpToFilter = function($event, filter){
-        $event.preventDefault();
-        $scope.extractQuery.criteria = filter.criteria;
     };
 
     $scope.editFilter = function($event, filter, $index){

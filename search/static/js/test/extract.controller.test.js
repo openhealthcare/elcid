@@ -89,6 +89,7 @@ describe('ExtractCtrl', function(){
 
 
     beforeEach(function(){
+        module('opal.filters');
         module('opal.controllers');
         inject(function($injector){
 
@@ -431,17 +432,6 @@ describe('ExtractCtrl', function(){
         });
     });
 
-    describe('jumpToFilter()', function() {
-
-        it('should reset the criteria', function() {
-            var mock_default = jasmine.createSpy();
-            var mock_event = {preventDefault: mock_default};
-            $scope.jumpToFilter(mock_event, {criteria: []});
-            expect($scope.extractQuery.criteria).toEqual([]);
-            expect(mock_default).toHaveBeenCalledWith();
-        });
-    });
-
     describe('selectSliceRule', function(){
       it('should select the slice subrecord', function(){
         $scope.selectSliceRule("something");
@@ -455,4 +445,12 @@ describe('ExtractCtrl', function(){
         expect($scope.extractSliceInfo).toBe("something");
       });
     });
+
+    // describe('lookupListDisplayName', function(){
+    //   it("should generate a lookup list display name", function(){
+    //     expect($scope.lookupListDisplayName("contact_details")).toBe(
+    //       "Contact Details"
+    //     );
+    //   });
+    // });
 });
