@@ -145,7 +145,7 @@ class SubrecordFieldWrapper(object):
     def get_display_name(self):
         return self.model._get_field_title(self.field_name)
 
-    @get_locally_or_defer("display_name")
+    @get_locally_or_defer("icon")
     def get_icon(self):
         if self.model and hasattr(self.model, "get_icon"):
             return self.model.get_icon()
