@@ -431,17 +431,6 @@ describe('ExtractCtrl', function(){
         });
     });
 
-    describe('jumpToFilter()', function() {
-
-        it('should reset the criteria', function() {
-            var mock_default = jasmine.createSpy();
-            var mock_event = {preventDefault: mock_default};
-            $scope.jumpToFilter(mock_event, {criteria: []});
-            expect($scope.extractQuery.criteria).toEqual([]);
-            expect(mock_default).toHaveBeenCalledWith();
-        });
-    });
-
     describe('selectSliceRule', function(){
       it('should select the slice subrecord', function(){
         $scope.selectSliceRule("something");
