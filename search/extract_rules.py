@@ -7,6 +7,7 @@ from elcid import models as emodels
 from search import subrecord_discoverable
 from search.exceptions import SearchException
 from search import constants
+from search import search_rules
 
 
 class CsvFieldWrapper(subrecord_discoverable.SubrecordFieldWrapper):
@@ -206,6 +207,10 @@ class EpisodeExtractRule(ExtractRule):
 class ResultSerializer(ExtractRule):
     exclude = True
     slug = emodels.Result.get_api_name()
+
+
+class LocationRule(search_rules.AbstractLocationMixin, ExtractRule):
+    pass
 
 
 class DemographicsSexField(CsvFieldWrapper):
