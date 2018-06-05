@@ -36,7 +36,6 @@ class SearchRuleFieldTestCase(OpalTestCase):
             enum=[1, 2, 3],
             query_args=['value', 'query_type'],
             name="some_slug",
-            icon='custom field you know',
             widget='some_widget.html',
             widget_description='partials/search/descriptions/widget_description.html',
             display_name='custom field you know',
