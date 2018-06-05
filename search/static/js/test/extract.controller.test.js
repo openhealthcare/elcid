@@ -100,8 +100,6 @@ describe('ExtractCtrl', function(){
             $modal       = $injector.get('$modal');
             $timeout     = $injector.get('$timeout');
             PatientSummary = $injector.get('PatientSummary');
-
-
             $controller  = $injector.get('$controller');
             ExtractSchema = $injector.get('ExtractSchema');
         });
@@ -446,11 +444,11 @@ describe('ExtractCtrl', function(){
       });
     });
 
-    // describe('lookupListDisplayName', function(){
-    //   it("should generate a lookup list display name", function(){
-    //     expect($scope.lookupListDisplayName("contact_details")).toBe(
-    //       "Contact Details"
-    //     );
-    //   });
-    // });
+    describe('lookupListDisplayName', function(){
+      it("should generate a lookup list display name", function(){
+        expect($scope.lookupListDisplayName("contact_details")).toBe(
+          "Contact Details"
+        );
+      });
+    });
 });
