@@ -34,20 +34,24 @@
             {{ field.get_type_display_name }}
           </td>
           <td class="col-md-5">
-            {% if field.get_lookup_list %}
-              {% if data_dictionary.in_page %}
-                Normally coded as a
-                <a href=""
-                   class="orange-link"
-                   ng-click="open_modal('LookupListReferenceCtrl', '/templates/modals/lookuplist_reference.html', {lookuplist_name: '{{ field.get_lookup_list }}', lookuplist: referencedata.get('{{ field.get_lookup_list }}')})">
-                   {{ field.get_lookup_list_display_name }}
-                </a>
-                but free text entries are possible.
-              {% else %}
-                Normally coded as a {{ field.get_lookup_list_display_name }} but free text entries are possible.
+            {% if field.get_data_dictionary_description_template %}
+              {% include field.get_data_dictionary_description_template %}
+            {% else %}
+              {% if field.get_lookup_list %}
+                {% if data_dictionary.in_page %}
+                  Normally coded as a
+                  <a href=""
+                     class="orange-link"
+                     ng-click="open_modal('LookupListReferenceCtrl', '/templates/modals/lookuplist_reference.html', {lookuplist_name: '{{ field.get_lookup_list }}', lookuplist: referencedata.get('{{ field.get_lookup_list }}')})">
+                     {{ field.get_lookup_list_display_name }}
+                  </a>
+                  but free text entries are possible.
+                {% else %}
+                  Normally coded as a {{ field.get_lookup_list_display_name }} but free text entries are possible.
+                {% endif %}
               {% endif %}
+              {{ field.get_description | default_if_none:"" }}
             {% endif %}
-            {{ field.get_description | default_if_none:"" }}
           </td>
         </tr>
         {% endfor %}

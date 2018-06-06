@@ -146,6 +146,7 @@ class EpisodeSearchRule(SearchRule):
     model = models.Episode
     fields = (
         search_rule_fields.EpisodeTeam,
+        search_rule_fields.EpisodeCategory,
         search_rule_fields.EpisodeStart,
         search_rule_fields.EpisodeEnd
     )

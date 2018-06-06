@@ -96,10 +96,13 @@ class EpisodeTestBase(OpalTestCase):
             fields[2].get_name(), "team"
         )
         self.assertEqual(
-            fields[3].get_name(), "start"
+            fields[3].get_name(), "category_name"
         )
         self.assertEqual(
-            fields[4].get_name(), "end"
+            fields[4].get_name(), "start"
+        )
+        self.assertEqual(
+            fields[5].get_name(), "end"
         )
 
     def test_get_fields_for_schema(self):

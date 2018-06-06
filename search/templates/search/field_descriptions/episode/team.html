@@ -10,5 +10,11 @@
     <strong>[[ info.display_name ]]
     </strong>
   </div>
-  The team(s) related to an episode of care
+  The
+  <a href=""
+   class="orange-link"
+   ng-click="open_modal('LookupListReferenceCtrl', '/templates/modals/lookuplist_reference.html', {lookuplist_name: 'Teams', lookuplist: extractSliceSchema.findField('episode', 'team').enum})">
+   teams
+  </a>
+  related to an episode of care
 </div>

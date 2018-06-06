@@ -1,0 +1,11 @@
+The
+{% if data_dictionary.in_page %}
+  <a href=""
+     class="orange-link"
+     ng-click="open_modal('LookupListReferenceCtrl', '/templates/modals/lookuplist_reference.html', {lookuplist_name: 'Teams', lookuplist: extractSliceSchema.findField('episode', 'team').enum})">
+     teams
+  </a>
+{% else %}
+  teams
+{% endif %}
+ related to an episode of care
