@@ -24,24 +24,24 @@ class AbstractExtractTestCase(OpalTestCase):
     @patch("search.extract.write_data_dictionary")
     def mock_extract(
         self,
-        generate_nested_csv_extract,
+        generate_flat_csv_extract,
         write_data_dictionary,
         writer
     ):
-        """ Mocks up the nested extract so that there
+        """ Mocks up the flat extract so that there
             are no side effects, pass through a partial
             of the call you want to test, get back
             what is written to csv_writer.write_row
         """
         m = mock_open()
         with patch(MOCKING_FILE_NAME_OPEN, m, create=True):
-            generate_nested_csv_extract()
+            generate_flat_csv_extract()
         call_args = writer().writerow.call_args_list
         return [i[0][0] for i in call_args]
 
-    def get_nested_extract(self, episodes, field_dict):
+    def get_flat_row(self, episodes, field_dict):
         p = partial(
-            extract.generate_nested_csv_extract,
+            extract.generate_flat_csv_extract,
             "",  # not used
             episodes,
             self.user,
@@ -76,24 +76,24 @@ class AbstractExtractTestCase(OpalTestCase):
         return call_args[0][0]
 
 
-class NestedEpisodeTestCase(AbstractExtractTestCase):
-    def test_nested_csv_extract_episode_start(self):
+class FlatEpisodeTestCase(AbstractExtractTestCase):
+    def test_flat_csv_extract_episode_start(self):
         """ A simple initial test that just
             says, give me all episode start dates
         """
         _, episode = self.new_patient_and_episode_please()
         episode.start = datetime.date(2018, 2, 1)
         episode.save()
-        result = self.get_nested_extract(
+        result = self.get_flat_row(
             models.Episode.objects.all(),
             {"episode": ["start"]}
         )
         self.assertEqual(result[0], ["Episode Start"])
         self.assertEqual(result[1], ["2018-02-01"])
 
-    def test_nested_csv_extract_without_episode_start(self):
+    def test_flat_csv_extract_without_episode_start(self):
         _, _ = self.new_patient_and_episode_please()
-        result = self.get_nested_extract(
+        result = self.get_flat_row(
             models.Episode.objects.all(),
             {"episode": ["start"]}
         )
@@ -101,10 +101,10 @@ class NestedEpisodeTestCase(AbstractExtractTestCase):
         self.assertEqual(result[1], [""])
 
 
-class NestedEpisodeSubrecordTestCase(AbstractExtractTestCase):
+class FlatEpisodeSubrecordTestCase(AbstractExtractTestCase):
 
-    def test_nested_csv_extract(self):
-        """ a nested subrecord with an episode subrecord
+    def test_flat_csv_extract(self):
+        """ a flat subrecord with an episode subrecord
         """
         field_dict = {
             emodels.GeneralNote.get_api_name(): ["comment"]
@@ -113,14 +113,14 @@ class NestedEpisodeSubrecordTestCase(AbstractExtractTestCase):
         emodels.GeneralNote.objects.create(
             episode=episode, comment="This will need to be searched"
         )
-        result = self.get_nested_extract(
+        result = self.get_flat_row(
             models.Episode.objects.all(),
             field_dict
         )
         self.assertEqual(result[0], ["General Notes Comment"])
         self.assertEqual(result[1], ["This will need to be searched"])
 
-    def test_nested_csv_extract_multi_field(self):
+    def test_flat_csv_extract_multi_field(self):
         field_dict = {
             emodels.GeneralNote.get_api_name(): ["comment", "date"]
         }
@@ -130,7 +130,7 @@ class NestedEpisodeSubrecordTestCase(AbstractExtractTestCase):
             comment="This will need to be searched",
             date=datetime.date(2018, 2, 1)
         )
-        result = self.get_nested_extract(
+        result = self.get_flat_row(
             models.Episode.objects.all(),
             field_dict
         )
@@ -143,7 +143,7 @@ class NestedEpisodeSubrecordTestCase(AbstractExtractTestCase):
             ["This will need to be searched", "2018-02-01"]
         )
 
-    def test_nested_csv_extract_multiple_episode_subrecords_same_episode(self):
+    def test_flat_csv_extract_multiple_episode_subrecords_same_episode(self):
         field_dict = {
             emodels.GeneralNote.get_api_name(): ["comment"]
         }
@@ -154,7 +154,7 @@ class NestedEpisodeSubrecordTestCase(AbstractExtractTestCase):
         emodels.GeneralNote.objects.create(
             episode=episode, comment="This will also need to be searched"
         )
-        result = self.get_nested_extract(
+        result = self.get_flat_row(
             models.Episode.objects.all(),
             field_dict
         )
@@ -183,7 +183,7 @@ class NestedEpisodeSubrecordTestCase(AbstractExtractTestCase):
         expected = [
             b"\xc5\xa0\xc4\x90\xc4\x86\xc5\xbd\xc4\x87\xc5\xbe\xc5\xa1\xc4\x91"
         ]
-        result = self.get_nested_extract(
+        result = self.get_flat_row(
             models.Episode.objects.all(),
             field_dict
         )
@@ -209,7 +209,7 @@ class NestedEpisodeSubrecordTestCase(AbstractExtractTestCase):
         field_dict = {
             emodels.PastMedicalHistory.get_api_name(): ["condition"]
         }
-        result = self.get_nested_extract(
+        result = self.get_flat_row(
             models.Episode.objects.all(),
             field_dict
         )
@@ -232,7 +232,7 @@ class NestedEpisodeSubrecordTestCase(AbstractExtractTestCase):
         field_dict = {
             emodels.PastMedicalHistory.get_api_name(): ["condition"]
         }
-        result = self.get_nested_extract(
+        result = self.get_flat_row(
             models.Episode.objects.all(),
             field_dict
         )
@@ -255,7 +255,7 @@ class NestedEpisodeSubrecordTestCase(AbstractExtractTestCase):
         emodels.Travel.objects.create(
             episode=episode, destination_ft="France"
         )
-        result = self.get_nested_extract(
+        result = self.get_flat_row(
             models.Episode.objects.all(),
             field_dict
         )
@@ -285,7 +285,7 @@ class NestedEpisodeSubrecordTestCase(AbstractExtractTestCase):
         emodels.Travel.objects.create(
             episode=episode_2, destination_ft="Germany"
         )
-        result = self.get_nested_extract(
+        result = self.get_flat_row(
             models.Episode.objects.all(),
             field_dict
         )
@@ -314,7 +314,7 @@ class NestedEpisodeSubrecordTestCase(AbstractExtractTestCase):
             episode=episode_2, comment="This will also need to be searched"
         )
 
-        result = self.get_nested_extract(
+        result = self.get_flat_row(
             models.Episode.objects.all(),
             field_dict
         )
@@ -343,7 +343,7 @@ class NestedEpisodeSubrecordTestCase(AbstractExtractTestCase):
             episode=episode_2, comment="This will also need to be searched"
         )
 
-        result = self.get_nested_extract(
+        result = self.get_flat_row(
             models.Episode.objects.exclude(id=episode_2.id),
             field_dict
         )
@@ -356,7 +356,7 @@ class NestedEpisodeSubrecordTestCase(AbstractExtractTestCase):
         self.assertEqual(len(result), 2)
 
 
-class NestedPatientSubrecordTestCase(AbstractExtractTestCase):
+class FlatPatientSubrecordTestCase(AbstractExtractTestCase):
     def test_with_a_single_patient(self):
         patient, _ = self.new_patient_and_episode_please()
         field_dict = {
@@ -366,7 +366,7 @@ class NestedPatientSubrecordTestCase(AbstractExtractTestCase):
             drug_ft="Penicillin", patient=patient
         )
 
-        result = self.get_nested_extract(
+        result = self.get_flat_row(
             models.Episode.objects.all(),
             field_dict
         )
@@ -387,7 +387,7 @@ class NestedPatientSubrecordTestCase(AbstractExtractTestCase):
             drug_ft="Penicillin", patient=patient
         )
 
-        result = self.get_nested_extract(
+        result = self.get_flat_row(
             models.Episode.objects.all(),
             field_dict
         )
@@ -411,7 +411,7 @@ class NestedPatientSubrecordTestCase(AbstractExtractTestCase):
             drug_ft="Penicillin", patient=patient
         )
 
-        result = self.get_nested_extract(
+        result = self.get_flat_row(
             models.Episode.objects.exclude(id=episode.id),
             field_dict
         )
@@ -435,7 +435,7 @@ class NestedPatientSubrecordTestCase(AbstractExtractTestCase):
             drug_ft="Aspirin", patient=patient_2
         )
 
-        result = self.get_nested_extract(
+        result = self.get_flat_row(
             models.Episode.objects.all(),
             field_dict
         )
@@ -450,8 +450,8 @@ class NestedPatientSubrecordTestCase(AbstractExtractTestCase):
         )
 
 
-class NestedMixedTestCase(AbstractExtractTestCase):
-    def test_nested_episode_and_patient_subrecords(self):
+class FlatMixedTestCase(AbstractExtractTestCase):
+    def test_flat_episode_and_patient_subrecords(self):
         patient, episode_1 = self.new_patient_and_episode_please()
         episode_1.start = datetime.date(2018, 01, 03)
         episode_1.save()
@@ -474,7 +474,7 @@ class NestedMixedTestCase(AbstractExtractTestCase):
             episode=episode_2, comment="So this is another episode"
         )
 
-        result = self.get_nested_extract(
+        result = self.get_flat_row(
             models.Episode.objects.all(),
             field_dict
         )
@@ -492,7 +492,7 @@ class NestedMixedTestCase(AbstractExtractTestCase):
             ['2018-02-03', 'Penicillin', 'So this is another episode', ]
         )
 
-    def test_nested_where_some_fields_are_none(self):
+    def test_flat_where_some_fields_are_none(self):
         patient, episode_1 = self.new_patient_and_episode_please()
         episode_1.start = datetime.date(2018, 01, 03)
         episode_1.save()
@@ -513,7 +513,7 @@ class NestedMixedTestCase(AbstractExtractTestCase):
             episode=episode_2, comment="So this is another episode"
         )
 
-        result = self.get_nested_extract(
+        result = self.get_flat_row(
             models.Episode.objects.all(),
             field_dict
         )
@@ -535,7 +535,7 @@ class NestedMixedTestCase(AbstractExtractTestCase):
             ['', 'Penicillin', '']
         )
 
-    def test_nested_where_some_episodes_are_excluded(self):
+    def test_flat_where_some_episodes_are_excluded(self):
         patient_1, episode_1 = self.new_patient_and_episode_please()
         episode_1.start = datetime.date(2018, 01, 03)
         episode_1.save()
@@ -557,7 +557,7 @@ class NestedMixedTestCase(AbstractExtractTestCase):
             drug_ft="Aspirin", patient=patient_2
         )
 
-        result = self.get_nested_extract(
+        result = self.get_flat_row(
             models.Episode.objects.exclude(id=episode_1.id),
             field_dict
         )
@@ -580,7 +580,7 @@ class NestedMixedTestCase(AbstractExtractTestCase):
         )
 
 
-class NotAdvancedSearchableNestedTestCase(AbstractExtractTestCase):
+class NotAdvancedSearchableFlatTestCase(AbstractExtractTestCase):
     @patch.object(emodels.PrimaryDiagnosis, "_get_fieldnames_to_extract")
     def test_excludes_not_advanced_searchable_fields(self, gfe):
         gfe.return_value = ["condition"]
@@ -594,7 +594,7 @@ class NotAdvancedSearchableNestedTestCase(AbstractExtractTestCase):
         primary_diagnosis.condition = "cough"
         primary_diagnosis.save()
         with self.assertRaises(SearchException) as se:
-            self.get_nested_extract(
+            self.get_flat_row(
                 models.Episode.objects.all(),
                 field_dict
             )
@@ -877,7 +877,7 @@ class ZipArchiveTestCase(OpalTestCase):
             set(['data_dictionary.html', 'episode.csv', 'query.txt'])
         )
 
-    def test_nested_extract_called(self):
+    def test_flat_extract_called(self):
         fields = dict(episode=["start"])
         file_names = self.get_zip_archive(models.Episode.objects.all(), fields)
         self.assertEqual(3, len(file_names))

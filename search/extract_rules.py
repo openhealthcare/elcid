@@ -233,6 +233,6 @@ class DemographicsExtractRule(ExtractRule):
     field_date_of_birth = DemographicsDateOfBirthField
 
 
-class DuplicatePatientQuery(ExtractRule):
+class DuplicatePatientExtractRule(ExtractRule):
     exclude = True
     slug = emodels.DuplicatePatient.get_api_name()
