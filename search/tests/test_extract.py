@@ -922,3 +922,32 @@ class AsyncExtractTestCase(OpalTestCase):
     def test_async(self, delay):
         extract.async_extract(self.user, 'THIS')
         delay.assert_called_with(self.user, 'THIS')
+
+
+class ChunkListTestCase(OpalTestCase):
+    def test_chunk_list(self):
+        columns = [i for i in range(43)]
+        result = list(extract.chunk_list(columns, 6))
+        self.assertEqual(len(result), 6)
+        all_columns = 0
+        for column in result:
+            all_columns = all_columns + len(column)
+
+        expanded_columns = []
+        for r in result:
+            expanded_columns = expanded_columns + r
+        self.assertEqual(expanded_columns, columns)
+
+    def test_chunk_list_small(self):
+        columns = [i for i in range(4)]
+        result = list(extract.chunk_list(columns, 3))
+        self.assertEqual(len(result), 3)
+        self.assertEqual(result[0], [0, 1])
+        self.assertEqual(result[1], [2])
+        self.assertEqual(result[2], [3])
+
+    def test_chunk_list_exact(self):
+        columns = [i for i in range(4)]
+        result = list(extract.chunk_list(columns, 2))
+        self.assertEqual(result[0], [0, 1])
+        self.assertEqual(result[1], [2, 3])
