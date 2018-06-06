@@ -104,6 +104,15 @@ class ExtractRule(
 ):
     module_name = 'extract_rules'
 
+    FIELDS_TO_IGNORE = {
+        "id",
+        "created",
+        "updated",
+        "created_by_id",
+        "updated_by_id",
+        "consistency_token",
+    }
+
     def get_model_fields(self):
         if self.user.profile.roles.filter(
             name=constants.EXTRACT_PERSONAL_DETAILS
@@ -112,10 +121,10 @@ class ExtractRule(
         else:
             field_names = self.model._get_fieldnames_to_extract()
 
-        if "consistency_token" in field_names:
-            field_names.remove("consistency_token")
-        if "id" in field_names:
-            field_names.remove("id")
+        field_names = [
+            i for i in field_names if i not in self.FIELDS_TO_IGNORE
+        ]
+
         return field_names
 
     def get_fields(self):
@@ -219,10 +228,6 @@ class EpisodeExtractRule(ExtractRule):
         EpisodeTeamExtractField,
         EpisodeStartExtractField,
         EpisodeEndExtractField,
-        "created",
-        "updated",
-        "created_by_id",
-        "updated_by_id",
     ]
     model = models.Episode
     display_name = "Episode"
