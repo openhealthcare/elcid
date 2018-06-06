@@ -61,14 +61,14 @@ class SearchRuleTestCase(OpalTestCase):
             some_mock_query.query.assert_called_once_with(query)
 
 
-class EpisodeQueryTestCase(OpalTestCase):
+class EpisodeSearchRuleTestCase(OpalTestCase):
     def setUp(self, *args, **kwargs):
-        super(EpisodeQueryTestCase, self).setUp(*args, **kwargs)
+        super(EpisodeSearchRuleTestCase, self).setUp(*args, **kwargs)
         _, self.episode = self.new_patient_and_episode_please()
         self.episode.start = datetime.date(2017, 1, 1)
         self.episode.end = datetime.date(2017, 1, 5)
         self.episode.save()
-        self.episode_rule = search_rules.EpisodeRule(self.user)
+        self.episode_rule = search_rules.EpisodeSearchRule(self.user)
 
     def test_episode_end_start(self):
         query_end = dict(
@@ -179,7 +179,7 @@ class EpisodeTeamQueryTestCase(OpalTestCase):
         _, self.episode_1 = self.new_patient_and_episode_please()
         _, self.episode_2 = self.new_patient_and_episode_please()
         _, self.episode_3 = self.new_patient_and_episode_please()
-        self.episode_rule = search_rules.EpisodeRule(self.user)
+        self.episode_rule = search_rules.EpisodeSearchRule(self.user)
 
     def test_episode_team_wrong_query_param(self):
         query_end = dict(

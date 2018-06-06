@@ -139,7 +139,7 @@ class AbstractLocationMixin(object):
         return result
 
 
-class EpisodeRule(SearchRule):
+class EpisodeSearchRule(SearchRule):
     order = 1
     display_name = "Episode"
     slug = "episode"
@@ -157,7 +157,7 @@ class DemographicsExtractRule(SearchRule):
     model = emodels.Demographics
 
 
-class DuplicatePatientQuery(SearchRule):
+class DuplicatePatienSearchRule(SearchRule):
     exclude = True
     slug = emodels.DuplicatePatient.get_api_name()
 
@@ -181,7 +181,7 @@ class LocationRule(AbstractLocationMixin, SearchRule):
     pass
 
 
-class ResultQuery(SearchRule):
+class ResultSearchRule(SearchRule):
     exclude = True
     slug = emodels.Result.get_api_name()
 
