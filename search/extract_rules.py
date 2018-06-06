@@ -72,32 +72,6 @@ class PatientIdForEpisodeSubrecord(CsvFieldWrapper):
         return obj.episode.patient.id
 
 
-class UpdatedByField(CsvFieldWrapper):
-    display_name = "Updated By"
-    field_name = "updated_by_id"
-
-    def extract(self, obj):
-        if obj.updated_by:
-            return obj.updated_by.username
-        return ""
-
-    def get_description_template(self):
-        return "search/field_descriptions/changed_by.html"
-
-
-class CreatedByField(CsvFieldWrapper):
-    display_name = "Created By"
-    field_name = "created_by_id"
-
-    def extract(self, obj):
-        if obj.created_by:
-            return obj.created_by.username
-        return ""
-
-    def get_description_template(self):
-        return "search/field_descriptions/changed_by.html"
-
-
 class ExtractRule(
     subrecord_discoverable.SubrecordDiscoverableMixin,
     discoverable.DiscoverableFeature,
