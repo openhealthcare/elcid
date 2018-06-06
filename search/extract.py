@@ -39,7 +39,7 @@ def write_data_dictionary(file_name, user):
         f.write(rendered)
 
 
-def generate_nested_csv_extract(root_dir, episodes, user, field_dict):
+def generate_flat_csv_extract(root_dir, episodes, user, field_dict):
     """ Generate a a single csv file and the data dictionary
 
         The field_dict should be {api_name: [field_names]}
@@ -82,7 +82,7 @@ def generate_nested_csv_extract(root_dir, episodes, user, field_dict):
         for episode in episodes:
             row = []
             for renderer in renderers:
-                row.extend(renderer.get_nested_row(episode))
+                row.extend(renderer.get_flat_row(episode))
             writer.writerow(row)
     return file_names
 
@@ -188,7 +188,7 @@ def zip_archive(episodes, description, user, fields=None):
         z.write(full_query_file_name, zip_relative_file_path(query_file_name))
 
         if fields:
-            file_names = generate_nested_csv_extract(
+            file_names = generate_flat_csv_extract(
                 root_dir, episodes, user, fields
             )
         else:
