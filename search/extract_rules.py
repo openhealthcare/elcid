@@ -15,7 +15,18 @@ class CsvFieldWrapper(subrecord_discoverable.SubrecordFieldWrapper):
     required = False
 
     def extract(self, obj):
+        if subrecord_discoverable.is_many_to_many_field(self.field):
+            # if its a many to many field, return a string joined by ;
+            # we assume its a lookup list
+            all_results = getattr(obj, self.field_name).all()
+            if all_results.exists():
+                return "; ".join(getattr(obj, self.field_name).values_list(
+                    "name", flat=True)
+                )
+            else:
+                return ""
         result = getattr(obj, self.field_name)
+
         if result is None:
             return ""
         return result
@@ -197,7 +208,7 @@ class EpisodeTeamExtractField(CsvFieldWrapper):
     description_template = "search/field_descriptions/episode/team.html"
 
     def extract(self, obj):
-        return text_type(";".join(
+        return text_type("; ".join(
             obj.get_tag_names(self.user, historic=True)
         ))
 
