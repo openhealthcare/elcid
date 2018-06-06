@@ -160,13 +160,13 @@ class PatientSubrecordCsvRenderer(CsvRenderer):
             "patient_id__count__max"
         ]
 
-    def get_nested_row(self, episode):
-        nested_subrecords = self.queryset.filter(
+    def get_flat_row(self, episode):
+        flat_subrecords = self.queryset.filter(
             patient__episode=episode
         )
         result = []
-        for nested_subrecord in nested_subrecords:
-            result.extend(self.get_row(nested_subrecord, episode.id))
+        for flat_subrecord in flat_subrecords:
+            result.extend(self.get_row(flat_subrecord, episode.id))
 
         while len(result) < self.flat_row_length:
             result.append('')
@@ -204,11 +204,11 @@ class EpisodeSubrecordCsvRenderer(CsvRenderer):
             "episode_id__count__max"
         ]
 
-    def get_nested_row(self, episode):
-        nested_subrecords = self.queryset.filter(episode=episode)
+    def get_flat_row(self, episode):
+        flat_subrecords = self.queryset.filter(episode=episode)
         result = []
-        for nested_subrecord in nested_subrecords:
-            result.extend(self.get_row(nested_subrecord))
+        for flat_subrecord in flat_subrecords:
+            result.extend(self.get_row(flat_subrecord))
 
         while len(result) < self.flat_row_length:
             result.append('')
@@ -230,7 +230,7 @@ class EpisodeCsvRenderer(CsvRenderer):
 
         return ["Episode {}".format(i) for i in single_headers]
 
-    def get_nested_row(self, episode):
+    def get_flat_row(self, episode):
         return super(EpisodeCsvRenderer, self).get_row(
             episode
         )
