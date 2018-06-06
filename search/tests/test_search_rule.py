@@ -194,19 +194,6 @@ class EpisodeTeamQueryTestCase(OpalTestCase):
             "unrecognised query type for the episode team query with asdfsadf"
         )
 
-    def test_episode_team_unknown_team(self):
-        query_end = dict(
-            query_type="Any Of",
-            value=["Some Team"],
-            field="team"
-        )
-        with self.assertRaises(exceptions.SearchException) as er:
-            self.episode_rule.query(query_end)
-        self.assertEqual(
-            str(er.exception),
-            "unable to find the tag titled Some Team"
-        )
-
     def test_episode_team_all_of_one(self):
         """
             test all of with a single tag
@@ -291,6 +278,22 @@ class EpisodeTeamQueryTestCase(OpalTestCase):
             result = self.episode_rule.query(query_end)
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0].id, self.episode_1.id)
+
+    @patch("search.search_rule_fields.models.Tagging.build_field_schema")
+    def test_episode_team_enum(self, bfs):
+        bfs.return_value = [
+            dict(
+                name="plant",
+                title="Plant"
+            ),
+            dict(
+                name="tree",
+                title="Tree"
+            ),
+        ]
+        self.assertEqual(
+            ["Plant", "Tree"], self.episode_rule.get_field("team").enum
+        )
 
     def test_episide_team_any_of_one(self):
         """

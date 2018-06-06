@@ -612,3 +612,67 @@ class SubrecordDiscoverableMixinTestCase(OpalTestCase):
             hound_owner_override.sort_fields(fields),
             [fields[1], fields[0]]
         )
+
+
+class GetTeamDisplayNameToSlugTestCase(OpalTestCase):
+    def test_get_team_display_name_to_slug(self):
+        _, episode = self.new_patient_and_episode_please()
+        episode.tagging_set.create(value="bark_and_stem", archived=True)
+
+        with patch.object(
+            subrecord_discoverable.models.Tagging, "build_field_schema"
+        ) as bfs:
+            bfs.return_value = [
+                dict(
+                    name="plant",
+                    title="Plant"
+                ),
+                dict(
+                    name="tree",
+                    title="Tree"
+                ),
+            ]
+            result = subrecord_discoverable.get_team_display_name_to_slug()
+            expected = {
+                "Bark And Stem": "bark_and_stem",
+                "Plant": "plant",
+                "Tree": "tree"
+            }
+
+            self.assertEqual(
+                result, expected
+            )
+
+    def test_avoids_duplicate_slugs(self):
+        _, episode = self.new_patient_and_episode_please()
+        episode.tagging_set.create(value="bark_and_stem", archived=True)
+
+        with patch.object(
+            subrecord_discoverable.models.Tagging, "build_field_schema"
+        ) as bfs:
+            bfs.return_value = [
+                dict(
+                    name="bark_and_stem",
+                    title="Plant"
+                ),
+                dict(
+                    name="tree",
+                    title="Tree"
+                ),
+            ]
+            result = subrecord_discoverable.get_team_display_name_to_slug()
+            expected = {
+                "Plant": "bark_and_stem",
+                "Tree": "tree"
+            }
+
+            self.assertEqual(
+                result, expected
+            )
+
+    def test_integration(self):
+        """ we are mocking up build_field_schema here, just a quick
+            check sanity check in case this behavour has changed
+        """
+        result = subrecord_discoverable.get_team_display_name_to_slug()
+        self.assertTrue(bool(result))

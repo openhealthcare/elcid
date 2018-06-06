@@ -207,7 +207,7 @@ class EpisodeTeam(
 
     @property
     def enum(self):
-        return [i["title"] for i in models.Tagging.build_field_schema()]
+        return subrecord_discoverable.get_team_display_name_to_slug().keys()
 
     def translate_titles_to_names(self, titles):
         result = []
@@ -235,8 +235,10 @@ class EpisodeTeam(
                 """.strip()
                 raise SearchException(err.format(query_type))
 
-        team_names = self.translate_titles_to_names(team_display_names)
+        team_map = subrecord_discoverable.get_team_display_name_to_slug()
+        team_names = [team_map[i] for i in team_display_names]
         qs = models.Episode.objects.all()
+
         if given_query["query_type"] == self.ALL_OF:
             for team_name in team_names:
                 qs = qs.filter(tagging__value=team_name)
