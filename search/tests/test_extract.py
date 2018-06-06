@@ -88,8 +88,10 @@ class NestedEpisodeTestCase(AbstractExtractTestCase):
             models.Episode.objects.all(),
             {"episode": ["start"]}
         )
-        self.assertEqual(result[0], ["Episode Start"])
-        self.assertEqual(result[1], ["2018-02-01"])
+        self.assertEqual(
+            result[0], ["Episode Patient ID", "Episode ID", "Episode Start"]
+        )
+        self.assertEqual(result[1], ["1", "1", "2018-02-01"])
 
     def test_nested_csv_extract_without_episode_start(self):
         _, _ = self.new_patient_and_episode_please()
@@ -97,8 +99,10 @@ class NestedEpisodeTestCase(AbstractExtractTestCase):
             models.Episode.objects.all(),
             {"episode": ["start"]}
         )
-        self.assertEqual(result[0], ["Episode Start"])
-        self.assertEqual(result[1], [""])
+        self.assertEqual(
+            result[0], ["Episode Patient ID", "Episode ID", "Episode Start"]
+        )
+        self.assertEqual(result[1], ["1", "1", ""])
 
 
 class NestedEpisodeSubrecordTestCase(AbstractExtractTestCase):
@@ -117,8 +121,12 @@ class NestedEpisodeSubrecordTestCase(AbstractExtractTestCase):
             models.Episode.objects.all(),
             field_dict
         )
-        self.assertEqual(result[0], ["General Notes Comment"])
-        self.assertEqual(result[1], ["This will need to be searched"])
+        self.assertEqual(result[0], [
+            "Episode Patient ID", "Episode ID", "General Notes Comment"
+        ])
+        self.assertEqual(
+            result[1], ["1", "1", "This will need to be searched"]
+        )
 
     def test_nested_csv_extract_multi_field(self):
         field_dict = {
@@ -136,11 +144,14 @@ class NestedEpisodeSubrecordTestCase(AbstractExtractTestCase):
         )
         self.assertEqual(
             result[0],
-            ["General Notes Comment", "General Notes Date"]
+            [
+                "Episode Patient ID", "Episode ID", "General Notes Comment",
+                "General Notes Date"
+            ]
         )
         self.assertEqual(
             result[1],
-            ["This will need to be searched", "2018-02-01"]
+            ["1", "1", "This will need to be searched", "2018-02-01"]
         )
 
     def test_nested_csv_extract_multiple_episode_subrecords_same_episode(self):
@@ -160,12 +171,17 @@ class NestedEpisodeSubrecordTestCase(AbstractExtractTestCase):
         )
         self.assertEqual(
             result[0],
-            ['General Notes 1 Comment', 'General Notes 2 Comment']
+            [
+                "Episode Patient ID", "Episode ID",
+                "General Notes 1 Comment", "General Notes 2 Comment"
+            ]
         )
 
         self.assertEqual(
             result[1],
             [
+                "1",
+                "1",
                 "This will need to be searched",
                 "This will also need to be searched"
             ]
@@ -181,6 +197,8 @@ class NestedEpisodeSubrecordTestCase(AbstractExtractTestCase):
             episode=episode, comment=comment
         )
         expected = [
+            "1",  # patient id
+            "1",  # episode id
             b"\xc5\xa0\xc4\x90\xc4\x86\xc5\xbd\xc4\x87\xc5\xbe\xc5\xa1\xc4\x91"
         ]
         result = self.get_nested_extract(
@@ -214,10 +232,10 @@ class NestedEpisodeSubrecordTestCase(AbstractExtractTestCase):
             field_dict
         )
         self.assertEqual(
-            result[0], ["PMH Condition"]
+            result[0], ["Episode Patient ID", "Episode ID", "PMH Condition"]
         )
         self.assertEqual(
-            result[1], ["cough"]
+            result[1], ["1", "1", "cough"]
         )
 
     def test_with_fk_or_ft_ft(self):
@@ -237,10 +255,10 @@ class NestedEpisodeSubrecordTestCase(AbstractExtractTestCase):
             field_dict
         )
         self.assertEqual(
-            result[0], ["PMH Condition"]
+            result[0], ["Episode Patient ID", "Episode ID", "PMH Condition"]
         )
         self.assertEqual(
-            result[1], ["cough"]
+            result[1], ["1", "1", "cough"]
         )
 
     def test_with_multiple_episode_subrecords(self):
@@ -260,10 +278,16 @@ class NestedEpisodeSubrecordTestCase(AbstractExtractTestCase):
             field_dict
         )
         self.assertEqual(
-            result[0], ['General Notes Comment', 'Travel Destination']
+            result[0],
+            [
+                'Episode Patient ID',
+                'Episode ID',
+                'General Notes Comment',
+                'Travel Destination'
+            ]
         )
         self.assertEqual(
-            result[1], ["This will need to be searched", "France"]
+            result[1], ["1", "1", "This will need to be searched", "France"]
         )
 
     def test_with_multiple_episode_subrecords_across_episodes(self):
@@ -290,13 +314,18 @@ class NestedEpisodeSubrecordTestCase(AbstractExtractTestCase):
             field_dict
         )
         self.assertEqual(
-            result[0], ['General Notes Comment', 'Travel Destination']
+            result[0], [
+                'Episode Patient ID', 'Episode ID',
+                'General Notes Comment', 'Travel Destination'
+            ]
         )
         self.assertEqual(
-            result[1], ["This will need to be searched", "France"]
+            result[1], ["1", "1", "This will need to be searched", "France"]
         )
         self.assertEqual(
-            result[2], ["This will also need to be searched", "Germany"]
+            result[2], [
+                "2", "2", "This will also need to be searched", "Germany"
+            ]
         )
 
     def test_with_multiple_episodes_where_some_subrecords_are_none(self):
@@ -319,13 +348,19 @@ class NestedEpisodeSubrecordTestCase(AbstractExtractTestCase):
             field_dict
         )
         self.assertEqual(
-            result[0], ['General Notes Comment', 'Travel Destination']
+            result[0],
+            [
+                'Episode Patient ID',
+                'Episode ID',
+                'General Notes Comment',
+                'Travel Destination'
+            ]
         )
         self.assertEqual(
-            result[1], ["", "France"]
+            result[1], ["1", "1", "", "France"]
         )
         self.assertEqual(
-            result[2], ["This will also need to be searched", ""]
+            result[2], ["2", "2", "This will also need to be searched", ""]
         )
 
     def test_with_some_episodes_that_are_not_required(self):
@@ -348,10 +383,13 @@ class NestedEpisodeSubrecordTestCase(AbstractExtractTestCase):
             field_dict
         )
         self.assertEqual(
-            result[0], ['General Notes Comment', 'Travel Destination']
+            result[0], [
+                'Episode Patient ID', 'Episode ID', 'General Notes Comment',
+                'Travel Destination'
+            ]
         )
         self.assertEqual(
-            result[1], ["", "France"]
+            result[1], ["1", "1", "", "France"]
         )
         self.assertEqual(len(result), 2)
 
@@ -371,10 +409,10 @@ class NestedPatientSubrecordTestCase(AbstractExtractTestCase):
             field_dict
         )
         self.assertEqual(
-            result[0], ['Allergies Drug']
+            result[0], ['Episode Patient ID', 'Episode ID', 'Allergies Drug']
         )
         self.assertEqual(
-            result[1], ["Penicillin"]
+            result[1], ["1", "1", "Penicillin"]
         )
 
     def test_with_a_single_patient_with_multiple_episodes(self):
@@ -392,13 +430,13 @@ class NestedPatientSubrecordTestCase(AbstractExtractTestCase):
             field_dict
         )
         self.assertEqual(
-            result[0], ['Allergies Drug']
+            result[0], ['Episode Patient ID', 'Episode ID', 'Allergies Drug']
         )
         self.assertEqual(
-            result[1], ["Penicillin"]
+            result[1], ["1", "1", "Penicillin"]
         )
         self.assertEqual(
-            result[2], ["Penicillin"]
+            result[2], ["1", "2", "Penicillin"]
         )
 
     def test_with_a_single_patient_where_some_episodes_are_excluded(self):
@@ -416,10 +454,10 @@ class NestedPatientSubrecordTestCase(AbstractExtractTestCase):
             field_dict
         )
         self.assertEqual(
-            result[0], ['Allergies Drug']
+            result[0], ['Episode Patient ID', 'Episode ID', 'Allergies Drug']
         )
         self.assertEqual(
-            result[1], ["Penicillin"]
+            result[1], ["1", "2", "Penicillin"]
         )
 
     def test_with_multiple_patients(self):
@@ -440,13 +478,14 @@ class NestedPatientSubrecordTestCase(AbstractExtractTestCase):
             field_dict
         )
         self.assertEqual(
-            result[0], ['Allergies Drug']
+            result[0], ['Episode Patient ID', 'Episode ID', 'Allergies Drug']
         )
         self.assertEqual(
-            result[1], ["Penicillin"]
+            result[1], ['1', '1', 'Penicillin']
         )
+
         self.assertEqual(
-            result[2], ["Aspirin"]
+            result[2], ['2', '2', 'Aspirin']
         )
 
 
@@ -480,16 +519,17 @@ class NestedMixedTestCase(AbstractExtractTestCase):
         )
         self.assertEqual(
             result[0], [
-                'Episode Start', 'Allergies Drug', 'General Notes Comment'
+                'Episode Patient ID', 'Episode ID', 'Episode Start',
+                'Allergies Drug', 'General Notes Comment'
             ]
         )
         self.assertEqual(
             result[1],
-            ['2018-01-03', 'Penicillin', 'So this is one episode']
+            ['1', '1', '2018-01-03', 'Penicillin', 'So this is one episode']
         )
         self.assertEqual(
             result[2],
-            ['2018-02-03', 'Penicillin', 'So this is another episode', ]
+            ['1', '2', '2018-02-03', 'Penicillin', 'So this is another episode', ]
         )
 
     def test_nested_where_some_fields_are_none(self):
@@ -519,20 +559,21 @@ class NestedMixedTestCase(AbstractExtractTestCase):
         )
         self.assertEqual(
             result[0], [
-                'Episode Start', 'Allergies Drug', 'General Notes Comment'
+                'Episode Patient ID', 'Episode ID', 'Episode Start',
+                'Allergies Drug', 'General Notes Comment'
             ]
         )
         self.assertEqual(
             result[1],
-            ['2018-01-03', 'Penicillin', '']
+            ['1', '1', '2018-01-03', 'Penicillin', '']
         )
         self.assertEqual(
             result[2],
-            ['', 'Penicillin', 'So this is another episode', ]
+            ['1', '2', '', 'Penicillin', 'So this is another episode', ]
         )
         self.assertEqual(
             result[3],
-            ['', 'Penicillin', '']
+            ['1', '3', '', 'Penicillin', '']
         )
 
     def test_nested_where_some_episodes_are_excluded(self):
@@ -567,16 +608,17 @@ class NestedMixedTestCase(AbstractExtractTestCase):
         )
         self.assertEqual(
             result[0], [
-                'Episode Start', 'Allergies Drug', 'General Notes Comment'
+                'Episode Patient ID', 'Episode ID', 'Episode Start',
+                'Allergies Drug', 'General Notes Comment'
             ]
         )
         self.assertEqual(
             result[1],
-            ['', 'Penicillin', 'So this is another episode']
+            ['1', '2', '', 'Penicillin', 'So this is another episode']
         )
         self.assertEqual(
             result[2],
-            ['', 'Aspirin', '']
+            ['2', '3', '', 'Aspirin', '']
         )
 
 
@@ -618,11 +660,12 @@ class MultiFileCsvExtractTestCase(AbstractExtractTestCase):
             [extract_rules.ExtractRule.get_rule(api_name, self.user)]
         )
         general_note_fields = [
+            u'Patient',
+            u'Episode',
             u'Comment',
             u'Created',
             u'Created By',
             u'Date',
-            u'Episode',
             u'Updated',
             u'Updated By',
         ]
@@ -631,9 +674,8 @@ class MultiFileCsvExtractTestCase(AbstractExtractTestCase):
             general_note_fields
         )
         expected_result = [
-            'This is interesting', '', '', '', '1', '', ''
+            '1', '1', 'This is interesting', '', '', '', '', ''
         ]
-
         self.assertEqual(
             result[1],
             expected_result
@@ -649,9 +691,11 @@ class MultiFileCsvExtractTestCase(AbstractExtractTestCase):
             [extract_rules.ExtractRule.get_rule("episode", self.user)]
         )
         expected_result = [
-            '', '2018-02-01', '', '', '', '', ''
+            '1', '1', '', '2018-02-01', '', '', '', '', ''
         ]
         expected_headers = [
+            'Patient ID',
+            'ID',
             'Team',
             'Start',
             'End',
@@ -686,6 +730,7 @@ class MultiFileCsvExtractTestCase(AbstractExtractTestCase):
             [extract_rules.ExtractRule.get_rule(api_name, self.user)]
         )
         allergy_fields = [
+            'Patient',
             'Allergen Reference',
             'Allergen Reference System',
             'Allergy Description',
@@ -702,7 +747,6 @@ class MultiFileCsvExtractTestCase(AbstractExtractTestCase):
             'External Identifier',
             'External System',
             'No Allergies',
-            'Patient',
             'Provisional',
             'Status Description',
             'Status Id',
@@ -714,28 +758,29 @@ class MultiFileCsvExtractTestCase(AbstractExtractTestCase):
             allergy_fields
         )
         expected_result = [
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            'Penicillin',
-            '',
-            '',
-            'False',
             '1',
             '',
             '',
             '',
             '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
             ''
+            'Penicillin',
+            '',
+            '',
+            'False',
+            '',
+            '',
+            '',
+            '',
+            '',
         ]
 
         self.assertEqual(
@@ -758,9 +803,11 @@ class MultiFileCsvExtractTestCase(AbstractExtractTestCase):
             ]
         )
         expected_result = [
-            '', '2018-02-01', '', '', '', '', ''
+            '1', '1', '', '2018-02-01', '', '', '', '', ''
         ]
         expected_headers = [
+            'Patient ID',
+            'ID',
             'Team',
             'Start',
             'End',

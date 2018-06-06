@@ -47,6 +47,12 @@ def generate_nested_csv_extract(root_dir, episodes, user, field_dict):
         The csv file will only contain the files mentioned in the field_dict
     """
     file_names = []
+    if "episode" not in field_dict:
+        field_dict["episode"] = []
+
+    for required_episode_fields in ["id", "patient_id"]:
+        field_dict["episode"].insert(0, required_episode_fields)
+
     data_dict_file_name = "data_dictionary.html"
     full_file_name = os.path.join(root_dir, data_dict_file_name)
     write_data_dictionary(full_file_name, user)
