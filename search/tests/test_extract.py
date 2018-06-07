@@ -687,12 +687,13 @@ class MultiFileCsvExtractTestCase(AbstractExtractTestCase):
             [extract_rules.ExtractRule.get_rule("episode", self.user)]
         )
         expected_result = [
-            '1', '1', '', '2018-02-01', ''
+            '1', '1', '', 'Inpatient', '2018-02-01', ''
         ]
         expected_headers = [
             'Patient ID',
             'ID',
             'Team',
+            'Category',
             'Start',
             'End',
         ]
@@ -787,12 +788,13 @@ class MultiFileCsvExtractTestCase(AbstractExtractTestCase):
             ]
         )
         expected_result = [
-            '1', '1', '', '2018-02-01', ''
+            '1', '1', '', 'Inpatient', '2018-02-01', ''
         ]
         expected_headers = [
             'Patient ID',
             'ID',
             'Team',
+            'Category',
             'Start',
             'End',
         ]

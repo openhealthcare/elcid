@@ -96,10 +96,13 @@ class EpisodeTestBase(OpalTestCase):
             fields[2].get_name(), "team"
         )
         self.assertEqual(
-            fields[3].get_name(), "start"
+            fields[3].get_name(), "category_name"
         )
         self.assertEqual(
-            fields[4].get_name(), "end"
+            fields[4].get_name(), "start"
+        )
+        self.assertEqual(
+            fields[5].get_name(), "end"
         )
 
     def test_get_fields_for_schema(self):
@@ -124,6 +127,17 @@ class EpisodeTestBase(OpalTestCase):
         team_rule = self.rule.get_field("team")
         result = team_rule.extract(episode)
         self.assertEqual("This; That", result)
+
+    @mock.patch("search.extract_rules.episodes.EpisodeCategory.list")
+    def test_episode_category_enum(self, categories):
+
+        class InpatientCategory(object):
+            display_name = "Inpatient"
+
+        categories.return_value = [InpatientCategory]
+        self.assertEqual(
+            ["Inpatient"], self.rule.get_field("category_name").enum
+        )
 
 
 class ManyToManyTestCase(OpalTestCase):

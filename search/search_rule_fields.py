@@ -2,6 +2,7 @@ from django.core.urlresolvers import reverse
 from opal import models
 from opal.core import fields
 from opal.core import serialization
+from opal.core import episodes
 from search.exceptions import SearchException
 from search import subrecord_queries
 from search import subrecord_discoverable
@@ -192,6 +193,45 @@ class EpisodeEnd(
     description_template = "search/field_descriptions/date.html"
 
 
+class EpisodeCategory(
+    SearchRuleField
+):
+    ALL_OF = "All Of"
+    ANY_OF = "Any Of"
+    display_name = "Category"
+    description = "The type of episode the patient had."
+    type_display_name = "Text Field"
+    field_name = "category_name"
+    widget = "search/widgets/many_to_many.html"
+    widget_description = "partials/search/descriptions/many_to_many.html"
+    description_template = "search/field_descriptions/episode/category.html"
+
+    @property
+    def enum(self):
+        return [i.display_name for i in episodes.EpisodeCategory.list()]
+
+    def query(self, given_query):
+        query_type = given_query["query_type"]
+        category_display_names = given_query['value']
+
+        if not query_type == self.ALL_OF:
+            if not query_type == self.ANY_OF:
+                err = """
+                    unrecognised query type for the episode team query with {}
+                """.strip()
+                raise SearchException(err.format(query_type))
+
+        qs = models.Episode.objects.all()
+
+        if given_query["query_type"] == self.ALL_OF:
+            for category_display_name in category_display_names:
+                qs = qs.filter(category_name__value=category_display_name)
+        else:
+            qs = qs.filter(category_name__in=category_display_names)
+
+        return qs.distinct()
+
+
 class EpisodeTeam(
     SearchRuleField
 ):
@@ -201,7 +241,7 @@ class EpisodeTeam(
     description = ""
     type_display_name = "Text Field"
     field_name = "team"
-    widget = "search/widgets/team_many_to_many.html"
+    widget = "search/widgets/many_to_many.html"
     widget_description = "partials/search/descriptions/many_to_many.html"
     description_template = "search/field_descriptions/episode/team.html"
 

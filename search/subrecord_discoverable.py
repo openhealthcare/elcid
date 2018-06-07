@@ -138,6 +138,7 @@ class SubrecordFieldWrapper(object):
         fields = [
             "enum",
             "name",
+            "description",
             "display_name",
             "lookup_list",
             "icon",
@@ -190,10 +191,11 @@ class SubrecordFieldWrapper(object):
 
     @get_locally_or_defer("description")
     def get_description(self):
-        field = self.model._get_field(self.field_name)
-        description = getattr(field, 'help_text', "")
-        if description:
-            return description
+        if self.model:
+            field = self.model._get_field(self.field_name)
+            description = getattr(field, 'help_text', "")
+            if description:
+                return description
 
     def __str__(self):
         return "{}: {} - {}".format(

@@ -1,0 +1,19 @@
+<div class="search-info">
+  <div class="search-info-title">
+    <strong>[[ info.rule.display_name ]]</strong>
+  </div>
+  <div ng-show="info.rule.description">
+    [[ info.rule.description ]]
+    <div class="content-offset-10"></div>
+  </div>
+  <span>
+    [Text]
+    <br />
+    The type of episode
+    <a href=""
+       class="orange-link"
+       ng-click="open_modal('LookupListReferenceCtrl', '/templates/modals/lookuplist_reference.html', {lookuplist_name: 'Episode Category', lookuplist: info.enum})">
+      category
+    </a>
+  </span>
+</div>

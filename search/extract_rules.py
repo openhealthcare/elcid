@@ -3,6 +3,7 @@ from opal.core import discoverable
 from opal import models
 from opal.core import subrecords
 from opal.core import fields
+from opal.core import episodes
 from elcid import models as emodels
 from search import subrecord_discoverable
 from search.exceptions import SearchException
@@ -11,7 +12,11 @@ from search import search_rules
 
 
 class CsvFieldWrapper(subrecord_discoverable.SubrecordFieldWrapper):
+    # the description used when the user highlights the field
     description_template = None
+
+    # the description used in the data dictionary
+    data_dictionary_description_template = None
     required = False
 
     def extract(self, obj):
@@ -68,6 +73,9 @@ class CsvFieldWrapper(subrecord_discoverable.SubrecordFieldWrapper):
             return "search/field_descriptions/text.html"
 
         return "search/field_descriptions/generic.html"
+
+    def get_data_dictionary_description_template(self):
+        return self.data_dictionary_description_template
 
 
 class PatientIdForEpisodeSubrecord(CsvFieldWrapper):
@@ -173,6 +181,9 @@ class ExtractRule(
         return CsvFieldWrapper(self.user, self.model, str)
 
 
+EPISODE_DD_PATH = "search/data_dictionary_descriptions/episode"
+
+
 class EpisodeTeamExtractField(CsvFieldWrapper):
     display_name = "Team"
     description = "The team(s) related to an episode of care"
@@ -180,6 +191,11 @@ class EpisodeTeamExtractField(CsvFieldWrapper):
     type_display_name = "Text Field"
     field_name = "team"
     description_template = "search/field_descriptions/episode/team.html"
+    data_dictionary_description_template = EPISODE_DD_PATH + "/team.html"
+
+    @property
+    def enum(self):
+        return subrecord_discoverable.get_team_display_name_to_slug().keys()
 
     def extract(self, obj):
         title_to_slug = subrecord_discoverable.get_team_display_name_to_slug()
@@ -191,6 +207,19 @@ class EpisodeTeamExtractField(CsvFieldWrapper):
                 )
             ]
         ))
+
+
+class EpisodeCategoryExtractField(CsvFieldWrapper):
+    display_name = "Category"
+    description = "The type of episode the patient had, e.g. inpatient."
+    field_name = "category_name"
+    type_display_name = "Text Field"
+    description_template = "search/field_descriptions/episode/category.html"
+    data_dictionary_description_template = EPISODE_DD_PATH + "/category.html"
+
+    @property
+    def enum(self):
+        return [i.display_name for i in episodes.EpisodeCategory.list()]
 
 
 class EpisodeStartExtractField(CsvFieldWrapper):
@@ -217,6 +246,7 @@ class EpisodeExtractRule(ExtractRule):
         EpisodePatientExtractField,
         "id",
         EpisodeTeamExtractField,
+        EpisodeCategoryExtractField,
         EpisodeStartExtractField,
         EpisodeEndExtractField,
     ]
