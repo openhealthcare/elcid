@@ -18,13 +18,13 @@ class IdLiasionReport(Report):
     template = "reports/infectiousdiseases/id_liasion_report.html"
 
     def get_queryset(self, month_start):
-        month_end = month_start + relativedelta(day=31)
+        next_month_beginning = month_start + relativedelta(months=1)
         return Episode.objects.filter(
             tagging__value=InfectiousDiseasesIdLiason.subtag,
             tagging__archived=True
         ).filter(
             end__gte=month_start,
-            end__lte=month_end
+            end__lt=next_month_beginning
         )
 
     def get_age(self, demographics):

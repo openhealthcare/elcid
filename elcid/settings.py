@@ -46,7 +46,8 @@ ALLOWED_HOSTS = [
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
 # In a Windows environment this must be set to your system time zone.
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/London'
+
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
@@ -172,6 +173,7 @@ INSTALLED_APPS = (
     'search',
     'elcid',
     'obs',
+    'reporting',
     'django.contrib.admin',
     'opat',
     'walkin',
@@ -188,7 +190,6 @@ INSTALLED_APPS = (
 if ON_TEST:
     INSTALLED_APPS += (
         'opal.tests',
-        'reporting',
     )
     PASSWORD_HASHERS = (
         'django.contrib.auth.hashers.MD5PasswordHasher',

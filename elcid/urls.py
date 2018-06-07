@@ -9,7 +9,6 @@ from django.contrib import admin
 admin.autodiscover()
 
 from opal.urls import urlpatterns as opatterns
-from elcid import api
 
 from elcid import views
 
@@ -30,7 +29,6 @@ urlpatterns = [
         views.StoriesView.as_view(),
         name='stories'
     ),
-    url(r'glossapi/v0.1/', include(api.router.urls)),
 ]
 
 urlpatterns += opatterns
