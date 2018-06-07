@@ -299,3 +299,9 @@ class DemographicsExtractRule(ExtractRule):
 class DuplicatePatientExtractRule(ExtractRule):
     exclude = True
     slug = emodels.DuplicatePatient.get_api_name()
+
+
+class ContactDetailsSearchRule(ExtractRule):
+    slug = emodels.ContactDetails.get_api_name()
+    model = emodels.ContactDetails
+    exclude = True
