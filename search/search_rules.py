@@ -187,7 +187,18 @@ class ResultSearchRule(SearchRule):
     slug = emodels.Result.get_api_name()
 
 
+class CarersSearchRule(SearchRule):
+    exclude = True
+    slug = emodels.Carers.get_api_name()
+
+
 class ContactDetailsSearchRule(SearchRule):
     slug = emodels.ContactDetails.get_api_name()
     model = emodels.ContactDetails
+    exclude = True
+
+
+class AppointmentSearchRule(SearchRule):
+    slug = emodels.Appointment.get_api_name()
+    model = emodels.Appointment
     exclude = True

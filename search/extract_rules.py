@@ -301,7 +301,18 @@ class DuplicatePatientExtractRule(ExtractRule):
     slug = emodels.DuplicatePatient.get_api_name()
 
 
-class ContactDetailsSearchRule(ExtractRule):
+class CarersExtractRule(ExtractRule):
+    exclude = True
+    slug = emodels.Carers.get_api_name()
+
+
+class ContactDetailsExtractRule(ExtractRule):
     slug = emodels.ContactDetails.get_api_name()
     model = emodels.ContactDetails
+    exclude = True
+
+
+class AppointmentExtractRule(ExtractRule):
+    slug = emodels.Appointment.get_api_name()
+    model = emodels.Appointment
     exclude = True
