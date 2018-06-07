@@ -189,5 +189,5 @@ class ResultSearchRule(SearchRule):
 
 class ContactDetailsSearchRule(SearchRule):
     slug = emodels.ContactDetails.get_api_name()
-    display_name = "Patient Contact Details"
     model = emodels.ContactDetails
+    exclude = True
