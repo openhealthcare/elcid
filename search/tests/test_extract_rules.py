@@ -1,10 +1,75 @@
 import mock
 from opal.core.test import OpalTestCase
+from opal.tests import models
 from search import extract_rules
 
 # HoundOwner is an episode subrecord, HouseOwner is a patient subrecord
 # HatWearer is an episode subrecord with many to many
 from opal.tests.models import HoundOwner, HouseOwner, HatWearer, Hat
+
+
+class CsvFieldWrapperTestCase(OpalTestCase):
+    def get_field(self, model, field_name):
+        rule = extract_rules.ExtractRule.get_rule(model.get_api_name(), self.user)
+        return rule.get_field(field_name)
+
+    def test_csv_field_wrapper_get_description_template_boolean(self):
+        expected = "search/field_descriptions/boolean.html"
+        rule = self.get_field(models.HatWearer, "wearing_a_hat")
+        self.assertEqual(
+            rule.get_description_template(),
+            expected
+        )
+
+    def test_csv_field_wrapper_get_description_template_date_time(self):
+        expected = "search/field_descriptions/date_time.html"
+        rule = self.get_field(models.Birthday, "party")
+        self.assertEqual(
+            rule.get_description_template(),
+            expected
+        )
+
+    def test_csv_field_wrapper_get_description_template_date(self):
+        expected = "search/field_descriptions/date.html"
+        rule = self.get_field(models.Birthday, "birth_date")
+        self.assertEqual(
+            rule.get_description_template(),
+            expected
+        )
+
+    def test_csv_field_wrapper_get_description_template_text(self):
+        expected = "search/field_descriptions/text.html"
+        rule = self.get_field(models.Dinner, "food")
+        self.assertEqual(
+            rule.get_description_template(),
+            expected
+        )
+
+    def test_csv_field_wrapper_get_description_template_fk_or_ft(self):
+        expected = "search/field_descriptions/text.html"
+        rule = self.get_field(models.HoundOwner, "dog")
+        self.assertEqual(
+            rule.get_description_template(),
+            expected
+        )
+
+    def test_csv_field_wrapper_get_description_template_numeric(self):
+        expected = "search/field_descriptions/number.html"
+        rule = self.get_field(models.FavouriteNumber, "number")
+        self.assertEqual(
+            rule.get_description_template(),
+            expected
+        )
+
+    def test_csv_field_wrapper_get_description_template_other(self):
+        # testing with a time field as currently this does not
+        # have a display template
+        expected = "search/field_descriptions/generic.html"
+        rule = self.get_field(models.Dinner, "time")
+        self.assertEqual(
+            rule.get_description_template(),
+            expected
+        )
 
 
 class ExtractRuleTestCase(OpalTestCase):

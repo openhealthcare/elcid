@@ -48,7 +48,7 @@ class CsvFieldWrapper(subrecord_discoverable.SubrecordFieldWrapper):
         if self.description_template:
             return self.description_template
 
-        if self.field and subrecord_discoverable.is_boolean(self.field):
+        if self.field and subrecord_discoverable.is_boolean_field(self.field):
             return "search/field_descriptions/boolean.html"
 
         if self.field and subrecord_discoverable.is_date_time_field(
@@ -56,7 +56,7 @@ class CsvFieldWrapper(subrecord_discoverable.SubrecordFieldWrapper):
         ):
             return "search/field_descriptions/date_time.html"
 
-        if self.field and subrecord_discoverable.is_text(
+        if self.field and subrecord_discoverable.is_text_type_field(
             self.field
         ):
             return "search/field_descriptions/text.html"
@@ -69,7 +69,9 @@ class CsvFieldWrapper(subrecord_discoverable.SubrecordFieldWrapper):
         if self.field and subrecord_discoverable.is_date_field(self.field):
             return "search/field_descriptions/date.html"
 
-        if self.field and subrecord_discoverable.is_text(self.field):
+        if self.field and subrecord_discoverable.is_foreign_key_or_free_text_field(
+            self.field
+        ):
             return "search/field_descriptions/text.html"
 
         return "search/field_descriptions/generic.html"

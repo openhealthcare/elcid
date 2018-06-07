@@ -43,7 +43,7 @@
                   <a href=""
                      class="orange-link"
                      ng-click="open_modal('LookupListReferenceCtrl', '/templates/modals/lookuplist_reference.html', {lookuplist_name: '{{ field.get_lookup_list }}', lookuplist: referencedata.get('{{ field.get_lookup_list }}')})">
-                     {{ field.get_lookup_list_display_name }}
+                     {{ field.get_lookup_list_display_name | lower }}
                   </a>
                   but free text entries are possible.
                 {% else %}

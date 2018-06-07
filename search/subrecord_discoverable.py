@@ -25,13 +25,13 @@ def get_locally_or_defer(field_name):
     return under_wrap
 
 
-def is_boolean(some_field):
+def is_boolean_field(some_field):
     return isinstance(
         some_field, (djangomodels.BooleanField, djangomodels.NullBooleanField,)
     )
 
 
-def is_text(some_field):
+def is_text_type_field(some_field):
     return isinstance(
         some_field, (djangomodels.TextField, djangomodels.CharField,)
     )
@@ -61,13 +61,13 @@ def is_many_to_many_field(some_field):
     )
 
 
-def is_foreign_key_or_free_text(some_field):
+def is_foreign_key_or_free_text_field(some_field):
     return isinstance(
         some_field, fields.ForeignKeyOrFreeText
     )
 
 
-def is_select(some_field):
+def is_foreign_key_field(some_field):
     return isinstance(
         some_field, djangomodels.ForeignKey
     )

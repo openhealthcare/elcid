@@ -142,14 +142,14 @@ class TimeSearchRuleField(ModelSearchRuleField):
 
 
 FIELD_TYPE_TO_SEARCH_RULE_FIELD = {
-    subrecord_discoverable.is_foreign_key_or_free_text: FkOrFtSearchRuleField,
+    subrecord_discoverable.is_foreign_key_or_free_text_field: FkOrFtSearchRuleField,
     fields.is_numeric: NumberSearchRuleField,
-    subrecord_discoverable.is_boolean: BooleanSearchRuleField,
+    subrecord_discoverable.is_boolean_field: BooleanSearchRuleField,
     subrecord_discoverable.is_many_to_many_field: SelectSearchRuleField,
     subrecord_discoverable.is_date_field: DateSearchRuleField,
-    subrecord_discoverable.is_text: TextSearchRuleField,
+    subrecord_discoverable.is_text_type_field: TextSearchRuleField,
     subrecord_discoverable.is_time_field: TimeSearchRuleField,
-    subrecord_discoverable.is_select: SelectSearchRuleField,
+    subrecord_discoverable.is_foreign_key_field: SelectSearchRuleField,
 }
 
 
