@@ -16,8 +16,8 @@ class CsvFieldWrapper(subrecord_discoverable.SubrecordFieldWrapper):
 
     def extract(self, obj):
         if subrecord_discoverable.is_many_to_many_field(self.field):
-            # if its a many to many field, return a string joined by ;
-            # we assume its a lookup list
+            # If it's a many to many field, return a string joined by ;
+            # we assume it's a lookup list
             all_results = getattr(obj, self.field_name).all()
             if all_results.exists():
                 return "; ".join(getattr(obj, self.field_name).values_list(
