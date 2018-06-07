@@ -1,7 +1,9 @@
 from functools import wraps
 import itertools
+from opal import models
 from opal.core import subrecords
 from opal.core import fields
+from opal.utils import camelcase_to_underscore
 from search.exceptions import SearchException
 from django.db import models as djangomodels
 
@@ -69,6 +71,26 @@ def is_select(some_field):
     return isinstance(
         some_field, djangomodels.ForeignKey
     )
+
+
+def get_team_display_name_to_slug():
+    result = {}
+    tagging_schema = models.Tagging.build_field_schema()
+    for schema in tagging_schema:
+        result[schema["title"]] = schema["name"]
+
+    tag_slugs = set(
+        models.Tagging.objects.values_list("value", flat=True).distinct()
+    )
+
+    result_slugs = set(result.values())
+
+    for tag_slug in tag_slugs:
+        if tag_slug not in result_slugs:
+            title = camelcase_to_underscore(tag_slug).replace("_", " ").title()
+            result[title] = tag_slug
+
+    return result
 
 
 class SubrecordFieldWrapper(object):

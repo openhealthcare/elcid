@@ -182,8 +182,14 @@ class EpisodeTeamExtractField(CsvFieldWrapper):
     description_template = "search/field_descriptions/episode/team.html"
 
     def extract(self, obj):
+        title_to_slug = subrecord_discoverable.get_team_display_name_to_slug()
+        slug_to_title = {v: i for i, v in title_to_slug.items()}
         return text_type("; ".join(
-            obj.get_tag_names(self.user, historic=True)
+            [
+                slug_to_title[i] for i in obj.get_tag_names(
+                    self.user, historic=True
+                )
+            ]
         ))
 
 

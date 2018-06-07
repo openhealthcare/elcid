@@ -1,3 +1,4 @@
+import mock
 from opal.core.test import OpalTestCase
 from search import extract_rules
 
@@ -78,11 +79,13 @@ class LocationRuleTestCase(OpalTestCase):
 
 
 class EpisodeTestBase(OpalTestCase):
-    def test_field_order(self):
-        episode_rule = extract_rules.ExtractRule.get_rule(
+    def setUp(self):
+        self.rule = extract_rules.ExtractRule.get_rule(
             "episode", self.user
         )
-        fields = episode_rule.get_fields()
+
+    def test_field_order(self):
+        fields = self.rule.get_fields()
         self.assertEqual(
             fields[0].get_name(), "patient_id"
         )
@@ -100,13 +103,27 @@ class EpisodeTestBase(OpalTestCase):
         )
 
     def test_get_fields_for_schema(self):
-        episode_rule = extract_rules.ExtractRule.get_rule(
-            "episode", self.user
-        )
-        fields = episode_rule.get_fields_for_schema()
+        fields = self.rule.get_fields_for_schema()
         field_names = {i.get_name() for i in fields}
         self.assertNotIn("patient_id", field_names)
         self.assertNotIn("id", field_names)
+
+    @mock.patch(
+        "search.extract_rules.subrecord_discoverable\
+.get_team_display_name_to_slug"
+    )
+    def test_team_extract_with_multiple_tags(
+        self, get_team_display_name_to_slug
+    ):
+        get_team_display_name_to_slug.return_value = {
+            "This": "this",
+            "That": "that"
+        }
+        _, episode = self.new_patient_and_episode_please()
+        episode.set_tag_names(["this", "that"], self.user)
+        team_rule = self.rule.get_field("team")
+        result = team_rule.extract(episode)
+        self.assertEqual("This; That", result)
 
 
 class ManyToManyTestCase(OpalTestCase):
