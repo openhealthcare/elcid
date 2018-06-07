@@ -59,20 +59,17 @@ class CsvFieldWrapper(subrecord_discoverable.SubrecordFieldWrapper):
         return "search/field_descriptions/generic.html"
 
 
-class EpisodeIdForPatientSubrecord(CsvFieldWrapper):
-    display_name = "Episode"
-    field_name = "episode_id"
-
-    def extract(self, obj):
-        return obj.episode.id
-
-
 class PatientIdForEpisodeSubrecord(CsvFieldWrapper):
     display_name = "Patient"
     field_name = "patient_id"
+    type_display_name = "Patient ID"
+    icon = False
+    enum = False
+    lookup_list = False
+    description = "The ID of the Patient"
 
     def extract(self, obj):
-        return obj.patient.id
+        return obj.episode.patient.id
 
 
 class UpdatedByField(CsvFieldWrapper):
@@ -124,12 +121,37 @@ class ExtractRule(
     def get_fields(self):
         fields = super(ExtractRule, self).get_fields()
         if self.model:
-            if isinstance(self.model, models.PatientSubrecord):
-                fields.insert(EpisodeIdForPatientSubrecord(), 0)
+            result = []
 
-            if isinstance(self.model, models.EpisodeSubrecord):
-                fields.insert(PatientIdForEpisodeSubrecord(), 0)
-        return fields
+            # episode subrecords should include the patient id
+            if self.model in subrecords.episode_subrecords():
+                fields.append(PatientIdForEpisodeSubrecord(
+                    self.user, model=self.model
+                ))
+
+            # episode id should appear first (or after patient id)
+            patient_id = None
+            episode_id = None
+            for field in fields:
+                field_name = field.get_name()
+                if field_name == "episode_id":
+                    episode_id = field
+                elif field_name == "patient_id":
+                    patient_id = field
+                else:
+                    result.append(field)
+
+            if episode_id:
+                result.insert(
+                    0, episode_id
+                )
+
+            if patient_id:
+                result.insert(
+                    0, patient_id
+                )
+
+        return result
 
     def get_renderer(self):
         from search import extract_renderers
@@ -183,9 +205,17 @@ class EpisodeEndExtractField(CsvFieldWrapper):
     model = models.Episode
 
 
+class EpisodePatientExtractField(CsvFieldWrapper):
+    model = models.Episode
+    field_name = "patient_id"
+    display_name = "Patient ID"
+
+
 class EpisodeExtractRule(ExtractRule):
     order = 1
     fields = [
+        EpisodePatientExtractField,
+        "id",
         EpisodeTeamExtractField,
         EpisodeStartExtractField,
         EpisodeEndExtractField,
@@ -202,6 +232,13 @@ class EpisodeExtractRule(ExtractRule):
     def get_renderer(self):
         from search import extract_renderers
         return extract_renderers.EpisodeCsvRenderer
+
+    def get_fields_for_schema(self):
+        """ Whether this field should appear in the schema
+        """
+        fields = super(ExtractRule, self).get_fields_for_schema()
+        to_exclude = {"id", "patient_id"}
+        return (i for i in fields if i.get_name() not in to_exclude)
 
 
 class ResultSerializer(ExtractRule):

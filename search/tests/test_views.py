@@ -515,9 +515,12 @@ class DownloadTestCase(BaseSearchTestCase):
             zip_archive.call_args[0][2].username, 'testuser'
         )
 
+        expected_data_slice = {
+            "demographics": ["date_of_birth"], 'episode': ['patient_id', 'id']
+        }
         # assert that the data slice is passed in
         self.assertEqual(
-            zip_archive.call_args[1]["fields"], data_slice
+            zip_archive.call_args[1]["fields"], expected_data_slice
         )
 
         self.assertTrue(m.call_args[0][0].endswith('extract.zip'))
