@@ -128,6 +128,17 @@ class EpisodeTestBase(OpalTestCase):
         result = team_rule.extract(episode)
         self.assertEqual("This; That", result)
 
+    @mock.patch("search.extract_rules.episodes.EpisodeCategory.list")
+    def test_episode_category_enum(self, categories):
+
+        class InpatientCategory(object):
+            display_name = "Inpatient"
+
+        categories.return_value = [InpatientCategory]
+        self.assertEqual(
+            ["Inpatient"], self.rule.get_field("category_name").enum
+        )
+
 
 class ManyToManyTestCase(OpalTestCase):
     def setUp(self, *args, **kwargs):
