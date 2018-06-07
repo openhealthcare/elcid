@@ -198,6 +198,12 @@ class ContactDetailsSearchRule(SearchRule):
     exclude = True
 
 
+class InpatientAdmissionSearchRule(SearchRule):
+    slug = models.InpatientAdmission.get_api_name()
+    model = models.InpatientAdmission
+    exclude = True
+
+
 class AppointmentSearchRule(SearchRule):
     slug = emodels.Appointment.get_api_name()
     model = emodels.Appointment
