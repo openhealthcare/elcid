@@ -1,7 +1,6 @@
 from django.core.urlresolvers import reverse
 from opal import models
 from opal.core import fields
-from opal.core import serialization
 from opal.core import episodes
 from search.exceptions import SearchException
 from search import subrecord_queries
@@ -161,7 +160,7 @@ class EpisodeDateQuery(object):
                 "Date queries required before or after to be declared"
             )
 
-        value = serialization.deserialize_date(given_query["value"])
+        value = models.deserialize_date(given_query["value"])
         if query_type == 'Before':
             qtype = '__lte'
         elif query_type == 'After':

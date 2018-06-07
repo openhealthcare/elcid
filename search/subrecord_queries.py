@@ -2,7 +2,6 @@ import operator
 
 from django.db.models import Q
 from opal import models
-from opal.core import serialization
 from search.exceptions import SearchException
 from django.contrib.contenttypes.models import ContentType
 
@@ -37,7 +36,7 @@ def query_for_text_fields(model, field_name, value, query_type):
 
 
 def query_for_date_fields(model, field_name, value, query_type):
-    value = serialization.deserialize_date(value)
+    value = models.deserialize_date(value)
     if query_type not in {"Before", "After"}:
         raise SearchException(
             "Date queries required before or after to be declared"
@@ -54,7 +53,7 @@ def query_for_date_fields(model, field_name, value, query_type):
 
 
 def query_for_time_fields(model, field_name, value, query_type):
-    value = serialization.deserialize_time(value)
+    value = models.deserialize_time(value)
     if query_type not in {"Before", "After"}:
         raise SearchException(
             "Time queries required before or after to be declared"
