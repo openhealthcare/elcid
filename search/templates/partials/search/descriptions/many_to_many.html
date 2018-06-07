@@ -1,8 +1,7 @@
 <strong>[[ extractQuerySchema.findColumn(query.rule).display_name ]] [[ extractQuerySchema.findField(query.rule, query.field).display_name ]]</strong>
 <span ng-show="query.value.length === 1">is <strong>[[ query.value[0] ]]</strong></span>
 <span ng-hide="query.value.length === 1">
-  [[ query.query_type | lowercase ]]
-  <strong ng-show="query.query_type === 'Any Of'">[[ query.value|displayArray:"or" ]]</strong>
-  <strong ng-hide="query.query_type === 'Any Of'">[[ query.value|displayArray ]]</strong>
+  <strong ng-show="query.query_type === 'Any Of'">either [[ query.value|displayArray:"or" ]]</strong>
+  <strong ng-hide="query.query_type === 'Any Of'">is [[ query.value|displayArray ]]</strong>
 </span>
 <span ng-hide="$last">[[ query.combine ]]</span>
