@@ -192,3 +192,14 @@ class EpisodeTeamQueryTestCase(OpalTestCase):
         self.assertEqual(result[0].id, self.episode_1.id)
         self.assertEqual(result[1].id, self.episode_2.id)
         self.assertEqual(result[2].id, self.episode_3.id)
+
+    @patch("search.search_rule_fields.episodes.EpisodeCategory.list")
+    def test_episode_category_enum(self, categories):
+
+        class InpatientCategory(object):
+            display_name = "Inpatient"
+
+        categories.return_value = [InpatientCategory]
+        self.assertEqual(
+            ["Inpatient"], self.episode_rule.get_field("category_name").enum
+        )
