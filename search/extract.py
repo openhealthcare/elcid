@@ -16,8 +16,16 @@ from django.template import Context, loader
 
 
 def chunk_list(some_list, amount):
-    for i in range(0, len(some_list), amount):
-        yield some_list[i:i + amount]
+    """
+    Splits up an array into a discreet amount of
+    columns.
+    """
+    num_columns = len(some_list)/amount
+    iteration_amounts = [num_columns for i in range(amount)]
+    iteration_amounts[0] += len(some_list) % amount
+    for i, iteration_amount in enumerate(iteration_amounts):
+        base = sum(iteration_amounts[:i])
+        yield some_list[base:base + iteration_amount]
 
 
 def get_datadictionary_context(user, in_page=False):
@@ -25,7 +33,7 @@ def get_datadictionary_context(user, in_page=False):
     return dict(
         data_dictionary=dict(
             serializers=serializers,
-            chunked_columns=chunk_list(serializers, 5),
+            chunked_columns=chunk_list(serializers, 6),
             in_page=in_page
         )
     )
