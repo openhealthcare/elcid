@@ -284,8 +284,22 @@ class SubrecordDiscoverableMixin(object):
             "which fields do you want to get off the model"
         )
 
+    def sort_fields(self, fields):
+        """
+        If the fields attribute is declared, use the order specified.
+        However if we are pulling out model fields, we should
+        order them alphabetically.
+        """
+        return sorted(fields, key=lambda x: x.get_display_name())
+
     def get_fields(self):
-        """ Get all fields, if
+        """
+        Get all fields,
+        if they are declared as a `fields` attribute use that in the order
+        they are declared.
+
+        otherwise use the model fields, sorted by `sort_model_fields`
+        (defaults to alphabetical)
         """
         class_attr = "fields"
         if not hasattr(self, class_attr):
@@ -300,15 +314,17 @@ class SubrecordDiscoverableMixin(object):
         if fields is None:
             fields = self.get_model_fields()
 
+        result = []
+
         for field in fields:
             if isinstance(field, (str, unicode,)):
                 # you can override individual fields by declaring at an attr
                 # field_{} field_name
                 local_field_name = "field_{}".format(field)
                 if hasattr(self, local_field_name):
-                    yield getattr(self, local_field_name)(self.user)
+                    result.append(getattr(self, local_field_name)(self.user))
                 elif hasattr(self.model, field):
-                    yield self.cast_field_name_to_attribute(field)
+                    result.append(self.cast_field_name_to_attribute(field))
                 else:
                     raise SearchException(
                         "Unable to find field {} for {}".format(
@@ -316,7 +332,14 @@ class SubrecordDiscoverableMixin(object):
                         )
                     )
             else:
-                yield field(self.user)
+                result.append(field(self.user))
+
+        # if fields are declared explicitly then we use the
+        # ordering defined
+        if self.fields:
+            return result
+        else:
+            return self.sort_fields(result)
 
     def get_field(self, field_name):
         for i in self.get_fields():
@@ -354,13 +377,12 @@ class SubrecordDiscoverableMixin(object):
     def get_fields_for_schema(self):
         """ Whether this field should appear in the schema
         """
-        return (i for i in self.get_fields())
+        return self.get_fields()
 
     def get_schema(self):
+        fields = self.get_fields_for_schema()
         fields = [i.to_dict() for i in self.get_fields_for_schema()]
-        fields = sorted(
-            fields, key=lambda x: x["display_name"]
-        )
+
         return dict(
             name=self.get_api_name(),
             display_name=self.get_display_name(),

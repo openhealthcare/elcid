@@ -618,20 +618,20 @@ class MultiFileCsvExtractTestCase(AbstractExtractTestCase):
             [extract_rules.ExtractRule.get_rule(api_name, self.user)]
         )
         general_note_fields = [
+            u'Comment',
             u'Created',
-            u'Updated',
             u'Created By',
-            u'Updated By',
-            u'Episode',
             u'Date',
-            u'Comment'
+            u'Episode',
+            u'Updated',
+            u'Updated By',
         ]
         self.assertEqual(
             result[0],
             general_note_fields
         )
         expected_result = [
-            '', '', '', '', '1', '', 'This is interesting'
+            'This is interesting', '', '', '', '1', '', ''
         ]
 
         self.assertEqual(
@@ -686,28 +686,28 @@ class MultiFileCsvExtractTestCase(AbstractExtractTestCase):
             [extract_rules.ExtractRule.get_rule(api_name, self.user)]
         )
         allergy_fields = [
-            'External System',
-            'External Identifier',
+            'Allergen Reference',
+            'Allergen Reference System',
+            'Allergy Description',
+            'Allergy Reference Name',
+            'Allergy Start Datetime',
+            'Allergy Type Description',
+            'Certainty Description',
+            'Certainty Id',
             'Created',
-            'Updated',
             'Created By',
-            'Updated By',
+            'Details',
+            'Diagnosis Datetime',
+            'Drug',
+            'External Identifier',
+            'External System',
+            'No Allergies',
             'Patient',
             'Provisional',
-            'Details',
-            'Allergy Description',
-            'Allergy Type Description',
-            'Certainty Id',
-            'Certainty Description',
-            'Allergy Reference Name',
-            'Allergen Reference System',
-            'Allergen Reference',
-            'Status Id',
             'Status Description',
-            'Diagnosis Datetime',
-            'Allergy Start Datetime',
-            'No Allergies',
-            'Drug'
+            'Status Id',
+            'Updated',
+            'Updated By',
         ]
         self.assertEqual(
             result[0],
@@ -720,22 +720,22 @@ class MultiFileCsvExtractTestCase(AbstractExtractTestCase):
             '',
             '',
             '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            'Penicillin',
+            '',
+            '',
+            'False',
             '1',
             '',
             '',
             '',
             '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            'False',
-            'Penicillin'
+            ''
         ]
 
         self.assertEqual(

@@ -542,6 +542,7 @@ class SubrecordDiscoverableMixinTestCase(OpalTestCase):
 
         hound_owner_override = HoundOwnerOverride(self.user)
         with patch.object(hound_owner_override, "get_model_fields") as gmf:
+            # fields should be resorted into alphabetical order
             gmf.return_value = ["name", "dog"]
             schema = hound_owner_override.get_schema()
             self.assertEqual(
@@ -560,4 +561,54 @@ class SubrecordDiscoverableMixinTestCase(OpalTestCase):
         )
         self.assertEqual(
             schema["description"], "something"
+        )
+
+    def test_get_schema_fields_override_order(self):
+        class HoundOwnerOverride(
+            subrecord_discoverable.SubrecordDiscoverableMixin,
+            DiscoverableMock
+        ):
+            model = HoundOwner
+            attribute_cls = FieldWrapper
+            description = "something"
+            fields = ["name", "dog"]
+
+        hound_owner_override = HoundOwnerOverride(self.user)
+        with patch.object(hound_owner_override, "get_model_fields") as gmf:
+            # fields should be resorted into alphabetical order
+            gmf.return_value = ["name", "dog"]
+            schema = hound_owner_override.get_schema()
+            self.assertEqual(
+                schema["fields"][0]["display_name"], "Name",
+            )
+
+            self.assertEqual(
+                schema["fields"][1]["display_name"], "Hound",
+            )
+
+    def test_sort_fields(self):
+        class HoundOwnerOverride(
+            subrecord_discoverable.SubrecordDiscoverableMixin,
+            DiscoverableMock
+        ):
+            model = HoundOwner
+            attribute_cls = FieldWrapper
+            description = "something"
+
+        fields = [
+            FieldWrapper(
+                self.user,
+                model=HoundOwner,
+                field_name="name"
+            ),
+            FieldWrapper(
+                self.user,
+                model=HoundOwner,
+                field_name="dog"
+            )
+        ]
+        hound_owner_override = HoundOwnerOverride(self.user)
+        self.assertEqual(
+            hound_owner_override.sort_fields(fields),
+            [fields[1], fields[0]]
         )

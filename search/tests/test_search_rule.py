@@ -68,7 +68,7 @@ class EpisodeSearchRuleTestCase(OpalTestCase):
         self.episode.start = datetime.date(2017, 1, 1)
         self.episode.end = datetime.date(2017, 1, 5)
         self.episode.save()
-        self.episode_query = search_rules.EpisodeSearchRule(self.user)
+        self.episode_rule = search_rules.EpisodeSearchRule(self.user)
 
     def test_episode_end_start(self):
         query_end = dict(
@@ -77,7 +77,7 @@ class EpisodeSearchRuleTestCase(OpalTestCase):
             field="end"
         )
         self.assertEqual(
-            list(self.episode_query.query(query_end))[0], self.episode
+            list(self.episode_rule.query(query_end))[0], self.episode
         )
 
     def test_episode_end_when_none(self):
@@ -89,7 +89,7 @@ class EpisodeSearchRuleTestCase(OpalTestCase):
             field="end"
         )
         self.assertEqual(
-            list(self.episode_query.query(query_end)), []
+            list(self.episode_rule.query(query_end)), []
         )
 
     def test_episode_end_after(self):
@@ -99,7 +99,7 @@ class EpisodeSearchRuleTestCase(OpalTestCase):
             field="end"
         )
         self.assertEqual(
-            list(self.episode_query.query(query_end))[0], self.episode
+            list(self.episode_rule.query(query_end))[0], self.episode
         )
 
     def test_episode_end_not_found(self):
@@ -109,7 +109,7 @@ class EpisodeSearchRuleTestCase(OpalTestCase):
             field="end"
         )
         self.assertEqual(
-            list(self.episode_query.query(query_end)), []
+            list(self.episode_rule.query(query_end)), []
         )
 
     def test_episode_end_wrong_query_param(self):
@@ -119,7 +119,7 @@ class EpisodeSearchRuleTestCase(OpalTestCase):
             field="end"
         )
         with self.assertRaises(exceptions.SearchException):
-            self.episode_query.query(query_end)
+            self.episode_rule.query(query_end)
 
     def test_episode_start_before(self):
         query_end = dict(
@@ -128,7 +128,7 @@ class EpisodeSearchRuleTestCase(OpalTestCase):
             field="start"
         )
         self.assertEqual(
-            list(self.episode_query.query(query_end))[0], self.episode
+            list(self.episode_rule.query(query_end))[0], self.episode
         )
 
     def test_episode_start_after(self):
@@ -138,7 +138,7 @@ class EpisodeSearchRuleTestCase(OpalTestCase):
             field="start"
         )
         self.assertEqual(
-            list(self.episode_query.query(query_end))[0], self.episode
+            list(self.episode_rule.query(query_end))[0], self.episode
         )
 
     def test_episode_start_when_none(self):
@@ -150,7 +150,7 @@ class EpisodeSearchRuleTestCase(OpalTestCase):
             field="start"
         )
         self.assertEqual(
-            list(self.episode_query.query(query_end)), []
+            list(self.episode_rule.query(query_end)), []
         )
 
     def test_episode_start_not_found(self):
@@ -160,7 +160,7 @@ class EpisodeSearchRuleTestCase(OpalTestCase):
             field="start"
         )
         self.assertEqual(
-            list(self.episode_query.query(query_end)), []
+            list(self.episode_rule.query(query_end)), []
         )
 
     def test_episode_start_wrong_query_param(self):
@@ -170,7 +170,7 @@ class EpisodeSearchRuleTestCase(OpalTestCase):
             field="start"
         )
         with self.assertRaises(exceptions.SearchException):
-            self.episode_query.query(query_end)
+            self.episode_rule.query(query_end)
 
 
 class EpisodeTeamQueryTestCase(OpalTestCase):
@@ -179,7 +179,7 @@ class EpisodeTeamQueryTestCase(OpalTestCase):
         _, self.episode_1 = self.new_patient_and_episode_please()
         _, self.episode_2 = self.new_patient_and_episode_please()
         _, self.episode_3 = self.new_patient_and_episode_please()
-        self.episode_query = search_rules.EpisodeSearchRule(self.user)
+        self.episode_rule = search_rules.EpisodeSearchRule(self.user)
 
     def test_episode_team_wrong_query_param(self):
         query_end = dict(
@@ -188,7 +188,7 @@ class EpisodeTeamQueryTestCase(OpalTestCase):
             field="team"
         )
         with self.assertRaises(exceptions.SearchException) as er:
-            self.episode_query.query(query_end)
+            self.episode_rule.query(query_end)
         self.assertEqual(
             str(er.exception),
             "unrecognised query type for the episode team query with asdfsadf"
@@ -201,7 +201,7 @@ class EpisodeTeamQueryTestCase(OpalTestCase):
             field="team"
         )
         with self.assertRaises(exceptions.SearchException) as er:
-            self.episode_query.query(query_end)
+            self.episode_rule.query(query_end)
         self.assertEqual(
             str(er.exception),
             "unable to find the tag titled Some Team"
@@ -231,7 +231,7 @@ class EpisodeTeamQueryTestCase(OpalTestCase):
                     title="Tree"
                 ),
             ]
-            result = self.episode_query.query(query_end)
+            result = self.episode_rule.query(query_end)
         self.assertEqual(len(result), 2)
         self.assertEqual(result[0].id, self.episode_1.id)
         self.assertEqual(result[1].id, self.episode_2.id)
@@ -257,7 +257,7 @@ class EpisodeTeamQueryTestCase(OpalTestCase):
                     title="Tree"
                 ),
             ]
-            result = self.episode_query.query(query_end)
+            result = self.episode_rule.query(query_end)
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0].id, self.episode_1.id)
 
@@ -288,7 +288,7 @@ class EpisodeTeamQueryTestCase(OpalTestCase):
                     title="Tree"
                 ),
             ]
-            result = self.episode_query.query(query_end)
+            result = self.episode_rule.query(query_end)
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0].id, self.episode_1.id)
 
@@ -318,7 +318,7 @@ class EpisodeTeamQueryTestCase(OpalTestCase):
                     title="Tree"
                 ),
             ]
-            result = self.episode_query.query(query_end)
+            result = self.episode_rule.query(query_end)
         self.assertEqual(len(result), 2)
         self.assertEqual(result[0].id, self.episode_1.id)
         self.assertEqual(result[1].id, self.episode_2.id)
@@ -351,8 +351,43 @@ class EpisodeTeamQueryTestCase(OpalTestCase):
                     title="Tree"
                 ),
             ]
-            result = self.episode_query.query(query_end)
+            result = self.episode_rule.query(query_end)
         self.assertEqual(len(result), 3)
         self.assertEqual(result[0].id, self.episode_1.id)
         self.assertEqual(result[1].id, self.episode_2.id)
         self.assertEqual(result[2].id, self.episode_3.id)
+
+
+class LocationRuleTestCase(OpalTestCase):
+    def test_location_rule_order(self):
+        location_rule = search_rules.SearchRule.get_rule(
+            "location", self.user
+        )
+
+        fields = location_rule.get_fields()
+        self.assertEqual(
+            fields[0].get_name(), "bed"
+        )
+        self.assertEqual(
+            fields[1].get_name(), "ward"
+        )
+        self.assertEqual(
+            fields[2].get_name(), "hospital"
+        )
+
+
+class EpisodeTestBase(OpalTestCase):
+    def test_field_order(self):
+        episode_rule = search_rules.SearchRule.get_rule(
+            "episode", self.user
+        )
+        fields = episode_rule.get_fields()
+        self.assertEqual(
+            fields[0].get_name(), "team"
+        )
+        self.assertEqual(
+            fields[1].get_name(), "start"
+        )
+        self.assertEqual(
+            fields[2].get_name(), "end"
+        )

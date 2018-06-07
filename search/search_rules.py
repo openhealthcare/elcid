@@ -116,6 +116,29 @@ class SearchRule(
         )}
 
 
+class AbstractLocationMixin(object):
+    model = emodels.Location
+    slug = emodels.Location.get_api_name()
+
+    def sort_fields(self, fields):
+        interested = [
+            "hospital", "ward", "bed"
+        ]
+        name_to_field = dict()
+        result = []
+        for field in fields:
+            if field.get_name() in interested:
+                name_to_field[field.get_name()] = field
+            else:
+                result.append(field)
+
+        for field_name in interested:
+            result.insert(
+                0, name_to_field[field_name]
+            )
+        return result
+
+
 class EpisodeSearchRule(SearchRule):
     order = 1
     display_name = "Episode"
@@ -152,6 +175,10 @@ class MicroTestRule(SearchRule):
         "sensitive_antibiotics",
         "resistant_antibiotics"
     ]
+
+
+class LocationRule(AbstractLocationMixin, SearchRule):
+    pass
 
 
 class ResultSearchRule(SearchRule):
