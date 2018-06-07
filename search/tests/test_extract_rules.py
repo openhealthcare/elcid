@@ -2,7 +2,8 @@ from opal.core.test import OpalTestCase
 from search import extract_rules
 
 # HoundOwner is an episode subrecord, HouseOwner is a patient subrecord
-from opal.tests.models import HoundOwner, HouseOwner
+# HatWearer is an episode subrecord with many to many
+from opal.tests.models import HoundOwner, HouseOwner, HatWearer, Hat
 
 
 class ExtractRuleTestCase(OpalTestCase):
@@ -106,3 +107,35 @@ class EpisodeTestBase(OpalTestCase):
         field_names = {i.get_name() for i in fields}
         self.assertNotIn("patient_id", field_names)
         self.assertNotIn("id", field_names)
+
+
+class ManyToManyTestCase(OpalTestCase):
+    def setUp(self, *args, **kwargs):
+        super(ManyToManyTestCase, self).setUp(*args, **kwargs)
+        _, self.episode = self.new_patient_and_episode_please()
+        self.bowler = Hat.objects.create(name="bowler")
+        self.top = Hat.objects.create(name="top")
+        self.hat_wearer_rule = extract_rules.ExtractRule.get_rule(
+            HatWearer.get_api_name(), self.user
+        )
+        self.hat_field = self.hat_wearer_rule.get_field("hats")
+        self.hat_wearer = HatWearer.objects.create(
+            episode=self.episode
+        )
+
+    def test_extract_single_many_to_many_field(self):
+        self.hat_wearer.hats.add(self.bowler)
+        self.assertEqual(
+            self.hat_field.extract(self.hat_wearer),
+            "bowler"
+        )
+
+    def test_extract_multi_many_to_many_field(self):
+        self.hat_wearer.hats.add(self.bowler, self.top)
+        self.assertEqual(
+            self.hat_field.extract(self.hat_wearer),
+            "bowler; top"
+        )
+
+    def test_extract_empty_many_to_many_field(self):
+        self.assertEqual(self.hat_field.extract(self.hat_wearer), "")
