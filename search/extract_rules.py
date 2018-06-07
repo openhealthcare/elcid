@@ -62,7 +62,7 @@ class CsvFieldWrapper(subrecord_discoverable.SubrecordFieldWrapper):
 class PatientIdForEpisodeSubrecord(CsvFieldWrapper):
     display_name = "Patient"
     field_name = "patient_id"
-    type_display_name = "Patient Id"
+    type_display_name = "Patient ID"
     icon = False
     enum = False
     lookup_list = False
