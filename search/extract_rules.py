@@ -316,3 +316,9 @@ class AppointmentExtractRule(ExtractRule):
     slug = emodels.Appointment.get_api_name()
     model = emodels.Appointment
     exclude = True
+
+
+class InpatientAdmissionSearchRule(ExtractRule):
+    slug = models.InpatientAdmission.get_api_name()
+    model = models.InpatientAdmission
+    exclude = True
