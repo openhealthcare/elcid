@@ -72,37 +72,20 @@ class PatientIdForEpisodeSubrecord(CsvFieldWrapper):
         return obj.episode.patient.id
 
 
-class UpdatedByField(CsvFieldWrapper):
-    display_name = "Updated By"
-    field_name = "updated_by_id"
-
-    def extract(self, obj):
-        if obj.updated_by:
-            return obj.updated_by.username
-        return ""
-
-    def get_description_template(self):
-        return "search/field_descriptions/changed_by.html"
-
-
-class CreatedByField(CsvFieldWrapper):
-    display_name = "Created By"
-    field_name = "created_by_id"
-
-    def extract(self, obj):
-        if obj.created_by:
-            return obj.created_by.username
-        return ""
-
-    def get_description_template(self):
-        return "search/field_descriptions/changed_by.html"
-
-
 class ExtractRule(
     subrecord_discoverable.SubrecordDiscoverableMixin,
     discoverable.DiscoverableFeature,
 ):
     module_name = 'extract_rules'
+
+    FIELDS_TO_IGNORE = {
+        "id",
+        "created",
+        "updated",
+        "created_by_id",
+        "updated_by_id",
+        "consistency_token",
+    }
 
     def get_model_fields(self):
         if self.user.profile.roles.filter(
@@ -112,10 +95,10 @@ class ExtractRule(
         else:
             field_names = self.model._get_fieldnames_to_extract()
 
-        if "consistency_token" in field_names:
-            field_names.remove("consistency_token")
-        if "id" in field_names:
-            field_names.remove("id")
+        field_names = [
+            i for i in field_names if i not in self.FIELDS_TO_IGNORE
+        ]
+
         return field_names
 
     def get_fields(self):
@@ -219,10 +202,6 @@ class EpisodeExtractRule(ExtractRule):
         EpisodeTeamExtractField,
         EpisodeStartExtractField,
         EpisodeEndExtractField,
-        "created",
-        "updated",
-        "created_by_id",
-        "updated_by_id",
     ]
     model = models.Episode
     display_name = "Episode"

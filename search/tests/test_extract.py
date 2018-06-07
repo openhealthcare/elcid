@@ -663,18 +663,14 @@ class MultiFileCsvExtractTestCase(AbstractExtractTestCase):
             u'Patient',
             u'Episode',
             u'Comment',
-            u'Created',
-            u'Created By',
             u'Date',
-            u'Updated',
-            u'Updated By',
         ]
         self.assertEqual(
             result[0],
             general_note_fields
         )
         expected_result = [
-            '1', '1', 'This is interesting', '', '', '', '', ''
+            '1', '1', 'This is interesting', ''
         ]
         self.assertEqual(
             result[1],
@@ -691,7 +687,7 @@ class MultiFileCsvExtractTestCase(AbstractExtractTestCase):
             [extract_rules.ExtractRule.get_rule("episode", self.user)]
         )
         expected_result = [
-            '1', '1', '', '2018-02-01', '', '', '', '', ''
+            '1', '1', '', '2018-02-01', ''
         ]
         expected_headers = [
             'Patient ID',
@@ -699,10 +695,6 @@ class MultiFileCsvExtractTestCase(AbstractExtractTestCase):
             'Team',
             'Start',
             'End',
-            'Created',
-            'Updated',
-            'Created By',
-            'Updated By',
         ]
 
         self.assertEqual(
@@ -739,8 +731,6 @@ class MultiFileCsvExtractTestCase(AbstractExtractTestCase):
             'Allergy Type Description',
             'Certainty Description',
             'Certainty Id',
-            'Created',
-            'Created By',
             'Details',
             'Diagnosis Datetime',
             'Drug',
@@ -750,8 +740,6 @@ class MultiFileCsvExtractTestCase(AbstractExtractTestCase):
             'Provisional',
             'Status Description',
             'Status Id',
-            'Updated',
-            'Updated By',
         ]
         self.assertEqual(
             result[0],
@@ -769,15 +757,11 @@ class MultiFileCsvExtractTestCase(AbstractExtractTestCase):
             '',
             '',
             '',
-            '',
-            '',
             ''
             'Penicillin',
             '',
             '',
             'False',
-            '',
-            '',
             '',
             '',
             '',
@@ -803,7 +787,7 @@ class MultiFileCsvExtractTestCase(AbstractExtractTestCase):
             ]
         )
         expected_result = [
-            '1', '1', '', '2018-02-01', '', '', '', '', ''
+            '1', '1', '', '2018-02-01', ''
         ]
         expected_headers = [
             'Patient ID',
@@ -811,10 +795,6 @@ class MultiFileCsvExtractTestCase(AbstractExtractTestCase):
             'Team',
             'Start',
             'End',
-            'Created',
-            'Updated',
-            'Created By',
-            'Updated By',
         ]
 
         self.assertEqual(
