@@ -89,6 +89,7 @@ describe('ExtractCtrl', function(){
 
 
     beforeEach(function(){
+        module('opal.filters');
         module('opal.controllers');
         inject(function($injector){
 
@@ -99,8 +100,6 @@ describe('ExtractCtrl', function(){
             $modal       = $injector.get('$modal');
             $timeout     = $injector.get('$timeout');
             PatientSummary = $injector.get('PatientSummary');
-
-
             $controller  = $injector.get('$controller');
             ExtractSchema = $injector.get('ExtractSchema');
         });
@@ -442,6 +441,14 @@ describe('ExtractCtrl', function(){
       it('should set the field info', function(){
         $scope.setExtractSliceInfo("something");
         expect($scope.extractSliceInfo).toBe("something");
+      });
+    });
+
+    describe('lookupListDisplayName', function(){
+      it("should generate a lookup list display name", function(){
+        expect($scope.lookupListDisplayName("contact_details")).toBe(
+          "Contact Details"
+        );
       });
     });
 });
