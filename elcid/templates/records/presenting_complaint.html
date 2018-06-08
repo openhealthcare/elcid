@@ -1,5 +1,3 @@
-<span ng-show="item.symptoms || item.duration || item.details">
-[[ item.symptoms.join(', ') ]]
-<span ng-show="item.duration || item.details  ">([[item.duration]]<span ng-show="item.details">. [[item.details]]</span>)</span>
-<br />
-</span>
+<span ng-show="item.symptoms.length">[[ item.symptoms.join(', ') ]] <br /></span>
+<span ng-show="item.details">[[ item.details ]] <br /></span>
+<span ng-show="item.duration || item.details  ">( [[item.duration]] )<br /></span>
