@@ -2,3 +2,9 @@
   display: block;
   margin-left: 20px;
   margin-right: 20px; }
+
+.infectious-diseases-report-button {
+  height: 50px; }
+  .infectious-diseases-report-button h4 {
+    padding: 10px 16px;
+    margin: 0; }
