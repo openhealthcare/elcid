@@ -70,7 +70,11 @@ class IdLiasionReport(Report):
     def get_diagnosis_row(self, episode):
         row = []
         for diagnosis in episode.diagnosis_set.all():
-            row.append(diagnosis.condition)
+            condition = diagnosis.condition
+            if condition:
+                row.append(diagnosis.condition)
+            else:
+                row.append(diagnosis.details)
 
         row_length = len(row)
 
