@@ -1,15 +1,15 @@
 angular.module('opal.services').factory('DischargePatientService', function($q) {
-    var DischargePatientService = function(episode, tags){
+    "use strict";
+
+    var DischargePatientService = function(){
         /* has 2 jobs
         * i) create the editing fields for the template
         * ii) return a promise dicharging those fields
         */
-
         this.getEditing = function(episode){
             var newCategory,
                 admission,
                 end,
-
             currentCategory = episode.location[0].category;
 
             if(!currentCategory.length){
@@ -25,18 +25,12 @@ angular.module('opal.services').factory('DischargePatientService', function($q) 
           	    newCategory = currentCategory;
             }
 
-            if(episode.start){
-                admission = moment(episode.start).format('MM/DD/YY')
-            }
+            var episodeCopy = episode.makeCopy();
 
-            if(!episode.end){
-                end = moment().format('DD/MM/YYYY');
-            }else{
-                end = episode.end;
-            }
+            end = episodeCopy.end || new Date();
 
             return {
-                start: admission,
+                start: episodeCopy.start,
           	    category_name: newCategory,
                 end: end
             };
@@ -76,6 +70,18 @@ angular.module('opal.services').factory('DischargePatientService', function($q) 
               }else{
                   taggingAttrs[currentTag] = false;
               }
+            }
+
+            if(location.category !== ''){
+              // if we are already in the discharged with
+              // follow up/transferred/diceased/removed/no longer under active review
+              // then the episode definitely wants to be discharge
+
+              // alternatively if they have not been already
+              // been discharged, ie they are currently just on the list
+              // then their location is '' they can then have their category
+              // set to 'follo wup' or what have you.
+              locationAttrs.category = "Discharged";
             }
 
             var deferred = $q.defer();
