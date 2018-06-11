@@ -190,6 +190,26 @@ class IdLiasionReportTestCase(OpalTestCase):
             ['something', '']
         )
 
+    def test_get_diagnosis_row_with_details(self):
+        _, episode = self.new_patient_and_episode_please()
+        episode.diagnosis_set.create(
+            details="some details"
+        )
+        self.report.qs = Episode.objects.all()
+        self.assertEqual(
+            self.report.get_diagnosis_row(episode),
+            ['some details']
+        )
+
+    def test_diagnosis_row_with_none(self):
+        _, episode = self.new_patient_and_episode_please()
+        episode.diagnosis_set.create()
+        self.report.qs = Episode.objects.all()
+        self.assertEqual(
+            self.report.get_diagnosis_row(episode),
+            ['']
+        )
+
     def test_get_clinical_advice_headers(self):
         self.assertEqual(
             self.report.get_clinical_advice_headers(),
