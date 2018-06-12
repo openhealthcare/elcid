@@ -193,6 +193,28 @@ class EpisodeTeamQueryTestCase(OpalTestCase):
         self.assertEqual(result[1].id, self.episode_2.id)
         self.assertEqual(result[2].id, self.episode_3.id)
 
+
+class EpisoseCategoryTestCase(OpalTestCase):
+    def setUp(self, *args, **kwargs):
+        super(EpisoseCategoryTestCase, self).setUp(*args, **kwargs)
+        _, self.episode_1 = self.new_patient_and_episode_please()
+        self.episode_1.category_name = "Inpatient"
+        self.episode_1.save()
+
+        _, self.episode_2 = self.new_patient_and_episode_please()
+        self.episode_2.category_name = "Out patient"
+        self.episode_2.save()
+
+        _, self.episode_3 = self.new_patient_and_episode_please()
+        self.episode_3.category_name = "Inpatient"
+        self.episode_3.save()
+
+        _, self.episode_4 = self.new_patient_and_episode_please()
+        self.episode_4.category_name = "Other"
+        self.episode_4.save()
+
+        self.rule_field = search_rule_fields.EpisodeCategory(self.user)
+
     @patch("search.search_rule_fields.episodes.EpisodeCategory.list")
     def test_episode_category_enum(self, categories):
 
@@ -201,5 +223,54 @@ class EpisodeTeamQueryTestCase(OpalTestCase):
 
         categories.return_value = [InpatientCategory]
         self.assertEqual(
-            ["Inpatient"], self.episode_rule.get_field("category_name").enum
+            ["Inpatient"], self.rule_field.enum
         )
+
+    def test_episode_category_contains(self):
+        given_query = dict(
+            query_type="Contains",
+            value="patient",
+        )
+        result = self.rule_field.query(given_query)
+        self.assertEqual(
+            set(result),
+            {self.episode_1, self.episode_2, self.episode_3}
+        )
+
+    def test_episode_category_contains_none(self):
+        given_query = dict(
+            query_type="Contains",
+            value="non existent",
+        )
+        result = self.rule_field.query(given_query)
+        self.assertFalse(result.exists())
+
+    def test_episode_category_exact(self):
+        given_query = dict(
+            query_type="Equals",
+            value="Inpatient",
+        )
+        result = self.rule_field.query(given_query)
+        self.assertEqual(
+            set(result),
+            {self.episode_1, self.episode_3}
+        )
+
+    def test_episode_category_exact_none(self):
+        given_query = dict(
+            query_type="Equals",
+            value="non existent",
+        )
+        result = self.rule_field.query(given_query)
+        self.assertFalse(result.exists())
+
+    def test_category_unknown_query(self):
+        given_query = dict(
+            query_type="blah blah",
+            value="non existent",
+        )
+        e = "unrecognised query type for the episode category query with blah \
+blah"
+        with self.assertRaises(exceptions.SearchException) as se:
+            self.rule_field.query(given_query)
+        self.assertEqual(str(se.exception), e)
