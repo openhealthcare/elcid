@@ -195,14 +195,11 @@ class EpisodeEnd(
 class EpisodeCategory(
     SearchRuleField
 ):
-    ALL_OF = "All Of"
-    ANY_OF = "Any Of"
     display_name = "Category"
     description = "The type of episode the patient had."
     type_display_name = "Text Field"
     field_name = "category_name"
-    widget = "search/widgets/many_to_many.html"
-    widget_description = "partials/search/descriptions/many_to_many.html"
+    widget = "search/widgets/text.html"
     description_template = "search/field_descriptions/episode/category.html"
 
     @property
@@ -211,24 +208,18 @@ class EpisodeCategory(
 
     def query(self, given_query):
         query_type = given_query["query_type"]
-        category_display_names = given_query['value']
+        if query_type not in ['Contains', 'Equals']:
+            err = """
+                unrecognised query type for the episode category query with {}
+            """.strip()
+            raise SearchException(err.format(query_type))
 
-        if not query_type == self.ALL_OF:
-            if not query_type == self.ANY_OF:
-                err = """
-                    unrecognised query type for the episode team query with {}
-                """.strip()
-                raise SearchException(err.format(query_type))
+        contains = '{}__iexact'.format(self.field_name)
+        if query_type == 'Contains':
+            contains = '{}__icontains'.format(self.field_name)
 
-        qs = models.Episode.objects.all()
-
-        if given_query["query_type"] == self.ALL_OF:
-            for category_display_name in category_display_names:
-                qs = qs.filter(category_name__value=category_display_name)
-        else:
-            qs = qs.filter(category_name__in=category_display_names)
-
-        return qs.distinct()
+        kwargs = {contains: given_query['value']}
+        return models.Episode.objects.filter(**kwargs).distinct()
 
 
 class EpisodeTeam(
