@@ -149,7 +149,7 @@ def aggregate_by_episode_and_drug(drugs):
     return episode_id_drug_duration
 
 
-def get_breakdown():
+def get_breakdown(year=2017, quarter=2):
     year = 2017
     quarter = 2
     start, end = get_quarter_start_end(year, quarter)
@@ -172,8 +172,7 @@ def get_antimicrobials(year, quarter):
     episode_id_drug_duration = aggregate_by_episode_and_drug(drugs)
     result = defaultdict(lambda: defaultdict(int))
     for episode_id, drug_name, duration in episode_id_drug_duration:
-        if not duration:
-            duration = 0
-        result[drug_name]["episodes"] += 1
-        result[drug_name]["duration"] += duration
+        if duration:
+            result[drug_name]["episodes"] += 1
+            result[drug_name]["duration"] += duration
     return result
