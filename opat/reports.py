@@ -36,8 +36,10 @@ def get_episodes(start_date, end_date):
     """
     Episodes filtered by start and end date.
 
-    We use the update timestamp or the created timestamp
-    if the updated does not exists.
+    We use the created timestamp, if the created timestamp is
+    none, we use the updated timestamp.
+
+    (it shouldn't be but of late but it was possible a few years ago)
 
     Remove episodes that have not had any IVs
 
@@ -47,14 +49,14 @@ def get_episodes(start_date, end_date):
         updated__gte=start_date
     ).filter(
         updated__lte=end_date
-    ).values_list("id", flat=True))
+    ).filter(created=None).values_list("id", flat=True))
+
     created = set(opat_models.OPATOutcome.objects.filter(
-        updated=None
-    ).filter(
         created__gte=start_date
     ).filter(
         created__lte=end_date
     ).values_list("id", flat=True))
+
     episodes = opal_models.Episode.objects.filter(
         opatoutcome__id__in=created.union(updated)
     ).distinct()
