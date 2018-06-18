@@ -26,12 +26,20 @@ def get_quarter_start_end(year, quarter):
     return start_date, end_date
 
 
+def get_iv_route():
+    return opal_models.Antimicrobial_route.objects.get(
+        name__iexact="IV"
+    )
+
+
 def get_episodes(start_date, end_date):
     """
     Episodes filtered by start and end date.
 
     We use the update timestamp or the created timestamp
     if the updated does not exists.
+
+    Remove episodes that have not had any IVs
 
     We exclude episodes that have been rejected
     """
@@ -50,6 +58,11 @@ def get_episodes(start_date, end_date):
     episodes = opal_models.Episode.objects.filter(
         opatoutcome__id__in=created.union(updated)
     ).distinct()
+
+    # remove episodes that have not had any IV
+    route = get_iv_route()
+    episodes = episodes.filter(antimicrobial__route_fk_id=route.id)
+
     return episodes.exclude(
         id__in=opat_models.OPATRejection.objects.all().values_list(
             'episode_id', flat=True
@@ -58,13 +71,6 @@ def get_episodes(start_date, end_date):
 
 
 def get_relevant_drugs(episodes):
-    route = opal_models.Antimicrobial_route.objects.filter(
-        name__iexact="IV"
-    )
-
-    if not route.exists():
-        raise ValueError("unable to find a route for IV")
-
     delivered_by = elcid_models.Drug_delivered.objects.filter(
         name="Inpatient Team"
     )
@@ -74,8 +80,6 @@ def get_relevant_drugs(episodes):
 
     antimicrobials = elcid_models.Antimicrobial.objects.filter(
         episode__in=episodes
-    ).filter(
-        route_fk_id=route.get()
     ).exclude(
         delivered_by_fk_id=delivered_by.get()
     )
@@ -120,10 +124,34 @@ def get_drug_duration(antimicrobial):
             return duration
 
 
-def print_antimcrobials(year, quarter):
+def print_antimcrobials(year=2017, quarter=2):
     antimicrobials = get_antimicrobials(year, quarter)
     for name, v in antimicrobials.items():
         print "{} {} {}".format(name, v["episodes"], v["duration"])
+
+
+def aggregate_by_episode_and_drug(drugs):
+    episode_id_drug_duration = []
+
+    for drug in drugs:
+        drug_name = drug.drug
+
+        if drug.drug_ft:
+            drug_name = "Other"
+        episode_id_drug_duration.append(
+            (drug.episode_id, drug_name, get_drug_duration(drug),)
+        )
+    return episode_id_drug_duration
+
+
+def get_breakdown():
+    year = 2017
+    quarter = 2
+    start, end = get_quarter_start_end(year, quarter)
+    episodes = get_episodes(start, end)
+    drugs = get_relevant_drugs(episodes)
+    episode_id_drug_duration = aggregate_by_episode_and_drug(drugs)
+    return episode_id_drug_duration
 
 
 def get_antimicrobials(year, quarter):
@@ -136,17 +164,7 @@ def get_antimicrobials(year, quarter):
     episodes = get_episodes(start, end)
     drugs = get_relevant_drugs(episodes)
 
-    episode_id_drug_duration = []
-
-    for drug in drugs:
-        drug_name = drug.drug
-
-        if drug.drug_ft:
-            drug_name = "Other"
-        episode_id_drug_duration.append(
-            (drug.episode_id, drug_name, get_drug_duration(drug),)
-        )
-
+    episode_id_drug_duration = aggregate_by_episode_and_drug(drugs)
     result = defaultdict(lambda: defaultdict(int))
     for episode_id, drug_name, duration in episode_id_drug_duration:
         if duration:
