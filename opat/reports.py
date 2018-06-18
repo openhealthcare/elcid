@@ -172,7 +172,8 @@ def get_antimicrobials(year, quarter):
     episode_id_drug_duration = aggregate_by_episode_and_drug(drugs)
     result = defaultdict(lambda: defaultdict(int))
     for episode_id, drug_name, duration in episode_id_drug_duration:
-        if duration:
-            result[drug_name]["episodes"] += 1
-            result[drug_name]["duration"] += duration
+        if not duration:
+            duration = 0
+        result[drug_name]["episodes"] += 1
+        result[drug_name]["duration"] += duration
     return result
