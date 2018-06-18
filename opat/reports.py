@@ -103,6 +103,9 @@ def get_drug_duration(antimicrobial):
     get drug duration, but only for the time
     they are actually on opat.
     """
+    if not antimicrobial.start_date:
+        return
+
     episode = antimicrobial.episode
     episode_start = episode.start
 
