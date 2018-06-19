@@ -35,6 +35,31 @@ def get_iv_route():
     )
 
 
+def clean_outcomes(outcomes):
+    """
+    With opat outcomes we only care about those in the completed state
+
+    Also occasionally we have double clicks.
+
+    We should never have multiple episodes with completed states, but
+    we have some double click issues, so we will exclude these.
+    """
+    outcomes = outcomes.filter(
+        outcome_stage=COMPLETED_THERAPY_STAGE
+    )
+
+    duplicates = outcomes.values("episode_id").annotate(
+        dupe_outcome=Count("episode_id")
+    ).filter(dupe_outcome__gt=1)
+    to_remove = []
+    for duplicate in duplicates:
+        repeated = outcomes.filter(episode_id=duplicate["episode_id"])
+        repeated = list(repeated.values_list("id", flat=True))[1:]
+        to_remove.extend(repeated)
+
+    return outcomes.exclude(id__in=to_remove)
+
+
 def get_episodes(start_date, end_date):
     """
     Episodes filtered by start and end date.
@@ -48,9 +73,7 @@ def get_episodes(start_date, end_date):
 
     We exclude episodes that have been rejected
     """
-    outcomes = opat_models.OPATOutcome.objects.filter(
-        outcome_stage=COMPLETED_THERAPY_STAGE
-    )
+    outcomes = clean_outcomes(opat_models.OPATOutcome.objects.all())
     updated = set(outcomes.filter(
         updated__gte=start_date
     ).filter(
@@ -213,13 +236,14 @@ def get_ft_or_fk_coded_count(qs, field_name, fk_model):
 
     other = qs.filter(**{fk_id: None}).exclude(**{ft_name: ''})
 
-    # this shouldn't be necessary
+    # occasionally people put `none` as the adverse event, lets
+    # skip those
     other_count = other.exclude(
         **{ft_name: None}
-    ).count()
+    ).filter(**{"{}__iexact".format(ft_name): "none"}).count()
 
     if other_count:
-        result["other"] = other_count
+        result["Other"] = other_count
     return result
 
 
@@ -235,3 +259,48 @@ def get_drug_reactions(episodes):
     return get_ft_or_fk_coded_count(
         drugs, "adverse_event", opal_models.Antimicrobial_adverse_event
     )
+
+
+def get_primary_infective_diagnosis(year, quarter):
+    start, end = get_quarter_start_end(year, quarter)
+    episodes = get_episodes(start, end)
+
+    result = defaultdict(
+        lambda: defaultdict(
+            lambda: defaultdict(int)
+        )
+    )
+
+    for episode in episodes:
+        outcome = clean_outcomes(episode.opatoutcome_set.all()).get()
+        diagnosis_name = "Other"
+        if outcome.infective_diagnosis_fk_id:
+            diagnosis_name = outcome.infective_diagnosis
+
+        opat_outcome = outcome.opat_outcome
+        patient_outcome = outcome.patient_outcome
+
+        result[diagnosis_name]["patient_outcome"][patient_outcome] += 1
+        result[diagnosis_name]["opat_outcome"][opat_outcome] += 1
+
+    return result
+
+
+def print_primary_diagnosis(year, quarter):
+    result = get_primary_infective_diagnosis(year, quarter)
+    for diagnosis_name, outcomes in result.items():
+        result = "{}".format(diagnosis_name)
+        patient_outcomes = " Patient Outcomes:"
+        for outcome_name, outcome_ammount in outcomes["patient_outcome"].items():
+            patient_outcomes = patient_outcomes + " {} {}".format(
+                outcome_name, outcome_ammount
+            )
+
+        opat_outcomes = " Opat Outcomes:"
+        for outcome_name, outcome_ammount in outcomes["opat_outcome"].items():
+            opat_outcomes = opat_outcomes + " {} {}".format(
+                outcome_name, outcome_ammount
+            )
+        print "{} {} {}".format(
+            diagnosis_name, patient_outcomes, opat_outcomes
+        )
