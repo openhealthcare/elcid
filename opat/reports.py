@@ -1,8 +1,11 @@
 from datetime import date
 from collections import defaultdict
+from django.db.models import Count
 from opal import models as opal_models
 from opat import models as opat_models
 from elcid import models as elcid_models
+
+COMPLETED_THERAPY_STAGE = "Completed Therapy"
 
 
 def get_quarter_start_end(year, quarter):
@@ -45,13 +48,16 @@ def get_episodes(start_date, end_date):
 
     We exclude episodes that have been rejected
     """
-    updated = set(opat_models.OPATOutcome.objects.filter(
+    outcomes = opat_models.OPATOutcome.objects.filter(
+        outcome_stage=COMPLETED_THERAPY_STAGE
+    )
+    updated = set(outcomes.filter(
         updated__gte=start_date
     ).filter(
         updated__lte=end_date
     ).filter(created=None).values_list("id", flat=True))
 
-    created = set(opat_models.OPATOutcome.objects.filter(
+    created = set(outcomes.filter(
         created__gte=start_date
     ).filter(
         created__lte=end_date
@@ -176,3 +182,56 @@ def get_antimicrobials(year, quarter):
             result[drug_name]["episodes"] += 1
             result[drug_name]["duration"] += duration
     return result
+
+
+def get_adverse_reactions(year, quarter):
+    start, end = get_quarter_start_end(year, quarter)
+    episodes = get_episodes(start, end)
+    line_dict = get_line_reactions(episodes)
+    drug_dict = get_drug_reactions(episodes)
+    result = {}
+    for k, v in line_dict.items():
+        result["Line - {}".format(k)] = v
+
+    for k, v in drug_dict.items():
+        result["Drug - {}".format(k)] = v
+    return result
+
+
+def get_ft_or_fk_coded_count(qs, field_name, fk_model):
+    fk_id = "{}_fk_id".format(field_name)
+    ft_name = "{}_ft".format(field_name)
+    coded_qs = qs.exclude(**{fk_id: None})
+    counted_rows = coded_qs.values(fk_id).annotate(
+        coded_count=Count(fk_id)
+    )
+    result = dict()
+
+    for counted_row in counted_rows:
+        fk_name = fk_model.objects.get(id=counted_row[fk_id]).name
+        result[fk_name] = counted_row["coded_count"]
+
+    other = qs.filter(**{fk_id: None}).exclude(**{ft_name: ''})
+
+    # this shouldn't be necessary
+    other_count = other.exclude(
+        **{ft_name: None}
+    ).count()
+
+    if other_count:
+        result["other"] = other_count
+    return result
+
+
+def get_line_reactions(episodes):
+    lines = elcid_models.Line.objects.filter(episode__in=episodes)
+    return get_ft_or_fk_coded_count(
+        lines, "complications", opal_models.Line_complication
+    )
+
+
+def get_drug_reactions(episodes):
+    drugs = get_relevant_drugs(episodes)
+    return get_ft_or_fk_coded_count(
+        drugs, "adverse_event", opal_models.Antimicrobial_adverse_event
+    )
