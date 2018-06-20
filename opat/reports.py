@@ -192,7 +192,7 @@ def get_antimicrobials(year, quarter):
     """
     returns a dictionary of
     antimicrobial -> episodes -> episode_count
-                  -> druation -> sum(duration)
+                  -> duration -> sum(duration)
     """
     start, end = get_quarter_start_end(year, quarter)
     episodes = get_episodes(start, end)
@@ -240,7 +240,7 @@ def get_ft_or_fk_coded_count(qs, field_name, fk_model):
     # skip those
     other_count = other.exclude(
         **{ft_name: None}
-    ).filter(**{"{}__iexact".format(ft_name): "none"}).count()
+    ).exclude(**{"{}__iexact".format(ft_name): "none"}).count()
 
     if other_count:
         result["Other"] = other_count
@@ -317,6 +317,30 @@ def get_primary_infective_diagnosis(year, quarter):
     return result
 
 
+def get_summary(episodes, pid):
+    result = dict()
+    result["Total Line Events"] = sum(
+        i for i in get_line_reactions(episodes).values()
+    )
+    result["Total Drug Events"] = sum(
+        i for i in get_drug_reactions(episodes).values()
+    )
+    result["Episodes"] = sum(
+        i["episode"]["total"] for i in pid.values()
+    )
+    result["Total Treatment Days Saved"] = sum(
+        i["time_saved"]["total"] for i in pid.values()
+    )
+    return result
+
+
+def get_summary_for_quarter(year, quarter):
+    start, end = get_quarter_start_end(year, quarter)
+    episodes = get_episodes(start, end)
+    pid = get_primary_infective_diagnosis(year, quarter)
+    return get_summary(episodes, pid)
+
+
 def print_primary_diagnosis(year, quarter):
     result = get_primary_infective_diagnosis(year, quarter)
     for diagnosis_name, outcomes in result.items():
@@ -331,8 +355,9 @@ def print_primary_diagnosis(year, quarter):
             opat_outcomes = opat_outcomes + " {} {}".format(
                 outcome_name, outcome_ammount
             )
-        print "{} {} {} {}".format(
+        print "{} {} {} {} {}".format(
             diagnosis_name,
+            outcomes["episodes"]["total"],
             outcomes["time_saved"]["total"],
             patient_outcomes,
             opat_outcomes
