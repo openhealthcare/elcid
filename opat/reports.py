@@ -1,6 +1,6 @@
 from datetime import date
 from collections import defaultdict
-from django.db.models import Count
+from django.db.models import Count, Min, Max
 from opal import models as opal_models
 from opat import models as opat_models
 from elcid import models as elcid_models
@@ -261,6 +261,30 @@ def get_drug_reactions(episodes):
     )
 
 
+def get_iv_duration(episode, drugs):
+    """
+    returns the max length of iv during an episode
+    """
+
+    min_date = drugs.filter(
+        episode_id=episode.id
+    ).aggregate(min_date=Min("start_date"))["min_date"]
+    max_date = drugs.filter(
+        episode_id=episode.id
+    ).aggregate(min_date=Min("end_date"))["min_date"]
+
+    if min_date and max_date:
+        diff_dates = (max_date - min_date).days
+
+        # the dates should be inclusive so we need to add one
+        diff_dates = diff_dates + 1
+
+        # this is not the case in any of our data at the moment
+        # but lets guard against typos
+        return max(diff_dates, 0)
+    return 0
+
+
 def get_primary_infective_diagnosis(year, quarter):
     start, end = get_quarter_start_end(year, quarter)
     episodes = get_episodes(start, end)
@@ -271,6 +295,10 @@ def get_primary_infective_diagnosis(year, quarter):
         )
     )
 
+    iv_route = get_iv_route()
+    drugs = get_relevant_drugs(episodes)
+    drugs = drugs.filter(route_fk_id=iv_route.id)
+
     for episode in episodes:
         outcome = clean_outcomes(episode.opatoutcome_set.all()).get()
         diagnosis_name = "Other"
@@ -279,7 +307,10 @@ def get_primary_infective_diagnosis(year, quarter):
 
         opat_outcome = outcome.opat_outcome
         patient_outcome = outcome.patient_outcome
-
+        result[diagnosis_name]["episode"]["total"] += 1
+        result[diagnosis_name]["time_saved"]["total"] += get_iv_duration(
+            episode, drugs
+        )
         result[diagnosis_name]["patient_outcome"][patient_outcome] += 1
         result[diagnosis_name]["opat_outcome"][opat_outcome] += 1
 
@@ -289,7 +320,6 @@ def get_primary_infective_diagnosis(year, quarter):
 def print_primary_diagnosis(year, quarter):
     result = get_primary_infective_diagnosis(year, quarter)
     for diagnosis_name, outcomes in result.items():
-        result = "{}".format(diagnosis_name)
         patient_outcomes = " Patient Outcomes:"
         for outcome_name, outcome_ammount in outcomes["patient_outcome"].items():
             patient_outcomes = patient_outcomes + " {} {}".format(
@@ -301,6 +331,9 @@ def print_primary_diagnosis(year, quarter):
             opat_outcomes = opat_outcomes + " {} {}".format(
                 outcome_name, outcome_ammount
             )
-        print "{} {} {}".format(
-            diagnosis_name, patient_outcomes, opat_outcomes
+        print "{} {} {} {}".format(
+            diagnosis_name,
+            outcomes["time_saved"]["total"],
+            patient_outcomes,
+            opat_outcomes
         )
