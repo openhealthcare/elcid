@@ -1,364 +1,89 @@
-from datetime import date
-from collections import defaultdict
-from django.db.models import Count, Min, Max
-from opal import models as opal_models
-from opat import models as opat_models
-from elcid import models as elcid_models
-
-COMPLETED_THERAPY_STAGE = "Completed Therapy"
-
-
-def get_quarter_start_end(year, quarter):
-    """
-    if given a year and a quarter
-    return the start/end inclusive
-    """
-    if quarter == 1:
-        start_date = date(year, 1, 1)
-        end_date = date(year, 3, 31)
-    elif quarter == 2:
-        start_date = date(year, 4, 1)
-        end_date = date(year, 6, 30)
-    elif quarter == 3:
-        start_date = date(year, 7, 1)
-        end_date = date(year, 9, 30)
-    else:
-        start_date = date(year, 10, 1)
-        end_date = date(year, 12, 31)
-
-    return start_date, end_date
-
-
-def get_iv_route():
-    return opal_models.Antimicrobial_route.objects.get(
-        name__iexact="IV"
-    )
-
-
-def clean_outcomes(outcomes):
-    """
-    With opat outcomes we only care about those in the completed state
-
-    Also occasionally we have double clicks.
-
-    We should never have multiple episodes with completed states, but
-    we have some double click issues, so we will exclude these.
-    """
-    outcomes = outcomes.filter(
-        outcome_stage=COMPLETED_THERAPY_STAGE
-    )
-
-    duplicates = outcomes.values("episode_id").annotate(
-        dupe_outcome=Count("episode_id")
-    ).filter(dupe_outcome__gt=1)
-    to_remove = []
-    for duplicate in duplicates:
-        repeated = outcomes.filter(episode_id=duplicate["episode_id"])
-        repeated = list(repeated.values_list("id", flat=True))[1:]
-        to_remove.extend(repeated)
-
-    return outcomes.exclude(id__in=to_remove)
-
-
-def get_episodes(start_date, end_date):
-    """
-    Episodes filtered by start and end date.
-
-    We use the created timestamp, if the created timestamp is
-    none, we use the updated timestamp.
-
-    (it shouldn't be but of late but it was possible a few years ago)
-
-    Remove episodes that have not had any IVs
-
-    We exclude episodes that have been rejected
-    """
-    outcomes = clean_outcomes(opat_models.OPATOutcome.objects.all())
-    updated = set(outcomes.filter(
-        updated__gte=start_date
-    ).filter(
-        updated__lte=end_date
-    ).filter(created=None).values_list("id", flat=True))
-
-    created = set(outcomes.filter(
-        created__gte=start_date
-    ).filter(
-        created__lte=end_date
-    ).values_list("id", flat=True))
-
-    episodes = opal_models.Episode.objects.filter(
-        opatoutcome__id__in=created.union(updated)
-    ).distinct()
-
-    # remove episodes that have not had any IV
-    route = get_iv_route()
-    episodes = episodes.filter(antimicrobial__route_fk_id=route.id)
-
-    return episodes.exclude(
-        id__in=opat_models.OPATRejection.objects.all().values_list(
-            'episode_id', flat=True
-        )
-    )
-
-
-def get_relevant_drugs(episodes):
-    delivered_by = elcid_models.Drug_delivered.objects.filter(
-        name="Inpatient Team"
-    )
-
-    if not delivered_by.exists():
-        raise ValueError("Unable to find inpatient team")
-
-    antimicrobials = elcid_models.Antimicrobial.objects.filter(
-        episode__in=episodes
-    ).exclude(
-        delivered_by_fk_id=delivered_by.get()
-    )
-
-    # if delivered by is not filled in exclude it
-    to_ignore = antimicrobials.filter(
-        delivered_by_fk_id=None
-    ).filter(
-        delivered_by_ft=""
-    ).values_list("id", flat=True)
-
-    antimicrobials = antimicrobials.exclude(
-        id__in=to_ignore
-    )
-
-    return antimicrobials
-
-
-def get_drug_duration(antimicrobial):
-    """
-    get drug duration, but only for the time
-    they are actually on opat.
-    """
-    if not antimicrobial.start_date:
-        return
-
-    episode = antimicrobial.episode
-    episode_start = episode.start
-
-    if not episode_start:
-        location = episode.location_set.first()
-        episode_start = location.opat_acceptance
-
-        if not episode_start:
-            episode_start = location.opat_referral
-
-    drug_start = max(episode_start, antimicrobial.start_date)
-    if drug_start and antimicrobial.end_date:
-        duration = (antimicrobial.end_date - drug_start).days
-
-        # we are including the end date so we add 1
-        duration = duration + 1
-
-        if duration > 0:
-            return duration
-
-
-def print_antimcrobials(year=2017, quarter=2):
-    antimicrobials = get_antimicrobials(year, quarter)
-    for name, v in antimicrobials.items():
-        print "{} {} {}".format(name, v["episodes"], v["duration"])
-
-
-def aggregate_by_episode_and_drug(drugs):
-    episode_id_drug_duration = []
-
-    for drug in drugs:
-        drug_name = drug.drug
-
-        if drug.drug_ft:
-            drug_name = "Other"
-        episode_id_drug_duration.append(
-            (drug.episode_id, drug_name, get_drug_duration(drug),)
-        )
-    return episode_id_drug_duration
-
-
-def get_breakdown(year=2017, quarter=2):
-    year = 2017
-    quarter = 2
-    start, end = get_quarter_start_end(year, quarter)
-    episodes = get_episodes(start, end)
-    drugs = get_relevant_drugs(episodes)
-    episode_id_drug_duration = aggregate_by_episode_and_drug(drugs)
-    return episode_id_drug_duration
-
-
-def get_antimicrobials(year, quarter):
-    """
-    returns a dictionary of
-    antimicrobial -> episodes -> episode_count
-                  -> duration -> sum(duration)
-    """
-    start, end = get_quarter_start_end(year, quarter)
-    episodes = get_episodes(start, end)
-    drugs = get_relevant_drugs(episodes)
-
-    episode_id_drug_duration = aggregate_by_episode_and_drug(drugs)
-    result = defaultdict(lambda: defaultdict(int))
-    for episode_id, drug_name, duration in episode_id_drug_duration:
-        if duration:
-            result[drug_name]["episodes"] += 1
-            result[drug_name]["duration"] += duration
-    return result
-
-
-def get_adverse_reactions(year, quarter):
-    start, end = get_quarter_start_end(year, quarter)
-    episodes = get_episodes(start, end)
-    line_dict = get_line_reactions(episodes)
-    drug_dict = get_drug_reactions(episodes)
-    result = {}
-    for k, v in line_dict.items():
-        result["Line - {}".format(k)] = v
-
-    for k, v in drug_dict.items():
-        result["Drug - {}".format(k)] = v
-    return result
-
-
-def get_ft_or_fk_coded_count(qs, field_name, fk_model):
-    fk_id = "{}_fk_id".format(field_name)
-    ft_name = "{}_ft".format(field_name)
-    coded_qs = qs.exclude(**{fk_id: None})
-    counted_rows = coded_qs.values(fk_id).annotate(
-        coded_count=Count(fk_id)
-    )
-    result = dict()
-
-    for counted_row in counted_rows:
-        fk_name = fk_model.objects.get(id=counted_row[fk_id]).name
-        result[fk_name] = counted_row["coded_count"]
-
-    other = qs.filter(**{fk_id: None}).exclude(**{ft_name: ''})
-
-    # occasionally people put `none` as the adverse event, lets
-    # skip those
-    other_count = other.exclude(
-        **{ft_name: None}
-    ).exclude(**{"{}__iexact".format(ft_name): "none"}).count()
-
-    if other_count:
-        result["Other"] = other_count
-    return result
-
-
-def get_line_reactions(episodes):
-    lines = elcid_models.Line.objects.filter(episode__in=episodes)
-    return get_ft_or_fk_coded_count(
-        lines, "complications", opal_models.Line_complication
-    )
-
-
-def get_drug_reactions(episodes):
-    drugs = get_relevant_drugs(episodes)
-    return get_ft_or_fk_coded_count(
-        drugs, "adverse_event", opal_models.Antimicrobial_adverse_event
-    )
-
-
-def get_iv_duration(episode, drugs):
-    """
-    returns the max length of iv during an episode
-    """
-
-    min_date = drugs.filter(
-        episode_id=episode.id
-    ).aggregate(min_date=Min("start_date"))["min_date"]
-    max_date = drugs.filter(
-        episode_id=episode.id
-    ).aggregate(min_date=Min("end_date"))["min_date"]
-
-    if min_date and max_date:
-        diff_dates = (max_date - min_date).days
-
-        # the dates should be inclusive so we need to add one
-        diff_dates = diff_dates + 1
-
-        # this is not the case in any of our data at the moment
-        # but lets guard against typos
-        return max(diff_dates, 0)
-    return 0
-
-
-def get_primary_infective_diagnosis(year, quarter):
-    start, end = get_quarter_start_end(year, quarter)
-    episodes = get_episodes(start, end)
-
-    result = defaultdict(
-        lambda: defaultdict(
-            lambda: defaultdict(int)
-        )
-    )
-
-    iv_route = get_iv_route()
-    drugs = get_relevant_drugs(episodes)
-    drugs = drugs.filter(route_fk_id=iv_route.id)
-
-    for episode in episodes:
-        outcome = clean_outcomes(episode.opatoutcome_set.all()).get()
-        diagnosis_name = "Other"
-        if outcome.infective_diagnosis_fk_id:
-            diagnosis_name = outcome.infective_diagnosis
-
-        opat_outcome = outcome.opat_outcome
-        patient_outcome = outcome.patient_outcome
-        result[diagnosis_name]["episode"]["total"] += 1
-        result[diagnosis_name]["time_saved"]["total"] += get_iv_duration(
-            episode, drugs
-        )
-        result[diagnosis_name]["patient_outcome"][patient_outcome] += 1
-        result[diagnosis_name]["opat_outcome"][opat_outcome] += 1
-
-    return result
-
-
-def get_summary(episodes, pid):
-    result = dict()
-    result["Total Line Events"] = sum(
-        i for i in get_line_reactions(episodes).values()
-    )
-    result["Total Drug Events"] = sum(
-        i for i in get_drug_reactions(episodes).values()
-    )
-    result["Episodes"] = sum(
-        i["episode"]["total"] for i in pid.values()
-    )
-    result["Total Treatment Days Saved"] = sum(
-        i["time_saved"]["total"] for i in pid.values()
-    )
-    return result
-
-
-def get_summary_for_quarter(year, quarter):
-    start, end = get_quarter_start_end(year, quarter)
-    episodes = get_episodes(start, end)
-    pid = get_primary_infective_diagnosis(year, quarter)
-    return get_summary(episodes, pid)
-
-
-def print_primary_diagnosis(year, quarter):
-    result = get_primary_infective_diagnosis(year, quarter)
-    for diagnosis_name, outcomes in result.items():
-        patient_outcomes = " Patient Outcomes:"
-        for outcome_name, outcome_ammount in outcomes["patient_outcome"].items():
-            patient_outcomes = patient_outcomes + " {} {}".format(
-                outcome_name, outcome_ammount
+import datetime
+from functools import partial
+from django.utils.functional import cached_property
+from reporting import Report, ReportFile
+from opat import nors_utils
+from opat import quarter_utils
+
+
+class NORSReport(Report):
+    slug = "nors-report"
+    display_name = "OPAT NORs Report"
+    description = "A Quarterly summary of the OPAT service"
+    template = "reports/opat/nors_report.html"
+
+    def generate_report_data(self, criteria=None, **kwargs):
+        quarter_start = criteria["quarter"]  # a string for example 2017_4
+
+        # generated by the value field in reports_available
+        year, quarter = quarter_start.split("_")
+        episodes = nors_utils.get_episodes(int(year), int(quarter))
+        antimicrobials = nors_utils.get_antimicrobials(episodes)
+        adverse_reactions = nors_utils.get_adverse_reactions(episodes)
+        pid = nors_utils.get_primary_infective_diagnosis(episodes)
+        summary = nors_utils.get_summary(episodes)
+        fn = partial(self.get_file_name, quarter_start)
+        return [
+            ReportFile(
+                file_name=fn("antimicrobials"),
+                file_data=self.flatten_rows_of_dicts(antimicrobials)
+            ),
+            ReportFile(
+                file_name=fn("adverse_reactions"),
+                file_data=self.flatten_rows_of_dicts(adverse_reactions)
+            ),
+            ReportFile(
+                file_name=fn("primary_infective_diagnosis"),
+                file_data=self.flatten_rows_of_dicts(pid)
+            ),
+            ReportFile(
+                file_name=fn("summary"),
+                file_data=self.flatten_rows_of_dicts([summary])
             )
+        ]
 
-        opat_outcomes = " Opat Outcomes:"
-        for outcome_name, outcome_ammount in outcomes["opat_outcome"].items():
-            opat_outcomes = opat_outcomes + " {} {}".format(
-                outcome_name, outcome_ammount
-            )
-        print "{} {} {} {} {}".format(
-            diagnosis_name,
-            outcomes["episodes"]["total"],
-            outcomes["time_saved"]["total"],
-            patient_outcomes,
-            opat_outcomes
+    def flatten_rows_of_dicts(self, rows_of_dicts):
+        """ Flattens out rows of dictionaries into
+            something that yields lists of lists.
+
+            We don't use a csv dictwriter because
+            we will want to write out some non
+            dicts at some point
+        """
+        if not len(rows_of_dicts):
+            yield []
+        else:
+            headers = rows_of_dicts[0].keys()
+            yield headers
+            for row in rows_of_dicts:
+                yield [row[i] for i in headers]
+
+    def get_file_name(self, quarter_start, some_str):
+        return "{}_{}.csv"
+
+    def reports_available(self):
+        reports = []
+        quarter = quarter_utils.get_quarter_from_date(
+            datetime.date.today()
         )
+
+        quarters = []
+        for i in xrange(4):
+            quarter = quarter_utils.get_previous_quarter(*quarter)
+            quarters.append(quarter)
+
+        for year, quarter in quarters:
+            start_date, end_date = quarter_utils.get_start_end_from_quarter(
+                year, quarter
+            )
+            episodes = nors_utils.get_episodes(year, quarter)
+            reports.append(dict(
+                display_name="{}-{}".format(
+                    start_date.strftime("%b"),
+                    end_date.strftime("%b %Y")
+                ),
+                report=nors_utils.get_summary(episodes),
+                value="{}_{}".format(year, quarter)
+            ))
+
+        return reports
