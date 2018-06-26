@@ -1,6 +1,5 @@
 import datetime
 from functools import partial
-from django.utils.functional import cached_property
 from reporting import Report, ReportFile
 from opat import nors_utils
 from opat import quarter_utils
@@ -8,9 +7,8 @@ from opat import quarter_utils
 
 class NORSReport(Report):
     slug = "nors-report"
-    display_name = "OPAT NORs Report"
-    description = "A Quarterly summary of the OPAT service"
-    template = "reports/opat/nors_report.html"
+    display_name = "OPAT NORS Report"
+    description = "A quarterly summary of the OPAT service"
 
     def generate_report_data(self, criteria=None, **kwargs):
         quarter_start = criteria["quarter"]  # a string for example 2017_4
@@ -59,16 +57,16 @@ class NORSReport(Report):
                 yield [row[i] for i in headers]
 
     def get_file_name(self, quarter_start, some_str):
-        return "{}_{}.csv"
+        return "{}_{}.csv".format(quarter_start, some_str)
 
-    def reports_available(self):
-        reports = []
+    def report_options(self):
+        report_options = []
         quarter = quarter_utils.get_quarter_from_date(
             datetime.date.today()
         )
 
         quarters = []
-        for i in xrange(4):
+        for i in xrange(8):
             quarter = quarter_utils.get_previous_quarter(*quarter)
             quarters.append(quarter)
 
@@ -77,13 +75,16 @@ class NORSReport(Report):
                 year, quarter
             )
             episodes = nors_utils.get_episodes(year, quarter)
-            reports.append(dict(
-                display_name="{}-{}".format(
-                    start_date.strftime("%b"),
-                    end_date.strftime("%b %Y")
-                ),
-                report=nors_utils.get_summary(episodes),
-                value="{}_{}".format(year, quarter)
+            value = "{}_{}".format(year, quarter)
+            display_name = "{}-{}".format(
+                start_date.strftime("%b"),
+                end_date.strftime("%b %Y")
+            )
+            report_options.append(dict(
+                template="reports/opat/report_option_template.html",
+                criteria=dict(quarter=value),
+                summary=nors_utils.get_summary(episodes),
+                display_name=display_name
             ))
 
-        return reports
+        return report_options

@@ -25,7 +25,7 @@ future==0.16.0
 supervisor==3.0
 opal==0.10.1
 
--e git+https://github.com/openhealthcare/opal-reporting.git@v0.2#egg=opal_reporting
+-e git+https://github.com/openhealthcare/opal-reporting.git@inline-report-download-buttons#egg=opal_reporting
 -e git+https://github.com/openhealthcare/opal-observations.git@v0.5.0#egg=opal_observations
 
 -e git+https://github.com/openhealthcare/opal-wardround.git@v0.10.0#egg=opal_wardround
