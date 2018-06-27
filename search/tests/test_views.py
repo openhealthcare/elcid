@@ -11,6 +11,7 @@ from django.core.exceptions import PermissionDenied
 from django.test import override_settings
 from mock import patch, mock_open
 from opal.core.test import OpalTestCase
+from opal.models import Patient
 from search import views, queries, extract
 
 
@@ -114,7 +115,6 @@ class SimpleSearchViewTestCase(BaseSearchTestCase):
             u'page_number': 1,
             u'object_list': [{
                 u'count': 1,
-                u'id': self.patient.id,
                 u'first_name': u'Sean',
                 u'surname': u'Connery',
                 u'end': u'15/10/2015',
@@ -220,7 +220,7 @@ class SimpleSearchViewTestCase(BaseSearchTestCase):
                 "James", "Bond", str(i)
             )
 
-        with self.assertNumQueries(36):
+        with self.assertNumQueries(35):
             self.get_response('{}/?query=Bond'.format(self.url))
 
         for i in range(20):
@@ -228,7 +228,7 @@ class SimpleSearchViewTestCase(BaseSearchTestCase):
                 "James", "Blofelt", str(i)
             )
 
-        with self.assertNumQueries(36):
+        with self.assertNumQueries(35):
             self.get_response('{}/?query=Blofelt'.format(self.url))
 
     def test_with_multiple_patient_episodes(self):
@@ -252,13 +252,84 @@ class SimpleSearchViewTestCase(BaseSearchTestCase):
                 "hospital_number": "23422",
                 "date_of_birth": None,
                 "end": None,
-                "id": 2,
                 "categories": ["Inpatient"]
             }],
             "page_number": 1,
             "total_count": 1
         }
         self.assertEqual(response, expected)
+
+
+class GetPaginatedReponseTestCase(OpalTestCase):
+    def setUp(self):
+        super(GetPaginatedReponseTestCase, self).setUp()
+        criteria = [{
+            "query_type": "Equals",
+            "value": "1",
+            "field": "hospital_number",
+            'combine': 'and',
+            'rule': u'demographics',
+        }]
+        self.query = queries.create_query(
+            self.user, criteria
+        )
+
+    def get_first_names_from_response(self, response):
+        object_list = json.loads(response.content)["object_list"]
+        return [i["first_name"] for i in object_list]
+
+    def test_first_page(self):
+        first_names = [
+            "Jane {}".format(i) for i in range(views.PAGINATION_AMOUNT + 2)
+        ]
+        for i, name in enumerate(first_names):
+            patient, _ = self.new_patient_and_episode_please()
+            patient.demographics_set.update(
+                first_name=first_names[i]
+            )
+        found = self.get_first_names_from_response(views.get_paginated_reponse(
+            self.query, Patient.objects.all(), 1
+        ))
+
+        self.assertEqual(found, first_names[:views.PAGINATION_AMOUNT])
+
+    def test_first_page_incomplete(self):
+        page_count = views.PAGINATION_AMOUNT - 2
+        first_names = [
+            "Jane {}".format(i) for i in range(page_count)
+        ]
+        for i, name in enumerate(first_names):
+            patient, _ = self.new_patient_and_episode_please()
+            patient.demographics_set.update(
+                first_name=first_names[i]
+            )
+        found = self.get_first_names_from_response(views.get_paginated_reponse(
+            self.query, Patient.objects.all(), 1
+        ))
+        self.assertEqual(found, first_names)
+
+    def test_second_page(self):
+        first_names = [
+            "Jane {}".format(i) for i in range(views.PAGINATION_AMOUNT + 2)
+        ]
+        for i, name in enumerate(first_names):
+            patient, _ = self.new_patient_and_episode_please()
+            patient.demographics_set.update(
+                first_name=first_names[i]
+            )
+        found = self.get_first_names_from_response(views.get_paginated_reponse(
+            self.query, Patient.objects.all(), 2
+        ))
+
+        self.assertEqual(found, first_names[views.PAGINATION_AMOUNT:])
+
+    def test_with_none(self):
+        self.assertFalse(Patient.objects.exists())
+        found = self.get_first_names_from_response(views.get_paginated_reponse(
+            self.query, Patient.objects.all(), 1
+        ))
+
+        self.assertEqual(found, [])
 
 
 class SearchTemplateTestCase(OpalTestCase):

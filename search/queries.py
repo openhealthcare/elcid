@@ -2,7 +2,7 @@
 Allow us to make search queries
 """
 import datetime
-from django.db.models import Max, Min
+from django.db.models import Max, Min, Count
 from django.conf import settings
 
 from opal import models
@@ -105,25 +105,23 @@ class DatabaseQuery(QueryBackend):
         demographics = patient.demographics_set.first()
         for i in ["first_name", "surname", "hospital_number", "date_of_birth"]:
             result[i] = getattr(demographics, i)
-        result["start"] = patient.episode_set.aggregate(
-            min_start=Min('start')
-        )["min_start"]
-
-        result["end"] = patient.episode_set.aggregate(
-            max_end=Max('end')
-        )["max_end"]
-
+        result["start"] = patient.min_start
+        result["end"] = patient.max_end
+        result["count"] = patient.episode_count
         result["count"] = patient.episode_set.count()
         result["patient_id"] = patient.id
         result["categories"] = list(patient.episode_set.order_by(
             "category_name"
         ).values_list(
             "category_name", flat=True
-        ))
+        ).distinct())
         return result
 
     def get_patient_summaries(self, patients):
-        patients.prefetch_related("demographics")
+        patients = patients.prefetch_related("demographics_set")
+        patients = patients.annotate(episode_count=Count("episode"))
+        patients = patients.annotate(min_start=Min("episode__start"))
+        patients = patients.annotate(max_end=Max("episode__end"))
         return [self.get_patient_summary(patient) for patient in patients]
 
     def _episodes_without_restrictions(self):
