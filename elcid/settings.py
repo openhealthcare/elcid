@@ -7,6 +7,7 @@ PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
 ON_HEROKU = False
 ON_TEST = 'test' in sys.argv
 
+OPTIMISED_SEARCH = False
 try:
     import dj_database_url
     ON_HEROKU = True

@@ -124,6 +124,19 @@ class DatabaseQuery(QueryBackend):
         search_rule = SearchRule.get_rule(rule_name, self.user)
         return search_rule.query(criteria)
 
+    def new_get_patients(self):
+        episodes = self.get_episodes()
+        patient_ids = set([i.patient_id for i in episodes])
+        return self.sort_patients(
+            models.Patient.objects.filter(id__in=patient_ids)
+        )
+
+    def sort_patients(self, patients):
+        patients = patients.annotate(
+            max_episode_id=Max('episode__id')
+        )
+        return patients.order_by("-max_episode_id")
+
     def get_aggregate_patients_from_episodes(self, episodes):
         # at the moment we use start/end only
         patient_summaries = {}
@@ -178,7 +191,8 @@ class DatabaseQuery(QueryBackend):
 
     def get_episodes(self):
         return episodes_for_user(
-            self._episodes_without_restrictions(), self.user)
+            self._episodes_without_restrictions(), self.user
+        )
 
     def get_patient_summaries(self):
         eps = self._episodes_without_restrictions()

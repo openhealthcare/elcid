@@ -182,11 +182,32 @@ def simple_search_view(request):
     return json_response(paginated)
 
 
+def get_paginated_reponse(query, patients, page_number):
+    paginated = _add_pagination(patients, page_number)
+    paginated_patients = paginated["object_list"]
+
+    # on postgres it blows up if we don't manually manage this
+    if not paginated_patients:
+        paginated_patients = models.Patient.objects.none()
+
+    episodes = models.Episode.objects.filter(
+        id__in=paginated_patients.values_list("episode__id", flat=True)
+    )
+    paginated["object_list"] = query.get_aggregate_patients_from_episodes(
+        episodes
+    )
+    return paginated
+
+
 class ExtractSearchView(View):
     @ajax_login_required_view
     def post(self, *args, **kwargs):
         request_data = _get_request_data(self.request)
         page_number = 1
+
+        from time import time
+        import logging
+        ts = time()
 
         if not request_data:
             return json_response(
@@ -201,9 +222,20 @@ class ExtractSearchView(View):
             self.request.user,
             request_data,
         )
-        patient_summaries = query.get_patient_summaries()
+        if settings.OPTIMISED_SEARCH:
+            patients = query.new_get_patients()
+            response = get_paginated_reponse(query, patients, page_number)
+        else:
+            patient_summaries = query.get_patient_summaries()
+            response = _add_pagination(patient_summaries, page_number)
 
-        return json_response(_add_pagination(patient_summaries, page_number))
+        te = time()
+
+        logging.info('search optiised %s: %2.4f sec' % (
+            settings.OPTIMISED_SEARCH, te-ts
+        ))
+
+        return json_response(response)
 
 
 class DownloadSearchView(View):
