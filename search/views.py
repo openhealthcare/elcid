@@ -133,6 +133,20 @@ def _add_pagination(eps, page_number):
     return results
 
 
+def get_paginated_reponse(query, patients, page_number):
+    paginated = _add_pagination(patients, page_number)
+    paginated_patients = paginated["object_list"]
+
+    # on postgres it blows up if we don't manually manage this
+    if not paginated_patients:
+        paginated_patients = models.Patient.objects.none()
+
+    paginated["object_list"] = query.get_patient_summaries(
+        paginated_patients
+    )
+    return json_response(paginated)
+
+
 @with_no_caching
 @require_http_methods(['GET'])
 @ajax_login_required
@@ -151,7 +165,10 @@ def patient_search_view(request):
     }]
 
     query = queries.create_query(request.user, criteria)
-    return json_response(query.patients_as_json())
+    patients = query.get_patients()
+    if patients.exists():
+        return json_response([patients.first().to_dict(request.user)])
+    return json_response([])
 
 
 @with_no_caching
@@ -165,21 +182,7 @@ def simple_search_view(request):
 
     query = queries.create_query(request.user, query_string)
     patients = query.fuzzy_query()
-    paginated = _add_pagination(patients, page_number)
-    paginated_patients = paginated["object_list"]
-
-    # on postgres it blows up if we don't manually manage this
-    if not paginated_patients:
-        paginated_patients = models.Patient.objects.none()
-
-    episodes = models.Episode.objects.filter(
-        id__in=paginated_patients.values_list("episode__id", flat=True)
-    )
-    paginated["object_list"] = query.get_aggregate_patients_from_episodes(
-        episodes
-    )
-
-    return json_response(paginated)
+    return get_paginated_reponse(query, patients, page_number)
 
 
 class ExtractSearchView(View):
@@ -201,9 +204,9 @@ class ExtractSearchView(View):
             self.request.user,
             request_data,
         )
-        patient_summaries = query.get_patient_summaries()
-
-        return json_response(_add_pagination(patient_summaries, page_number))
+        return get_paginated_reponse(
+            query, query.get_patients(), page_number
+        )
 
 
 class DownloadSearchView(View):
