@@ -8,7 +8,7 @@ from mock import patch, MagicMock
 from opal.tests.episodes import RestrictedEpisodeCategory
 
 from search.search_rules import SearchRule
-from opal.models import Synonym, Gender, Patient
+from opal.models import Synonym, Gender, Patient, Episode
 
 from opal.core.test import OpalTestCase
 
@@ -364,6 +364,30 @@ and Hound Owner Hound contains jeff
             list(patients),
             [patient_2, patient_3, patient_1]
         )
+
+    def test_get_patients(self):
+        patient_1, episode_1 = self.new_patient_and_episode_please()
+        patient_2, episode_2 = self.new_patient_and_episode_please()
+        episode_3 = patient_1.create_episode()
+
+        # these will not be used
+        self.new_patient_and_episode_please()
+
+        query = queries.DatabaseQuery(self.user, [self.name_criteria])
+        with patch.object(query, "get_episodes") as get_episodes:
+            get_episodes.return_value = Episode.objects.filter(
+                id__in=[episode_1.id, episode_2.id, episode_3.id]
+            )
+            found = query.get_patients().values_list("id", flat=True)
+            self.assertEqual(
+                2, found.count()
+            )
+            self.assertEqual(
+                found[0], patient_1.id
+            )
+            self.assertEqual(
+                found[1], patient_2.id
+            )
 
     def test_distinct_episodes_for_m2m_fields_containing_synonsyms_and_names(
         self

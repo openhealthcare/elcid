@@ -102,13 +102,17 @@ class DatabaseQuery(QueryBackend):
 
     def get_patient_summary(self, patient):
         result = dict()
-        demographics = patient.demographics_set.first()
-        for i in ["first_name", "surname", "hospital_number", "date_of_birth"]:
-            result[i] = getattr(demographics, i)
+
+        # prefetch queries only work with sad times, even though
+        # demographics are a one per patient thing.
+        for demographics in patient.demographics_set.all():
+            for i in [
+                "first_name", "surname", "hospital_number", "date_of_birth"
+            ]:
+                result[i] = getattr(demographics, i)
         result["start"] = patient.min_start
         result["end"] = patient.max_end
         result["count"] = patient.episode_count
-        result["count"] = patient.episode_set.count()
         result["patient_id"] = patient.id
         result["categories"] = list(patient.episode_set.order_by(
             "category_name"
