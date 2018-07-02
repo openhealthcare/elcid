@@ -39,7 +39,50 @@ def clean_outcomes(outcomes):
     return outcomes.exclude(id__in=to_remove)
 
 
-def get_episodes(year, quarter):
+def get_episodes():
+    outcomes = clean_outcomes(opat_models.OPATOutcome.objects.all())
+    episodes = opal_models.Episode.objects.filter(
+        id__in=outcomes.values_list("episode_id").distinct()
+    )
+    episodes.exclude(
+        id__in=opat_models.OPATRejection.objects.all().values_list(
+            'episode_id', flat=True
+        )
+    )
+    return episodes
+
+
+def get_episodes_for_quarters(
+    quarters
+):
+    episodes = get_episodes()
+    route = get_iv_route()
+    antimicrobials = get_relevant_drugs(episodes).filter(
+        route_fk_id=route.id
+    ).values("episode_id").annotate(max_end=Max("end_date"))
+    result = dict()
+    for year, quarter in quarters:
+        result[(year, quarter)] = filter_episodes_by_quarter(
+            episodes, antimicrobials, year, quarter
+        )
+    return result
+
+
+def filter_episodes_by_quarter(
+    episodes, antimicrobials, year, quarter
+):
+    start_date, end_date = quarter_utils.get_start_end_from_quarter(
+        year, quarter
+    )
+
+    antimicrobials = antimicrobials.filter(max_end__gte=start_date)
+    antimicrobials = antimicrobials.filter(max_end__lte=end_date).distinct()
+    return episodes.filter(
+        id__in=antimicrobials.values_list("episode_id", flat=True)
+    )
+
+
+def get_episodes_for_quarter(year, quarter):
     """
     Episodes filtered by start and end date.
 
@@ -52,35 +95,12 @@ def get_episodes(year, quarter):
 
     We exclude episodes that have been rejected
     """
-    start_date, end_date = quarter_utils.get_start_end_from_quarter(
-        year, quarter
-    )
-    outcomes = clean_outcomes(opat_models.OPATOutcome.objects.all())
-    updated = set(outcomes.filter(
-        updated__gte=start_date
-    ).filter(
-        updated__lte=end_date
-    ).filter(created=None).values_list("id", flat=True))
-
-    created = set(outcomes.filter(
-        created__gte=start_date
-    ).filter(
-        created__lte=end_date
-    ).values_list("id", flat=True))
-
-    episodes = opal_models.Episode.objects.filter(
-        opatoutcome__id__in=created.union(updated)
-    ).distinct()
-
-    # remove episodes that have not had any IV
+    episodes = get_episodes()
     route = get_iv_route()
-    episodes = episodes.filter(antimicrobial__route_fk_id=route.id)
-
-    return episodes.exclude(
-        id__in=opat_models.OPATRejection.objects.all().values_list(
-            'episode_id', flat=True
-        )
-    )
+    antimicrobials = get_relevant_drugs(episodes).filter(
+        route_fk_id=route.id
+    ).values("episode_id").annotate(max_end=Max("end_date"))
+    return filter_episodes_by_quarter(episodes, antimicrobials, year, quarter)
 
 
 def get_relevant_drugs(episodes):
@@ -129,7 +149,11 @@ def get_drug_duration(antimicrobial):
         if not episode_start:
             episode_start = location.opat_referral
 
-    drug_start = max(episode_start, antimicrobial.start_date)
+    if episode_start and antimicrobial.start_date:
+        drug_start = max(episode_start, antimicrobial.start_date)
+    else:
+        drug_start = episode_start or antimicrobial.start_date
+
     if drug_start and antimicrobial.end_date:
         duration = (antimicrobial.end_date - drug_start).days
 
