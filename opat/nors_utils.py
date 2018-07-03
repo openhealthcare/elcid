@@ -197,6 +197,18 @@ def get_antimicrobials(episodes):
         if duration:
             result[drug_name]["episodes"] += 1
             result[drug_name]["duration"] += duration
+
+    return result
+
+
+def get_antimicrobial_report(episodes):
+    antimicrobials = get_antimicrobials(episodes)
+    result = []
+    for drug_name, drug_dict in antimicrobials.items():
+        row = dict(antimicrobial=drug_name)
+        for key, value in drug_dict.items():
+            row[key] = value
+        result.append(row)
     return result
 
 
@@ -209,7 +221,7 @@ def get_adverse_reactions(episodes):
 
     for k, v in drug_dict.items():
         result["Drug - {}".format(k)] = v
-    return result
+    return [result]
 
 
 def get_ft_or_fk_coded_count(qs, field_name, fk_model):
