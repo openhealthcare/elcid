@@ -420,7 +420,7 @@ class IdLiasionReportTestCase(OpalTestCase):
             value="id_liaison",
             archived=True,
         )
-        ctx = self.report.get_report_options()
+        ctx = self.report.report_options()
         self.assertEqual(
             len(ctx),
             2
@@ -462,11 +462,11 @@ class IdLiasionReportTestCase(OpalTestCase):
             value="id_liaison",
             archived=True,
         )
-        ctx = self.report.get_report_options()
+        ctx = self.report.report_options()
         self.assertEqual(
             len(ctx),
             14
         )
 
     def test_reports_available_none(self):
-        self.assertIsNone(self.report.get_report_options())
+        self.assertIsNone(self.report.report_options())

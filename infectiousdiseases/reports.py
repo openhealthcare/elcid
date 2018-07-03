@@ -153,7 +153,7 @@ class IdLiasionReport(Report):
 
         return months
 
-    def get_report_options(self):
+    def report_options(self):
         return self._report_options
 
     def generate_report_data(self, criteria=None, **kwargs):
