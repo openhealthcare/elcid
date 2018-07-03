@@ -205,9 +205,9 @@ def get_antimicrobial_report(episodes):
     antimicrobials = get_antimicrobials(episodes)
     result = []
     for drug_name, drug_dict in antimicrobials.items():
-        row = dict(antimicrobial=drug_name)
-        for key, value in drug_dict.items():
-            row[key] = value
+        row = OrderedDict(antimicrobial=drug_name)
+        row["episodes"] = drug_dict["episodes"]
+        row["duration"] = drug_dict["duration"]
         result.append(row)
     return result
 
@@ -221,7 +221,9 @@ def get_adverse_reactions(episodes):
 
     for k, v in drug_dict.items():
         result["Drug - {}".format(k)] = v
-    return [result]
+    if result:
+        return [result]
+    return []
 
 
 def get_ft_or_fk_coded_count(qs, field_name, fk_model):
@@ -339,14 +341,14 @@ def get_primary_infective_diagnosis(episodes):
 
 
 def get_summary(episodes):
-    result = dict()
+    result = OrderedDict()
+    result["episodes"] = episodes.count()
+    durations = get_iv_duration(episodes)
+    result["total_treatment_days_saved"] = sum(durations.values())
     result["total_line_events"] = sum(
         i for i in get_line_reactions(episodes).values()
     )
     result["total_drug_events"] = sum(
         i for i in get_drug_reactions(episodes).values()
     )
-    durations = get_iv_duration(episodes)
-    result["episodes"] = episodes.count()
-    result["total_treatment_days_saved"] = sum(i for i in durations.values())
     return result

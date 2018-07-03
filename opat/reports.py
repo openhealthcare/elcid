@@ -19,7 +19,7 @@ class NORSReport(Report):
         antimicrobials = nors_utils.get_antimicrobial_report(episodes)
         adverse_reactions = nors_utils.get_adverse_reactions(episodes)
         pid = nors_utils.get_primary_infective_diagnosis(episodes)
-        summary = nors_utils.get_summary(episodes)
+        summary = [nors_utils.get_summary(episodes)]
         fn = partial(self.get_file_name, quarter_start)
         return [
             ReportFile(
@@ -36,7 +36,7 @@ class NORSReport(Report):
             ),
             ReportFile(
                 file_name=fn("summary"),
-                file_data=self.flatten_rows_of_dicts([summary])
+                file_data=self.flatten_rows_of_dicts(summary)
             )
         ]
 
@@ -44,9 +44,7 @@ class NORSReport(Report):
         """ Flattens out rows of dictionaries into
             something that yields lists of lists.
 
-            We don't use a csv dictwriter because
-            we will want to write out some non
-            dicts at some point
+            (This is what reporting expects)
         """
         if not len(rows_of_dicts):
             yield []
