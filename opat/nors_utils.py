@@ -293,6 +293,10 @@ def get_primary_infective_diagnosis(episodes):
 
     episode_to_iv_duration = get_iv_duration(episodes)
 
+    # a list of all the outcomes as we expect the table
+    # to include all outcomes as headers
+    outcomes = set()
+
     for episode in episodes:
         outcome = clean_outcomes(episode.opatoutcome_set.all()).get()
         diagnosis_name = "Other"
@@ -314,20 +318,21 @@ def get_primary_infective_diagnosis(episodes):
             opat_outcome
         )
         by_diagnosis[diagnosis_name][opat_outcome_key] += 1
+        outcomes.add(patient_outcome_key)
+        outcomes.add(opat_outcome_key)
 
     result = []
+    outcomes = sorted(list(outcomes))
     for diagnosis, result_dict in by_diagnosis.items():
         row = OrderedDict()
         row["diagnosis"] = diagnosis
         row["episode"] = result_dict["episode"]
         row["time_saved"] = result_dict["time_saved"]
-        for k, v in result_dict.items():
-            if k.startswith("patient_outcome"):
-                row[k] = v
-
-        for k, v in result_dict.items():
-            if k.startswith("opat_outcome"):
-                row[k] = v
+        for outcome in outcomes:
+            if outcome not in result_dict:
+                row[outcome] = 0
+            else:
+                row[outcome] = result_dict[outcome]
         result.append(row)
 
     return result
