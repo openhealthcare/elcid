@@ -8,6 +8,30 @@ from elcid import models as elcid_models
 COMPLETED_THERAPY_STAGE = "Completed Therapy"
 
 
+import logging
+from functools import wraps
+from time import time
+
+logger = logging.getLogger('elcid.time_logger')
+
+
+def timing(f):
+    @wraps(f)
+    def wrap(*args, **kw):
+        ts = time()
+        result = f(*args, **kw)
+        te = time()
+        logging.error('timing_func: %r %2.4f sec' % (
+            f.__name__, te-ts
+        ))
+        logging.error('%s len: %s' % (
+            f.__name__, len(result)
+        ))
+
+        return result
+    return wrap
+
+
 def get_iv_route():
     return opal_models.Antimicrobial_route.objects.get(
         name__iexact="IV"
@@ -15,28 +39,13 @@ def get_iv_route():
 
 
 def clean_outcomes(outcomes):
-    """
-    With opat outcomes we only care about those in the completed state
-
-    Also occasionally we have double clicks.
-
-    We should never have multiple episodes with completed states, but
-    we have some double click issues, so we will exclude these.
-    """
     outcomes = outcomes.filter(
         outcome_stage=COMPLETED_THERAPY_STAGE
     )
-
-    duplicates = outcomes.values("episode_id").annotate(
-        dupe_outcome=Count("episode_id")
-    ).filter(dupe_outcome__gt=1)
-    to_remove = []
-    for duplicate in duplicates:
-        repeated = outcomes.filter(episode_id=duplicate["episode_id"])
-        repeated = list(repeated.values_list("id", flat=True))[1:]
-        to_remove.extend(repeated)
-
-    return outcomes.exclude(id__in=to_remove)
+    min_ids = outcomes.values("episode_id").annotate(
+        min_id=Min("id")
+    ).values_list("min_id", flat=True)
+    return outcomes.filter(id__in=min_ids)
 
 
 def get_episodes():
@@ -50,7 +59,6 @@ def get_episodes():
         )
     )
     return episodes
-
 
 def get_episodes_for_quarters(
     quarters
@@ -82,6 +90,7 @@ def filter_episodes_by_quarter(
     )
 
 
+@timing
 def get_episodes_for_quarter(year, quarter):
     """
     Episodes filtered by start and end date.
@@ -162,12 +171,6 @@ def get_drug_duration(antimicrobial):
 
         if duration > 0:
             return duration
-
-
-def print_antimcrobials(year=2017, quarter=2):
-    antimicrobials = get_antimicrobials(year, quarter)
-    for name, v in antimicrobials.items():
-        print "{} {} {}".format(name, v["episodes"], v["duration"])
 
 
 def aggregate_by_episode_and_drug(drugs):

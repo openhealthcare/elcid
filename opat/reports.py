@@ -1,5 +1,6 @@
 import datetime
 from functools import partial
+from django.utils.functional import cached_property
 from reporting import Report, ReportFile
 from opat import nors_utils
 from opat import quarter_utils
@@ -58,6 +59,10 @@ class NORSReport(Report):
         return "{}_{}.csv".format(quarter_start, some_str)
 
     def report_options(self):
+        return self._report_options
+
+    @cached_property
+    def _report_options(self):
         report_options = []
         quarter = quarter_utils.get_quarter_from_date(
             datetime.date.today()
