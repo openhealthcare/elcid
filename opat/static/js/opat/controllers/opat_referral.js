@@ -124,65 +124,61 @@ controllers.controller(
 	    });
         };
 
+        $scope.make_an_episode_from_previous_episode = function(patient){
+            // Offer to import the data from this episode.
+            for (var eix in patient.episodes) {
+              patient.episodes[eix] = new Episode(patient.episodes[eix]);
+            };
+            modal = $modal.open({
+              templateUrl: '/templates/modals/copy_to_category.html/',
+              controller: 'CopyToCategoryCtrl',
+              resolve: {
+                  category_name: function() { return 'OPAT' },
+                  patient: function() { return patient; },
+              }
+            }).result.then(function(result) {
+              if(!_.isString(result)){
+                  $scope.tag_and_close(result);
+                  return
+              };
+              if (result == 'open-new') {
+                // User has chosen to open a new episode
+                            $scope.add_for_patient(patient);
+              } else {
+                // User has chosen to reopen an episode, or cancelled
+                $modalInstance.close(result);
+              };
+            },
+            function(result){ $modalInstance.close(result); });
+        }
+
         //
         // Create a new episode for an existing patient
         //
         $scope.newForPatient = function(patient){
-            var actually_make_new_episode = function(){
-                // Offer to import the data from this episode.
-				for (var eix in patient.episodes) {
-					patient.episodes[eix] = new Episode(patient.episodes[eix]);
-				};
-				modal = $modal.open({
-					templateUrl: '/templates/modals/copy_to_category.html/',
-					controller: 'CopyToCategoryCtrl',
-					resolve: {
-              category_name: function() { return 'OPAT' },
-  						patient: function() { return patient; },
-					}
-				}).result.then(
-                    function(result) {
-                        if(!_.isString(result)){
-                            $scope.tag_and_close(result);
-                            return
-                        };
-					    if (result == 'open-new') {
-						    // User has chosen to open a new episode
-                            $scope.add_for_patient(patient);
-					    } else {
-						    // User has chosen to reopen an episode, or cancelled
-						    $modalInstance.close(result);
-					    };
-				    },
-                    function(result){ $modalInstance.close(result); });
-            }
-
             if(patient.active_episode_id && _.keys(patient.episodes).length > 0){
-                opat_episodes = _.filter(patient.episodes, function(e){ return e.category_name == 'OPAT' });
-                if(opat_episodes.length > 0){
-                    // Tell the user that this patient is already on the opat service
-                    var list_name;
-                    message = "Patient is already on the OPAT ";
-                    _.each(opat_episodes, function(e){
-                        if(e.tagging[0].opat_referrals){
-                            list_name = "Referrals list";
-                        }
-                        if(e.tagging[0].opat_current){
-                            list_name = "Current list";
-                        }
-                        if(e.tagging[0].opat_followup){
-                            list_name = "Follow Up list";
-                        }
-                    });
-                    if(list_name){
-                        message += list_name;
-                        $scope.message = message;
-                    }else{
-                        $scope.add_for_patient(patient);
-                    }
-                }else{
-                    actually_make_new_episode();
-                }
+              // if the patient has a currently open episode
+              // is not currently on an opat list
+              // offer to copy across
+              var list_name;
+              message = "Patient is already on the OPAT ";
+              _.each(patient.episodes, function(e){
+                  if(e.tagging[0].opat_referrals){
+                      list_name = "Referrals list";
+                  }
+                  if(e.tagging[0].opat_current){
+                      list_name = "Current list";
+                  }
+                  if(e.tagging[0].opat_followup){
+                      list_name = "Follow Up list";
+                  }
+              });
+              if(list_name){
+                  message += list_name;
+                  $scope.message = message;
+              }else{
+                  $scope.make_an_episode_from_previous_episode(patient);
+              }
             }else{
                 $scope.add_for_patient(patient);
             }
