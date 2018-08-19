@@ -4,13 +4,12 @@ from opal import models as opal_models
 from opat import models as opat_models
 from opat import quarter_utils
 from elcid import models as elcid_models
-
-COMPLETED_THERAPY_STAGE = "Completed Therapy"
-
-
 import logging
 from functools import wraps
 from time import time
+
+
+COMPLETED_THERAPY_STAGE = "Completed Therapy"
 
 logger = logging.getLogger('elcid.time_logger')
 
@@ -59,6 +58,7 @@ def get_episodes():
         )
     )
     return episodes
+
 
 def get_episodes_for_quarters(
     quarters

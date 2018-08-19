@@ -111,10 +111,28 @@ class OPATOutcome(EpisodeSubrecord):
     _title            = "OPAT Outcome"
     _clonable         = False
 
+    PATIENT_OUTCOME_CHOICES = (
+        ('Cured', 'Cured',),
+        ('Improved', 'Improved'),
+        ('Failed', 'Failed'),
+    )
+
+    OPAT_OUTCOME_CHOICES = (
+        ('Success', 'Success',),
+        ('Parcial', 'Parcial',),
+        ('Failed', 'Failed',),
+        ('Undeterminate', 'Undeterminate',),
+    )
+
     outcome_stage         = models.CharField(max_length=200, blank=True, null=True)
     treatment_outcome     = models.CharField(max_length=200, blank=True, null=True)
-    patient_outcome       = models.CharField(max_length=200, blank=True, null=True)
-    opat_outcome          = models.CharField(max_length=200, blank=True, null=True)
+    patient_outcome       = models.CharField(
+        max_length=200, blank=True, null=True, choices=PATIENT_OUTCOME_CHOICES
+    )
+
+    opat_outcome          = models.CharField(
+        max_length=200, blank=True, null=True, choices=OPAT_OUTCOME_CHOICES
+    )
     deceased              = models.NullBooleanField(default=False)
     death_category        = models.CharField(max_length=200, blank=True, null=True)
     cause_of_death        = models.CharField(max_length=200, blank=True, null=True)
