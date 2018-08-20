@@ -1,10 +1,11 @@
+import logging
 from collections import defaultdict, OrderedDict
 from django.db.models import Count, Min, Max
 from opal import models as opal_models
 from opat import models as opat_models
 from opat import quarter_utils
+from opat import nors_translator
 from elcid import models as elcid_models
-import logging
 from functools import wraps
 from time import time
 
@@ -301,12 +302,16 @@ def get_primary_infective_diagnosis(episodes):
     # a list of all the outcomes as we expect the table
     # to include all outcomes as headers
     outcomes = set()
+    translator = nors_translator.Translator()
 
     for episode in episodes:
         outcome = clean_outcomes(episode.opatoutcome_set.all()).get()
         diagnosis_name = "Other"
         if outcome.infective_diagnosis_fk_id:
             diagnosis_name = outcome.infective_diagnosis
+
+        if diagnosis_name in translator.infective_diagnosis:
+            diagnosis_name = translator.infective_diagnosis[diagnosis_name]
 
         opat_outcome = outcome.opat_outcome
         patient_outcome = outcome.patient_outcome
