@@ -4,13 +4,46 @@ from django.db.models import Count, Min, Max
 from opal import models as opal_models
 from opat import models as opat_models
 from opat import quarter_utils
-from opat import nors_translator
 from elcid import models as elcid_models
 from functools import wraps
 from time import time
 
 
 COMPLETED_THERAPY_STAGE = "Completed Therapy"
+
+
+BACTERAEMIA = "bacteraemia / blood stream infection / septicaemia"
+
+# NORS translatinos
+INFECTIVE_DIAGNOSIS = {
+    "bacteraemia": BACTERAEMIA,
+    "early onset sepsis": BACTERAEMIA,
+    "fever in early infancy": BACTERAEMIA,
+    "late onset sepsis": BACTERAEMIA,
+    "congenital cmv": "citomegalovirus",
+    "hepatic abscess": "intraabdominal abscess",
+    "neonatal hsv": "other",
+}
+
+ANTIMICROBIALS = {
+    "fucidin": "fusidic acid",
+    "fusidic": "fusidic acid",
+    "piperacillintazobactam": "piperacillin/tazobactam", # we should update this one
+    "tigecycline": "tigcycline", # NORS typo
+    "tobramycin": "tobramyci", # NORS typo
+    "ampicillin": "amoxicillin",
+    "cefotaxime": "ceftriaxone",
+    "cloxacillin": "flucloxacillin",
+    "foscarnet": "other",
+    "ganciclovir": "other",
+    "peg-interferon": "other",
+    "penicillin": "other",
+    "piperacillin": "piperacillin/tazobactam",
+    "piperacillin tazobactam": "piperacillin/tazobactam",
+    "synercid": "other",
+    "ticarcillin": "other",
+    "tigecycline": "tigcycline" #NORS Typo,
+}
 
 logger = logging.getLogger('elcid.time_logger')
 
@@ -178,10 +211,12 @@ def aggregate_by_episode_and_drug(drugs):
     episode_id_drug_duration = []
 
     for drug in drugs:
-        drug_name = drug.drug
+        drug_name = drug.drug.lower()
+
+        drug_name = ANTIMICROBIALS.get(drug_name, drug_name)
 
         if drug.drug_ft:
-            drug_name = "Other"
+            drug_name = "other"
         episode_id_drug_duration.append(
             (drug.episode_id, drug_name, get_drug_duration(drug),)
         )
@@ -302,16 +337,16 @@ def get_primary_infective_diagnosis(episodes):
     # a list of all the outcomes as we expect the table
     # to include all outcomes as headers
     outcomes = set()
-    translator = nors_translator.Translator()
 
     for episode in episodes:
         outcome = clean_outcomes(episode.opatoutcome_set.all()).get()
-        diagnosis_name = "Other"
+        diagnosis_name = "other"
         if outcome.infective_diagnosis_fk_id:
-            diagnosis_name = outcome.infective_diagnosis
+            diagnosis_name = outcome.infective_diagnosis.lower()
 
-        if diagnosis_name in translator.infective_diagnosis:
-            diagnosis_name = translator.infective_diagnosis[diagnosis_name]
+        diagnosis_name = INFECTIVE_DIAGNOSIS.get(
+            diagnosis_name, diagnosis_name
+        )
 
         opat_outcome = outcome.opat_outcome
         patient_outcome = outcome.patient_outcome
