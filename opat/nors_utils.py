@@ -86,27 +86,42 @@ def get_episodes():
     episodes = opal_models.Episode.objects.filter(
         id__in=outcomes.values_list("episode_id").distinct()
     )
-    episodes.exclude(
+    return episodes.exclude(
         id__in=opat_models.OPATRejection.objects.all().values_list(
             'episode_id', flat=True
         )
     )
-    return episodes
+
+
+def get_iv_antimicrobials(episodes):
+    route = get_iv_route()
+    return get_relevant_drugs(episodes).filter(
+        route_fk_id=route.id
+    ).exclude(
+        end_date=None
+    ).values("episode_id").annotate(max_end=Max("end_date"))
 
 
 def get_episodes_for_quarters(
     quarters
 ):
     episodes = get_episodes()
-    route = get_iv_route()
-    antimicrobials = get_relevant_drugs(episodes).filter(
-        route_fk_id=route.id
-    ).values("episode_id").annotate(max_end=Max("end_date"))
+    antimicrobials = get_iv_antimicrobials(episodes)
+    episode_id_to_max_date = {
+        i["episode_id"]: i["max_end"] for i in antimicrobials
+    }
+
+    quarter_to_episode_id = defaultdict(list)
+    for episode_id, max_date in episode_id_to_max_date.items():
+        quarter = quarter_utils.get_quarter_from_date(max_date)
+        quarter_to_episode_id[quarter].append(episode_id)
+
     result = dict()
-    for year, quarter in quarters:
-        result[(year, quarter)] = filter_episodes_by_quarter(
-            episodes, antimicrobials, year, quarter
+    for quarter in quarters:
+        result[quarter] = opal_models.Episode.objects.filter(
+            id__in=quarter_to_episode_id[quarter]
         )
+
     return result
 
 
@@ -118,9 +133,9 @@ def filter_episodes_by_quarter(
     )
 
     antimicrobials = antimicrobials.filter(max_end__gte=start_date)
-    antimicrobials = antimicrobials.filter(max_end__lte=end_date).distinct()
+    antimicrobials = antimicrobials.filter(max_end__lte=end_date)
     return episodes.filter(
-        id__in=antimicrobials.values_list("episode_id", flat=True)
+        id__in=antimicrobials.values_list("episode_id", flat=True).distinct()
     )
 
 

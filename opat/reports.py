@@ -60,11 +60,11 @@ class NORSReport(Report):
     def report_options(self):
         return self._report_options
 
-    @cached_property
-    def _report_options(self):
+    @nors_utils.timing
+    def get_report_options_for_quarters(self, amount):
         report_options = []
 
-        quarters = quarter_utils.get_previous_quarters(8)
+        quarters = quarter_utils.get_previous_quarters(amount)
 
         episodes_by_quarter = nors_utils.get_episodes_for_quarters(
             quarters
@@ -86,5 +86,8 @@ class NORSReport(Report):
                 summary=nors_utils.get_summary(episodes),
                 display_name=display_name
             ))
-
         return report_options
+
+    @cached_property
+    def _report_options(self):
+        return self.get_report_options_for_quarters(12)
