@@ -1,4 +1,3 @@
-import datetime
 from functools import partial
 from django.utils.functional import cached_property
 from reporting import Report, ReportFile
@@ -64,14 +63,8 @@ class NORSReport(Report):
     @cached_property
     def _report_options(self):
         report_options = []
-        quarter = quarter_utils.get_quarter_from_date(
-            datetime.date.today()
-        )
 
-        quarters = []
-        for i in xrange(8):
-            quarter = quarter_utils.get_previous_quarter(*quarter)
-            quarters.append(quarter)
+        quarters = quarter_utils.get_previous_quarters(8)
 
         episodes_by_quarter = nors_utils.get_episodes_for_quarters(
             quarters

@@ -1,4 +1,4 @@
-from datetime import date
+import datetime
 
 
 def get_start_end_from_quarter(year, quarter):
@@ -9,17 +9,17 @@ def get_start_end_from_quarter(year, quarter):
     expects a quarter (1-4)
     """
     if quarter == 1:
-        start_date = date(year, 1, 1)
-        end_date = date(year, 3, 31)
+        start_date = datetime.date(year, 1, 1)
+        end_date = datetime.date(year, 3, 31)
     elif quarter == 2:
-        start_date = date(year, 4, 1)
-        end_date = date(year, 6, 30)
+        start_date = datetime.date(year, 4, 1)
+        end_date = datetime.date(year, 6, 30)
     elif quarter == 3:
-        start_date = date(year, 7, 1)
-        end_date = date(year, 9, 30)
+        start_date = datetime.date(year, 7, 1)
+        end_date = datetime.date(year, 9, 30)
     else:
-        start_date = date(year, 10, 1)
-        end_date = date(year, 12, 31)
+        start_date = datetime.date(year, 10, 1)
+        end_date = datetime.date(year, 12, 31)
 
     return start_date, end_date
 
@@ -43,3 +43,14 @@ def get_previous_quarter(year, quarter):
         return (year - 1, 4,)
     else:
         return (year, quarter - 1,)
+
+
+def get_previous_quarters(amount):
+    quarter = get_quarter_from_date(
+        datetime.date.today()
+    )
+    quarters = []
+    for i in xrange(amount):
+        quarter = get_previous_quarter(*quarter)
+        quarters.append(quarter)
+    return quarters
