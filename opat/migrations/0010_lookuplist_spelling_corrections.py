@@ -8,9 +8,6 @@ MAPPINGS = {
     ('opal', 'Line_complication',): {
         "Infection - Phelbitis": "Infection - Phlebitis"
     },
-    ('opal', 'Antimicrobial',): {
-        "Zanamavir": "Zanamivir",
-    },
     ('opal', 'Antimicrobial_adverse_event',): {
         "Esosinophilia": "Eosinophilia"
     }
