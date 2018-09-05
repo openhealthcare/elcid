@@ -9,6 +9,7 @@ class NORSReport(Report):
     slug = "nors-report"
     display_name = "OPAT NORS Report"
     description = "A quarterly summary of the OPAT service"
+    template = "reports/opat/report_detail.html"
 
     def generate_report_data(self, criteria=None, **kwargs):
         quarter_start = criteria["quarter"]  # a string for example 2017_4
