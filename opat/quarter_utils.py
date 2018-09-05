@@ -18,8 +18,30 @@ class Quarter(object):
         self.year = year
         self.period = period
 
+    def __str__(self):
+        return "{} {}-{}".format(
+            self.__class__.__name__, self.year, self.period
+        )
+
+    def __hash__(self):
+        return hash(str(self))
+
     def __eq__(self, y):
         return self.year == y.year and self.period == y.period
+
+    def __cmp__(self, y):
+        if self.year > y.year:
+            return 1
+        if self.year < y.year:
+            return -1
+
+        if self.period > y.period:
+            return 1
+
+        if self.period < y.period:
+            return -1
+
+        return 0
 
     @property
     def start(self):

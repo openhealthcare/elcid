@@ -10,6 +10,7 @@ from time import time
 
 
 COMPLETED_THERAPY_STAGE = "Completed Therapy"
+INPATIENT_TEAM = "Inpatient Team"
 
 
 BACTERAEMIA = "bacteraemia / blood stream infection / septicaemia"
@@ -159,7 +160,7 @@ def get_episodes_for_quarter(quarter):
 
 def get_relevant_drugs(episodes):
     delivered_by = elcid_models.Drug_delivered.objects.filter(
-        name="Inpatient Team"
+        name=INPATIENT_TEAM
     )
 
     if not delivered_by.exists():
@@ -249,7 +250,9 @@ def get_antimicrobial_report(episodes):
 
     # delivered by is a select box so we don't need to worry about
     # free text
-    delivered_by = elcid_models.Drug_delivered.objects.values_list(
+    delivered_by = elcid_models.Drug_delivered.objects.exclude(
+        name=INPATIENT_TEAM
+    ).values_list(
         "name", flat=True
     ).order_by("name")
     for drug_name, drug_dict in antimicrobials.items():
