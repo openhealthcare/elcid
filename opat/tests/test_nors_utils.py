@@ -82,18 +82,18 @@ class AntimicrobialTestCase(AbstractNorsUtilsTestCase):
         self.antimicrobial.route = self.opat_clinic.name
         self.antimicrobial.save()
 
-    def test_get_antimicrobial_with_translation(self):
+    def test_get_drug_name_with_translation(self):
         self.antimicrobial.drug = self.fucidin.name
         self.antimicrobial.save()
-        result = nors_utils.aggregate_by_episode_and_drug(
-            elcid_models.Antimicrobial.objects.all()
+        result = nors_utils.get_drug_name(self.antimicrobial)
+        self.assertEqual(
+            result, 'fusidic acid'
         )
-        self.assertEqual(result, [(self.episode.id, 'fusidic acid', 3)])
 
-    def test_get_antimicrobial_without_translation(self):
+    def test_get_drug_name_without_translation(self):
         self.antimicrobial.drug = self.paracetomol.name
         self.antimicrobial.save()
-        result = nors_utils.aggregate_by_episode_and_drug(
-            elcid_models.Antimicrobial.objects.all()
+        result = nors_utils.get_drug_name(self.antimicrobial)
+        self.assertEqual(
+            result, 'paracetomol'
         )
-        self.assertEqual(result, [(self.episode.id, 'paracetomol', 3)])

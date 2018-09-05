@@ -218,46 +218,46 @@ def get_drug_duration(antimicrobial):
             return duration
 
 
-def aggregate_by_episode_and_drug(drugs):
-    episode_id_drug_duration = []
+def get_drug_name(drug):
+    drug_name = drug.drug.lower()
 
-    for drug in drugs:
-        drug_name = drug.drug.lower()
+    if drug_name in ANTIMICROBIALS:
+        return ANTIMICROBIALS[drug_name]
 
-        drug_name = ANTIMICROBIALS.get(drug_name, drug_name)
-
-        if drug.drug_ft:
-            drug_name = "other"
-        episode_id_drug_duration.append(
-            (drug.episode_id, drug_name, get_drug_duration(drug),)
-        )
-    return episode_id_drug_duration
+    if drug.drug_ft:
+        drug_name = "other"
+    return drug_name
 
 
 def get_antimicrobials(episodes):
-    """
-    returns a dictionary of
-    antimicrobial -> episodes -> episode_count
-                  -> duration -> sum(duration)
-    """
     drugs = get_relevant_drugs(episodes)
-    episode_id_drug_duration = aggregate_by_episode_and_drug(drugs)
     result = defaultdict(lambda: defaultdict(int))
-    for episode_id, drug_name, duration in episode_id_drug_duration:
+
+    for drug in drugs:
+        drug_name = get_drug_name(drug)
+        duration = get_drug_duration(drug)
         if duration:
             result[drug_name]["episodes"] += 1
             result[drug_name]["duration"] += duration
-
+            result[drug_name][drug.delivered_by] += 1
     return result
 
 
 def get_antimicrobial_report(episodes):
     antimicrobials = get_antimicrobials(episodes)
     result = []
+
+    # delivered by is a select box so we don't need to worry about
+    # free text
+    delivered_by = elcid_models.Drug_delivered.objects.values_list(
+        "name", flat=True
+    ).order_by("name")
     for drug_name, drug_dict in antimicrobials.items():
         row = OrderedDict(antimicrobial=drug_name)
         row["episodes"] = drug_dict["episodes"]
         row["duration"] = drug_dict["duration"]
+        for d in delivered_by:
+            row[d] = drug_dict.get(d, 0)
         result.append(row)
     return result
 
