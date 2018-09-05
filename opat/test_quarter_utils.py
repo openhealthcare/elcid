@@ -12,7 +12,11 @@ class QuarterUtilsTestCase(OpalTestCase):
         dt.date.side_effect = datetime.date
         result = quarter_utils.get_previous_quarters(2)
         self.assertEqual(
-            result, [(2018, 2,), (2018, 1,)]
+            result,
+            [
+                quarter_utils.Quarter(2018, 2),
+                quarter_utils.Quarter(2018, 1)
+            ]
         )
 
     def test_get_start_end_from_quarter(self):

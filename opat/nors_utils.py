@@ -113,7 +113,7 @@ def get_episodes_for_quarters(
 
     quarter_to_episode_id = defaultdict(list)
     for episode_id, max_date in episode_id_to_max_date.items():
-        quarter = quarter_utils.get_quarter_from_date(max_date)
+        quarter = quarter_utils.Quarter.from_date(max_date)
         quarter_to_episode_id[quarter].append(episode_id)
 
     result = dict()
@@ -126,21 +126,17 @@ def get_episodes_for_quarters(
 
 
 def filter_episodes_by_quarter(
-    episodes, antimicrobials, year, quarter
+    episodes, antimicrobials, quarter
 ):
-    start_date, end_date = quarter_utils.get_start_end_from_quarter(
-        year, quarter
-    )
-
-    antimicrobials = antimicrobials.filter(max_end__gte=start_date)
-    antimicrobials = antimicrobials.filter(max_end__lte=end_date)
+    antimicrobials = antimicrobials.filter(max_end__gte=quarter.start)
+    antimicrobials = antimicrobials.filter(max_end__lte=quarter.end)
     return episodes.filter(
         id__in=antimicrobials.values_list("episode_id", flat=True).distinct()
     )
 
 
 @timing
-def get_episodes_for_quarter(year, quarter):
+def get_episodes_for_quarter(quarter):
     """
     Episodes filtered by start and end date.
 
@@ -158,7 +154,7 @@ def get_episodes_for_quarter(year, quarter):
     antimicrobials = get_relevant_drugs(episodes).filter(
         route_fk_id=route.id
     ).values("episode_id").annotate(max_end=Max("end_date"))
-    return filter_episodes_by_quarter(episodes, antimicrobials, year, quarter)
+    return filter_episodes_by_quarter(episodes, antimicrobials, quarter)
 
 
 def get_relevant_drugs(episodes):
@@ -398,9 +394,16 @@ def get_primary_infective_diagnosis(episodes):
     return result
 
 
-def get_summary(episodes):
+def get_num_episodes_rejected(quarter):
+    return opat_models.OPATRejection.objects.filter(
+        date__lte=quarter.start, date__gte=quarter.end
+    ).values_list('episode_id', flat=True).distinct().count()
+
+
+def get_summary(episodes, quarter):
     result = OrderedDict()
     result["episodes"] = episodes.count()
+    result["episodes_rejected"] = get_num_episodes_rejected(quarter)
     durations = get_iv_duration(episodes)
     result["total_treatment_days_saved"] = sum(durations.values())
     result["total_line_events"] = sum(
