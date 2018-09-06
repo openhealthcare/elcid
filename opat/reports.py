@@ -23,6 +23,8 @@ class NORSReport(Report):
         adverse_reactions = nors_utils.get_adverse_reactions(episodes)
         pid = nors_utils.get_primary_infective_diagnosis(episodes)
         summary = [nors_utils.get_summary(episodes, quarter)]
+        episode_breakdown = nors_utils.get_episode_breakdown(episodes)
+        
         fn = partial(self.get_file_name, quarter_start)
         return [
             ReportFile(
@@ -40,6 +42,10 @@ class NORSReport(Report):
             ReportFile(
                 file_name=fn("summary"),
                 file_data=self.flatten_rows_of_dicts(summary)
+            ),
+            ReportFile(
+                file_name=fn("episode_breakdown"),
+                file_data=self.flatten_rows_of_dicts(episode_breakdown)
             )
         ]
 

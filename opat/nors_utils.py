@@ -187,20 +187,36 @@ def get_relevant_drugs(episodes):
     return antimicrobials
 
 
-def get_all_episodes(episodes):
+def get_episode_breakdown(episodes):
     result = []
     episode_id_to_duration = get_iv_duration(episodes)
+    antimicrobials = get_relevant_drugs(episodes)
+    episode_id_to_antimicrobials = defaultdict(list)
+
+    for antimicrobial in antimicrobials:
+        episode_id_to_antimicrobials[antimicrobial.episode_id].append(antimicrobial)
+
     for episode in episodes:
         row = OrderedDict()
+
+        # if an episode is 0 days long, skip it
+        duration = episode_id_to_duration.get(episode.id, 0)
+        if not duration:
+            continue
         row["episode"] = "{}/#/patient/{}/{}".format(
             settings.BASE_URL,
             episode.patient_id,
             episode.id
         )
-        row["duration"] = episode_id_to_duration[episode.id]
+        row["duration"] = duration
+        antimicrobials =  ("{}({} days)".format(get_drug_name(i), get_drug_duration(i)) for i in episode_id_to_antimicrobials[episode.id])
+        row["antimicrobials"] = " ".join(antimicrobials)
+        result.append(row)
+        row["infective_diagnosis"], row["opat_outcome"], row["patient_outcome"] = get_outcome_information(episode)
+    return result
 
 
-def get_episode_start(episode, antimicrobial):
+def get_episode_start(episode):
     if episode.start:
         return episode.start
     location = episode.location_set.first()
@@ -209,7 +225,7 @@ def get_episode_start(episode, antimicrobial):
 
 def get_drug_duration(antimicrobial):
     """
-    get drug duration, but only for the time
+    get drug dates, but only for the time
     they are actually on opat.
     """
     if not antimicrobial.start_date:
@@ -347,7 +363,7 @@ def get_iv_duration(episodes):
     )
     result = {}
     for i in drugs:
-        episode = opal_models.Episode.objects.get(i["episode_id"])
+        episode = opal_models.Episode.objects.get(id=i["episode_id"])
         episode_start = get_episode_start(episode)
 
         if not i["min_start_date"] or not episode_start:
@@ -362,6 +378,22 @@ def get_iv_duration(episodes):
             result[i["episode_id"]] = diff
     return result
 
+def get_outcome_information(episode):
+    """
+    returns the primary infective diagnosis patient and opat outcome
+    """
+    outcome = clean_outcomes(episode.opatoutcome_set.all()).get()
+    diagnosis_name = "other"
+    if outcome.infective_diagnosis_fk_id:
+        diagnosis_name = outcome.infective_diagnosis.lower()
+
+    diagnosis_name = INFECTIVE_DIAGNOSIS.get(
+        diagnosis_name, diagnosis_name
+    )    
+    opat_outcome = outcome.opat_outcome
+    patient_outcome = outcome.patient_outcome
+    return diagnosis_name, opat_outcome, patient_outcome
+
 
 def get_primary_infective_diagnosis(episodes):
     by_diagnosis = defaultdict(
@@ -375,17 +407,7 @@ def get_primary_infective_diagnosis(episodes):
     outcomes = set()
 
     for episode in episodes:
-        outcome = clean_outcomes(episode.opatoutcome_set.all()).get()
-        diagnosis_name = "other"
-        if outcome.infective_diagnosis_fk_id:
-            diagnosis_name = outcome.infective_diagnosis.lower()
-
-        diagnosis_name = INFECTIVE_DIAGNOSIS.get(
-            diagnosis_name, diagnosis_name
-        )
-
-        opat_outcome = outcome.opat_outcome
-        patient_outcome = outcome.patient_outcome
+        diagnosis_name, opat_outcome, patient_outcome =  get_outcome_information(episode)
         by_diagnosis[diagnosis_name]["episode"] += 1
         by_diagnosis[diagnosis_name]["time_saved"] += episode_to_iv_duration.get(
             episode.id, 0
