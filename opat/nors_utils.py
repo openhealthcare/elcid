@@ -186,6 +186,19 @@ def get_relevant_drugs(episodes):
     return antimicrobials
 
 
+def get_all_episodes(episodes):
+    result = []
+    get_iv_duration(episodes)
+    for episode in episodes:
+        row = OrderedDict()
+        row["episode"] = "{}/#/patient/{}/{}".format(
+            settings.BASE_URL,
+            episode.patient_id,
+            episode.id
+        )
+
+
+
 def get_drug_duration(antimicrobial):
     """
     get drug duration, but only for the time
