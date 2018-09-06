@@ -1,6 +1,7 @@
 import logging
 from collections import defaultdict, OrderedDict
 from django.db.models import Count, Min, Max
+from django.conf import settings
 from opal import models as opal_models
 from opat import models as opat_models
 from opat import quarter_utils
@@ -188,7 +189,7 @@ def get_relevant_drugs(episodes):
 
 def get_all_episodes(episodes):
     result = []
-    get_iv_duration(episodes)
+    episode_id_to_duration = get_iv_duration(episodes)
     for episode in episodes:
         row = OrderedDict()
         row["episode"] = "{}/#/patient/{}/{}".format(
@@ -196,7 +197,14 @@ def get_all_episodes(episodes):
             episode.patient_id,
             episode.id
         )
+        row["duration"] = episode_id_to_duration[episode.id]
 
+
+def get_episode_start(episode, antimicrobial):
+    if episode.start:
+        return episode.start
+    location = episode.location_set.first()
+    return location.opat_acceptance or location.opat_acceptance
 
 
 def get_drug_duration(antimicrobial):
@@ -208,14 +216,7 @@ def get_drug_duration(antimicrobial):
         return
 
     episode = antimicrobial.episode
-    episode_start = episode.start
-
-    if not episode_start:
-        location = episode.location_set.first()
-        episode_start = location.opat_acceptance
-
-        if not episode_start:
-            episode_start = location.opat_referral
+    episode_start = get_episode_start(episode)
 
     if episode_start and antimicrobial.start_date:
         drug_start = max(episode_start, antimicrobial.start_date)
@@ -346,8 +347,16 @@ def get_iv_duration(episodes):
     )
     result = {}
     for i in drugs:
-        if i["max_end_date"] and i["min_start_date"]:
-            diff = (i["max_end_date"] - i["min_start_date"]).days
+        episode = opal_models.Episode.objects.get(i["episode_id"])
+        episode_start = get_episode_start(episode)
+
+        if not i["min_start_date"] or not episode_start:
+            start_date = i["min_start_date"] or episode_start
+        else:
+            start_date = Max(i["min_start_date"], episode_start)
+
+        if i["max_end_date"] and start_date:
+            diff = (i["max_end_date"] - start_date).days
             diff += 1
             diff = max(diff, 0)
             result[i["episode_id"]] = diff
