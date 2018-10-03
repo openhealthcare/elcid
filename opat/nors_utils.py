@@ -201,8 +201,7 @@ def get_episode_breakdown(episodes):
 
         # if an episode is 0 days long, skip it
         duration = episode_id_to_duration.get(episode.id, 0)
-        if not duration:
-            continue
+
         row["episode"] = "{}/#/patient/{}/{}".format(
             settings.BASE_URL,
             episode.patient_id,
