@@ -369,7 +369,7 @@ def get_iv_duration(episodes):
         if not i["min_start_date"] or not episode_start:
             start_date = i["min_start_date"] or episode_start
         else:
-            start_date = Max(i["min_start_date"], episode_start)
+            start_date = max(i["min_start_date"], episode_start)
 
         if i["max_end_date"] and start_date:
             diff = (i["max_end_date"] - start_date).days
