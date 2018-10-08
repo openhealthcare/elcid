@@ -69,14 +69,14 @@ class Application(application.OpalApplication):
             )
             items.append(query)
 
-        menuitem = menus.MenuItem(
-            href='/referrals/',
-            display="Referrals",
-            icon="fa fa-mail-forward",
-            activepattern='referrals',
-            index=3
-        )
+        # menuitem = menus.MenuItem(
+        #     href='/referrals/',
+        #     display="Referrals",
+        #     icon="fa fa-mail-forward",
+        #     activepattern='referrals',
+        #     index=3
+        # )
 
-        items.append(menuitem)
+#        items.append(menuitem)
 
         return items
