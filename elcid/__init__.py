@@ -8,7 +8,6 @@ from microhaem.constants import MICROHAEM_ROLE
 from django.core.urlresolvers import reverse
 
 
-
 class Application(application.OpalApplication):
     schema_module = 'elcid.schema'
     javascripts = [
@@ -69,14 +68,20 @@ class Application(application.OpalApplication):
             )
             items.append(query)
 
-        # menuitem = menus.MenuItem(
-        #     href='/referrals/',
-        #     display="Referrals",
-        #     icon="fa fa-mail-forward",
-        #     activepattern='referrals',
-        #     index=3
-        # )
+            reports = menus.MenuItem(
+                href="/reporting/#/nors-report",
+                display="NORS Reports",
+                icon="fa fa-file-zip-o",
+                activepattern='/reporting',
+                index=1
+            )
 
-#        items.append(menuitem)
+            items.append(reports)
 
         return items
+
+    @classmethod
+    def get_menu(cls, user=None):
+        menu = super(Application, cls).get_menu(user)
+        menu.items = [i for i in menu.items if not i.href == "/reporting/#/list"]
+        return menu

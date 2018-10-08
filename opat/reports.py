@@ -4,6 +4,92 @@ from reporting import Report, ReportFile
 from opat import nors_utils
 from opat import quarter_utils
 
+FAKE_SUMMARY_DATA = {
+    quarter_utils.Quarter(2018, 3): dict(
+        episodes=50,
+        episodes_rejected=15,
+        total_treatment_days_saved=892,
+        total_line_events=1,
+        total_drug_events=5
+    ),
+    quarter_utils.Quarter(2018, 2): dict(
+        episodes=48,
+        episodes_rejected=13,
+        total_treatment_days_saved=892,
+        total_line_events=2,
+        total_drug_events=4
+    ),
+    quarter_utils.Quarter(2018, 1): dict(
+        episodes=46,
+        episodes_rejected=14,
+        total_treatment_days_saved=892,
+        total_line_events=2,
+        total_drug_events=5
+    ),
+    quarter_utils.Quarter(2017, 4): dict(
+        episodes=49,
+        episodes_rejected=15,
+        total_treatment_days_saved=892,
+        total_line_events=3,
+        total_drug_events=1
+    ),
+    quarter_utils.Quarter(2017, 3): dict(
+        episodes=50,
+        episodes_rejected=14,
+        total_treatment_days_saved=892,
+        total_line_events=6,
+        total_drug_events=5
+    ),
+    quarter_utils.Quarter(2017, 2): dict(
+        episodes=48,
+        episodes_rejected=12,
+        total_treatment_days_saved=892,
+        total_line_events=4,
+        total_drug_events=2
+    ),
+    quarter_utils.Quarter(2017, 1): dict(
+        episodes=43,
+        episodes_rejected=14,
+        total_treatment_days_saved=892,
+        total_line_events=1,
+        total_drug_events=7
+    ),
+    quarter_utils.Quarter(2016, 4): dict(
+        episodes=51,
+        episodes_rejected=15,
+        total_treatment_days_saved=892,
+        total_line_events=2,
+        total_drug_events=5
+    ),
+    quarter_utils.Quarter(2016, 3): dict(
+        episodes=52,
+        episodes_rejected=12,
+        total_treatment_days_saved=892,
+        total_line_events=12,
+        total_drug_events=5
+    ),
+    quarter_utils.Quarter(2016, 2): dict(
+        episodes=54,
+        episodes_rejected=13,
+        total_treatment_days_saved=892,
+        total_line_events=12,
+        total_drug_events=5
+    ),
+    quarter_utils.Quarter(2016, 1): dict(
+        episodes=49,
+        episodes_rejected=13,
+        total_treatment_days_saved=892,
+        total_line_events=12,
+        total_drug_events=5
+    ),
+    quarter_utils.Quarter(2015, 4): dict(
+        episodes=50,
+        episodes_rejected=11,
+        total_treatment_days_saved=892,
+        total_line_events=12,
+        total_drug_events=5
+    ),
+}
 
 class NORSReport(Report):
     slug = "nors-report"
@@ -80,6 +166,8 @@ class NORSReport(Report):
         )
 
         for quarter in quarters:
+            if quarter not in FAKE_SUMMARY_DATA:
+                continue
             episodes = episodes_by_quarter[quarter]
             value = "{}_{}".format(quarter.year, quarter.period)
             display_name = "{}-{}".format(
@@ -89,7 +177,7 @@ class NORSReport(Report):
             report_options.append(dict(
                 template="reports/opat/report_option_template.html",
                 criteria=dict(quarter=value),
-                summary=nors_utils.get_summary(episodes, quarter),
+                summary=FAKE_SUMMARY_DATA[quarter],
                 display_name=display_name
             ))
         return report_options
