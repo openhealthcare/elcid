@@ -404,7 +404,7 @@ class IdLiasionReportTestCase(OpalTestCase):
         )
 
     @patch("infectiousdiseases.reports.datetime")
-    def test_reports_available_only_2(self, dt):
+    def test_get_report_options_only_2(self, dt):
 
         # override datetime.date.today
         class NewDate(datetime.date):
@@ -420,35 +420,33 @@ class IdLiasionReportTestCase(OpalTestCase):
             value="id_liaison",
             archived=True,
         )
-        ctx = self.report.reports_available
+        ctx = self.report.report_options()
         self.assertEqual(
             len(ctx),
-            1
-        )
-        self.assertEqual(
-            len(ctx[0]),
             2
         )
         self.assertEqual(
-            ctx[0][0],
-            {
-                'display_month': 'June',
-                'value': '01/06/2017',
-                'display_year': '2017'
+            ctx[0],
+            {'criteria':
+                {
+                    'reporting_month': '01/05/2017'
+                },
+                'display_name': 'May 2017'
             }
         )
 
         self.assertEqual(
-            ctx[0][1],
-            {
-                'display_month': 'May',
-                'value': '01/05/2017',
-                'display_year': '2017'
+            ctx[1],
+            {'criteria':
+                {
+                    'reporting_month': '01/06/2017'
+                },
+                'display_name': 'June 2017'
             }
         )
 
     @patch("infectiousdiseases.reports.datetime")
-    def test_reports_available_chunking(self, dt):
+    def test_reports_available_many(self, dt):
 
         # override datetime.date.today
         class NewDate(datetime.date):
@@ -464,15 +462,11 @@ class IdLiasionReportTestCase(OpalTestCase):
             value="id_liaison",
             archived=True,
         )
-        ctx = self.report.reports_available
+        ctx = self.report.report_options()
         self.assertEqual(
             len(ctx),
-            4
-        )
-        self.assertEqual(
-            len(ctx[3]),
-            2
+            14
         )
 
     def test_reports_available_none(self):
-        self.assertIsNone(self.report.reports_available)
+        self.assertIsNone(self.report.report_options())

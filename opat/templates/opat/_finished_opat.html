@@ -1,7 +1,7 @@
 {% load forms %}
 
-{% select label="Patient Outcome" model="meta.patient_outcome" lookuplist="['Cure', 'Improved', 'Failure']" help="opat/_patient_outcome_help.html" %}
-{% select label="Opat Outcome" model="meta.opat_outcome" lookuplist="['Success', 'Partial Success', 'Failure of OPAT', 'Intermidiate Outcome']" help="opat/_opat_outcome_help.html" %}
+{% select field="OPATOutcome.patient_outcome"  label="Patient Outcome" model="meta.patient_outcome" help="opat/_patient_outcome_help.html" %}
+{% select field="OPATOutcome.opat_outcome" model="meta.opat_outcome" help="opat/_opat_outcome_help.html" %}
 {% select label="Primary Infective Diagnosis" model="meta.infective_diagnosis" lookuplist="opatinfectivediagnosis_list" other=True %}
 {% checkbox model="meta.died" label="Died?" %}
 

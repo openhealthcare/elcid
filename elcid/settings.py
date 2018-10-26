@@ -28,6 +28,8 @@ except ImportError:
 
 DEBUG = True
 
+BASE_URL = "http://elcidl"
+
 ADMINS = (
     ('Support', 'support@openhealthcare.org.uk',),
 )

@@ -15,7 +15,6 @@ class IdLiasionReport(Report):
     slug = "id-liasion-report"
     display_name = "ID Liasion Report"
     description = "A Monthly Summary of the ID Liasion Teams Output"
-    template = "reports/infectiousdiseases/id_liasion_report.html"
 
     def get_queryset(self, month_start):
         next_month_beginning = month_start + relativedelta(months=1)
@@ -123,7 +122,7 @@ class IdLiasionReport(Report):
         return result
 
     @cached_property
-    def reports_available(self):
+    def _report_options(self):
         """
             A list of lists of available reports for the template
         """
@@ -148,17 +147,14 @@ class IdLiasionReport(Report):
         for i in range(num):
             key_date = first_date + relativedelta(months=i)
             months.append(dict(
-                display_month=key_date.strftime("%B"),
-                display_year=key_date.strftime("%Y"),
-                value=key_date.strftime("%d/%m/%Y")
+                display_name=key_date.strftime("%B %Y"),
+                criteria=dict(reporting_month=key_date.strftime("%d/%m/%Y")),
             ))
 
-        months.reverse()
-        rows = []
+        return months
 
-        for i in range(0, len(months), 4):
-            rows.append(months[i:i+4])
-        return rows
+    def report_options(self):
+        return self._report_options
 
     def generate_report_data(self, criteria=None, **kwargs):
         month_start = datetime.datetime.strptime(

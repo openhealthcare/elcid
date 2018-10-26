@@ -1,0 +1,46 @@
+<h3 class="text-center">{{ report_option.display_name }}</h3>
+<hr />
+<div class="row content-offset-10 content-offset-below-10">
+  <div class="col-md-12">
+    <div class="row content-offset-below-10 text-left">
+      <div class="col-xs-9">
+        Episodes:
+      </div>
+      <div class="col-xs-3 text-right">
+        {{ report_option.summary.episodes }}
+      </div>
+    </div>
+    <div class="row content-offset-below-10 text-left">
+      <div class="col-xs-9">
+        Episodes Rejected:
+      </div>
+      <div class="col-xs-3 text-right">
+        {{ report_option.summary.episodes_rejected }}
+      </div>
+    </div>
+    <div class="row content-offset-below-10 text-left">
+      <div class="col-xs-9">
+        Treatment Days Saved:
+      </div>
+      <div class="col-xs-3 text-right">
+        {{ report_option.summary.total_treatment_days_saved }}
+      </div>
+    </div>
+    <div class="row content-offset-below-10 text-left">
+      <div class="col-xs-9">
+        Line Events:
+      </div>
+      <div class="col-xs-3 text-right">
+        {{ report_option.summary.total_line_events }}
+      </div>
+    </div>
+    <div class="row content-offset-below-10 text-left">
+      <div class="col-xs-9">
+        Drug Events:
+      </div>
+      <div class="col-xs-3 text-right">
+        {{ report_option.summary.total_drug_events }}
+      </div>
+    </div>
+  </div>
+</div>

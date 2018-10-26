@@ -18,6 +18,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('elcid', '0058_auto_20180326_1801'),
+        ('walkin', '0011_auto_20170720_1435'),
     ]
 
     operations = [
