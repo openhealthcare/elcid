@@ -167,43 +167,6 @@ class ExtractSchemaViewTest(OpalTestCase):
         self.assertEqual(expected_status_code, response.status_code)
 
 
-class BulkCreateUserViewTestCase(OpalTestCase):
-    def setUp(self):
-        self.url = reverse("bulk-create-users")
-
-    def test_form(self):
-        self.assertTrue(
-            self.client.login(
-                username=self.user.username,
-                password=self.PASSWORD
-            )
-        )
-        response = self.client.post(self.url)
-        self.assertFalse(response.context_data["form"].is_valid())
-        self.assertEqual(response.status_code, 200)
-
-    def test_authenticated(self):
-        response = self.client.post(self.url, follow=True)
-        login = reverse('admin:login')
-        self.assertEqual(response.request["PATH_INFO"], login)
-
-    def test_authenticated_staff(self):
-        user = User.objects.create(
-            username="someone",
-        )
-        user.set_password("someone")
-        user.save()
-        self.assertTrue(
-            self.client.login(
-                username="someone",
-                password="someone"
-            )
-        )
-        response = self.client.post(self.url, follow=True)
-        login = reverse('admin:login')
-        self.assertEqual(response.request["PATH_INFO"], login)
-
-
 class ViewStoriesTemplateTestCase(OpalTestCase):
     def setUp(self):
         self.url = reverse("stories")
