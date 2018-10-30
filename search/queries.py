@@ -2,47 +2,12 @@
 Allow us to make search queries
 """
 import datetime
-from django.db.models import Max
+from django.db.models import Max, Min, Count
 from django.conf import settings
 
 from opal import models
-from opal.core import subrecords
 from opal.utils import stringport
 from search.search_rules import SearchRule
-
-
-class PatientSummary(object):
-    def __init__(self, episode):
-        self.start = episode.start
-        self.end = episode.end
-        self.episode_ids = set([episode.id])
-        self.patient_id = episode.patient.id
-        self.categories = set([episode.category_name])
-        self.id = episode.patient.demographics_set.get().id
-
-    def update(self, episode):
-        if not self.start:
-            self.start = episode.start
-        elif episode.start:
-            if self.start > episode.start:
-                self.start = episode.start
-
-        if not self.end:
-            self.end = episode.end
-        elif episode.end:
-            if self.end < episode.end:
-                self.end = episode.end
-
-        self.episode_ids.add(episode.id)
-        self.categories.add(episode.category_name)
-
-    def to_dict(self):
-        result = {k: getattr(self, k) for k in [
-            "patient_id", "start", "end", "id"
-        ]}
-        result["categories"] = sorted(self.categories)
-        result["count"] = len(self.episode_ids)
-        return result
 
 
 def episodes_for_user(episodes, user):
@@ -58,6 +23,7 @@ class QueryBackend(object):
     """
     Base class for search implementations to inherit from
     """
+
     def __init__(self, user, query):
         self.user = user
         self.query = query
@@ -74,14 +40,11 @@ class QueryBackend(object):
     def get_patients(self):
         raise NotImplementedError()
 
-    def get_patient_summaries(self):
+    def get_patient_summaries(self, patients):
         raise NotImplementedError()
 
-    def patients_as_json(self):
-        patients = self.get_patients()
-        return [
-            p.to_dict(self.user) for p in patients
-        ]
+    def sort_patients(self, patients):
+        raise NotImplementedError()
 
 
 class DatabaseQuery(QueryBackend):
@@ -124,36 +87,46 @@ class DatabaseQuery(QueryBackend):
         search_rule = SearchRule.get_rule(rule_name, self.user)
         return search_rule.query(criteria)
 
-    def get_aggregate_patients_from_episodes(self, episodes):
-        # at the moment we use start/end only
-        patient_summaries = {}
-
-        for episode in episodes:
-            patient_id = episode.patient_id
-            if patient_id in patient_summaries:
-                patient_summaries[patient_id].update(episode)
-            else:
-                patient_summaries[patient_id] = PatientSummary(episode)
-
-        patients = models.Patient.objects.filter(
-            id__in=list(patient_summaries.keys())
+    def get_patients(self):
+        episodes = self.get_episodes()
+        patient_ids = set([i.patient_id for i in episodes])
+        return self.sort_patients(
+            models.Patient.objects.filter(id__in=patient_ids)
         )
-        patients = patients.prefetch_related("demographics_set")
 
-        results = []
+    def sort_patients(self, patients):
+        patients = patients.annotate(
+            max_episode_id=Max('episode__id')
+        )
+        return patients.order_by("-max_episode_id")
 
-        for patient_id, patient_summary in patient_summaries.items():
-            patient = next(p for p in patients if p.id == patient_id)
-            demographic = patient.demographics_set.get()
+    def get_patient_summary(self, patient):
+        result = dict()
 
-            result = {k: getattr(demographic, k) for k in [
+        # prefetch queries only work with sad times, even though
+        # demographics are a one per patient thing.
+        for demographics in patient.demographics_set.all():
+            for i in [
                 "first_name", "surname", "hospital_number", "date_of_birth"
-            ]}
+            ]:
+                result[i] = getattr(demographics, i)
+        result["start"] = patient.min_start
+        result["end"] = patient.max_end
+        result["count"] = patient.episode_count
+        result["patient_id"] = patient.id
+        result["categories"] = list(patient.episode_set.order_by(
+            "category_name"
+        ).values_list(
+            "category_name", flat=True
+        ).distinct())
+        return result
 
-            result.update(patient_summary.to_dict())
-            results.append(result)
-
-        return results
+    def get_patient_summaries(self, patients):
+        patients = patients.prefetch_related("demographics_set")
+        patients = patients.annotate(episode_count=Count("episode"))
+        patients = patients.annotate(min_start=Min("episode__start"))
+        patients = patients.annotate(max_end=Max("episode__end"))
+        return [self.get_patient_summary(patient) for patient in patients]
 
     def _episodes_without_restrictions(self):
         all_matches = [
@@ -179,22 +152,6 @@ class DatabaseQuery(QueryBackend):
     def get_episodes(self):
         return episodes_for_user(
             self._episodes_without_restrictions(), self.user)
-
-    def get_patient_summaries(self):
-        eps = self._episodes_without_restrictions()
-        episode_ids = [e.id for e in eps]
-
-        # get all episodes of patients, that have episodes that
-        # match the criteria
-        all_eps = models.Episode.objects.filter(
-            patient__episode__in=episode_ids
-        )
-        filtered_eps = episodes_for_user(all_eps, self.user)
-        return self.get_aggregate_patients_from_episodes(filtered_eps)
-
-    def get_patients(self):
-        patients = set(e.patient for e in self.get_episodes())
-        return list(patients)
 
     def description(self):
         """

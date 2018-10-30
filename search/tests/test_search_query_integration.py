@@ -3,14 +3,12 @@ Unittests for search.queries
 """
 from datetime import date, datetime
 
-from django.db import transaction
 from django.contrib.contenttypes.models import ContentType
 from mock import patch, MagicMock
-import reversion
 from opal.tests.episodes import RestrictedEpisodeCategory
 
 from search.search_rules import SearchRule
-from opal.models import Synonym, Gender
+from opal.models import Synonym, Gender, Patient, Episode
 
 from opal.core.test import OpalTestCase
 
@@ -22,27 +20,6 @@ from elcid import models
 
 # don't remove this, we use it to discover the restricted episode category
 from opal.tests.episodes import RestrictedEpisodeCategory  # NOQA
-
-
-class PatientSummaryTestCase(OpalTestCase):
-
-    def test_update_sets_start(self):
-        patient, episode = self.new_patient_and_episode_please()
-        summary = queries.PatientSummary(episode)
-        self.assertEqual(None, summary.start)
-        the_date = date(day=27, month=1, year=1972)
-        episode2 = patient.create_episode(start=the_date)
-        summary.update(episode2)
-        self.assertEqual(summary.start, the_date)
-
-    def test_update_sets_end(self):
-        patient, episode = self.new_patient_and_episode_please()
-        summary = queries.PatientSummary(episode)
-        self.assertEqual(None, summary.start)
-        the_date = date(day=27, month=1, year=1972)
-        episode2 = patient.create_episode(end=the_date)
-        summary.update(episode2)
-        self.assertEqual(summary.end, the_date)
 
 
 class QueryBackendTestCase(OpalTestCase):
@@ -65,7 +42,15 @@ class QueryBackendTestCase(OpalTestCase):
 
     def test_get_patient_summaries(self):
         with self.assertRaises(NotImplementedError):
-            queries.QueryBackend(self.user, 'aquery').get_patient_summaries()
+            queries.QueryBackend(self.user, 'aquery').get_patient_summaries(
+                Patient.objects.all()
+            )
+
+    def test_sort_patients(self):
+        with self.assertRaises(NotImplementedError):
+            queries.QueryBackend(self.user, 'aquery').sort_patients(
+                Patient.objects.all()
+            )
 
 
 class DatabaseQueryTestCase(OpalTestCase):
@@ -121,6 +106,38 @@ class DatabaseQueryTestCase(OpalTestCase):
         criteria["query"] = 100
         query = queries.DatabaseQuery(self.user, [criteria])
         self.assertEqual([self.episode], query.get_episodes())
+
+    def test_sort_patients(self):
+        patient_1, episode_1 = self.new_patient_and_episode_please()
+        patient_2, episode_2 = self.new_patient_and_episode_please()
+        patient_1.create_episode()
+
+        not_used_patient, _ = self.new_patient_and_episode_please()
+        query = queries.DatabaseQuery(self.user, [self.name_criteria])
+        result = query.sort_patients(
+            Patient.objects.exclude(id=not_used_patient.id)
+        )
+
+        # should start with patient 1, because its got 2 episodes
+        self.assertEqual(
+            result[0].id, patient_1.id,
+        )
+
+        self.assertEqual(
+            result[1].id, patient_2.id,
+        )
+
+        # make sure its true even if we reverse it
+        result = query.sort_patients(
+            Patient.objects.exclude(id=not_used_patient.id).order_by("-id")
+        )
+        self.assertEqual(
+            result[0].id, patient_1.id,
+        )
+
+        self.assertEqual(
+            result[1].id, patient_2.id,
+        )
 
     def test_episodes_for_number_fields_less_than(self):
         testmodels.FavouriteNumber.objects.create(
@@ -347,6 +364,30 @@ and Hound Owner Hound contains jeff
             list(patients),
             [patient_2, patient_3, patient_1]
         )
+
+    def test_get_patients(self):
+        patient_1, episode_1 = self.new_patient_and_episode_please()
+        patient_2, episode_2 = self.new_patient_and_episode_please()
+        episode_3 = patient_1.create_episode()
+
+        # these will not be used
+        self.new_patient_and_episode_please()
+
+        query = queries.DatabaseQuery(self.user, [self.name_criteria])
+        with patch.object(query, "get_episodes") as get_episodes:
+            get_episodes.return_value = Episode.objects.filter(
+                id__in=[episode_1.id, episode_2.id, episode_3.id]
+            )
+            found = query.get_patients().values_list("id", flat=True)
+            self.assertEqual(
+                2, found.count()
+            )
+            self.assertEqual(
+                found[0], patient_1.id
+            )
+            self.assertEqual(
+                found[1], patient_2.id
+            )
 
     def test_distinct_episodes_for_m2m_fields_containing_synonsyms_and_names(
         self
@@ -719,9 +760,8 @@ and Hound Owner Hound contains jeff
 
     def test_get_patient_summaries(self):
         query = queries.DatabaseQuery(self.user, self.name_criteria)
-        summaries = query.get_patient_summaries()
+        summaries = query.get_patient_summaries(Patient.objects.all())
         expected = [{
-            'id': self.patient.id,
             'count': 1,
             'hospital_number': u'0',
             'date_of_birth': self.DATE_OF_BIRTH,
@@ -734,7 +774,7 @@ and Hound Owner Hound contains jeff
         }]
         self.assertEqual(expected, summaries)
 
-    def test_update_patient_summaries(self):
+    def test_get_patient_summaries_for_patient_with_multiple_episodes(self):
         """ with a patient with multiple episodes
             we expect it to aggregate these into summaries
         """
@@ -747,9 +787,8 @@ and Hound Owner Hound contains jeff
             end=end_date
         )
         query = queries.DatabaseQuery(self.user, self.name_criteria)
-        summaries = query.get_patient_summaries()
+        summaries = query.get_patient_summaries(Patient.objects.all())
         expected = [{
-            'id': self.patient.id,
             'count': 3,
             'hospital_number': u'0',
             'date_of_birth': self.DATE_OF_BIRTH,
