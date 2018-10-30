@@ -15,3 +15,4 @@ opal.sqlite.*
 node_modules/*
 **/.sass-cache
 **/.sass-cache/*
+.vscode/*
