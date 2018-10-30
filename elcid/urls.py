@@ -14,11 +14,6 @@ from elcid import views
 
 urlpatterns = [
     url(
-        '^admin/bulk-create-users$',
-        staff_member_required(views.BulkCreateUserView.as_view()),
-        name='bulk-create-users'
-    ),
-    url(
         r'^referrals/?$', views.TemplateView.as_view(
             template_name='referral/referral_list.html'
         )
