@@ -128,11 +128,7 @@ class GetEpisodeBreakdownTestCase(AbstractNorsUtilsTestCase):
         )
 
         self.assertEqual(
-            row["duration"], 3
-        )
-
-        self.assertEqual(
-            row["antimicrobials"], 'fusidic acid(3 days)'
+            row["antimicrobials"], 'fusidic acid(3)'
         )
         self.assertEqual(
             row["infective_diagnosis"], 'other'
