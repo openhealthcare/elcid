@@ -1,6 +1,7 @@
 import logging
 from collections import defaultdict, OrderedDict
 from django.db.models import Count, Min, Max
+from django.conf import settings
 from opal import models as opal_models
 from opat import models as opat_models
 from opat import quarter_utils
@@ -49,6 +50,47 @@ ANTIMICROBIALS = {
 logger = logging.getLogger('elcid.time_logger')
 
 
+class DrugCombinationKey(object):
+    """
+    We aggregate drugs by the fields contained
+    in this object, ie episode id, start, end
+    and delivered_by
+    """
+    episode_id = None
+    start = None
+    end = None
+    delivered_by = []
+
+    def __init__(self, start, end, episode_id, delivered_by):
+        self.start = start
+        self.end = end
+        self.episode_id = episode_id
+
+    def __str__(self):
+        return "{} {} {}({})".format(
+            self.start, self.end, self.episode_id, self.delivered_by
+        )
+
+    def __hash__(self):
+        return hash(str(self))
+
+    @property
+    def duration(self):
+        if not self.start or not self.end:
+            return 0
+        duration = self.end - self.start + 1
+
+        return max(duration, 0)
+
+    def __eq__(self, y):
+        result = True
+        keys = ["start", "end", "episode_id", "delivered_by"]
+
+        for k in keys:
+            result = result and getattr(self, k) == getattr(y, k)
+        return result
+
+
 def timing(f):
     @wraps(f)
     def wrap(*args, **kw):
@@ -70,6 +112,73 @@ def get_iv_route():
     return opal_models.Antimicrobial_route.objects.get(
         name__iexact="IV"
     )
+
+
+def get_episode_link(episode):
+    return "{}/#/patient/{}/{}".format(
+        settings.BASE_URL,
+        episode.patient_id,
+        episode.id
+    )
+
+
+def get_outcome_information(episode):
+    """
+    returns the primary infective diagnosis and opat outcome
+    """
+    outcome = clean_outcomes(episode.outcome_set.all()).get()
+    diagnosis_name = "other"
+    if outcome.infective_diagnosis_fk_id:
+        diagnosis_name = outcome.infective_diagnosis.lower()
+
+    diagnosis_name = INFECTIVE_DIAGNOSIS.get(
+        diagnosis_name, diagnosis_name
+    )
+    opat_outcome = outcome.opat_outcome
+    patient_outcome = outcome.patient_outcome
+    return diagnosis_name, opat_outcome, patient_outcome
+
+
+def get_episode_breakdown(episodes):
+    result = []
+    episode_id_to_duration = get_iv_duration(episodes)
+    drugs = get_relevant_drugs(episodes)
+    drug_combinations = get_drug_combinations(drugs)
+
+    episode_id_to_antimicrobials_descriptions = defaultdict(list)
+
+    for drug_combination_key, antimicrobials in drug_combinations.items():
+        for episode in episodes:
+            if drug_combination_key.episode_id == episode.id:
+                antimicrobial_names = ", ".join(get_drug_name(
+                    get_drug_name(i) for i in antimicrobials
+                ))
+                description = "{}({}, {})".format(
+                    antimicrobial_names,
+                    drug_combination_key.delivered_by,
+                    drug_combination_key.duration
+                )
+                episode_id_to_antimicrobials_descriptions[episode.id].append(
+                    description
+                )
+
+    for episode in episodes:
+        row = OrderedDict()
+
+        # if an episode is 0 days long skip it
+        duration = episode_id_to_duration.get(episode.id, 0)
+
+        row["episode"] = get_episode_link(episode)
+        row["duration"] = duration
+        ep_antimicrobials = episode_id_to_antimicrobials_descriptions[episode.id]
+        row["antimicrobials"] = "; ".join(ep_antimicrobials)
+        k = get_outcome_information(episode)
+        row["infective_diagnosis"] = k[0]
+        row["opat_outcome"] = k[1]
+        row["patient_outcome"] = k[2]
+        result.append(row)
+
+    return result
 
 
 def clean_outcomes(outcomes):
@@ -186,7 +295,7 @@ def get_relevant_drugs(episodes):
     return antimicrobials
 
 
-def get_drug_period(antimicrobial):
+def get_drug_start_end(antimicrobial):
     """
     get the period that they are on a drug
     returns start, end, duration
@@ -235,13 +344,15 @@ def get_drug_combinations(drugs):
     # we group them by start, end, duration, episode_id, and delivered_by
     result = defaultdict(lambda: defaultdict(int))
     for drug in drugs:
-        period = get_drug_period(drug)
-        if period:
-            delivered_by = drug.delivered_by
-            start, end, duration = period
-            episode_id = drug.episode_id
-            key = (start, end, episode_id, duration, delivered_by,)
-            result[key].append(get_drug_name(drug))
+        start, end = get_drug_start_end(drug)
+        if start and end:
+            drug_combination = DrugCombinationKey(
+                start=start,
+                end=end,
+                episode_id=drug.episode_id,
+                delivered_by=drug.delivered_by
+            )
+            result[drug_combination].append(get_drug_name(drug))
 
     return result
 
@@ -252,12 +363,10 @@ def get_antimicrobials(episodes):
     result = defaultdict(lambda: defaultdict(int))
 
     for key, drug_combinations in drug_combinations_by_period.items():
-        # the key is start, end, duration, episode_id, and delivered_by
-        _, _, duration, _, delivered_by = key
         drug_names = " + ".join(drug_combinations)
         result[drug_names]["episodes"] += 1
-        result[drug_names]["duration"] += duration
-        result[drug_names][delivered_by] += 1
+        result[drug_names]["duration"] += key.duration
+        result[drug_names][key.delivered_by] += 1
     return result
 
 
@@ -349,9 +458,7 @@ def get_iv_duration(episodes):
     result = defaultdict(int)
 
     for key in drug_combinations.keys():
-        # the key is start, end, duration, episode_id, and delivered_by
-        _, _, duration, episode_id, _ = key
-        result[episode_id] += duration
+        result[key.episode_id] += key.duration
     return result
 
 
