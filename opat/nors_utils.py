@@ -60,7 +60,6 @@ class DrugCombinationKey(object):
     episode_id = None
     start = None
     end = None
-    delivered_by = []
 
     def __init__(self, start, end, episode_id):
         self.start = start
@@ -355,7 +354,6 @@ def get_antimicrobials(episodes):
         drug_names = " + ".join(drug_combinations)
         result[drug_names]["episodes"] += 1
         result[drug_names]["duration"] += key.duration
-        result[drug_names][key.delivered_by] += 1
     return result
 
 
@@ -363,19 +361,10 @@ def get_antimicrobial_report(episodes):
     antimicrobials = get_antimicrobials(episodes)
     result = []
 
-    # delivered by is a select box so we don't need to worry about
-    # free text
-    delivered_by = elcid_models.Drug_delivered.objects.exclude(
-        name=INPATIENT_TEAM
-    ).values_list(
-        "name", flat=True
-    ).order_by("name")
     for drug_name, drug_dict in antimicrobials.items():
         row = OrderedDict(antimicrobial=drug_name)
         row["episodes"] = drug_dict["episodes"]
         row["duration"] = drug_dict["duration"]
-        for d in delivered_by:
-            row[d] = drug_dict.get(d, 0)
         result.append(row)
     return result
 
