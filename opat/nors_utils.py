@@ -186,28 +186,28 @@ def get_relevant_drugs(episodes):
     return antimicrobials
 
 
-def get_drug_duration(antimicrobial):
+def get_drug_period(antimicrobial):
     """
-    get drug duration, but only for the time
-    they are actually on opat.
+    get the period that they are on a drug
+    returns start, end, duration
+
+    start is the antimicrobial start date
+    if that doesn't exist its the episode start date
+    if that doesn't exist its when they are accepted onto opat
+    if that doesn't exist its when they are referred to opat...
     """
     if not antimicrobial.start_date:
         return
 
-    episode = antimicrobial.episode
-    episode_start = episode.start
+    drug_start = antimicrobial.start_date
 
-    if not episode_start:
+    if not drug_start:
+        episode = antimicrobial.episode
+        drug_start = episode.start
+
+    if not drug_start:
         location = episode.location_set.first()
-        episode_start = location.opat_acceptance
-
-        if not episode_start:
-            episode_start = location.opat_referral
-
-    if episode_start and antimicrobial.start_date:
-        drug_start = max(episode_start, antimicrobial.start_date)
-    else:
-        drug_start = episode_start or antimicrobial.start_date
+        drug_start = location.opat_acceptance or location.opat_referral
 
     if drug_start and antimicrobial.end_date:
         duration = (antimicrobial.end_date - drug_start).days
@@ -216,7 +216,7 @@ def get_drug_duration(antimicrobial):
         duration = duration + 1
 
         if duration > 0:
-            return duration
+            return drug_start, antimicrobial.end_date, duration
 
 
 def get_drug_name(drug):
@@ -230,17 +230,34 @@ def get_drug_name(drug):
     return drug_name
 
 
+def get_drug_combinations(drugs):
+    # so we are not looking for individual drugs we're looking for combinations.
+    # we group them by start, end, duration, episode_id, and delivered_by
+    result = defaultdict(lambda: defaultdict(int))
+    for drug in drugs:
+        period = get_drug_period(drug)
+        if period:
+            delivered_by = drug.delivered_by
+            start, end, duration = period
+            episode_id = drug.episode_id
+            key = (start, end, episode_id, duration, delivered_by,)
+            result[key].append(get_drug_name(drug))
+
+    return result
+
+
 def get_antimicrobials(episodes):
     drugs = get_relevant_drugs(episodes)
+    drug_combinations_by_period = get_drug_combinations(drugs)
     result = defaultdict(lambda: defaultdict(int))
 
-    for drug in drugs:
-        drug_name = get_drug_name(drug)
-        duration = get_drug_duration(drug)
-        if duration:
-            result[drug_name]["episodes"] += 1
-            result[drug_name]["duration"] += duration
-            result[drug_name][drug.delivered_by] += 1
+    for key, drug_combinations in drug_combinations_by_period.items():
+        # the key is start, end, duration, episode_id, and delivered_by
+        _, _, duration, _, delivered_by = key
+        drug_names = " + ".join(drug_combinations)
+        result[drug_names]["episodes"] += 1
+        result[drug_names]["duration"] += duration
+        result[drug_names][delivered_by] += 1
     return result
 
 
@@ -325,19 +342,16 @@ def get_iv_duration(episodes):
     """
     iv_route = get_iv_route()
     drugs = get_relevant_drugs(episodes)
-    drugs.filter(route_fk_id=iv_route.id)
+    drugs = drugs.filter(route_fk_id=iv_route.id)
 
-    drugs = drugs.values("episode_id").annotate(
-        min_start_date=Min("start_date"),
-        max_end_date=Max("end_date")
-    )
-    result = {}
-    for i in drugs:
-        if i["max_end_date"] and i["min_start_date"]:
-            diff = (i["max_end_date"] - i["min_start_date"]).days
-            diff += 1
-            diff = max(diff, 0)
-            result[i["episode_id"]] = diff
+    drug_combinations = get_drug_combinations(drugs)
+
+    result = defaultdict(int)
+
+    for key in drug_combinations.keys():
+        # the key is start, end, duration, episode_id, and delivered_by
+        _, _, duration, episode_id, _ = key
+        result[episode_id] += duration
     return result
 
 
