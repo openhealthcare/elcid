@@ -301,9 +301,6 @@ def get_drug_start_end(antimicrobial):
     if that doesn't exist its when they are accepted onto opat
     if that doesn't exist its when they are referred to opat...
     """
-    if not antimicrobial.start_date:
-        return
-
     drug_start = antimicrobial.start_date
 
     if not drug_start:
