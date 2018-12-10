@@ -524,21 +524,21 @@ def get_ignored_antimicrobials(episodes):
         id__in=recorded_drugs.values_list("id", flat=True)
     )
     not_duplicates = [i for i in antimicrobials if not is_duplicate(i)]
-    result = OrderedDict()
+    result = []
     for not_duplicate in not_duplicates:
-        result["episode"] = get_episode_link(not_duplicate.episode)
-        result["drug"] = get_drug_name(not_duplicate)
+        row = OrderedDict()
+        row["episode"] = get_episode_link(not_duplicate.episode)
+        row["drug"] = get_drug_name(not_duplicate)
         if not not_duplicate.start_date:
-            result["issue"] = "missing start"
+            row["issue"] = "missing start"
         elif not not_duplicate.end_date:
-            result["issue"] = "missing end"
+            row["issue"] = "missing end"
         elif not not_duplicate.delivered_by:
-            result["issue"] = "no deliverd by"
+            row["issue"] = "no deliverd by"
         else:
-            result["issue"] = "other"
+            row["issue"] = "other"
+        result.append(row)
     return result
-
-
 
 
 def get_summary(episodes, quarter):
