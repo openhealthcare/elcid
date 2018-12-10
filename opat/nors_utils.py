@@ -502,7 +502,7 @@ def get_primary_infective_diagnosis(episodes):
 
 def get_num_episodes_rejected(quarter):
     return opat_models.OPATRejection.objects.filter(
-        date__lte=quarter.start, date__gte=quarter.end
+        date__gte=quarter.start, date__lte=quarter.end
     ).values_list('episode_id', flat=True).distinct().count()
 
 
