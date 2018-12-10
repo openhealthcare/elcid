@@ -448,7 +448,7 @@ def get_outcome_information(episode):
 
     diagnosis_name = INFECTIVE_DIAGNOSIS.get(
         diagnosis_name, diagnosis_name
-    )    
+    )
     opat_outcome = outcome.opat_outcome
     patient_outcome = outcome.patient_outcome
     return diagnosis_name, opat_outcome, patient_outcome
@@ -508,20 +508,30 @@ def get_num_episodes_rejected(quarter):
 
 def is_duplicate(antimicrobial):
     if not antimicrobial.created:
-        return False
+        return True
     episodes = antimicrobial.episode.patient.episode_set.all()
     result = episodes.exclude(antimicrobial__id=antimicrobial.id)
     result = result.filter(antimicrobial__created=antimicrobial.created)
     return result.exists()
 
 
+def get_episode_ids_with_iv_route(antimicrobials):
+    episodes = opal_models.Episode.objects.filter(
+        antimicrobial__in=antimicrobials
+    )
+    iv_route = get_iv_route()
+    episodes = episodes.filter(
+        antimicrobial__route_fk_id=iv_route.id
+    ).distinct()
+    return set(episodes.values_list("id", flat=True))
+
+
 def get_ignored_antimicrobials(episodes):
     antimicrobials = elcid_models.Antimicrobial.objects.filter(
         episode__in=episodes
     )
-    recorded_drugs = get_relevant_drugs(episodes)
-    antimicrobials = antimicrobials.exclude(
-        id__in=recorded_drugs.values_list("id", flat=True)
+    episodes_with_iv_route = get_episode_ids_with_iv_route(
+        antimicrobials
     )
     not_duplicates = [i for i in antimicrobials if not is_duplicate(i)]
     result = []
@@ -533,11 +543,14 @@ def get_ignored_antimicrobials(episodes):
             row["issue"] = "missing start"
         elif not not_duplicate.end_date:
             row["issue"] = "missing end"
+        elif not_duplicate.end_date < not_duplicate.start_date:
+            row["issue"] = "end date is before start date0"
         elif not not_duplicate.delivered_by:
-            row["issue"] = "no deliverd by"
-        else:
-            row["issue"] = "other"
-        result.append(row)
+            row["issue"] = "no delivered by"
+        elif not_duplicate.episode_id not in episodes_with_iv_route:
+            row["issue"] = "related episode has no antimicrobials with an iv route"
+        if "issue" in row:
+            result.append(row)
     return result
 
 
