@@ -24,7 +24,7 @@ class NORSReport(Report):
         pid = nors_utils.get_primary_infective_diagnosis(episodes)
         summary = [nors_utils.get_summary(episodes, quarter)]
         episode_breakdown = nors_utils.get_episode_breakdown(episodes)
-        antimicrobial_issues = nors_utils.get_ignored_antimicrobials(episodes)
+        antimicrobial_issues = nors_utils.get_antimicrobial_issues(episodes)
         
         fn = partial(self.get_file_name, quarter_start)
         return [

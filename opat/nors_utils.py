@@ -337,7 +337,9 @@ def get_drug_combinations(drugs):
                 end=end,
                 episode_id=drug.episode_id,
             )
-            result[drug_combination].append(get_drug_name(drug))
+            drug_name = get_drug_name(drug)
+            if drug_name not in result[drug_combination]:
+                result[drug_combination].append(get_drug_name(drug))
 
     return result
 
@@ -525,30 +527,45 @@ def get_episode_ids_with_iv_route(antimicrobials):
     ).distinct()
     return set(episodes.values_list("id", flat=True))
 
+def is_duplicate(antimicrobial):
+    return elcid_models.Antimicrobial.objects.filter(
+        episode_id=antimicrobial.episode_id,
+        start_date=antimicrobial.start_date,
+        end_date=antimicrobial.end_date,
+        drug_fk_id=antimicrobial.drug_fk_id,
+        drug_ft=antimicrobial.drug_ft
+    ).count() > 1
 
-def get_ignored_antimicrobials(episodes):
+
+def get_antimicrobial_issues(episodes):
     antimicrobials = elcid_models.Antimicrobial.objects.filter(
         episode__in=episodes
     )
     episodes_with_iv_route = get_episode_ids_with_iv_route(
         antimicrobials
     )
-    not_duplicates = [i for i in antimicrobials if not is_duplicate(i)]
+
+    # ie not added by for example an inpatient episode
+    from_opat = [i for i in antimicrobials if not is_duplicate(i)]
+
     result = []
-    for not_duplicate in not_duplicates:
+    for antimicrobial in from_opat:
         row = OrderedDict()
-        row["episode"] = get_episode_link(not_duplicate.episode)
-        row["drug"] = get_drug_name(not_duplicate)
-        if not not_duplicate.start_date:
+        row["episode"] = get_episode_link(antimicrobial.episode)
+        row["drug"] = get_drug_name(antimicrobial)
+        if not antimicrobial.start_date:
             row["issue"] = "missing start"
-        elif not not_duplicate.end_date:
+        elif not antimicrobial.end_date:
             row["issue"] = "missing end"
-        elif not_duplicate.end_date < not_duplicate.start_date:
+        elif antimicrobial.end_date < antimicrobial.start_date:
             row["issue"] = "end date is before start date0"
-        elif not not_duplicate.delivered_by:
+        elif not antimicrobial.delivered_by:
             row["issue"] = "no delivered by"
-        elif not_duplicate.episode_id not in episodes_with_iv_route:
+        elif antimicrobial.episode_id not in episodes_with_iv_route:
             row["issue"] = "related episode has no antimicrobials with an iv route"
+        elif is_duplicate(antimicrobial):
+            row["issue"] = "duplicate entry"
+
         if "issue" in row:
             result.append(row)
     return result
