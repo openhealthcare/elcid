@@ -506,6 +506,41 @@ def get_num_episodes_rejected(quarter):
     ).values_list('episode_id', flat=True).distinct().count()
 
 
+def is_duplicate(antimicrobial):
+    if not antimicrobial.created:
+        return False
+    episodes = antimicrobial.episode.patient.episode_set.all()
+    result = episodes.exclude(antimicrobial__id=antimicrobial.id)
+    result = result.filter(antimicrobial__created=antimicrobial.created)
+    return result.exists()
+
+
+def get_ignored_antimicrobials(episodes):
+    antimicrobials = elcid_models.Antimicrobial.objects.filter(
+        episode__in=episodes
+    )
+    recorded_drugs = get_relevant_drugs(episodes)
+    antimicrobials = antimicrobials.exclude(
+        id__in=recorded_drugs.values_list("id", flat=True)
+    )
+    not_duplicates = [i for i in antimicrobials if not is_duplicate(i)]
+    result = OrderedDict()
+    for not_duplicate in not_duplicates:
+        result["episode"] = get_episode_link(not_duplicate.episode)
+        result["drug"] = get_drug_name(not_duplicate)
+        if not not_duplicate.start_date:
+            result["issue"] = "missing start"
+        elif not not_duplicate.end_date:
+            result["issue"] = "missing end"
+        elif not not_duplicate.delivered_by:
+            result["issue"] = "no deliverd by"
+        else:
+            result["issue"] = "other"
+    return result
+
+
+
+
 def get_summary(episodes, quarter):
     result = OrderedDict()
     result["episodes"] = episodes.count()
