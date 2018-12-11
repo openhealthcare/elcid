@@ -5,6 +5,7 @@ from opal import models as opal_models
 from elcid import models as elcid_models
 from opat import models as opat_models
 from opat import nors_utils
+from opat import quarter_utils
 
 
 class AbstractNorsUtilsTestCase(OpalTestCase):
@@ -285,6 +286,95 @@ class GetIvAntimicrobialsTestCase(AbstractNorsUtilsTestCase):
         )
 
         self.assertEqual(
-            result[1]["max_end"], today 
+            result[1]["max_end"], today
         )
 
+
+class GetNumEpisodesRejectedTestCase(OpalTestCase):
+    def setUp(self):
+        super(GetNumEpisodesRejectedTestCase, self).setUp()
+        self.quarter = quarter_utils.Quarter(
+            2018, 4
+        )
+        _, self.episode = self.new_patient_and_episode_please()
+
+
+    def test_num_episodes_rejected_none(self):
+        self.assertEqual(
+            nors_utils.get_num_episodes_rejected(self.quarter),
+            0
+        )
+
+    def test_num_episodes_rejected_some(self):
+        opat_models.OPATRejection.objects.create(
+            date=datetime.date(2018, 12, 1),
+            episode=self.episode
+        )
+        self.assertEqual(
+            nors_utils.get_num_episodes_rejected(self.quarter),
+            1
+        )
+
+
+class IsDuplicateTestCase(OpalTestCase):
+    def setUp(self):
+        _, self.episode = self.new_patient_and_episode_please()
+        self.drug = opal_models.Antimicrobial.objects.create(
+            name="paracetomol"
+        )
+        self.yesterday = datetime.date.today() - datetime.timedelta(1)
+        self.today = datetime.date.today()
+
+    def test_is_duplicate_with_duplicate(self):
+        antimicrobial = elcid_models.Antimicrobial.objects.create(
+            episode=self.episode,
+            drug_fk_id=self.drug.id,
+            start_date=self.yesterday,
+        )
+
+        elcid_models.Antimicrobial.objects.create(
+            episode=self.episode,
+            drug_fk_id=self.drug.id,
+            start_date=self.yesterday,
+        )
+        self.assertTrue(
+            nors_utils.is_duplicate(antimicrobial)
+        )
+
+    def test_is_duplicate_without_dupliate(self):
+        antimicrobial = elcid_models.Antimicrobial.objects.create(
+            episode=self.episode,
+            drug_fk_id=self.drug.id,
+            start_date=self.today,
+        )
+
+        elcid_models.Antimicrobial.objects.create(
+            episode=self.episode,
+            drug_fk_id=self.drug.id,
+            start_date=self.yesterday,
+        )
+        self.assertFalse(
+            nors_utils.is_duplicate(antimicrobial)
+        )
+
+    def test_is_duplicate_with_duplicate_inpatient(self):
+        antimicrobial_1 = elcid_models.Antimicrobial.objects.create(
+            episode=self.episode,
+            drug_fk_id=self.drug.id,
+            start_date=self.yesterday,
+        )
+
+        antimicrobial_1.delivered_by = nors_utils.INPATIENT_TEAM
+        antimicrobial_1.save()
+
+        antimicrobial_2 = elcid_models.Antimicrobial.objects.create(
+            episode=self.episode,
+            drug_fk_id=self.drug.id,
+            start_date=self.yesterday,
+        )
+
+        antimicrobial_2.delivered_by = nors_utils.INPATIENT_TEAM
+        antimicrobial_2.save()
+        self.assertTrue(
+            nors_utils.is_duplicate(antimicrobial_1)
+        )

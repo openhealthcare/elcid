@@ -508,15 +508,6 @@ def get_num_episodes_rejected(quarter):
     ).values_list('episode_id', flat=True).distinct().count()
 
 
-def is_duplicate(antimicrobial):
-    if not antimicrobial.created:
-        return True
-    episodes = antimicrobial.episode.patient.episode_set.all()
-    result = episodes.exclude(antimicrobial__id=antimicrobial.id)
-    result = result.filter(antimicrobial__created=antimicrobial.created)
-    return result.exists()
-
-
 def get_episode_ids_with_iv_route(antimicrobials):
     episodes = opal_models.Episode.objects.filter(
         antimicrobial__in=antimicrobials
@@ -527,11 +518,14 @@ def get_episode_ids_with_iv_route(antimicrobials):
     ).distinct()
     return set(episodes.values_list("id", flat=True))
 
+
 def is_duplicate(antimicrobial):
+    # we don't care about inpatient antimicrobials at the mo
+    if antimicrobial.delivered_by == "INPATIENT_TEAM":
+        return False
     return elcid_models.Antimicrobial.objects.filter(
         episode_id=antimicrobial.episode_id,
         start_date=antimicrobial.start_date,
-        end_date=antimicrobial.end_date,
         drug_fk_id=antimicrobial.drug_fk_id,
         drug_ft=antimicrobial.drug_ft
     ).count() > 1
