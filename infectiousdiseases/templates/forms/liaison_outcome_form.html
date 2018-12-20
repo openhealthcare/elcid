@@ -1,5 +1,6 @@
 {% load forms %}
 {% datetimepicker field="LiaisonOutcome.when" %}
+{% select field="LiaisonOutcome.problem_category" %}
 {% checkbox field="LiaisonOutcome.phone_advice_given" %}
 <div ng-show="editing.liaison_outcome.phone_advice_given">
     {% select field="LiaisonOutcome.redirected_to_clinic" %}

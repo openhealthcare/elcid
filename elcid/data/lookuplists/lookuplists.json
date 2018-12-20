@@ -1,4 +1,34 @@
 {
+  "liaisonproblem": [
+    {
+      "synonyms": [],
+      "name": "Malaria"
+    },
+    {
+      "synonyms": [],
+      "name": "Febrile returning traveller"
+    },
+    {
+      "synonyms": [],
+      "name": "Rash"
+    },
+    {
+      "synonyms": [],
+      "name": "Diarrhoea"
+    },
+    {
+      "synonyms": [],
+      "name": "PUO"
+    },
+    {
+      "synonyms": [],
+      "name": "Localising infection"
+    },
+    {
+      "synonyms": [],
+      "name": "Known tropical diagnosis"
+    }
+  ],
   "line_removal_reason": [
     {
       "synonyms": [],
