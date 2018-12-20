@@ -1,4 +1,5 @@
 import logging
+import datetime
 from collections import defaultdict, OrderedDict
 from django.db.models import Count, Min, Max
 from django.conf import settings
@@ -50,6 +51,45 @@ ANTIMICROBIALS = {
 logger = logging.getLogger('elcid.time_logger')
 
 
+class DrugCombinationKey(object):
+    """
+    We aggregate drugs by the fields contained
+    in this object, ie episode id, start, end
+    and delivered_by
+    """
+    episode_id = None
+    start = None
+    end = None
+
+    def __init__(self, start, end, episode_id):
+        self.start = start
+        self.end = end
+        self.episode_id = episode_id
+
+    def __str__(self):
+        return "{} {} {}".format(
+            self.start, self.end, self.episode_id
+        )
+
+    def __hash__(self):
+        return hash(str(self))
+
+    @property
+    def duration(self):
+        if not self.start or not self.end:
+            return 0
+        duration = self.end - self.start + datetime.timedelta(1)
+        return max(duration.days, 0)
+
+    def __eq__(self, y):
+        result = True
+        keys = ["start", "end", "episode_id"]
+
+        for k in keys:
+            result = result and getattr(self, k) == getattr(y, k)
+        return result
+
+
 def timing(f):
     @wraps(f)
     def wrap(*args, **kw):
@@ -71,6 +111,76 @@ def get_iv_route():
     return opal_models.Antimicrobial_route.objects.get(
         name__iexact="IV"
     )
+
+
+def get_episode_link(episode):
+    return "{}/#/patient/{}/{}".format(
+        settings.BASE_URL,
+        episode.patient_id,
+        episode.id
+    )
+
+
+def get_outcome_information(episode):
+    """
+    returns the primary infective diagnosis and opat outcome
+    """
+    outcome = clean_outcomes(episode.outcome_set.all()).get()
+    diagnosis_name = "other"
+    if outcome.infective_diagnosis_fk_id:
+        diagnosis_name = outcome.infective_diagnosis.lower()
+
+    diagnosis_name = INFECTIVE_DIAGNOSIS.get(
+        diagnosis_name, diagnosis_name
+    )
+    opat_outcome = outcome.opat_outcome
+    patient_outcome = outcome.patient_outcome
+    return diagnosis_name, opat_outcome, patient_outcome
+
+
+def get_episode_breakdown(episodes):
+    """
+    Returns a by episode breakdown of all the episodes used to
+    create the report.
+    """
+    result = []
+    episode_id_to_duration = get_iv_duration(episodes)
+    drugs = get_relevant_drugs(episodes)
+    drug_combinations = get_drug_combinations(drugs)
+
+    episode_id_to_antimicrobials_descriptions = defaultdict(list)
+
+    for drug_combination_key, antimicrobials in drug_combinations.items():
+        for episode in episodes:
+            if drug_combination_key.episode_id == episode.id:
+                antimicrobial_names = ", ".join(antimicrobials)
+                description = "{}({})".format(
+                    antimicrobial_names,
+                    drug_combination_key.duration
+                )
+                episode_id_to_antimicrobials_descriptions[episode.id].append(
+                    description
+                )
+
+    for episode in episodes:
+        row = OrderedDict()
+
+        # if an episode is 0 days long skip it
+        duration = episode_id_to_duration.get(episode.id, 0)
+
+        row["episode"] = get_episode_link(episode)
+        row["duration"] = duration
+        ep_antimicrobials = episode_id_to_antimicrobials_descriptions[
+            episode.id
+        ]
+        row["antimicrobials"] = "; ".join(ep_antimicrobials)
+        k = get_outcome_information(episode)
+        row["infective_diagnosis"] = k[0]
+        row["opat_outcome"] = k[1]
+        row["patient_outcome"] = k[2]
+        result.append(row)
+
+    return result
 
 
 def clean_outcomes(outcomes):
@@ -187,65 +297,27 @@ def get_relevant_drugs(episodes):
     return antimicrobials
 
 
-def get_episode_breakdown(episodes):
-    result = []
-    episode_id_to_duration = get_iv_duration(episodes)
-    antimicrobials = get_relevant_drugs(episodes)
-    episode_id_to_antimicrobials = defaultdict(list)
-
-    for antimicrobial in antimicrobials:
-        episode_id_to_antimicrobials[antimicrobial.episode_id].append(antimicrobial)
-
-    for episode in episodes:
-        row = OrderedDict()
-
-        # if an episode is 0 days long, skip it
-        duration = episode_id_to_duration.get(episode.id, 0)
-
-        row["episode"] = "{}/#/patient/{}/{}".format(
-            settings.BASE_URL,
-            episode.patient_id,
-            episode.id
-        )
-        row["duration"] = duration
-        antimicrobials =  ("{}({} days)".format(get_drug_name(i), get_drug_duration(i)) for i in episode_id_to_antimicrobials[episode.id])
-        row["antimicrobials"] = " ".join(antimicrobials)
-        result.append(row)
-        row["infective_diagnosis"], row["opat_outcome"], row["patient_outcome"] = get_outcome_information(episode)
-    return result
-
-
-def get_episode_start(episode):
-    if episode.start:
-        return episode.start
-    location = episode.location_set.first()
-    return location.opat_acceptance or location.opat_acceptance
-
-
-def get_drug_duration(antimicrobial):
+def get_drug_start_end(antimicrobial):
     """
-    get drug dates, but only for the time
-    they are actually on opat.
+    get the period that they are on a drug
+    returns start, end
+
+    start is the antimicrobial start date
+    if that doesn't exist its the episode start date
+    if that doesn't exist its when they are accepted onto opat
+    if that doesn't exist its when they are referred to opat...
     """
-    if not antimicrobial.start_date:
-        return
+    drug_start = antimicrobial.start_date
 
-    episode = antimicrobial.episode
-    episode_start = get_episode_start(episode)
+    if not drug_start:
+        episode = antimicrobial.episode
+        drug_start = episode.start
 
-    if episode_start and antimicrobial.start_date:
-        drug_start = max(episode_start, antimicrobial.start_date)
-    else:
-        drug_start = episode_start or antimicrobial.start_date
+    if not drug_start:
+        location = episode.location_set.first()
+        drug_start = location.opat_acceptance or location.opat_referral
 
-    if drug_start and antimicrobial.end_date:
-        duration = (antimicrobial.end_date - drug_start).days
-
-        # we are including the end date so we add 1
-        duration = duration + 1
-
-        if duration > 0:
-            return duration
+    return drug_start, antimicrobial.end_date
 
 
 def get_drug_name(drug):
@@ -259,17 +331,37 @@ def get_drug_name(drug):
     return drug_name
 
 
+def get_drug_combinations(drugs):
+    # so we are not looking for individual drugs we're looking for combinations.
+    # we group them by start, end, duration, episode_id, and delivered_by
+    result = defaultdict(list)
+    for drug in drugs:
+        start, end = get_drug_start_end(drug)
+        if start and end:
+            drug_combination = DrugCombinationKey(
+                start=start,
+                end=end,
+                episode_id=drug.episode_id,
+            )
+            if drug_combination.duration:
+                drug_name = get_drug_name(drug)
+
+                # ignore duplicate entries
+                if drug_name not in result[drug_combination]:
+                    result[drug_combination].append(get_drug_name(drug))
+
+    return result
+
+
 def get_antimicrobials(episodes):
     drugs = get_relevant_drugs(episodes)
+    drug_combinations_by_period = get_drug_combinations(drugs)
     result = defaultdict(lambda: defaultdict(int))
 
-    for drug in drugs:
-        drug_name = get_drug_name(drug)
-        duration = get_drug_duration(drug)
-        if duration:
-            result[drug_name]["episodes"] += 1
-            result[drug_name]["duration"] += duration
-            result[drug_name][drug.delivered_by] += 1
+    for key, drug_combinations in drug_combinations_by_period.items():
+        drug_names = " + ".join(drug_combinations)
+        result[drug_names]["episodes"] += 1
+        result[drug_names]["duration"] += key.duration
     return result
 
 
@@ -277,19 +369,10 @@ def get_antimicrobial_report(episodes):
     antimicrobials = get_antimicrobials(episodes)
     result = []
 
-    # delivered by is a select box so we don't need to worry about
-    # free text
-    delivered_by = elcid_models.Drug_delivered.objects.exclude(
-        name=INPATIENT_TEAM
-    ).values_list(
-        "name", flat=True
-    ).order_by("name")
     for drug_name, drug_dict in antimicrobials.items():
         row = OrderedDict(antimicrobial=drug_name)
         row["episodes"] = drug_dict["episodes"]
         row["duration"] = drug_dict["duration"]
-        for d in delivered_by:
-            row[d] = drug_dict.get(d, 0)
         result.append(row)
     return result
 
@@ -354,28 +437,16 @@ def get_iv_duration(episodes):
     """
     iv_route = get_iv_route()
     drugs = get_relevant_drugs(episodes)
-    drugs.filter(route_fk_id=iv_route.id)
+    drugs = drugs.filter(route_fk_id=iv_route.id)
 
-    drugs = drugs.values("episode_id").annotate(
-        min_start_date=Min("start_date"),
-        max_end_date=Max("end_date")
-    )
-    result = {}
-    for i in drugs:
-        episode = opal_models.Episode.objects.get(id=i["episode_id"])
-        episode_start = get_episode_start(episode)
+    drug_combinations = get_drug_combinations(drugs)
 
-        if not i["min_start_date"] or not episode_start:
-            start_date = i["min_start_date"] or episode_start
-        else:
-            start_date = max(i["min_start_date"], episode_start)
+    result = defaultdict(int)
 
-        if i["max_end_date"] and start_date:
-            diff = (i["max_end_date"] - start_date).days
-            diff += 1
-            diff = max(diff, 0)
-            result[i["episode_id"]] = diff
+    for key in drug_combinations.keys():
+        result[key.episode_id] += key.duration
     return result
+
 
 def get_outcome_information(episode):
     """
@@ -388,7 +459,7 @@ def get_outcome_information(episode):
 
     diagnosis_name = INFECTIVE_DIAGNOSIS.get(
         diagnosis_name, diagnosis_name
-    )    
+    )
     opat_outcome = outcome.opat_outcome
     patient_outcome = outcome.patient_outcome
     return diagnosis_name, opat_outcome, patient_outcome
@@ -442,8 +513,65 @@ def get_primary_infective_diagnosis(episodes):
 
 def get_num_episodes_rejected(quarter):
     return opat_models.OPATRejection.objects.filter(
-        date__lte=quarter.start, date__gte=quarter.end
+        date__gte=quarter.start, date__lte=quarter.end
     ).values_list('episode_id', flat=True).distinct().count()
+
+
+def get_episode_ids_with_iv_route(antimicrobials):
+    episodes = opal_models.Episode.objects.filter(
+        antimicrobial__in=antimicrobials
+    )
+    iv_route = get_iv_route()
+    episodes = episodes.filter(
+        antimicrobial__route_fk_id=iv_route.id
+    ).distinct()
+    return set(episodes.values_list("id", flat=True))
+
+
+def is_duplicate(antimicrobial):
+    # we don't care about inpatient antimicrobials at the mo
+    if antimicrobial.delivered_by == "INPATIENT_TEAM":
+        return False
+    return elcid_models.Antimicrobial.objects.filter(
+        episode_id=antimicrobial.episode_id,
+        start_date=antimicrobial.start_date,
+        drug_fk_id=antimicrobial.drug_fk_id,
+        drug_ft=antimicrobial.drug_ft
+    ).count() > 1
+
+
+def get_antimicrobial_issues(episodes):
+    antimicrobials = elcid_models.Antimicrobial.objects.filter(
+        episode__in=episodes
+    )
+    episodes_with_iv_route = get_episode_ids_with_iv_route(
+        antimicrobials
+    )
+
+    # ie not added by for example an inpatient episode
+    from_opat = [i for i in antimicrobials if not is_duplicate(i)]
+
+    result = []
+    for antimicrobial in from_opat:
+        row = OrderedDict()
+        row["episode"] = get_episode_link(antimicrobial.episode)
+        row["drug"] = get_drug_name(antimicrobial)
+        if not antimicrobial.start_date:
+            row["issue"] = "missing start"
+        elif not antimicrobial.end_date:
+            row["issue"] = "missing end"
+        elif antimicrobial.end_date < antimicrobial.start_date:
+            row["issue"] = "end date is before start date0"
+        elif not antimicrobial.delivered_by:
+            row["issue"] = "no delivered by"
+        elif antimicrobial.episode_id not in episodes_with_iv_route:
+            row["issue"] = "related episode has no antimicrobials with an iv route"
+        elif is_duplicate(antimicrobial):
+            row["issue"] = "duplicate entry"
+
+        if "issue" in row:
+            result.append(row)
+    return result
 
 
 def get_summary(episodes, quarter):

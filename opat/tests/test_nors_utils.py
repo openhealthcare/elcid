@@ -5,6 +5,7 @@ from opal import models as opal_models
 from elcid import models as elcid_models
 from opat import models as opat_models
 from opat import nors_utils
+from opat import quarter_utils
 
 
 class AbstractNorsUtilsTestCase(OpalTestCase):
@@ -128,22 +129,144 @@ class GetEpisodeBreakdownTestCase(AbstractNorsUtilsTestCase):
         )
 
         self.assertEqual(
-            row["duration"], 3
-        )
-
-        self.assertEqual(
-            row["antimicrobials"], 'fusidic acid(3 days)'
+            row["antimicrobials"], 'fusidic acid(3)'
         )
         self.assertEqual(
             row["infective_diagnosis"], 'other'
         )
         self.assertEqual(
-            row["opat_outcome"], opat_models.OPATOutcome.OPAT_OUTCOME_CHOICES[0][0]
+            row["opat_outcome"],
+            opat_models.OPATOutcome.OPAT_OUTCOME_CHOICES[0][0]
         )
 
         self.assertEqual(
-            row["patient_outcome"], opat_models.OPATOutcome.PATIENT_OUTCOME_CHOICES[0][0]
+            row["patient_outcome"],
+            opat_models.OPATOutcome.PATIENT_OUTCOME_CHOICES[0][0]
         )
+
+
+class GetDrugCombinationsTestCase(AbstractNorsUtilsTestCase):
+    def setUp(self):
+        super(GetDrugCombinationsTestCase, self).setUp()
+        self.aspirin = opal_models.Antimicrobial.objects.create(
+            name="aspirin"
+        )
+        self.antimicrobial = elcid_models.Antimicrobial.objects.create(
+            episode=self.episode
+        )
+        self.antimicrobial.drug = self.aspirin.name
+        self.antimicrobial.save()
+        self.today = datetime.date.today()
+        self.yesterday = self.today - datetime.timedelta(1)
+
+    def test_generic(self):
+        self.antimicrobial.start_date = self.yesterday
+        self.antimicrobial.end_date = self.today
+        self.antimicrobial.save()
+        result = nors_utils.get_drug_combinations([self.antimicrobial])
+        drug_combination_keys = list(result.keys())
+        self.assertEqual(len(drug_combination_keys), 1)
+        drug_combination_key = drug_combination_keys[0]
+        self.assertEqual(
+            drug_combination_key.start, self.yesterday
+        )
+        self.assertEqual(
+            drug_combination_key.end, self.today
+        )
+        self.assertEqual(
+           result[drug_combination_key],
+           [self.antimicrobial.drug]
+        )
+
+    def test_drug_combination_hit(self):
+        other_antimicrobial = elcid_models.Antimicrobial.objects.create(
+            episode=self.episode
+        )
+        other_antimicrobial.drug = self.paracetomol.name
+        other_antimicrobial.start_date = self.yesterday
+        other_antimicrobial.end_date = self.today
+        other_antimicrobial.save()
+        self.antimicrobial.start_date = self.yesterday
+        self.antimicrobial.end_date = self.today
+        self.antimicrobial.save()
+
+        result = nors_utils.get_drug_combinations([
+            self.antimicrobial, other_antimicrobial
+        ])
+        drug_combination_keys = list(result.keys())
+        self.assertEqual(len(drug_combination_keys), 1)
+        drug_combination_key = drug_combination_keys[0]
+        self.assertEqual(
+            drug_combination_key.start, self.yesterday
+        )
+        self.assertEqual(
+            drug_combination_key.end, self.today
+        )
+        self.assertEqual(
+           set(result[drug_combination_key]),
+           set([self.antimicrobial.drug, other_antimicrobial.drug])
+        )
+
+    def test_drug_combination_miss(self):
+        other_antimicrobial = elcid_models.Antimicrobial.objects.create(
+            episode=self.episode
+        )
+        other_antimicrobial.drug = self.paracetomol.name
+        two_days_ago = self.yesterday - datetime.timedelta(1)
+        other_antimicrobial.start_date = two_days_ago
+        other_antimicrobial.end_date = self.today
+        other_antimicrobial.save()
+        self.antimicrobial.start_date = self.yesterday
+        self.antimicrobial.end_date = self.today
+        self.antimicrobial.save()
+
+        result = nors_utils.get_drug_combinations([
+            self.antimicrobial, other_antimicrobial
+        ])
+        drug_combination_keys = list(result.keys())
+        self.assertEqual(len(drug_combination_keys), 2)
+
+        for drug_combination, drugs in result.items():
+            if drugs == [other_antimicrobial.drug]:
+                self.assertEqual(
+                    drug_combination.start, two_days_ago
+                )
+
+                self.assertEqual(
+                    drug_combination.end, self.today
+                )
+            elif drugs == [self.aspirin.name]:
+                self.assertEqual(
+                    drug_combination.start, self.yesterday
+                )
+
+                self.assertEqual(
+                    drug_combination.end, self.today
+                )
+            else:
+                self.fail()
+
+    def test_no_start(self):
+        self.antimicrobial.start_date = self.yesterday
+        self.antimicrobial.save()
+        result = nors_utils.get_drug_combinations([self.antimicrobial])
+        self.assertEqual(len(result), 0)
+
+    def test_no_end(self):
+        self.antimicrobial.end_date = self.yesterday
+        self.antimicrobial.save()
+        result = nors_utils.get_drug_combinations([self.antimicrobial])
+        self.assertEqual(len(result), 0)
+
+    def test_no_duration(self):
+        # the day is one day in the future as we
+        # consider duration to be start - end + 1
+        # ie inclusive of the end date.
+        self.antimicrobial.start_date = self.today
+        self.antimicrobial.end_date = self.yesterday
+        self.antimicrobial.save()
+        result = nors_utils.get_drug_combinations([self.antimicrobial])
+        self.assertEqual(len(result), 0)
 
 
 class GetIvAntimicrobialsTestCase(AbstractNorsUtilsTestCase):
@@ -169,7 +292,6 @@ class GetIvAntimicrobialsTestCase(AbstractNorsUtilsTestCase):
         self.assertEqual(
             result[0]["max_end"], today
         )
-
 
     def test_only_includes_iv_route(self):
         today = datetime.date.today()
@@ -289,6 +411,95 @@ class GetIvAntimicrobialsTestCase(AbstractNorsUtilsTestCase):
         )
 
         self.assertEqual(
-            result[1]["max_end"], today 
+            result[1]["max_end"], today
         )
 
+
+class GetNumEpisodesRejectedTestCase(OpalTestCase):
+    def setUp(self):
+        super(GetNumEpisodesRejectedTestCase, self).setUp()
+        self.quarter = quarter_utils.Quarter(
+            2018, 4
+        )
+        _, self.episode = self.new_patient_and_episode_please()
+
+
+    def test_num_episodes_rejected_none(self):
+        self.assertEqual(
+            nors_utils.get_num_episodes_rejected(self.quarter),
+            0
+        )
+
+    def test_num_episodes_rejected_some(self):
+        opat_models.OPATRejection.objects.create(
+            date=datetime.date(2018, 12, 1),
+            episode=self.episode
+        )
+        self.assertEqual(
+            nors_utils.get_num_episodes_rejected(self.quarter),
+            1
+        )
+
+
+class IsDuplicateTestCase(OpalTestCase):
+    def setUp(self):
+        _, self.episode = self.new_patient_and_episode_please()
+        self.drug = opal_models.Antimicrobial.objects.create(
+            name="paracetomol"
+        )
+        self.yesterday = datetime.date.today() - datetime.timedelta(1)
+        self.today = datetime.date.today()
+
+    def test_is_duplicate_with_duplicate(self):
+        antimicrobial = elcid_models.Antimicrobial.objects.create(
+            episode=self.episode,
+            drug_fk_id=self.drug.id,
+            start_date=self.yesterday,
+        )
+
+        elcid_models.Antimicrobial.objects.create(
+            episode=self.episode,
+            drug_fk_id=self.drug.id,
+            start_date=self.yesterday,
+        )
+        self.assertTrue(
+            nors_utils.is_duplicate(antimicrobial)
+        )
+
+    def test_is_duplicate_without_dupliate(self):
+        antimicrobial = elcid_models.Antimicrobial.objects.create(
+            episode=self.episode,
+            drug_fk_id=self.drug.id,
+            start_date=self.today,
+        )
+
+        elcid_models.Antimicrobial.objects.create(
+            episode=self.episode,
+            drug_fk_id=self.drug.id,
+            start_date=self.yesterday,
+        )
+        self.assertFalse(
+            nors_utils.is_duplicate(antimicrobial)
+        )
+
+    def test_is_duplicate_with_duplicate_inpatient(self):
+        antimicrobial_1 = elcid_models.Antimicrobial.objects.create(
+            episode=self.episode,
+            drug_fk_id=self.drug.id,
+            start_date=self.yesterday,
+        )
+
+        antimicrobial_1.delivered_by = nors_utils.INPATIENT_TEAM
+        antimicrobial_1.save()
+
+        antimicrobial_2 = elcid_models.Antimicrobial.objects.create(
+            episode=self.episode,
+            drug_fk_id=self.drug.id,
+            start_date=self.yesterday,
+        )
+
+        antimicrobial_2.delivered_by = nors_utils.INPATIENT_TEAM
+        antimicrobial_2.save()
+        self.assertTrue(
+            nors_utils.is_duplicate(antimicrobial_1)
+        )
