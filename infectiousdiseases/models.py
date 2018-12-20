@@ -61,7 +61,7 @@ class LiaisonOutcome(EpisodeSubrecord):
 
     when = models.DateTimeField(null=True, blank=True)
     problem_category = ForeignKeyOrFreeText(
-        LiaisonProblem, verbose_name="Category of problem"
+        LiaisonProblem, verbose_name="Category Of Problem"
     )
     phone_advice_given = models.BooleanField(default=False)
     redirected_to_clinic = models.CharField(
