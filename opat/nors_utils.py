@@ -139,6 +139,10 @@ def get_outcome_information(episode):
 
 
 def get_episode_breakdown(episodes):
+    """
+    Returns a by episode breakdown of all the episodes used to
+    create the report.
+    """
     result = []
     episode_id_to_duration = get_iv_duration(episodes)
     drugs = get_relevant_drugs(episodes)
@@ -166,7 +170,9 @@ def get_episode_breakdown(episodes):
 
         row["episode"] = get_episode_link(episode)
         row["duration"] = duration
-        ep_antimicrobials = episode_id_to_antimicrobials_descriptions[episode.id]
+        ep_antimicrobials = episode_id_to_antimicrobials_descriptions[
+            episode.id
+        ]
         row["antimicrobials"] = "; ".join(ep_antimicrobials)
         k = get_outcome_information(episode)
         row["infective_diagnosis"] = k[0]
@@ -294,7 +300,7 @@ def get_relevant_drugs(episodes):
 def get_drug_start_end(antimicrobial):
     """
     get the period that they are on a drug
-    returns start, end, duration
+    returns start, end
 
     start is the antimicrobial start date
     if that doesn't exist its the episode start date
@@ -337,9 +343,12 @@ def get_drug_combinations(drugs):
                 end=end,
                 episode_id=drug.episode_id,
             )
-            drug_name = get_drug_name(drug)
-            if drug_name not in result[drug_combination]:
-                result[drug_combination].append(get_drug_name(drug))
+            if drug_combination.duration:
+                drug_name = get_drug_name(drug)
+
+                # ignore duplicate entries
+                if drug_name not in result[drug_combination]:
+                    result[drug_combination].append(get_drug_name(drug))
 
     return result
 
