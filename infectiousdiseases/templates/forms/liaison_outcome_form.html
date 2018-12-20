@@ -1,0 +1,31 @@
+{% load forms %}
+{% datetimepicker field="LiaisonOutcome.when" %}
+{% checkbox field="LiaisonOutcome.phone_advice_given" %}
+<div ng-show="editing.liaison_outcome.phone_advice_given">
+    {% select field="LiaisonOutcome.redirected_to_clinic" %}
+</div>
+{% checkbox field="LiaisonOutcome.email_advice_given" %}
+
+{% checkbox field="LiaisonOutcome.transfer_offered" %}
+<div ng-show="editing.liaison_outcome.transfer_offered">
+    {% radio field="LiaisonOutcome.transfer_response" %}
+</div>
+
+<div class="form-group">
+    <label class="control-label col-sm-3">Liason Finished?</label>
+    <div class="col-sm-8">
+        <label class="radio-inline">
+            <input class="" type="radio" ng-value="true" ng-model="editing.liaison_outcome.liaison_ended">
+            Liaison ended
+        </label>
+        <label class="radio-inline">
+        <input class="" type="radio" ng-value="false" ng-model="editing.liaison_outcome.liaison_ended">
+            Liaison ongoing
+        </label>
+    </div>
+</div>
+
+<div ng-show="editing.liaison_outcome.liaison_ended === false">
+   {% datepicker field="LiaisonOutcome.next_date_of_contact" %}
+</div>
+

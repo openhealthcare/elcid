@@ -22,6 +22,7 @@ tropical_liaison_list = [
     models.Antimicrobial,
     models.MicrobiologyTest,
     models.MicrobiologyInput,
+    id_models.LiaisonOutcome,
     models.GeneralNote
 ]
 

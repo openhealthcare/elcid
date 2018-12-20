@@ -1,0 +1,34 @@
+<span ng-show="item.when">
+    [[ item.when | shortDateTime ]]
+   <br />
+</span>
+<span ng-show="item.phone_advice_given">
+     Phone Advice Given
+     <span ng-show="item.redirected_to_clinic">
+        - Referred To [[ item.redirected_to_clinic ]]
+     </span>
+   <br />
+</span>
+<span ng-show="item.email_advice_given">
+     Email Advice Given
+   <br />
+</span>
+<span ng-show="item.transfer_offered">
+     Transfer Offered
+     <span ng-show="item.transfer_response">
+        - [[ item.transfer_response ]]
+   </span>
+   <br />
+</span>
+</span>
+<span ng-show="item.liaison_ended === true">
+     Liaison Ended
+   <br />
+</span>
+<span ng-show="item.liaison_ended === false">
+      Liaison Ongoing
+      <span ng-show="item.next_date_of_contact">
+        - [[ item.next_date_of_contact | shortDate ]]
+     </span>
+    <br />
+ </span>
